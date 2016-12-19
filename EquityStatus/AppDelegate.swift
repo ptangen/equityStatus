@@ -18,10 +18,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         // if no recipes selected in CoreData, fetch from DataBase
         
-        let loginViewInst = LoginViewController()
+        //let loginViewControllerInst = LoginViewController()
+        //let buyViewControllerInst = BuyViewController()
+        let tabViewControllerInst = TabsViewController()
+        
         self.window = UIWindow(frame: UIScreen.main.bounds)
         self.window!.backgroundColor = UIColor.white
-        let navigationController = UINavigationController(rootViewController: loginViewInst)
+        //let navigationController = UINavigationController(rootViewController: loginViewControllerInst) // show login on startup
+        //let navigationController = UINavigationController(rootViewController: buyViewControllerInst) // show buy on startup
+        let navigationController = UINavigationController(rootViewController: tabViewControllerInst) // show analysis on startup
+        
         self.window!.rootViewController = navigationController
         self.window!.makeKeyAndVisible()
         

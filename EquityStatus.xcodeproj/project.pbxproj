@@ -15,6 +15,17 @@
 		C0409FA71E0745D400BEC5DD /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0409FA61E0745D400BEC5DD /* LoginView.swift */; };
 		C061ED0C1E0784B000081030 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C061ED0B1E0784B000081030 /* Constants.swift */; };
 		C061ED0E1E07875100081030 /* bull+bear.png in Resources */ = {isa = PBXBuildFile; fileRef = C061ED0D1E07875100081030 /* bull+bear.png */; };
+		C069F5641E082FF500913486 /* apiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C069F5631E082FF500913486 /* apiClient.swift */; };
+		C069F5681E0830EC00913486 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C069F5671E0830EC00913486 /* DataStore.swift */; };
+		C069F56A1E08313F00913486 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = C069F5691E08313F00913486 /* Secrets.swift */; };
+		C0BF22261E085351005B7E55 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF22251E085351005B7E55 /* Utilities.swift */; };
+		C0BF22281E086191005B7E55 /* BuyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF22271E086191005B7E55 /* BuyViewController.swift */; };
+		C0BF222A1E0861B6005B7E55 /* BuyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF22291E0861B6005B7E55 /* BuyView.swift */; };
+		C0BF222C1E08686A005B7E55 /* AnalysisViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF222B1E08686A005B7E55 /* AnalysisViewController.swift */; };
+		C0BF222E1E086885005B7E55 /* AnalysisView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF222D1E086885005B7E55 /* AnalysisView.swift */; };
+		C0BF22301E0869B8005B7E55 /* SellViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF222F1E0869B8005B7E55 /* SellViewController.swift */; };
+		C0BF22321E086A03005B7E55 /* SellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF22311E086A03005B7E55 /* SellView.swift */; };
+		C0BF22341E086AA1005B7E55 /* TabsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF22331E086AA1005B7E55 /* TabsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +51,17 @@
 		C0409FA61E0745D400BEC5DD /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		C061ED0B1E0784B000081030 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		C061ED0D1E07875100081030 /* bull+bear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bull+bear.png"; sourceTree = "<group>"; };
+		C069F5631E082FF500913486 /* apiClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = apiClient.swift; sourceTree = "<group>"; };
+		C069F5671E0830EC00913486 /* DataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
+		C069F5691E08313F00913486 /* Secrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
+		C0BF22251E085351005B7E55 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
+		C0BF22271E086191005B7E55 /* BuyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuyViewController.swift; sourceTree = "<group>"; };
+		C0BF22291E0861B6005B7E55 /* BuyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuyView.swift; sourceTree = "<group>"; };
+		C0BF222B1E08686A005B7E55 /* AnalysisViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalysisViewController.swift; sourceTree = "<group>"; };
+		C0BF222D1E086885005B7E55 /* AnalysisView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalysisView.swift; sourceTree = "<group>"; };
+		C0BF222F1E0869B8005B7E55 /* SellViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SellViewController.swift; sourceTree = "<group>"; };
+		C0BF22311E086A03005B7E55 /* SellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SellView.swift; sourceTree = "<group>"; };
+		C0BF22331E086AA1005B7E55 /* TabsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,14 +103,16 @@
 		C0409F841E0743CD00BEC5DD /* EquityStatus */ = {
 			isa = PBXGroup;
 			children = (
-				C061ED0D1E07875100081030 /* bull+bear.png */,
+				C069F5651E082FFD00913486 /* Models */,
 				C0409FA81E0745DE00BEC5DD /* Views */,
 				C0409FA51E07459600BEC5DD /* View Controllers */,
 				C0409F8C1E0743CD00BEC5DD /* Assets.xcassets */,
+				C069F5661E08300F00913486 /* Media */,
 				C0409F851E0743CD00BEC5DD /* AppDelegate.swift */,
 				C0409F8E1E0743CD00BEC5DD /* LaunchScreen.storyboard */,
 				C0409F911E0743CD00BEC5DD /* Info.plist */,
 				C061ED0B1E0784B000081030 /* Constants.swift */,
+				C0BF22251E085351005B7E55 /* Utilities.swift */,
 			);
 			path = EquityStatus;
 			sourceTree = "<group>";
@@ -106,6 +130,10 @@
 			isa = PBXGroup;
 			children = (
 				C0409F871E0743CD00BEC5DD /* LoginViewController.swift */,
+				C0BF22271E086191005B7E55 /* BuyViewController.swift */,
+				C0BF222B1E08686A005B7E55 /* AnalysisViewController.swift */,
+				C0BF222F1E0869B8005B7E55 /* SellViewController.swift */,
+				C0BF22331E086AA1005B7E55 /* TabsViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -114,8 +142,29 @@
 			isa = PBXGroup;
 			children = (
 				C0409FA61E0745D400BEC5DD /* LoginView.swift */,
+				C0BF22291E0861B6005B7E55 /* BuyView.swift */,
+				C0BF222D1E086885005B7E55 /* AnalysisView.swift */,
+				C0BF22311E086A03005B7E55 /* SellView.swift */,
 			);
 			name = Views;
+			sourceTree = "<group>";
+		};
+		C069F5651E082FFD00913486 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				C069F5631E082FF500913486 /* apiClient.swift */,
+				C069F5671E0830EC00913486 /* DataStore.swift */,
+				C069F5691E08313F00913486 /* Secrets.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		C069F5661E08300F00913486 /* Media */ = {
+			isa = PBXGroup;
+			children = (
+				C061ED0D1E07875100081030 /* bull+bear.png */,
+			);
+			name = Media;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -222,8 +271,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				C0409FA71E0745D400BEC5DD /* LoginView.swift in Sources */,
+				C0BF22301E0869B8005B7E55 /* SellViewController.swift in Sources */,
+				C069F5681E0830EC00913486 /* DataStore.swift in Sources */,
+				C069F56A1E08313F00913486 /* Secrets.swift in Sources */,
+				C0BF222C1E08686A005B7E55 /* AnalysisViewController.swift in Sources */,
+				C0BF222E1E086885005B7E55 /* AnalysisView.swift in Sources */,
+				C0BF222A1E0861B6005B7E55 /* BuyView.swift in Sources */,
 				C0409F881E0743CD00BEC5DD /* LoginViewController.swift in Sources */,
+				C0BF22341E086AA1005B7E55 /* TabsViewController.swift in Sources */,
 				C0409F861E0743CD00BEC5DD /* AppDelegate.swift in Sources */,
+				C0BF22281E086191005B7E55 /* BuyViewController.swift in Sources */,
+				C0BF22321E086A03005B7E55 /* SellView.swift in Sources */,
+				C069F5641E082FF500913486 /* apiClient.swift in Sources */,
+				C0BF22261E085351005B7E55 /* Utilities.swift in Sources */,
 				C061ED0C1E0784B000081030 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
