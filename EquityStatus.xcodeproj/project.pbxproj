@@ -8,11 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		C0409F861E0743CD00BEC5DD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0409F851E0743CD00BEC5DD /* AppDelegate.swift */; };
-		C0409F881E0743CD00BEC5DD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0409F871E0743CD00BEC5DD /* ViewController.swift */; };
-		C0409F8B1E0743CD00BEC5DD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0409F891E0743CD00BEC5DD /* Main.storyboard */; };
+		C0409F881E0743CD00BEC5DD /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0409F871E0743CD00BEC5DD /* LoginViewController.swift */; };
 		C0409F8D1E0743CD00BEC5DD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0409F8C1E0743CD00BEC5DD /* Assets.xcassets */; };
 		C0409F901E0743CD00BEC5DD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0409F8E1E0743CD00BEC5DD /* LaunchScreen.storyboard */; };
 		C0409F9B1E0743CD00BEC5DD /* EquityStatusTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0409F9A1E0743CD00BEC5DD /* EquityStatusTests.swift */; };
+		C0409FA71E0745D400BEC5DD /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0409FA61E0745D400BEC5DD /* LoginView.swift */; };
+		C061ED0C1E0784B000081030 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C061ED0B1E0784B000081030 /* Constants.swift */; };
+		C061ED0E1E07875100081030 /* bull+bear.png in Resources */ = {isa = PBXBuildFile; fileRef = C061ED0D1E07875100081030 /* bull+bear.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,14 +30,16 @@
 /* Begin PBXFileReference section */
 		C0409F821E0743CD00BEC5DD /* EquityStatus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EquityStatus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0409F851E0743CD00BEC5DD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		C0409F871E0743CD00BEC5DD /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		C0409F8A1E0743CD00BEC5DD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		C0409F871E0743CD00BEC5DD /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		C0409F8C1E0743CD00BEC5DD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C0409F8F1E0743CD00BEC5DD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C0409F911E0743CD00BEC5DD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C0409F961E0743CD00BEC5DD /* EquityStatusTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EquityStatusTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0409F9A1E0743CD00BEC5DD /* EquityStatusTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquityStatusTests.swift; sourceTree = "<group>"; };
 		C0409F9C1E0743CD00BEC5DD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C0409FA61E0745D400BEC5DD /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		C061ED0B1E0784B000081030 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		C061ED0D1E07875100081030 /* bull+bear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bull+bear.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,12 +81,14 @@
 		C0409F841E0743CD00BEC5DD /* EquityStatus */ = {
 			isa = PBXGroup;
 			children = (
-				C0409F851E0743CD00BEC5DD /* AppDelegate.swift */,
-				C0409F871E0743CD00BEC5DD /* ViewController.swift */,
-				C0409F891E0743CD00BEC5DD /* Main.storyboard */,
+				C061ED0D1E07875100081030 /* bull+bear.png */,
+				C0409FA81E0745DE00BEC5DD /* Views */,
+				C0409FA51E07459600BEC5DD /* View Controllers */,
 				C0409F8C1E0743CD00BEC5DD /* Assets.xcassets */,
+				C0409F851E0743CD00BEC5DD /* AppDelegate.swift */,
 				C0409F8E1E0743CD00BEC5DD /* LaunchScreen.storyboard */,
 				C0409F911E0743CD00BEC5DD /* Info.plist */,
+				C061ED0B1E0784B000081030 /* Constants.swift */,
 			);
 			path = EquityStatus;
 			sourceTree = "<group>";
@@ -94,6 +100,22 @@
 				C0409F9C1E0743CD00BEC5DD /* Info.plist */,
 			);
 			path = EquityStatusTests;
+			sourceTree = "<group>";
+		};
+		C0409FA51E07459600BEC5DD /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				C0409F871E0743CD00BEC5DD /* LoginViewController.swift */,
+			);
+			name = "View Controllers";
+			sourceTree = "<group>";
+		};
+		C0409FA81E0745DE00BEC5DD /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C0409FA61E0745D400BEC5DD /* LoginView.swift */,
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -179,9 +201,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C061ED0E1E07875100081030 /* bull+bear.png in Resources */,
 				C0409F901E0743CD00BEC5DD /* LaunchScreen.storyboard in Resources */,
 				C0409F8D1E0743CD00BEC5DD /* Assets.xcassets in Resources */,
-				C0409F8B1E0743CD00BEC5DD /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -199,8 +221,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C0409F881E0743CD00BEC5DD /* ViewController.swift in Sources */,
+				C0409FA71E0745D400BEC5DD /* LoginView.swift in Sources */,
+				C0409F881E0743CD00BEC5DD /* LoginViewController.swift in Sources */,
 				C0409F861E0743CD00BEC5DD /* AppDelegate.swift in Sources */,
+				C061ED0C1E0784B000081030 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -223,14 +247,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		C0409F891E0743CD00BEC5DD /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				C0409F8A1E0743CD00BEC5DD /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		C0409F8E1E0743CD00BEC5DD /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -338,6 +354,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = EquityStatus/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ptangen.EquityStatus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -350,6 +367,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = EquityStatus/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ptangen.EquityStatus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -404,6 +422,7 @@
 				C0409FA11E0743CD00BEC5DD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		C0409FA21E0743CD00BEC5DD /* Build configuration list for PBXNativeTarget "EquityStatusTests" */ = {
 			isa = XCConfigurationList;
@@ -412,6 +431,7 @@
 				C0409FA41E0743CD00BEC5DD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

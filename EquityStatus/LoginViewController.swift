@@ -8,11 +8,21 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class LoginViewController: UIViewController {
+    
+    var loginViewInst: LoginView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+    }
+    
+    override func loadView(){
+        // hide nav bar on login page
+        self.navigationController?.setNavigationBarHidden(true, animated: .init(true))
+        
+        self.loginViewInst = LoginView(frame: CGRect.zero)
+        self.view = self.loginViewInst
     }
 
     override func didReceiveMemoryWarning() {
