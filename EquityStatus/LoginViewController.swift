@@ -32,15 +32,15 @@ class LoginViewController: UIViewController, LoginViewDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    func showNoReplyMessage() {
-        let alertController = UIAlertController(title: "Error", message: "Unable to connect with the Equity Status server. Please report this issue to ptangen@ptangen.com", preferredStyle: UIAlertControllerStyle.alert)
+    func showAlertMessage(_ message: String) {
+        let alertController = UIAlertController(title: "Error", message: message, preferredStyle: UIAlertControllerStyle.alert)
         alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default,handler: nil))
         self.present(alertController, animated: true, completion: nil)
     }
     
-    func openBuy() {
-        let buyViewControllerInst = BuyViewController()
-        navigationController?.pushViewController(buyViewControllerInst, animated: true) // show destination with nav bar
+    func openTabDisplay() {
+        let tabViewControllerInst = TabsViewController()
+        navigationController?.pushViewController(tabViewControllerInst, animated: true) // show destination with nav bar
     }
     
     func layoutAnimation() {

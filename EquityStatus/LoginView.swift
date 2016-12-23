@@ -7,10 +7,11 @@
 //
 
 import UIKit
+import LocalAuthentication
 
 protocol LoginViewDelegate: class {
-    func showNoReplyMessage()
-    func openBuy()
+    func openTabDisplay()
+    func showAlertMessage(_: String)
 }
 
 class LoginView: UIView, UITextFieldDelegate {
@@ -23,9 +24,13 @@ class LoginView: UIView, UITextFieldDelegate {
     let userNameField: UITextField = UITextField()
     let passwordField: UITextField = UITextField()
     let signInButton: UIButton = UIButton()
+    let touchIDButton: UIButton = UIButton()
     var bullImage: UIImageView = UIImageView(frame: CGRect(x: -640, y: 170, width: 1586, height: 510))
     var userNamePopulated: Bool = false
     var passwordPopulated: Bool = false
+    
+    let myKeyChainWrapper = KeychainWrapper()
+    var laContext = LAContext()
     
     // constraints
     var welcomeLabelYConstraintStart: NSLayoutConstraint!
@@ -57,6 +62,19 @@ class LoginView: UIView, UITextFieldDelegate {
         self.passwordField.delegate = self
         
         self.signInButton.addTarget(self, action: #selector(LoginView.onClickSignIn), for: UIControlEvents.touchUpInside)
+        self.touchIDButton.addTarget(self, action: #selector(LoginView.touchIDLoginAction), for: UIControlEvents.touchUpInside)
+        
+        // if we have a stored username, populate the username field with that value.
+        if let storedUsername = UserDefaults.standard.value(forKey: "username") as? String {
+            userNameField.text = storedUsername as String
+            self.userNamePopulated = true
+        }
+        
+        self.touchIDButton.isHidden = true
+        
+        if laContext.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: nil) {
+            self.touchIDButton.isHidden = false
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -67,29 +85,70 @@ class LoginView: UIView, UITextFieldDelegate {
         if let userName = self.userNameField.text {
             if let password = self.passwordField.text {
                 
-                apiClient.requestAuth(userName: userName, password: password, completion: { response in
-
-                    switch response {
-                        
-                    case .authenticated:
-                        self.delegate?.openBuy()
-                        
-                    case.userNameInvalid:
-                        self.indicateError(fieldName: self.userNameField)
-                        
-                    case .passwordInvalid:
-                        self.indicateError(fieldName: self.passwordField)
-
-                    case.noReply:
-                        self.delegate?.showNoReplyMessage()
-                    }
-                    
-                })
+                UserDefaults.standard.setValue(self.userNameField.text, forKey: "username")
                 
+                if password == myKeyChainWrapper.myObject(forKey: "v_Data") as? String &&
+                    userName == UserDefaults.standard.value(forKey: "username") as? String {
+                    //creds match the keychain and user defaults
+                    self.delegate?.openTabDisplay()
+                } else {
+                    //creds do not match the locally stored creds, validate creds on the server
+                    apiClient.requestAuth(userName: userName, password: password, completion: { response in
+                        
+                        switch response {
+                
+                        case .authenticated:
+                            // set the password in the keychain
+                            self.myKeyChainWrapper.mySetObject(password, forKey:kSecValueData)
+                            self.myKeyChainWrapper.writeToKeychain()
+                            self.delegate?.openTabDisplay()
+                            break;
+                            
+                        case.userNameInvalid:
+                            self.indicateError(fieldName: self.userNameField)
+                            break;
+                            
+                        case .passwordInvalid:
+                            self.indicateError(fieldName: self.passwordField)
+                            break;
+                            
+                        case.noReply:
+                            self.delegate?.showAlertMessage("The server is not available. Please forward this message to ptangen@ptangen.com")
+                            break;
+                        }
+                    }) // end apiClient.requestAuth
+                }
             }
         }
     }
     
+    func touchIDLoginAction() {
+        if laContext.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error:nil) {
+            laContext.evaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, localizedReason: "Logging in with Touch ID",
+                reply: { (success : Bool, error : Error? ) -> Void in
+
+                    DispatchQueue.main.async(execute: {
+                        if success {
+                            self.delegate?.openTabDisplay()
+                        }
+                                        
+                        if error != nil {
+                            switch(error!._code) {
+                            case LAError.authenticationFailed.rawValue:
+                                self.delegate?.showAlertMessage("Unable to login with fingerprint. Signin with your username and password.")
+                                break;
+                            default:
+                                self.delegate?.showAlertMessage("Touch ID may not be configured")
+                                break;
+                            }
+                        }
+                    })
+            })
+        } else {
+            self.delegate?.showAlertMessage("Touch ID not available")
+        }
+    }
+
     func indicateError(fieldName textFieldWithError: UITextField){
         UIView.animate(withDuration: 1, animations: {
             textFieldWithError.backgroundColor = UIColor.red
@@ -103,8 +162,7 @@ class LoginView: UIView, UITextFieldDelegate {
         self.signInButton.isEnabled = false
         self.signInButton.alpha = 0.3
     }
-    
-    
+
     // monitors the email/password fields and handles the client side validation
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         switch textField.tag {
@@ -117,8 +175,10 @@ class LoginView: UIView, UITextFieldDelegate {
             self.enableDisableSignIn()
         case 101: // verify password > 1 characters  - the character count is odd, delete counts as a character...
             if self.passwordField.text!.utf16.count > 1 {
+                print("self.passwordPopulated = true")
                 self.passwordPopulated = true
             } else {
+                print("self.passwordPopulated = false")
                 self.passwordPopulated = false
             }
             self.enableDisableSignIn()
@@ -227,7 +287,6 @@ class LoginView: UIView, UITextFieldDelegate {
         self.passwordField.translatesAutoresizingMaskIntoConstraints = false
         
         // sign in button
-        self.signInButton.backgroundColor = UIColor(named: .blue)
         self.addSubview(self.signInButton)
         self.signInButton.setTitle("  Sign In  ", for: .normal)
         self.signInButton.backgroundColor = UIColor.blue
@@ -238,6 +297,18 @@ class LoginView: UIView, UITextFieldDelegate {
         self.signInButton.topAnchor.constraint(equalTo: self.passwordField.bottomAnchor, constant: 25).isActive = true
 
         self.signInButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        // touch id button
+        self.addSubview(self.touchIDButton)
+        self.touchIDButton.setBackgroundImage(#imageLiteral(resourceName: "fingerPrint"), for: .normal)
+        
+        self.touchIDButton.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        self.touchIDButton.widthAnchor.constraint(equalToConstant: 36).isActive = true
+        
+        self.touchIDButton.trailingAnchor.constraint(equalTo: self.passwordField.trailingAnchor, constant: -100).isActive = true
+        self.touchIDButton.topAnchor.constraint(equalTo: self.passwordField.bottomAnchor, constant: 25).isActive = true
+        
+        self.touchIDButton.translatesAutoresizingMaskIntoConstraints = false
         
         // all
         self.layoutIfNeeded()
