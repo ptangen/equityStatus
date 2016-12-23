@@ -32,16 +32,15 @@ class BuyView: UIView, ChartViewDelegate {
         self.subTitle.translatesAutoresizingMaskIntoConstraints = false
         self.subTitle.topAnchor.constraint(equalTo: self.topAnchor, constant: 80).isActive = true
         self.subTitle.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 16).isActive = true
-        self.subTitle.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -16).isActive = true
         self.subTitle.text = "Expected returns for approved equities."
         self.subTitle.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.small.rawValue)
         
         self.addSubview(self.barChartView)
         self.barChartView.translatesAutoresizingMaskIntoConstraints = false
         self.barChartView.topAnchor.constraint(equalTo: self.subTitle.bottomAnchor, constant: 6).isActive = true
-        self.barChartView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 6).isActive = true
-        self.barChartView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -6).isActive = true
-        self.barChartView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -46).isActive = true
+        self.barChartView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0).isActive = true
+        self.barChartView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
+        self.barChartView.heightAnchor.constraint(equalToConstant: 200).isActive = true
         
         self.layoutIfNeeded()
     }
@@ -60,7 +59,7 @@ class BuyView: UIView, ChartViewDelegate {
         stringFormatter.nameValues = ["CEC", "AA", "ORCL", "F", "APPL"]
         
         // formatting, the horizontal bar chart is rotated so the axis labels are odd
-        barChartView.xAxis.valueFormatter = stringFormatter       // allow labels to be shown for bars
+        barChartView.xAxis.valueFormatter = stringFormatter // allow labels to be shown for bars
         barChartView.xAxis.drawGridLinesEnabled = false     // hide horizontal grid lines
         barChartView.xAxis.drawAxisLineEnabled = false      // hide right axis
         barChartView.xAxis.labelFont = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.medium.rawValue)!
@@ -68,7 +67,7 @@ class BuyView: UIView, ChartViewDelegate {
         
         barChartView.rightAxis.enabled = false              // hide values on bottom axis
         barChartView.leftAxis.enabled = false               // hide values on top axis
-        barChartView.animate(xAxisDuration: 0.0, yAxisDuration: 1.0)
+        barChartView.animate(xAxisDuration: 0.0, yAxisDuration: 0.6)
         barChartView.legend.enabled = false
         barChartView.chartDescription?.enabled = false
 
@@ -81,7 +80,7 @@ class BuyView: UIView, ChartViewDelegate {
         }
         
         let chartDataSet = BarChartDataSet(values: dataEntries, label: "")
-        chartDataSet.colors = [UIColor.brown]
+        chartDataSet.colors = [UIColor(named: UIColor.ColorName.blue)]
         
         chartDataSet.valueFont = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.small.rawValue)!
         chartDataSet.valueTextColor = UIColor(named: UIColor.ColorName.white)

@@ -25,7 +25,7 @@ struct Constants{
         case chevron_left =     "\u{E5CB}"
         case chevron_right =    "\u{E5CC}"
         case close =            "\u{E5CD}"
-        case access_time =      "\u{E192}"
+        case menu =            "\u{E5D2}"
     }
     
     enum iconSize: Int {
@@ -55,10 +55,6 @@ extension UIColor {
         case gray3 =    0x333333ff
         case orange =   0xFF851Bff
         case disabledText =         0xCCCCCCff
-        case headingbackground =    0x84202Bff
-        case titleGreen =           0xDFDAC5ff
-        case lightPurpleGray =      0x8A7C8Bff
-        case deepPurple =           0x23141Cff
     }
 }
 

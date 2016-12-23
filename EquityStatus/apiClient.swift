@@ -7,28 +7,7 @@
 //
 
 import Foundation
-
-
-//
-//  CheftyAPIClient.swift
-//  Chefty
-//
-//  Created by Paul Tangen on 11/17/16.
-//  Copyright © 2016 com.AppRising.SML. All rights reserved.
-//
-
-import Foundation
 import UIKit
-import CoreData
-
-enum AuthResponse {
-    
-    case authenticated
-    case userNameInvalid
-    case passwordInvalid
-    case noReply
-    
-}
 
 class apiClient {
     
@@ -55,32 +34,33 @@ class apiClient {
         request.httpBody = parameterString.data(using: .utf8)
        
         URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
-            
-            DispatchQueue.main.async {
+            if let data = data {
+                DispatchQueue.main.async {
+                    do {
+                        let json = try JSONSerialization.jsonObject(with: data, options: []) as! [String : String]
+                        let results = json["results"]
                 
-                let json = try! JSONSerialization.jsonObject(with: data!, options: []) as! [String : String]
-                let results = json["results"]
-                
-                if results == "authenticated" {
-                
-                    completion(.authenticated)
-                    
-                } else if results == "userNameInvalid" {
-                    
-                    completion(.userNameInvalid)
-                    
-                } else if results == "passwordInvalid" {
-                    
-                    completion(.passwordInvalid)
-                    
-                } else {
-                    
-                    completion(.noReply)
-                    
+                        if results == "authenticated" {
+                            completion(.authenticated)
+                        } else if results == "userNameInvalid" {
+                            completion(.userNameInvalid)
+                        } else if results == "passwordInvalid" {
+                            completion(.passwordInvalid)
+                        } else {
+                            completion(.noReply)
+                        }
+                    } catch {
+                        completion(.noReply)
+                    }
                 }
             }
-        
         }).resume()
     }
-    
+}
+
+enum AuthResponse {
+    case authenticated
+    case userNameInvalid
+    case passwordInvalid
+    case noReply
 }

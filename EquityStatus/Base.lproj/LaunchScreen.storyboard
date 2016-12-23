@@ -21,14 +21,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bull+bear.png" translatesAutoresizingMaskIntoConstraints="NO" id="6CM-xh-vhf">
-                                <rect key="frame" x="-640" y="170" width="1586" height="510"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="copperBearBull.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="6CM-xh-vhf">
+                                <rect key="frame" x="-668" y="40" width="2400" height="1365"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="0.80000001190000003" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="6CM-xh-vhf" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" constant="-640" id="GGI-ZF-gHS"/>
-                            <constraint firstItem="6CM-xh-vhf" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="150" id="tep-qm-JPC"/>
+                            <constraint firstItem="6CM-xh-vhf" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="45" id="tep-qm-JPC"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -38,6 +38,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="bull+bear.png" width="1586" height="510"/>
+        <image name="copperBearBull.jpg" width="1586" height="902"/>
     </resources>
 </document>

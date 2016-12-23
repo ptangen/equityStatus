@@ -1,5 +1,5 @@
 //
-//  LoginView.swift
+//  SignInView.swift
 //  EquityStatus
 //
 //  Created by Paul Tangen on 12/18/16.
@@ -9,14 +9,14 @@
 import UIKit
 import LocalAuthentication
 
-protocol LoginViewDelegate: class {
+protocol SignInViewDelegate: class {
     func openTabDisplay()
     func showAlertMessage(_: String)
 }
 
-class LoginView: UIView, UITextFieldDelegate {
+class SignInView: UIView, UITextFieldDelegate {
     
-    weak var delegate: LoginViewDelegate?
+    weak var delegate: SignInViewDelegate?
 
     // controls
     let welcomeLabel: UILabel = UILabel()
@@ -61,8 +61,8 @@ class LoginView: UIView, UITextFieldDelegate {
         self.userNameField.delegate = self
         self.passwordField.delegate = self
         
-        self.signInButton.addTarget(self, action: #selector(LoginView.onClickSignIn), for: UIControlEvents.touchUpInside)
-        self.touchIDButton.addTarget(self, action: #selector(LoginView.touchIDLoginAction), for: UIControlEvents.touchUpInside)
+        self.signInButton.addTarget(self, action: #selector(SignInView.onClickSignIn), for: UIControlEvents.touchUpInside)
+        self.touchIDButton.addTarget(self, action: #selector(SignInView.touchIDLoginAction), for: UIControlEvents.touchUpInside)
         
         // if we have a stored username, populate the username field with that value.
         if let storedUsername = UserDefaults.standard.value(forKey: "username") as? String {
@@ -127,22 +127,22 @@ class LoginView: UIView, UITextFieldDelegate {
             laContext.evaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, localizedReason: "Logging in with Touch ID",
                 reply: { (success : Bool, error : Error? ) -> Void in
 
-                    DispatchQueue.main.async(execute: {
-                        if success {
-                            self.delegate?.openTabDisplay()
-                        }
+                DispatchQueue.main.async(execute: {
+                    if success {
+                        self.delegate?.openTabDisplay()
+                    }
                                         
-                        if error != nil {
-                            switch(error!._code) {
-                            case LAError.authenticationFailed.rawValue:
-                                self.delegate?.showAlertMessage("Unable to login with fingerprint. Signin with your username and password.")
-                                break;
-                            default:
-                                self.delegate?.showAlertMessage("Touch ID may not be configured")
-                                break;
-                            }
+                    if error != nil {
+                        switch(error!._code) {
+                        case LAError.authenticationFailed.rawValue:
+                            self.delegate?.showAlertMessage("Unable to login with fingerprint. Signin with your username and password.")
+                            break;
+                        default:
+                            self.delegate?.showAlertMessage("Touch ID may not be configured")
+                            break;
                         }
-                    })
+                    }
+                })
             })
         } else {
             self.delegate?.showAlertMessage("Touch ID not available")
@@ -175,10 +175,8 @@ class LoginView: UIView, UITextFieldDelegate {
             self.enableDisableSignIn()
         case 101: // verify password > 1 characters  - the character count is odd, delete counts as a character...
             if self.passwordField.text!.utf16.count > 1 {
-                print("self.passwordPopulated = true")
                 self.passwordPopulated = true
             } else {
-                print("self.passwordPopulated = false")
                 self.passwordPopulated = false
             }
             self.enableDisableSignIn()
@@ -210,7 +208,7 @@ class LoginView: UIView, UITextFieldDelegate {
         self.welcomeLabel.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
         
         self.welcomeLabelYConstraintStart = self.welcomeLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: -150)
-        self.welcomeLabelYConstraintEnd = self.welcomeLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 100)
+        self.welcomeLabelYConstraintEnd = self.welcomeLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 80)
         self.welcomeLabelYConstraintStart.isActive = true
         
         self.welcomeLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -227,7 +225,7 @@ class LoginView: UIView, UITextFieldDelegate {
         self.equityStatusLabel.translatesAutoresizingMaskIntoConstraints = false
 
         // bull image
-        self.bullImage.image = UIImage(named: "bull+bear.png")
+        self.bullImage.image = UIImage(named: "copperBearBull.jpg")
         self.addSubview(self.bullImage)
         
         self.bullImageLeadingConstraintStart = self.bullImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: -640)
@@ -240,13 +238,13 @@ class LoginView: UIView, UITextFieldDelegate {
         self.bullImageWidthConstraintEnd = self.bullImage.widthAnchor.constraint(equalToConstant: 793)
         self.bullImageWidthConstraintEnd.isActive = false
         
-        self.bullImageHeightConstraintStart = self.bullImage.heightAnchor.constraint(equalToConstant: 510)
+        self.bullImageHeightConstraintStart = self.bullImage.heightAnchor.constraint(equalToConstant: 902)
         self.bullImageHeightConstraintStart.isActive = true
-        self.bullImageHeightConstraintEnd = self.bullImage.heightAnchor.constraint(equalToConstant: 255)
+        self.bullImageHeightConstraintEnd = self.bullImage.heightAnchor.constraint(equalToConstant: 451)
         self.bullImageHeightConstraintEnd.isActive = false
 
-        self.bullImageYConstraintStart = self.bullImage.topAnchor.constraint(equalTo: self.topAnchor, constant: 170)
-        self.bullImageYConstraintEnd = self.bullImage.topAnchor.constraint(equalTo: self.topAnchor, constant: 400)
+        self.bullImageYConstraintStart = self.bullImage.topAnchor.constraint(equalTo: self.topAnchor, constant: -160)
+        self.bullImageYConstraintEnd = self.bullImage.topAnchor.constraint(equalTo: self.topAnchor, constant: 300)
         self.bullImageYConstraintStart.isActive = true
         self.bullImageYConstraintEnd.isActive = false
         
@@ -289,7 +287,7 @@ class LoginView: UIView, UITextFieldDelegate {
         // sign in button
         self.addSubview(self.signInButton)
         self.signInButton.setTitle("  Sign In  ", for: .normal)
-        self.signInButton.backgroundColor = UIColor.blue
+        self.signInButton.backgroundColor = UIColor(named: UIColor.ColorName.blue)
         self.signInButton.isEnabled = false
         self.signInButton.alpha = 0.3
         
