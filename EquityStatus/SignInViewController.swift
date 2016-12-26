@@ -45,16 +45,17 @@ class SignInViewController: UIViewController, SignInViewDelegate {
     
     func layoutAnimation() {
         // kick off animation in the view
-        UIView.animate(withDuration: 0.7) {
+        UIView.animate(withDuration: 0.75) {
             self.signInViewInst.welcomeLabelYConstraintStart.isActive = false
             self.signInViewInst.welcomeLabelYConstraintEnd.isActive = true
             
+            self.signInViewInst.bullImageXConstraintStart.isActive = false
+            self.signInViewInst.bullImageXConstraintEnd.isActive = true
             self.signInViewInst.bullImageYConstraintStart.isActive = false
             self.signInViewInst.bullImageYConstraintEnd.isActive = true
+
             self.signInViewInst.bullImageWidthConstraintStart.isActive = false
             self.signInViewInst.bullImageWidthConstraintEnd.isActive = true
-            self.signInViewInst.bullImageLeadingConstraintStart.isActive = false
-            self.signInViewInst.bullImageLeadingConstraintEnd.isActive = true
             self.signInViewInst.bullImageHeightConstraintStart.isActive = false
             self.signInViewInst.bullImageHeightConstraintEnd.isActive = true
             
@@ -64,6 +65,7 @@ class SignInViewController: UIViewController, SignInViewDelegate {
             self.signInViewInst.userNameFieldWidthConstraintEnd.isActive = true
             
             self.signInViewInst.layoutIfNeeded()
+            self.signInViewInst.setNeedsDisplay()
         }
     }
     

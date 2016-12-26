@@ -25,7 +25,7 @@ class SignInView: UIView, UITextFieldDelegate {
     let passwordField: UITextField = UITextField()
     let signInButton: UIButton = UIButton()
     let touchIDButton: UIButton = UIButton()
-    var bullImage: UIImageView = UIImageView(frame: CGRect(x: -640, y: 170, width: 1586, height: 510))
+    var bullImage: UIImageView = UIImageView() //frame: CGRect(x: -640, y: 170, width: 1586, height: 510))
     var userNamePopulated: Bool = false
     var passwordPopulated: Bool = false
     
@@ -35,15 +35,16 @@ class SignInView: UIView, UITextFieldDelegate {
     // constraints
     var welcomeLabelYConstraintStart: NSLayoutConstraint!
     var welcomeLabelYConstraintEnd: NSLayoutConstraint!
-    
+
+    var bullImageXConstraintStart: NSLayoutConstraint!
+    var bullImageXConstraintEnd: NSLayoutConstraint!
     var bullImageYConstraintStart: NSLayoutConstraint!
     var bullImageYConstraintEnd: NSLayoutConstraint!
     var bullImageWidthConstraintStart: NSLayoutConstraint!
     var bullImageWidthConstraintEnd: NSLayoutConstraint!
     var bullImageHeightConstraintStart: NSLayoutConstraint!
     var bullImageHeightConstraintEnd: NSLayoutConstraint!
-    var bullImageLeadingConstraintStart: NSLayoutConstraint!
-    var bullImageLeadingConstraintEnd: NSLayoutConstraint!
+
     
     var userNameFieldLeftConstraintStart: NSLayoutConstraint!
     var userNameFieldLeftConstraintEnd: NSLayoutConstraint!
@@ -197,12 +198,14 @@ class SignInView: UIView, UITextFieldDelegate {
     }
 
     func layoutForm(){
-        self.backgroundColor = UIColor(named: .gold)
+        self.backgroundColor = UIColor(named: .blue)
         
         // welcome label
+        self.addSubview(self.welcomeLabel)
+        self.welcomeLabel.translatesAutoresizingMaskIntoConstraints = false
         self.welcomeLabel.text = "Welcome to"
         self.welcomeLabel.textAlignment = .center
-        self.addSubview(self.welcomeLabel)
+        self.welcomeLabel.textColor = UIColor(named: UIColor.ColorName.loginGray)
         
         self.welcomeLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         self.welcomeLabel.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
@@ -211,47 +214,47 @@ class SignInView: UIView, UITextFieldDelegate {
         self.welcomeLabelYConstraintEnd = self.welcomeLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 80)
         self.welcomeLabelYConstraintStart.isActive = true
         
-        self.welcomeLabel.translatesAutoresizingMaskIntoConstraints = false
-        
         // equity status label
         self.equityStatusLabel.text = "Equity Status"
+        self.equityStatusLabel.translatesAutoresizingMaskIntoConstraints = false
         self.equityStatusLabel.textAlignment = .center
+        self.equityStatusLabel.textColor = UIColor(named: UIColor.ColorName.loginGray)
         self.equityStatusLabel.font = UIFont(name: Constants.appFont.bold.rawValue, size: Constants.fontSize.xlarge.rawValue)
         self.addSubview(self.equityStatusLabel)
         
         self.equityStatusLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         self.equityStatusLabel.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
         self.equityStatusLabel.topAnchor.constraint(equalTo: self.welcomeLabel.bottomAnchor, constant: 10).isActive = true
-        self.equityStatusLabel.translatesAutoresizingMaskIntoConstraints = false
 
         // bull image
         self.bullImage.image = UIImage(named: "copperBearBull.jpg")
         self.addSubview(self.bullImage)
+        self.bullImage.translatesAutoresizingMaskIntoConstraints = false
+
+        bullImageXConstraintStart = self.bullImage.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0)
+        bullImageXConstraintStart.isActive = true
+        bullImageXConstraintEnd = self.bullImage.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0)
+        bullImageXConstraintEnd.isActive = false
+
+        bullImageYConstraintStart = self.bullImage.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0)
+        bullImageYConstraintStart.isActive = true
+        bullImageYConstraintEnd = self.bullImage.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0)
+        bullImageYConstraintEnd.isActive = false
         
-        self.bullImageLeadingConstraintStart = self.bullImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: -640)
-        self.bullImageLeadingConstraintStart.isActive = true
-        self.bullImageLeadingConstraintEnd = self.bullImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: -220)
-        self.bullImageLeadingConstraintEnd.isActive = false
-        
-        self.bullImageWidthConstraintStart = self.bullImage.widthAnchor.constraint(equalToConstant: 1586)
+        self.bullImageWidthConstraintStart = self.bullImage.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width * 3)
         self.bullImageWidthConstraintStart.isActive = true
-        self.bullImageWidthConstraintEnd = self.bullImage.widthAnchor.constraint(equalToConstant: 793)
+        self.bullImageWidthConstraintEnd = self.bullImage.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width * 1.5)
         self.bullImageWidthConstraintEnd.isActive = false
         
-        self.bullImageHeightConstraintStart = self.bullImage.heightAnchor.constraint(equalToConstant: 902)
-        self.bullImageHeightConstraintStart.isActive = true
-        self.bullImageHeightConstraintEnd = self.bullImage.heightAnchor.constraint(equalToConstant: 451)
-        self.bullImageHeightConstraintEnd.isActive = false
 
-        self.bullImageYConstraintStart = self.bullImage.topAnchor.constraint(equalTo: self.topAnchor, constant: -160)
-        self.bullImageYConstraintEnd = self.bullImage.topAnchor.constraint(equalTo: self.topAnchor, constant: 300)
-        self.bullImageYConstraintStart.isActive = true
-        self.bullImageYConstraintEnd.isActive = false
-        
-        self.bullImage.translatesAutoresizingMaskIntoConstraints = false
+        self.bullImageHeightConstraintStart = self.bullImage.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height)
+        self.bullImageHeightConstraintStart.isActive = true
+        self.bullImageHeightConstraintEnd = self.bullImage.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height / 2)
+        self.bullImageHeightConstraintEnd.isActive = false
 
         // userName Field
         self.addSubview(self.userNameField)
+        self.userNameField.translatesAutoresizingMaskIntoConstraints = false
         self.userNameField.backgroundColor = UIColor.white
         self.userNameField.placeholder = "user name"
         self.userNameField.borderStyle = .bezel
@@ -269,10 +272,9 @@ class SignInView: UIView, UITextFieldDelegate {
         self.userNameFieldWidthConstraintEnd = self.userNameField.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.4)
         self.userNameFieldWidthConstraintEnd.isActive = false
 
-        self.userNameField.translatesAutoresizingMaskIntoConstraints = false
-
         // passwordField Field
         self.addSubview(self.passwordField)
+        self.passwordField.translatesAutoresizingMaskIntoConstraints = false
         self.passwordField.backgroundColor = UIColor.white
         self.passwordField.borderStyle = .bezel
         self.passwordField.placeholder = "password"
@@ -281,8 +283,6 @@ class SignInView: UIView, UITextFieldDelegate {
         self.passwordField.widthAnchor.constraint(equalTo: self.userNameField.widthAnchor).isActive = true
         self.passwordField.leadingAnchor.constraint(equalTo: self.userNameField.leadingAnchor, constant: 0).isActive = true
         self.passwordField.topAnchor.constraint(equalTo: self.userNameField.bottomAnchor, constant: 25).isActive = true
-        
-        self.passwordField.translatesAutoresizingMaskIntoConstraints = false
         
         // sign in button
         self.addSubview(self.signInButton)
@@ -298,6 +298,7 @@ class SignInView: UIView, UITextFieldDelegate {
         
         // touch id button
         self.addSubview(self.touchIDButton)
+        self.touchIDButton.translatesAutoresizingMaskIntoConstraints = false
         self.touchIDButton.setBackgroundImage(#imageLiteral(resourceName: "fingerPrint"), for: .normal)
         
         self.touchIDButton.heightAnchor.constraint(equalToConstant: 36).isActive = true
@@ -305,8 +306,6 @@ class SignInView: UIView, UITextFieldDelegate {
         
         self.touchIDButton.trailingAnchor.constraint(equalTo: self.passwordField.trailingAnchor, constant: -100).isActive = true
         self.touchIDButton.topAnchor.constraint(equalTo: self.passwordField.bottomAnchor, constant: 25).isActive = true
-        
-        self.touchIDButton.translatesAutoresizingMaskIntoConstraints = false
         
         // all
         self.layoutIfNeeded()
