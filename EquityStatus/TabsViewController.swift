@@ -46,8 +46,7 @@ class TabsViewController: UITabBarController, UITabBarControllerDelegate {
         let menuButton = UIBarButtonItem(title: Constants.iconLibrary.menu.rawValue, style: .plain, target: self, action: #selector(menuButtonClicked))
         let menuButtonAttributes = [
             NSForegroundColorAttributeName: UIColor(named: .blue),
-            NSFontAttributeName: UIFont(name: Constants.iconFont.material.rawValue,
-                                        size: CGFloat(Constants.iconSize.xsmall.rawValue))
+            NSFontAttributeName: UIFont(name: Constants.iconFont.material.rawValue, size: CGFloat(Constants.iconSize.small.rawValue))
         ]
         menuButton.setTitleTextAttributes(menuButtonAttributes, for: .normal)
         self.navigationItem.rightBarButtonItems = [menuButton]

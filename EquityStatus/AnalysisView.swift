@@ -12,14 +12,14 @@ class AnalysisView: UIView, UITableViewDataSource, UITableViewDelegate {
 
     let tableViewInst = UITableView()
     let subTitle: UILabel = UILabel()
-    let myArray = ["one", "two", "three", "four"]
+    let myArray = ["Graco Inc. (GGG)", "Apple Inc. (AAPL)", "Alcoa Corporation (AA)", "Hasbro, Inc. (HAS)"]
     
     override init(frame:CGRect){
         super.init(frame: frame)
         self.tableViewInst.delegate = self
         self.tableViewInst.dataSource = self
-        self.tableViewInst.register(AnalysisTableViewCell.self, forCellReuseIdentifier: "listCell")
-        //self.tableViewInst.estimatedRowHeight = 120
+        self.tableViewInst.register(StatusTableViewCell.self, forCellReuseIdentifier: "listCell")
+        self.tableViewInst.separatorColor = UIColor.clear
         self.pageLayout()
     }
     
@@ -33,12 +33,12 @@ class AnalysisView: UIView, UITableViewDataSource, UITableViewDelegate {
         self.subTitle.translatesAutoresizingMaskIntoConstraints = false
         self.subTitle.topAnchor.constraint(equalTo: self.topAnchor, constant: 80).isActive = true
         self.subTitle.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 10).isActive = true
-        self.subTitle.text = "Evaluate qualitative measures."
+        self.subTitle.text = "Evaluate the qualitative measures."
         self.subTitle.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.small.rawValue)
         
         self.addSubview(self.tableViewInst)
         self.tableViewInst.translatesAutoresizingMaskIntoConstraints = false
-        self.tableViewInst.topAnchor.constraint(equalTo: self.subTitle.bottomAnchor, constant: 20).isActive = true
+        self.tableViewInst.topAnchor.constraint(equalTo: self.subTitle.bottomAnchor, constant: 0).isActive = true
         self.tableViewInst.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 80).isActive = true
         self.tableViewInst.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0).isActive = true
         self.tableViewInst.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -10).isActive = true
@@ -49,13 +49,13 @@ class AnalysisView: UIView, UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
-        return 56
+        return 72
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = AnalysisTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "listCell")
+        let cell = StatusTableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "listCell")
         
-        //cell.selectionStyle = .none
+        cell.selectionStyle = .none
         cell.textLabel?.text = self.myArray[indexPath.row]
         cell.textLabel?.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.medium.rawValue)
         

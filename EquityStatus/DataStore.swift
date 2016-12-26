@@ -13,6 +13,5 @@ class DataStore {
     fileprivate init() {}
     
     var userName: String = String()
-    var authenticated: Bool = false
 
 }

@@ -25,18 +25,22 @@ struct Constants{
         case chevron_left =     "\u{E5CB}"
         case chevron_right =    "\u{E5CC}"
         case close =            "\u{E5CD}"
-        case menu =            "\u{E5D2}"
+        case menu =             "\u{E5D2}"
+        case faCheckCircle =    "\u{f058}"
+        case faTimesCircle =    "\u{f057}"
+        case faCircleO =        "\u{f10c}"
     }
     
     enum iconSize: Int {
-        case xsmall = 24
-        case small = 36
-        case medium = 48
+        case xsmall = 16
+        case small = 24
+        case medium = 36
         case large = 72
     }
     
     enum iconFont: String {
         case material = "MaterialIcons-Regular"
+        case fontAwesome = "FontAwesome"
     }
     
     enum appFont: String {
@@ -54,9 +58,10 @@ extension UIColor {
         case black =    0x999999ff
         case gray3 =    0x333333ff
         case orange =   0xFF851Bff
-        case disabledText =         0xCCCCCCff
+        case disabledText = 0xCCCCCCff
         case loginGray = 0xCAD0DCff
         case loginTan = 0x91623eff
+        case esGreen =  0x53d769ff
     }
 }
 
