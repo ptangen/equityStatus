@@ -31,6 +31,7 @@
 		C0BF22301E0869B8005B7E55 /* SellViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF222F1E0869B8005B7E55 /* SellViewController.swift */; };
 		C0BF22321E086A03005B7E55 /* SellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF22311E086A03005B7E55 /* SellView.swift */; };
 		C0BF22341E086AA1005B7E55 /* TabsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF22331E086AA1005B7E55 /* TabsViewController.swift */; };
+		C0C87C4B1E11838000759947 /* PercentValueFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C87C4A1E11838000759947 /* PercentValueFormatter.swift */; };
 		C0D2FF7A1E0C8E4400871EA3 /* KeychainWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = C0D2FF791E0C8E4400871EA3 /* KeychainWrapper.m */; };
 /* End PBXBuildFile section */
 
@@ -76,6 +77,7 @@
 		C0BF222F1E0869B8005B7E55 /* SellViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SellViewController.swift; sourceTree = "<group>"; };
 		C0BF22311E086A03005B7E55 /* SellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SellView.swift; sourceTree = "<group>"; };
 		C0BF22331E086AA1005B7E55 /* TabsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabsViewController.swift; sourceTree = "<group>"; };
+		C0C87C4A1E11838000759947 /* PercentValueFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PercentValueFormatter.swift; sourceTree = "<group>"; };
 		C0D2FF6D1E0C1E3C00871EA3 /* EquityStatus.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = EquityStatus.entitlements; sourceTree = "<group>"; };
 		C0D2FF771E0C8E3200871EA3 /* KeychainWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainWrapper.h; sourceTree = "<group>"; };
 		C0D2FF781E0C8E4400871EA3 /* EquityStatus-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EquityStatus-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -151,6 +153,7 @@
 				C0409FA81E0745DE00BEC5DD /* Views */,
 				C0409FA51E07459600BEC5DD /* View Controllers */,
 				C069F5661E08300F00913486 /* Media */,
+				C0C87C4D1E118E9700759947 /* chart formatters */,
 				C0409F851E0743CD00BEC5DD /* AppDelegate.swift */,
 				C0409F8E1E0743CD00BEC5DD /* LaunchScreen.storyboard */,
 				C0409F911E0743CD00BEC5DD /* Info.plist */,
@@ -191,7 +194,6 @@
 				C0BF22291E0861B6005B7E55 /* BuyView.swift */,
 				C0BF222D1E086885005B7E55 /* AnalysisView.swift */,
 				C0BF22311E086A03005B7E55 /* SellView.swift */,
-				C05FC1151E09B5FE008EA907 /* ChartStringFormatter.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -215,6 +217,15 @@
 				C061ED0D1E07875100081030 /* bull+bear.png */,
 			);
 			name = Media;
+			sourceTree = "<group>";
+		};
+		C0C87C4D1E118E9700759947 /* chart formatters */ = {
+			isa = PBXGroup;
+			children = (
+				C05FC1151E09B5FE008EA907 /* ChartStringFormatter.swift */,
+				C0C87C4A1E11838000759947 /* PercentValueFormatter.swift */,
+			);
+			name = "chart formatters";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -438,6 +449,7 @@
 				C0BF222A1E0861B6005B7E55 /* BuyView.swift in Sources */,
 				C0409F881E0743CD00BEC5DD /* SignInViewController.swift in Sources */,
 				C0BF22341E086AA1005B7E55 /* TabsViewController.swift in Sources */,
+				C0C87C4B1E11838000759947 /* PercentValueFormatter.swift in Sources */,
 				C0409F861E0743CD00BEC5DD /* AppDelegate.swift in Sources */,
 				C0BF22281E086191005B7E55 /* BuyViewController.swift in Sources */,
 				C0BF22321E086A03005B7E55 /* SellView.swift in Sources */,

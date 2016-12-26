@@ -52,6 +52,7 @@ class BuyView: UIView, ChartViewDelegate {
     func updateChartWithData() {
         
         let stringFormatter = ChartStringFormatter()              // allow labels to be shown for bars
+        let percentFormatter = PercentValueFormatter()              // allow labels to be shown for bars
         var dataEntries: [BarChartDataEntry] = []
         
         // data and names of the bars
@@ -81,9 +82,9 @@ class BuyView: UIView, ChartViewDelegate {
         
         let chartDataSet = BarChartDataSet(values: dataEntries, label: "")
         chartDataSet.colors = [UIColor(named: UIColor.ColorName.blue)]
-        
-        chartDataSet.valueFont = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.small.rawValue)!
+        chartDataSet.valueFont = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.xsmall.rawValue)!
         chartDataSet.valueTextColor = UIColor(named: UIColor.ColorName.white)
+        chartDataSet.valueFormatter = percentFormatter      // formats the values into a %
         let chartData = BarChartData(dataSet: chartDataSet)
         barChartView.drawValueAboveBarEnabled = false       // places values inside the bars
 
