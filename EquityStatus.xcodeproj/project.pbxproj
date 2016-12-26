@@ -23,6 +23,7 @@
 		C061ED0E1E07875100081030 /* bull+bear.png in Resources */ = {isa = PBXBuildFile; fileRef = C061ED0D1E07875100081030 /* bull+bear.png */; };
 		C069F5641E082FF500913486 /* apiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C069F5631E082FF500913486 /* apiClient.swift */; };
 		C069F5681E0830EC00913486 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C069F5671E0830EC00913486 /* DataStore.swift */; };
+		C085E32B1E119E04008A7315 /* AnalysisTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C085E32A1E119E04008A7315 /* AnalysisTableViewCell.swift */; };
 		C0BF22261E085351005B7E55 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF22251E085351005B7E55 /* Utilities.swift */; };
 		C0BF22281E086191005B7E55 /* BuyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF22271E086191005B7E55 /* BuyViewController.swift */; };
 		C0BF222A1E0861B6005B7E55 /* BuyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF22291E0861B6005B7E55 /* BuyView.swift */; };
@@ -69,6 +70,7 @@
 		C061ED0D1E07875100081030 /* bull+bear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bull+bear.png"; sourceTree = "<group>"; };
 		C069F5631E082FF500913486 /* apiClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = apiClient.swift; sourceTree = "<group>"; };
 		C069F5671E0830EC00913486 /* DataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
+		C085E32A1E119E04008A7315 /* AnalysisTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalysisTableViewCell.swift; sourceTree = "<group>"; };
 		C0BF22251E085351005B7E55 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		C0BF22271E086191005B7E55 /* BuyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuyViewController.swift; sourceTree = "<group>"; };
 		C0BF22291E0861B6005B7E55 /* BuyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuyView.swift; sourceTree = "<group>"; };
@@ -194,6 +196,7 @@
 				C0BF22291E0861B6005B7E55 /* BuyView.swift */,
 				C0BF222D1E086885005B7E55 /* AnalysisView.swift */,
 				C0BF22311E086A03005B7E55 /* SellView.swift */,
+				C085E32A1E119E04008A7315 /* AnalysisTableViewCell.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -456,6 +459,7 @@
 				C069F5641E082FF500913486 /* apiClient.swift in Sources */,
 				C0BF22261E085351005B7E55 /* Utilities.swift in Sources */,
 				C05FC1161E09B5FE008EA907 /* ChartStringFormatter.swift in Sources */,
+				C085E32B1E119E04008A7315 /* AnalysisTableViewCell.swift in Sources */,
 				C061ED0C1E0784B000081030 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -31,8 +31,8 @@ class BuyView: UIView, ChartViewDelegate {
         self.addSubview(self.subTitle)
         self.subTitle.translatesAutoresizingMaskIntoConstraints = false
         self.subTitle.topAnchor.constraint(equalTo: self.topAnchor, constant: 80).isActive = true
-        self.subTitle.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 16).isActive = true
-        self.subTitle.text = "Expected returns for approved equities."
+        self.subTitle.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 10).isActive = true
+        self.subTitle.text = "Approved equities with expected returns."
         self.subTitle.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.small.rawValue)
         
         self.addSubview(self.barChartView)
@@ -63,7 +63,7 @@ class BuyView: UIView, ChartViewDelegate {
         barChartView.xAxis.valueFormatter = stringFormatter // allow labels to be shown for bars
         barChartView.xAxis.drawGridLinesEnabled = false     // hide horizontal grid lines
         barChartView.xAxis.drawAxisLineEnabled = false      // hide right axis
-        barChartView.xAxis.labelFont = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.medium.rawValue)!
+        barChartView.xAxis.labelFont = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.small.rawValue)!
         barChartView.xAxis.setLabelCount(stringFormatter.nameValues.count, force: false)
         
         barChartView.rightAxis.enabled = false              // hide values on bottom axis
