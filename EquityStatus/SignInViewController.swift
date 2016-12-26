@@ -40,7 +40,7 @@ class SignInViewController: UIViewController, SignInViewDelegate {
     
     func openTabDisplay() {
         let tabViewControllerInst = TabsViewController()
-        navigationController?.pushViewController(tabViewControllerInst, animated: true) // show destination with nav bar
+        navigationController?.pushViewController(tabViewControllerInst, animated: false) // show destination with nav bar
     }
     
     func layoutAnimation() {
@@ -48,6 +48,9 @@ class SignInViewController: UIViewController, SignInViewDelegate {
         UIView.animate(withDuration: 0.75) {
             self.signInViewInst.welcomeLabelYConstraintStart.isActive = false
             self.signInViewInst.welcomeLabelYConstraintEnd.isActive = true
+            
+            self.signInViewInst.equityStatusYConstraintStart.isActive = false
+            self.signInViewInst.equityStatusYConstraintEnd.isActive = true
             
             self.signInViewInst.bullImageXConstraintStart.isActive = false
             self.signInViewInst.bullImageXConstraintEnd.isActive = true
@@ -59,13 +62,10 @@ class SignInViewController: UIViewController, SignInViewDelegate {
             self.signInViewInst.bullImageHeightConstraintStart.isActive = false
             self.signInViewInst.bullImageHeightConstraintEnd.isActive = true
             
-            self.signInViewInst.userNameFieldLeftConstraintStart.isActive = false
-            self.signInViewInst.userNameFieldLeftConstraintEnd.isActive = true
-            self.signInViewInst.userNameFieldWidthConstraintStart.isActive = false
-            self.signInViewInst.userNameFieldWidthConstraintEnd.isActive = true
+            self.signInViewInst.signInButtonRightConstraintStart.isActive = false
+            self.signInViewInst.signInButtonRightConstraintEnd.isActive = true
             
             self.signInViewInst.layoutIfNeeded()
-            self.signInViewInst.setNeedsDisplay()
         }
     }
     

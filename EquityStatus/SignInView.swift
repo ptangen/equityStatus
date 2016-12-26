@@ -35,6 +35,9 @@ class SignInView: UIView, UITextFieldDelegate {
     // constraints
     var welcomeLabelYConstraintStart: NSLayoutConstraint!
     var welcomeLabelYConstraintEnd: NSLayoutConstraint!
+    
+    var equityStatusYConstraintStart: NSLayoutConstraint!
+    var equityStatusYConstraintEnd: NSLayoutConstraint!
 
     var bullImageXConstraintStart: NSLayoutConstraint!
     var bullImageXConstraintEnd: NSLayoutConstraint!
@@ -45,11 +48,10 @@ class SignInView: UIView, UITextFieldDelegate {
     var bullImageHeightConstraintStart: NSLayoutConstraint!
     var bullImageHeightConstraintEnd: NSLayoutConstraint!
 
-    
-    var userNameFieldLeftConstraintStart: NSLayoutConstraint!
-    var userNameFieldLeftConstraintEnd: NSLayoutConstraint!
-    var userNameFieldWidthConstraintStart: NSLayoutConstraint!
-    var userNameFieldWidthConstraintEnd: NSLayoutConstraint!
+    var signInButtonRightConstraintStart: NSLayoutConstraint!
+    var signInButtonRightConstraintEnd: NSLayoutConstraint!
+    var passwordFieldWidthConstraintStart: NSLayoutConstraint!
+    var passwordFieldWidthConstraintEnd: NSLayoutConstraint!
     
     override init(frame:CGRect){
         super.init(frame: frame)
@@ -124,29 +126,33 @@ class SignInView: UIView, UITextFieldDelegate {
     }
     
     func touchIDLoginAction() {
-        if laContext.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error:nil) {
-            laContext.evaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, localizedReason: "Logging in with Touch ID",
-                reply: { (success : Bool, error : Error? ) -> Void in
+        // 1. Check to see if we have a password for the site in the keychain.
+        // 2. Check to see if the device has a finger print reader.
+        // 3. Check to see if the fingerprint matches, if success, open tab display
+        if myKeyChainWrapper.myObject(forKey: "v_Data") != nil {
+            if laContext.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error:nil) {
+                laContext.evaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, localizedReason: "Logging in with Touch ID", reply: { (success : Bool, error : Error? ) -> Void in
 
-                DispatchQueue.main.async(execute: {
-                    if success {
-                        self.delegate?.openTabDisplay()
-                    }
-                                        
-                    if error != nil {
-                        switch(error!._code) {
-                        case LAError.authenticationFailed.rawValue:
-                            self.delegate?.showAlertMessage("Unable to login with fingerprint. Signin with your username and password.")
-                            break;
-                        default:
-                            self.delegate?.showAlertMessage("Touch ID may not be configured")
-                            break;
+                    DispatchQueue.main.async(execute: {
+                        if success {
+                            self.delegate?.openTabDisplay()
                         }
-                    }
+                                        
+                        if error != nil {
+                            switch(error!._code) {
+                            case LAError.authenticationFailed.rawValue:
+                                self.delegate?.showAlertMessage("Unable to login with fingerprint. Signin with your username and password.")
+                                break;
+                            default:
+                                self.delegate?.showAlertMessage("Touch ID may not be configured")
+                                break;
+                            }
+                        }
+                    })
                 })
-            })
-        } else {
-            self.delegate?.showAlertMessage("Touch ID not available")
+            } else {
+                self.delegate?.showAlertMessage("Touch ID not available")
+            }
         }
     }
 
@@ -211,7 +217,7 @@ class SignInView: UIView, UITextFieldDelegate {
         self.welcomeLabel.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
         
         self.welcomeLabelYConstraintStart = self.welcomeLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: -150)
-        self.welcomeLabelYConstraintEnd = self.welcomeLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 80)
+        self.welcomeLabelYConstraintEnd = self.welcomeLabel.bottomAnchor.constraint(equalTo: self.topAnchor, constant: UIScreen.main.bounds.height / 10)
         self.welcomeLabelYConstraintStart.isActive = true
         
         // equity status label
@@ -224,7 +230,11 @@ class SignInView: UIView, UITextFieldDelegate {
         
         self.equityStatusLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         self.equityStatusLabel.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
-        self.equityStatusLabel.topAnchor.constraint(equalTo: self.welcomeLabel.bottomAnchor, constant: 10).isActive = true
+        
+        self.equityStatusYConstraintStart = self.equityStatusLabel.bottomAnchor.constraint(equalTo: self.topAnchor, constant: -130)
+        self.equityStatusYConstraintStart.isActive = true
+        self.equityStatusYConstraintEnd = self.equityStatusLabel.bottomAnchor.constraint(equalTo: self.topAnchor, constant: UIScreen.main.bounds.height / 5)
+        self.equityStatusYConstraintEnd.isActive = false
 
         // bull image
         self.bullImage.image = UIImage(named: "copperBearBull.jpg")
@@ -245,33 +255,27 @@ class SignInView: UIView, UITextFieldDelegate {
         self.bullImageWidthConstraintStart.isActive = true
         self.bullImageWidthConstraintEnd = self.bullImage.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width * 1.5)
         self.bullImageWidthConstraintEnd.isActive = false
-        
 
         self.bullImageHeightConstraintStart = self.bullImage.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height)
         self.bullImageHeightConstraintStart.isActive = true
         self.bullImageHeightConstraintEnd = self.bullImage.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height / 2)
         self.bullImageHeightConstraintEnd.isActive = false
-
-        // userName Field
-        self.addSubview(self.userNameField)
-        self.userNameField.translatesAutoresizingMaskIntoConstraints = false
-        self.userNameField.backgroundColor = UIColor.white
-        self.userNameField.placeholder = "user name"
-        self.userNameField.borderStyle = .bezel
-        self.userNameField.topAnchor.constraint(equalTo: self.centerYAnchor, constant: -110).isActive = true
-        self.userNameField.autocorrectionType = .no
-        self.userNameField.autocapitalizationType = .none
         
-        self.userNameFieldLeftConstraintStart = self.userNameField.leftAnchor.constraint(equalTo: self.centerXAnchor, constant: 150)
-        self.userNameFieldLeftConstraintStart.isActive = true
-        self.userNameFieldLeftConstraintEnd = self.userNameField.leftAnchor.constraint(equalTo: self.centerXAnchor, constant: 0)
-        self.userNameFieldLeftConstraintEnd.isActive = false
+        // sign in button
+        self.addSubview(self.signInButton)
+        self.signInButton.translatesAutoresizingMaskIntoConstraints = false
+        self.signInButton.setTitle("  Sign In  ", for: .normal)
+        self.signInButton.backgroundColor = UIColor(named: UIColor.ColorName.loginTan)
+        self.signInButton.isEnabled = false
+        self.signInButton.alpha = 0.3
         
-        self.userNameFieldWidthConstraintStart = self.userNameField.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.4)
-        self.userNameFieldWidthConstraintStart.isActive = true
-        self.userNameFieldWidthConstraintEnd = self.userNameField.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.4)
-        self.userNameFieldWidthConstraintEnd.isActive = false
-
+        self.signInButton.bottomAnchor.constraint(equalTo: self.centerYAnchor, constant: -20).isActive = true
+      
+        self.signInButtonRightConstraintStart = self.signInButton.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 110)
+        self.signInButtonRightConstraintStart.isActive = true
+        self.signInButtonRightConstraintEnd = self.signInButton.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -20)
+        self.signInButtonRightConstraintEnd.isActive = false
+        
         // passwordField Field
         self.addSubview(self.passwordField)
         self.passwordField.translatesAutoresizingMaskIntoConstraints = false
@@ -280,21 +284,26 @@ class SignInView: UIView, UITextFieldDelegate {
         self.passwordField.placeholder = "password"
         self.passwordField.isSecureTextEntry = true
         
-        self.passwordField.widthAnchor.constraint(equalTo: self.userNameField.widthAnchor).isActive = true
-        self.passwordField.leadingAnchor.constraint(equalTo: self.userNameField.leadingAnchor, constant: 0).isActive = true
-        self.passwordField.topAnchor.constraint(equalTo: self.userNameField.bottomAnchor, constant: 25).isActive = true
+        self.passwordField.rightAnchor.constraint(equalTo: self.signInButton.rightAnchor, constant: 0).isActive = true
+        self.passwordField.bottomAnchor.constraint(equalTo: self.signInButton.topAnchor, constant: -20).isActive = true
         
-        // sign in button
-        self.addSubview(self.signInButton)
-        self.signInButton.setTitle("  Sign In  ", for: .normal)
-        self.signInButton.backgroundColor = UIColor(named: UIColor.ColorName.blue)
-        self.signInButton.isEnabled = false
-        self.signInButton.alpha = 0.3
-        
-        self.signInButton.trailingAnchor.constraint(equalTo: self.passwordField.trailingAnchor, constant: 0).isActive = true
-        self.signInButton.topAnchor.constraint(equalTo: self.passwordField.bottomAnchor, constant: 25).isActive = true
+        self.passwordFieldWidthConstraintStart = self.passwordField.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.4)
+        self.passwordFieldWidthConstraintStart.isActive = true
+        self.passwordFieldWidthConstraintEnd = self.passwordField.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.4)
+        self.passwordFieldWidthConstraintEnd.isActive = false
 
-        self.signInButton.translatesAutoresizingMaskIntoConstraints = false
+        // userName Field
+        self.addSubview(self.userNameField)
+        self.userNameField.translatesAutoresizingMaskIntoConstraints = false
+        self.userNameField.backgroundColor = UIColor.white
+        self.userNameField.autocorrectionType = .no
+        self.userNameField.autocapitalizationType = .none
+        self.userNameField.placeholder = "user name"
+        self.userNameField.borderStyle = .bezel
+        
+        self.userNameField.bottomAnchor.constraint(equalTo: self.passwordField.topAnchor, constant: -20).isActive = true
+        self.userNameField.widthAnchor.constraint(equalTo: self.passwordField.widthAnchor).isActive = true
+        self.userNameField.rightAnchor.constraint(equalTo: self.passwordField.rightAnchor, constant: 0).isActive = true
         
         // touch id button
         self.addSubview(self.touchIDButton)
@@ -303,9 +312,8 @@ class SignInView: UIView, UITextFieldDelegate {
         
         self.touchIDButton.heightAnchor.constraint(equalToConstant: 36).isActive = true
         self.touchIDButton.widthAnchor.constraint(equalToConstant: 36).isActive = true
-        
-        self.touchIDButton.trailingAnchor.constraint(equalTo: self.passwordField.trailingAnchor, constant: -100).isActive = true
-        self.touchIDButton.topAnchor.constraint(equalTo: self.passwordField.bottomAnchor, constant: 25).isActive = true
+        self.touchIDButton.rightAnchor.constraint(equalTo: self.signInButton.leftAnchor, constant: -20).isActive = true
+        self.touchIDButton.topAnchor.constraint(equalTo: self.signInButton.topAnchor, constant: 0).isActive = true
         
         // all
         self.layoutIfNeeded()
