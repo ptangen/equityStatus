@@ -1,5 +1,5 @@
 //
-//  sellTableViewCell.swift
+//  SellTableViewCell.swift
 //  EquityStatus
 //
 //  Created by Paul Tangen on 12/27/16.

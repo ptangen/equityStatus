@@ -14,6 +14,8 @@
 		C02D509D1E12AB8D0000330F /* EquityStatus.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C02D509B1E12AB8D0000330F /* EquityStatus.xcdatamodeld */; };
 		C02D509F1E12F2BE0000330F /* SellTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02D509E1E12F2BE0000330F /* SellTableViewCell.swift */; };
 		C02D50A11E154F020000330F /* Equity.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02D50A01E154F020000330F /* Equity.swift */; };
+		C02D50A31E159BCD0000330F /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02D50A21E159BCD0000330F /* DetailViewController.swift */; };
+		C02D50A51E159C2D0000330F /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02D50A41E159C2D0000330F /* DetailView.swift */; };
 		C0409F861E0743CD00BEC5DD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0409F851E0743CD00BEC5DD /* AppDelegate.swift */; };
 		C0409F881E0743CD00BEC5DD /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0409F871E0743CD00BEC5DD /* SignInViewController.swift */; };
 		C0409F8D1E0743CD00BEC5DD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0409F8C1E0743CD00BEC5DD /* Assets.xcassets */; };
@@ -61,6 +63,8 @@
 		C02D509C1E12AB8D0000330F /* EquityStatus.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = EquityStatus.xcdatamodel; sourceTree = "<group>"; };
 		C02D509E1E12F2BE0000330F /* SellTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SellTableViewCell.swift; sourceTree = "<group>"; };
 		C02D50A01E154F020000330F /* Equity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Equity.swift; sourceTree = "<group>"; };
+		C02D50A21E159BCD0000330F /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		C02D50A41E159C2D0000330F /* DetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		C0409F821E0743CD00BEC5DD /* EquityStatus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EquityStatus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0409F851E0743CD00BEC5DD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C0409F871E0743CD00BEC5DD /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
@@ -194,6 +198,7 @@
 				C0BF222B1E08686A005B7E55 /* AnalysisViewController.swift */,
 				C0BF222F1E0869B8005B7E55 /* SellViewController.swift */,
 				C0BF22331E086AA1005B7E55 /* TabsViewController.swift */,
+				C02D50A21E159BCD0000330F /* DetailViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -207,6 +212,7 @@
 				C085E32A1E119E04008A7315 /* AnalysisTableViewCell.swift */,
 				C0BF22311E086A03005B7E55 /* SellView.swift */,
 				C02D509E1E12F2BE0000330F /* SellTableViewCell.swift */,
+				C02D50A41E159C2D0000330F /* DetailView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -456,6 +462,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				C0409FA71E0745D400BEC5DD /* SignInView.swift in Sources */,
+				C02D50A51E159C2D0000330F /* DetailView.swift in Sources */,
+				C02D50A31E159BCD0000330F /* DetailViewController.swift in Sources */,
 				C05FC11C1E0A08CD008EA907 /* Secrets.swift in Sources */,
 				C0BF22301E0869B8005B7E55 /* SellViewController.swift in Sources */,
 				C069F5681E0830EC00913486 /* DataStore.swift in Sources */,

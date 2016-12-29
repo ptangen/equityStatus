@@ -61,7 +61,8 @@ extension UIColor {
         case disabledText = 0xCCCCCCff
         case loginGray = 0xCAD0DCff
         case loginTan = 0x91623eff
-        case esGreen =  0x53d769ff
+        case statusGreen =  0x53d769ff
+        case statusRed =  0xdf1a21ff
     }
 }
 

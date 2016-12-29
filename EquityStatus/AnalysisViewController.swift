@@ -8,13 +8,14 @@
 
 import UIKit
 
-class AnalysisViewController: UIViewController {
+class AnalysisViewController: UIViewController, AnalysisViewDelegate {
     
     var analysisViewInst: AnalysisView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Analysis Required"
+        self.analysisViewInst.delegate = self
     }
 
     override func didReceiveMemoryWarning() {
@@ -31,6 +32,13 @@ class AnalysisViewController: UIViewController {
         // load the view into the view controller
         self.analysisViewInst = AnalysisView(frame: CGRect.zero)
         self.view = self.analysisViewInst
+    }
+    
+    func openDetail(_ equity: Equity) {
+        print("openDetail in Analysis View Controller")
+        let detailViewControllerInst = DetailViewController()
+        detailViewControllerInst.equity = equity
+        navigationController?.pushViewController(detailViewControllerInst, animated: false) // show destination with nav bar
     }
 
 }

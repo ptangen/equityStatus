@@ -15,8 +15,7 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate  {
     let sellTableViewInst = UITableView()
     let activityIndicator: UIView = UIView()
     let subTitle: UILabel = UILabel()
-    let myArray = ["Graco Inc. (GGG)", "Apple Inc. (AAPL)", "Alcoa Corporation (AA)", "Hasbro, Inc. (HAS)"]
-    
+        
     override init(frame:CGRect){
         super.init(frame: frame)
         self.store.getEquitiesMetadataFromCoreData()
