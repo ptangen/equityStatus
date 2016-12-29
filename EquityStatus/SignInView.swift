@@ -96,7 +96,7 @@ class SignInView: UIView, UITextFieldDelegate {
                     self.delegate?.openTabDisplay()
                 } else {
                     //creds do not match the locally stored creds, validate creds on the server
-                    apiClient.requestAuth(userName: userName, password: password, completion: { response in
+                    APIClient.requestAuth(userName: userName, password: password, completion: { response in
                         
                         switch response {
                 

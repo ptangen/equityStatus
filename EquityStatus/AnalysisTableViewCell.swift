@@ -8,7 +8,7 @@
 
 import UIKit
 
-class StatusTableViewCell: UITableViewCell {
+class AnalysisTableViewCell: UITableViewCell {
 
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:)")
@@ -17,7 +17,7 @@ class StatusTableViewCell: UITableViewCell {
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        // checkBox
+        // status icons
         let spacer = (UIScreen.main.bounds.width - 20) / 13
         let leftMargin: CGFloat = 10
 
@@ -39,7 +39,7 @@ class StatusTableViewCell: UITableViewCell {
         //text label
         textLabel?.translatesAutoresizingMaskIntoConstraints = false
         textLabel?.numberOfLines = 0
-        textLabel?.font = UIFont(name: Constants.appFont.regular.rawValue, size: CGFloat(Constants.fontSize.xsmall.rawValue))
+        textLabel?.font = UIFont(name: Constants.appFont.regular.rawValue, size: CGFloat(Constants.fontSize.small.rawValue))
         
         textLabel?.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -24).isActive = true
         textLabel?.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 10).isActive = true

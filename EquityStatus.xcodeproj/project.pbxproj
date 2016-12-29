@@ -11,6 +11,9 @@
 		5E4E5A6579069A3487872AC1 /* Pods_EquityStatusTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AF264F3335DD13DF9B5DF9E /* Pods_EquityStatusTests.framework */; };
 		C012D0E91E0DD77700AA8C4C /* MaterialIcons-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = C012D0E81E0DD77700AA8C4C /* MaterialIcons-Regular.otf */; };
 		C012D0EF1E0DED5300AA8C4C /* copperBearBull.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C012D0EE1E0DED5300AA8C4C /* copperBearBull.jpg */; };
+		C02D509D1E12AB8D0000330F /* EquityStatus.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C02D509B1E12AB8D0000330F /* EquityStatus.xcdatamodeld */; };
+		C02D509F1E12F2BE0000330F /* SellTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02D509E1E12F2BE0000330F /* SellTableViewCell.swift */; };
+		C02D50A11E154F020000330F /* Equity.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02D50A01E154F020000330F /* Equity.swift */; };
 		C0409F861E0743CD00BEC5DD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0409F851E0743CD00BEC5DD /* AppDelegate.swift */; };
 		C0409F881E0743CD00BEC5DD /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0409F871E0743CD00BEC5DD /* SignInViewController.swift */; };
 		C0409F8D1E0743CD00BEC5DD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0409F8C1E0743CD00BEC5DD /* Assets.xcassets */; };
@@ -21,10 +24,10 @@
 		C05FC11C1E0A08CD008EA907 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05FC11B1E0A08CD008EA907 /* Secrets.swift */; };
 		C061ED0C1E0784B000081030 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C061ED0B1E0784B000081030 /* Constants.swift */; };
 		C061ED0E1E07875100081030 /* bull+bear.png in Resources */ = {isa = PBXBuildFile; fileRef = C061ED0D1E07875100081030 /* bull+bear.png */; };
-		C069F5641E082FF500913486 /* apiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C069F5631E082FF500913486 /* apiClient.swift */; };
+		C069F5641E082FF500913486 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C069F5631E082FF500913486 /* APIClient.swift */; };
 		C069F5681E0830EC00913486 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C069F5671E0830EC00913486 /* DataStore.swift */; };
 		C07E6F6F1E11BCD1009AF89A /* FontAwesome.otf in Resources */ = {isa = PBXBuildFile; fileRef = C07E6F6E1E11BCD1009AF89A /* FontAwesome.otf */; };
-		C085E32B1E119E04008A7315 /* StatusTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C085E32A1E119E04008A7315 /* StatusTableViewCell.swift */; };
+		C085E32B1E119E04008A7315 /* AnalysisTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C085E32A1E119E04008A7315 /* AnalysisTableViewCell.swift */; };
 		C0BF22261E085351005B7E55 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF22251E085351005B7E55 /* Utilities.swift */; };
 		C0BF22281E086191005B7E55 /* BuyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF22271E086191005B7E55 /* BuyViewController.swift */; };
 		C0BF222A1E0861B6005B7E55 /* BuyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF22291E0861B6005B7E55 /* BuyView.swift */; };
@@ -55,6 +58,9 @@
 		9E28649136E7EDC38141F8B1 /* Pods-EquityStatus.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EquityStatus.release.xcconfig"; path = "Pods/Target Support Files/Pods-EquityStatus/Pods-EquityStatus.release.xcconfig"; sourceTree = "<group>"; };
 		C012D0E81E0DD77700AA8C4C /* MaterialIcons-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MaterialIcons-Regular.otf"; sourceTree = "<group>"; };
 		C012D0EE1E0DED5300AA8C4C /* copperBearBull.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = copperBearBull.jpg; sourceTree = "<group>"; };
+		C02D509C1E12AB8D0000330F /* EquityStatus.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = EquityStatus.xcdatamodel; sourceTree = "<group>"; };
+		C02D509E1E12F2BE0000330F /* SellTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SellTableViewCell.swift; sourceTree = "<group>"; };
+		C02D50A01E154F020000330F /* Equity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Equity.swift; sourceTree = "<group>"; };
 		C0409F821E0743CD00BEC5DD /* EquityStatus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EquityStatus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0409F851E0743CD00BEC5DD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C0409F871E0743CD00BEC5DD /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
@@ -69,10 +75,10 @@
 		C05FC11B1E0A08CD008EA907 /* Secrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
 		C061ED0B1E0784B000081030 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		C061ED0D1E07875100081030 /* bull+bear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bull+bear.png"; sourceTree = "<group>"; };
-		C069F5631E082FF500913486 /* apiClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = apiClient.swift; sourceTree = "<group>"; };
+		C069F5631E082FF500913486 /* APIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 		C069F5671E0830EC00913486 /* DataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
 		C07E6F6E1E11BCD1009AF89A /* FontAwesome.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome.otf; sourceTree = "<group>"; };
-		C085E32A1E119E04008A7315 /* StatusTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusTableViewCell.swift; sourceTree = "<group>"; };
+		C085E32A1E119E04008A7315 /* AnalysisTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalysisTableViewCell.swift; sourceTree = "<group>"; };
 		C0BF22251E085351005B7E55 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		C0BF22271E086191005B7E55 /* BuyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuyViewController.swift; sourceTree = "<group>"; };
 		C0BF22291E0861B6005B7E55 /* BuyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuyView.swift; sourceTree = "<group>"; };
@@ -166,6 +172,7 @@
 				C0D2FF771E0C8E3200871EA3 /* KeychainWrapper.h */,
 				C0BF22251E085351005B7E55 /* Utilities.swift */,
 				C0D2FF781E0C8E4400871EA3 /* EquityStatus-Bridging-Header.h */,
+				C02D509B1E12AB8D0000330F /* EquityStatus.xcdatamodeld */,
 			);
 			path = EquityStatus;
 			sourceTree = "<group>";
@@ -197,8 +204,9 @@
 				C0409FA61E0745D400BEC5DD /* SignInView.swift */,
 				C0BF22291E0861B6005B7E55 /* BuyView.swift */,
 				C0BF222D1E086885005B7E55 /* AnalysisView.swift */,
+				C085E32A1E119E04008A7315 /* AnalysisTableViewCell.swift */,
 				C0BF22311E086A03005B7E55 /* SellView.swift */,
-				C085E32A1E119E04008A7315 /* StatusTableViewCell.swift */,
+				C02D509E1E12F2BE0000330F /* SellTableViewCell.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -206,9 +214,10 @@
 		C069F5651E082FFD00913486 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				C069F5631E082FF500913486 /* apiClient.swift */,
+				C069F5631E082FF500913486 /* APIClient.swift */,
 				C069F5671E0830EC00913486 /* DataStore.swift */,
 				C05FC11B1E0A08CD008EA907 /* Secrets.swift */,
+				C02D50A01E154F020000330F /* Equity.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -452,6 +461,7 @@
 				C069F5681E0830EC00913486 /* DataStore.swift in Sources */,
 				C0D2FF7A1E0C8E4400871EA3 /* KeychainWrapper.m in Sources */,
 				C0BF222C1E08686A005B7E55 /* AnalysisViewController.swift in Sources */,
+				C02D509D1E12AB8D0000330F /* EquityStatus.xcdatamodeld in Sources */,
 				C0BF222E1E086885005B7E55 /* AnalysisView.swift in Sources */,
 				C0BF222A1E0861B6005B7E55 /* BuyView.swift in Sources */,
 				C0409F881E0743CD00BEC5DD /* SignInViewController.swift in Sources */,
@@ -460,10 +470,12 @@
 				C0409F861E0743CD00BEC5DD /* AppDelegate.swift in Sources */,
 				C0BF22281E086191005B7E55 /* BuyViewController.swift in Sources */,
 				C0BF22321E086A03005B7E55 /* SellView.swift in Sources */,
-				C069F5641E082FF500913486 /* apiClient.swift in Sources */,
+				C069F5641E082FF500913486 /* APIClient.swift in Sources */,
+				C02D509F1E12F2BE0000330F /* SellTableViewCell.swift in Sources */,
 				C0BF22261E085351005B7E55 /* Utilities.swift in Sources */,
+				C02D50A11E154F020000330F /* Equity.swift in Sources */,
 				C05FC1161E09B5FE008EA907 /* ChartStringFormatter.swift in Sources */,
-				C085E32B1E119E04008A7315 /* StatusTableViewCell.swift in Sources */,
+				C085E32B1E119E04008A7315 /* AnalysisTableViewCell.swift in Sources */,
 				C061ED0C1E0784B000081030 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -689,6 +701,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		C02D509B1E12AB8D0000330F /* EquityStatus.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				C02D509C1E12AB8D0000330F /* EquityStatus.xcdatamodel */,
+			);
+			currentVersion = C02D509C1E12AB8D0000330F /* EquityStatus.xcdatamodel */;
+			path = EquityStatus.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = C0409F7A1E0743CD00BEC5DD /* Project object */;
 }
