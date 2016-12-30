@@ -8,56 +8,75 @@
 
 import UIKit
 
+protocol DetailViewDelegate: class {
+    func openSingleDetail(_: String)
+}
+
 class DetailView: UIView {
 
+    weak var delegate: DetailViewDelegate?
     var equity: Equity!
     let lineSpacing: CGFloat = 14
     
     let ROEaResultDesc: UILabel = UILabel()
+    let ROEaResultDescTap: UITapGestureRecognizer = UITapGestureRecognizer()
     let ROEaStatusDesc: UILabel = UILabel()
     
     let EPSiResultDesc: UILabel = UILabel()
+    let EPSiResultDescTap: UITapGestureRecognizer = UITapGestureRecognizer()
     let EPSiStatusDesc: UILabel = UILabel()
     
     let EPSvResultDesc: UILabel = UILabel()
+    let EPSvResultDescTap: UITapGestureRecognizer = UITapGestureRecognizer()
     let EPSvStatusDesc: UILabel = UILabel()
     
     let BViResultDesc: UILabel = UILabel()
+    let BViResultDescTap: UITapGestureRecognizer = UITapGestureRecognizer()
     let BViStatusDesc: UILabel = UILabel()
     
     let DRaResultDesc: UILabel = UILabel()
+    let DRaResultDescTap: UITapGestureRecognizer = UITapGestureRecognizer()
     let DRaStatusDesc: UILabel = UILabel()
     
     let SOrResultDesc: UILabel = UILabel()
+    let SOrResultDescTap: UITapGestureRecognizer = UITapGestureRecognizer()
     let SOrStatusDesc: UILabel = UILabel()
     
     let previousROIResultDesc: UILabel = UILabel()
+    let previousROIResultDescTap: UITapGestureRecognizer = UITapGestureRecognizer()
     let previousROIStatusDesc: UILabel = UILabel()
     
     let expectedROIResultDesc: UILabel = UILabel()
+    let expectedROIResultDescTap: UITapGestureRecognizer = UITapGestureRecognizer()
     let expectedROIStatusDesc: UILabel = UILabel()
     
     let q1Desc: UILabel = UILabel()
+    let q1DescTap: UITapGestureRecognizer = UITapGestureRecognizer()
     let q1StatusDesc: UILabel = UILabel()
     
     let q2Desc: UILabel = UILabel()
+    let q2DescTap: UITapGestureRecognizer = UITapGestureRecognizer()
     let q2StatusDesc: UILabel = UILabel()
     
     let q3Desc: UILabel = UILabel()
+    let q3DescTap: UITapGestureRecognizer = UITapGestureRecognizer()
     let q3StatusDesc: UILabel = UILabel()
     
     let q4Desc: UILabel = UILabel()
+    let q4DescTap: UITapGestureRecognizer = UITapGestureRecognizer()
     let q4StatusDesc: UILabel = UILabel()
     
     let q5Desc: UILabel = UILabel()
+    let q5DescTap: UITapGestureRecognizer = UITapGestureRecognizer()
     let q5StatusDesc: UILabel = UILabel()
     
     let q6Desc: UILabel = UILabel()
+    let q6DescTap: UITapGestureRecognizer = UITapGestureRecognizer()
     let q6StatusDesc: UILabel = UILabel()
     
-
     override init(frame:CGRect){
         super.init(frame: frame)
+        
         self.pageLayout()
     }
     
@@ -75,6 +94,9 @@ class DetailView: UIView {
         self.ROEaResultDesc.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -10).isActive = true
         self.ROEaResultDesc.numberOfLines = 0
         self.ROEaResultDesc.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.xsmall.rawValue)
+        self.ROEaResultDescTap.addTarget(self, action: #selector(self.onClickLineItem))
+        self.ROEaResultDesc.isUserInteractionEnabled = true
+        self.ROEaResultDesc.addGestureRecognizer(ROEaResultDescTap)
         
         // ROEaStatusDesc
         self.addSubview(self.ROEaStatusDesc)
@@ -91,6 +113,9 @@ class DetailView: UIView {
         self.EPSiResultDesc.rightAnchor.constraint(equalTo: self.ROEaResultDesc.rightAnchor).isActive = true
         self.EPSiResultDesc.numberOfLines = 0
         self.EPSiResultDesc.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.xsmall.rawValue)
+        self.EPSiResultDescTap.addTarget(self, action: #selector(self.onClickLineItem))
+        self.EPSiResultDesc.isUserInteractionEnabled = true
+        self.EPSiResultDesc.addGestureRecognizer(EPSiResultDescTap)
         
         // EPSiStatusDesc
         self.addSubview(self.EPSiStatusDesc)
@@ -107,6 +132,9 @@ class DetailView: UIView {
         self.EPSvResultDesc.rightAnchor.constraint(equalTo: self.EPSiResultDesc.rightAnchor).isActive = true
         self.EPSvResultDesc.numberOfLines = 0
         self.EPSvResultDesc.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.xsmall.rawValue)
+        self.EPSvResultDescTap.addTarget(self, action: #selector(self.onClickLineItem))
+        self.EPSvResultDesc.isUserInteractionEnabled = true
+        self.EPSvResultDesc.addGestureRecognizer(EPSvResultDescTap)
         
         // EPSvStatusDesc
         self.addSubview(self.EPSvStatusDesc)
@@ -123,6 +151,9 @@ class DetailView: UIView {
         self.BViResultDesc.rightAnchor.constraint(equalTo: self.EPSvResultDesc.rightAnchor).isActive = true
         self.BViResultDesc.numberOfLines = 0
         self.BViResultDesc.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.xsmall.rawValue)
+        self.BViResultDescTap.addTarget(self, action: #selector(self.onClickLineItem))
+        self.BViResultDesc.isUserInteractionEnabled = true
+        self.BViResultDesc.addGestureRecognizer(BViResultDescTap)
         
         // BViStatusDesc
         self.addSubview(self.BViStatusDesc)
@@ -139,6 +170,9 @@ class DetailView: UIView {
         self.DRaResultDesc.rightAnchor.constraint(equalTo: self.BViResultDesc.rightAnchor).isActive = true
         self.DRaResultDesc.numberOfLines = 0
         self.DRaResultDesc.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.xsmall.rawValue)
+        self.DRaResultDescTap.addTarget(self, action: #selector(self.onClickLineItem))
+        self.DRaResultDesc.isUserInteractionEnabled = true
+        self.DRaResultDesc.addGestureRecognizer(DRaResultDescTap)
         
         // DRaStatusDesc
         self.addSubview(self.DRaStatusDesc)
@@ -155,6 +189,9 @@ class DetailView: UIView {
         self.SOrResultDesc.rightAnchor.constraint(equalTo: self.DRaResultDesc.rightAnchor).isActive = true
         self.SOrResultDesc.numberOfLines = 0
         self.SOrResultDesc.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.xsmall.rawValue)
+        self.SOrResultDescTap.addTarget(self, action: #selector(self.onClickLineItem))
+        self.SOrResultDesc.isUserInteractionEnabled = true
+        self.SOrResultDesc.addGestureRecognizer(SOrResultDescTap)
         
         // SOrStatusDesc
         self.addSubview(self.SOrStatusDesc)
@@ -171,6 +208,9 @@ class DetailView: UIView {
         self.previousROIResultDesc.rightAnchor.constraint(equalTo: self.SOrResultDesc.rightAnchor).isActive = true
         self.previousROIResultDesc.numberOfLines = 0
         self.previousROIResultDesc.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.xsmall.rawValue)
+        self.previousROIResultDescTap.addTarget(self, action: #selector(self.onClickLineItem))
+        self.previousROIResultDesc.isUserInteractionEnabled = true
+        self.previousROIResultDesc.addGestureRecognizer(previousROIResultDescTap)
         
         // previousROIStatusDesc
         self.addSubview(self.previousROIStatusDesc)
@@ -187,6 +227,9 @@ class DetailView: UIView {
         self.expectedROIResultDesc.rightAnchor.constraint(equalTo: self.previousROIResultDesc.rightAnchor).isActive = true
         self.expectedROIResultDesc.numberOfLines = 0
         self.expectedROIResultDesc.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.xsmall.rawValue)
+        self.expectedROIResultDescTap.addTarget(self, action: #selector(self.onClickLineItem))
+        self.expectedROIResultDesc.isUserInteractionEnabled = true
+        self.expectedROIResultDesc.addGestureRecognizer(expectedROIResultDescTap)
         
         // expectedROIStatusDesc
         self.addSubview(self.expectedROIStatusDesc)
@@ -203,6 +246,9 @@ class DetailView: UIView {
         self.q1Desc.rightAnchor.constraint(equalTo: self.expectedROIResultDesc.rightAnchor).isActive = true
         self.q1Desc.numberOfLines = 0
         self.q1Desc.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.xsmall.rawValue)
+        self.q1DescTap.addTarget(self, action: #selector(self.onClickLineItem))
+        self.q1Desc.isUserInteractionEnabled = true
+        self.q1Desc.addGestureRecognizer(q1DescTap)
         
         // q1StatusDesc
         self.addSubview(self.q1StatusDesc)
@@ -219,6 +265,9 @@ class DetailView: UIView {
         self.q2Desc.rightAnchor.constraint(equalTo: self.q1Desc.rightAnchor).isActive = true
         self.q2Desc.numberOfLines = 0
         self.q2Desc.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.xsmall.rawValue)
+        self.q2DescTap.addTarget(self, action: #selector(self.onClickLineItem))
+        self.q2Desc.isUserInteractionEnabled = true
+        self.q2Desc.addGestureRecognizer(q2DescTap)
         
         // q2StatusDesc
         self.addSubview(self.q2StatusDesc)
@@ -235,6 +284,9 @@ class DetailView: UIView {
         self.q3Desc.rightAnchor.constraint(equalTo: self.q2Desc.rightAnchor).isActive = true
         self.q3Desc.numberOfLines = 0
         self.q3Desc.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.xsmall.rawValue)
+        self.q3DescTap.addTarget(self, action: #selector(self.onClickLineItem))
+        self.q3Desc.isUserInteractionEnabled = true
+        self.q3Desc.addGestureRecognizer(q3DescTap)
         
         // q3StatusDesc
         self.addSubview(self.q3StatusDesc)
@@ -251,6 +303,9 @@ class DetailView: UIView {
         self.q4Desc.rightAnchor.constraint(equalTo: self.q3Desc.rightAnchor).isActive = true
         self.q4Desc.numberOfLines = 0
         self.q4Desc.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.xsmall.rawValue)
+        self.q4DescTap.addTarget(self, action: #selector(self.onClickLineItem))
+        self.q4Desc.isUserInteractionEnabled = true
+        self.q4Desc.addGestureRecognizer(q4DescTap)
         
         // q4StatusDesc
         self.addSubview(self.q4StatusDesc)
@@ -267,6 +322,9 @@ class DetailView: UIView {
         self.q5Desc.rightAnchor.constraint(equalTo: self.q4Desc.rightAnchor).isActive = true
         self.q5Desc.numberOfLines = 0
         self.q5Desc.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.xsmall.rawValue)
+        self.q5DescTap.addTarget(self, action: #selector(self.onClickLineItem))
+        self.q5Desc.isUserInteractionEnabled = true
+        self.q5Desc.addGestureRecognizer(q5DescTap)
         
         // q5StatusDesc
         self.addSubview(self.q5StatusDesc)
@@ -283,6 +341,9 @@ class DetailView: UIView {
         self.q6Desc.rightAnchor.constraint(equalTo: self.q5Desc.rightAnchor).isActive = true
         self.q6Desc.numberOfLines = 0
         self.q6Desc.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.xsmall.rawValue)
+        self.q6DescTap.addTarget(self, action: #selector(self.onClickLineItem))
+        self.q6Desc.isUserInteractionEnabled = true
+        self.q6Desc.addGestureRecognizer(q6DescTap)
         
         // q6StatusDesc
         self.addSubview(self.q6StatusDesc)
@@ -290,5 +351,11 @@ class DetailView: UIView {
         self.q6StatusDesc.topAnchor.constraint(equalTo: self.q6Desc.topAnchor, constant: 0).isActive = true
         self.q6StatusDesc.rightAnchor.constraint(equalTo: self.q6Desc.leftAnchor, constant: -10).isActive = true
         self.q6StatusDesc.font = UIFont(name: Constants.iconFont.fontAwesome.rawValue, size: Constants.fontSize.xsmall.rawValue)
+    }
+    
+    func onClickLineItem(sender: UILabel){
+        if let source = sender.accessibilityLabel {
+            self.delegate?.openSingleDetail(source)
+        }
     }
 }
