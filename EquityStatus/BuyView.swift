@@ -9,7 +9,6 @@
 import UIKit
 import Charts
 
-
 class BuyView: UIView, ChartViewDelegate {
     
     let barChartView = HorizontalBarChartView()
@@ -51,8 +50,8 @@ class BuyView: UIView, ChartViewDelegate {
     
     func updateChartWithData() {
         
-        let stringFormatter = ChartStringFormatter()              // allow labels to be shown for bars
-        let percentFormatter = PercentValueFormatter()              // allow labels to be shown for bars
+        let stringFormatter = ChartStringFormatter()        // allow labels to be shown for bars
+        let percentFormatter = PercentValueFormatter()      // allow labels to be shown for bars
         var dataEntries: [BarChartDataEntry] = []
         
         // data and names of the bars

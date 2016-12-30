@@ -318,5 +318,4 @@ class SignInView: UIView, UITextFieldDelegate {
         // all
         self.layoutIfNeeded()
     }
-
 }

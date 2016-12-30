@@ -19,6 +19,7 @@ class AnalysisView: UIView, UITableViewDataSource, UITableViewDelegate {
     let subTitle: UILabel = UILabel()
     let store = DataStore.sharedInstance
     let activityIndicator: UIView = UIView()
+    var equitiesForAnalysis: [Equity] = []
     
     override init(frame:CGRect){
         super.init(frame: frame)
@@ -26,15 +27,18 @@ class AnalysisView: UIView, UITableViewDataSource, UITableViewDelegate {
         self.analysisTableViewInst.dataSource = self
         self.analysisTableViewInst.register(AnalysisTableViewCell.self, forCellReuseIdentifier: "prototype")
         self.analysisTableViewInst.separatorColor = UIColor.clear
+        createEquitiesForAnalysis()
         self.pageLayout()
         
-        if store.equities.count == 0 {
+        // get the data
+        if equitiesForAnalysis.count == 0 {
             self.subTitle.text = "Loading equities for evaluation..."
-            APIClient.getEquitiesFromDB(){
+            APIClient.getEquitiesFromDB(mode: "pass,noData"){
                 OperationQueue.main.addOperation {
                     self.subTitle.text = "Evaluate the qualitative measures."
                     self.activityIndicator.isHidden = true
                     self.analysisTableViewInst.isHidden = false
+                    self.createEquitiesForAnalysis()
                     self.analysisTableViewInst.reloadData()
                 }
             }
@@ -43,6 +47,15 @@ class AnalysisView: UIView, UITableViewDataSource, UITableViewDelegate {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // create array for analysis view
+    func createEquitiesForAnalysis() {
+        for equity in self.store.equities {
+            if equity.tab == "analysis" {
+                self.equitiesForAnalysis.append(equity)
+            }
+        }
     }
     
     func pageLayout() {
@@ -63,7 +76,7 @@ class AnalysisView: UIView, UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.store.equities.count
+        return self.equitiesForAnalysis.count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
@@ -73,29 +86,29 @@ class AnalysisView: UIView, UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = AnalysisTableViewCell(style: .default, reuseIdentifier: "prototype")
         cell.selectionStyle = .none
-        cell.textLabel?.text = self.store.equities[indexPath.row].name
+        cell.textLabel?.text = self.equitiesForAnalysis[indexPath.row].name
         
         // set the status icons and color for each of the equity's measures
-        Utilities.setStatusIcon(status: self.store.equities[indexPath.row].ROEaStatus, label: cell.statusIcons[0])
-        Utilities.setStatusIcon(status: self.store.equities[indexPath.row].EPSiStatus, label: cell.statusIcons[1])
-        Utilities.setStatusIcon(status: self.store.equities[indexPath.row].EPSvStatus, label: cell.statusIcons[2])
-        Utilities.setStatusIcon(status: self.store.equities[indexPath.row].BViStatus, label: cell.statusIcons[3])
-        Utilities.setStatusIcon(status: self.store.equities[indexPath.row].DRaStatus, label: cell.statusIcons[4])
-        Utilities.setStatusIcon(status: self.store.equities[indexPath.row].SOrStatus, label: cell.statusIcons[5])
-        Utilities.setStatusIcon(status: self.store.equities[indexPath.row].previousROIStatus, label: cell.statusIcons[6])
-        Utilities.setStatusIcon(status: self.store.equities[indexPath.row].expectedROIStatus, label: cell.statusIcons[7])
-        Utilities.setStatusIcon(status: self.store.equities[indexPath.row].q1Status, label: cell.statusIcons[8])
-        Utilities.setStatusIcon(status: self.store.equities[indexPath.row].q2Status, label: cell.statusIcons[9])
-        Utilities.setStatusIcon(status: self.store.equities[indexPath.row].q3Status, label: cell.statusIcons[10])
-        Utilities.setStatusIcon(status: self.store.equities[indexPath.row].q4Status, label: cell.statusIcons[11])
-        Utilities.setStatusIcon(status: self.store.equities[indexPath.row].q5Status, label: cell.statusIcons[12])
-        Utilities.setStatusIcon(status: self.store.equities[indexPath.row].q6Status, label: cell.statusIcons[13])
+        Utilities.setStatusIcon(status: self.equitiesForAnalysis[indexPath.row].ROEaStatus, label: cell.statusIcons[0])
+        Utilities.setStatusIcon(status: self.equitiesForAnalysis[indexPath.row].EPSiStatus, label: cell.statusIcons[1])
+        Utilities.setStatusIcon(status: self.equitiesForAnalysis[indexPath.row].EPSvStatus, label: cell.statusIcons[2])
+        Utilities.setStatusIcon(status: self.equitiesForAnalysis[indexPath.row].BViStatus, label: cell.statusIcons[3])
+        Utilities.setStatusIcon(status: self.equitiesForAnalysis[indexPath.row].DRaStatus, label: cell.statusIcons[4])
+        Utilities.setStatusIcon(status: self.equitiesForAnalysis[indexPath.row].SOrStatus, label: cell.statusIcons[5])
+        Utilities.setStatusIcon(status: self.equitiesForAnalysis[indexPath.row].previousROIStatus, label: cell.statusIcons[6])
+        Utilities.setStatusIcon(status: self.equitiesForAnalysis[indexPath.row].expectedROIStatus, label: cell.statusIcons[7])
+        Utilities.setStatusIcon(status: self.equitiesForAnalysis[indexPath.row].q1Status, label: cell.statusIcons[8])
+        Utilities.setStatusIcon(status: self.equitiesForAnalysis[indexPath.row].q2Status, label: cell.statusIcons[9])
+        Utilities.setStatusIcon(status: self.equitiesForAnalysis[indexPath.row].q3Status, label: cell.statusIcons[10])
+        Utilities.setStatusIcon(status: self.equitiesForAnalysis[indexPath.row].q4Status, label: cell.statusIcons[11])
+        Utilities.setStatusIcon(status: self.equitiesForAnalysis[indexPath.row].q5Status, label: cell.statusIcons[12])
+        Utilities.setStatusIcon(status: self.equitiesForAnalysis[indexPath.row].q6Status, label: cell.statusIcons[13])
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.delegate?.openDetail(store.equities[indexPath.row])
+        self.delegate?.openDetail(self.equitiesForAnalysis[indexPath.row])
     }
 
     func showActivityIndicatory(uiView: UIView) {
@@ -112,6 +125,4 @@ class AnalysisView: UIView, UITableViewDataSource, UITableViewDelegate {
         self.activityIndicator.addSubview(actInd)
         actInd.startAnimating()
     }
-    
-
 }

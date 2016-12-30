@@ -12,6 +12,7 @@ class Equity {
     
     var ticker: String
     var name: String
+    var tab: String
     var ROEaResult: Double
     var EPSiResult: Double
     var EPSvResult: Double
@@ -42,9 +43,10 @@ class Equity {
     var q6Status: String
     
     // use this initializer for equities on the details tab
-    init(ticker: String, name: String, ROEaResult: Double, EPSiResult: Double, EPSvResult: Double, BViResult: Double, DRaResult: Double, SOrResult: Double, previousROIResult: Double, expectedROIResult: Double, ROEaStatus: String, EPSiStatus: String, EPSvStatus: String, BViStatus: String, DRaStatus: String, SOrStatus: String, previousROIStatus: String, expectedROIStatus: String, q1Answer: String, q2Answer: String, q3Answer: String, q4Answer: String, q5Answer: String, q6Answer: String, q1Status: String, q2Status: String, q3Status: String, q4Status: String, q5Status: String, q6Status: String) {
+    init(ticker: String, name: String, tab: String, ROEaResult: Double, EPSiResult: Double, EPSvResult: Double, BViResult: Double, DRaResult: Double, SOrResult: Double, previousROIResult: Double, expectedROIResult: Double, ROEaStatus: String, EPSiStatus: String, EPSvStatus: String, BViStatus: String, DRaStatus: String, SOrStatus: String, previousROIStatus: String, expectedROIStatus: String, q1Answer: String, q2Answer: String, q3Answer: String, q4Answer: String, q5Answer: String, q6Answer: String, q1Status: String, q2Status: String, q3Status: String, q4Status: String, q5Status: String, q6Status: String) {
         self.ticker = ticker
         self.name = name
+        self.tab = tab
         self.ROEaResult = ROEaResult
         self.EPSiResult = EPSiResult
         self.EPSvResult = EPSvResult
@@ -74,78 +76,4 @@ class Equity {
         self.q5Status = q5Status
         self.q6Status = q6Status
     }
-
-    /*
-    // use this initializer for equities on the buy tab
-    convenience init(ticker: String, name: String, expectedROIResult: String) {
-        self.init(
-            ticker = ticker,
-            name = name,
-            ROEaResult: nil,
-            EPSiResult: nil,
-            EPSvResult: nil,
-            BViResult: nil,
-            DRaResult: nil,
-            SOrResult: nil,
-            previousROIResult: nil,
-            expectedROIResult = expectedROIResult,
-            ROEaStatus: nil,
-            EPSiStatus: nil,
-            EPSvStatus: nil,
-            BViStatus: nil,
-            DRaStatus: nil,
-            SOrStatus: nil,
-            previousROIStatus: nil,
-            expectedROIStatus: nil,
-            q1Answer: nil,
-            q2Answer: nil,
-            q3Answer: nil,
-            q4Answer: nil,
-            q5Answer: nil,
-            q6Answer: nil,
-            q1Status: nil,
-            q2Status: nil,
-            q3Status: nil,
-            q4Status: nil,
-            q5Status: nil,
-            q6Status: nil
-        )
-    }
-    
-    // use this initializer for equities on the evaluation tab
-    convenience init(ticker: String, name: String, expectedROIResult: Double) {
-        self.init(
-            ticker = ticker,
-            name = name,
-            ROEaResult: nil,
-            EPSiResult: nil,
-            EPSvResult: nil,
-            BViResult: nil,
-            DRaResult: nil,
-            SOrResult: nil,
-            previousROIResult: nil,
-            expectedROIResult =  nil,
-            ROEaStatus: ROEaStatus,
-            EPSiStatus: EPSiStatus,
-            EPSvStatus: EPSvStatus,
-            BViStatus: BViStatus,
-            DRaStatus: DRaStatus,
-            SOrStatus: SOrStatus,
-            previousROIStatus: previousROIStatus,
-            expectedROIStatus: expectedROIStatus,
-            q1Answer: nil,
-            q2Answer: nil,
-            q3Answer: nil,
-            q4Answer: nil,
-            q5Answer: nil,
-            q6Answer: nil,
-            q1Status: q1Status,
-            q2Status: q2Status,
-            q3Status: q3Status,
-            q4Status: q4Status,
-            q5Status: q5Status,
-            q6Status: q6Status
-        )
-    }
-    */
 }

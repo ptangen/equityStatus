@@ -15,7 +15,7 @@ class BuyViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Buy"
+        //self.title = "Buy"  // only used in tabBar Controller's didSelect
     }
 
     override func didReceiveMemoryWarning() {
@@ -23,11 +23,6 @@ class BuyViewController: UIViewController {
     }
     
     override func loadView(){
-        // hide nav bar on login page
-        self.navigationController?.isNavigationBarHidden = false
-        self.title = "Equity Status - Buy"
-        self.navigationItem.hidesBackButton = true
-        
         // load the view into the view controller
         self.buyViewInst = BuyView(frame: CGRect.zero)
         self.view = self.buyViewInst

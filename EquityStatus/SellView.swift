@@ -8,8 +8,13 @@
 
 import UIKit
 
+protocol SellViewDelegate: class {
+    func openDetail(_: String)
+}
+
 class SellView: UIView, UITableViewDataSource, UITableViewDelegate  {
     
+    weak var delegate: SellViewDelegate?
     let store = DataStore.sharedInstance
     var equitiesMetadataDict: [String:[String]] = [:]
     let sellTableViewInst = UITableView()
@@ -25,16 +30,14 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate  {
         self.sellTableViewInst.separatorColor = UIColor.clear
         self.pageLayout()
         
-        
         // If we dont have the metadata for the equities, fetch it else use the metadata stored in coredata.
         if self.store.equitiesMetadata.count == 0 {
             
             self.showActivityIndicatory(uiView: self)
             self.sellTableViewInst.isHidden = true
-            
+
             APIClient.getEquitiesMetadataFromDB() {
                 self.createSellEquitiesDict(sectionHeadings: "nameFirst")
-                
                 OperationQueue.main.addOperation {
                     self.subTitle.text = "Equities with one or more failed measures."
                     self.activityIndicator.isHidden = true
@@ -49,7 +52,7 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate  {
     }
     
     func showActivityIndicatory(uiView: UIView) {
-        self.subTitle.text = "Loading over 4,000 equities (just once) ..."
+        self.subTitle.text = "Loading 3,500 equities (just once) ..."
         self.activityIndicator.backgroundColor = UIColor(named: UIColor.ColorName.blue)
         self.activityIndicator.layer.cornerRadius = 10
         self.activityIndicator.clipsToBounds = true
@@ -105,6 +108,13 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate  {
         return Array(self.equitiesMetadataDict.keys).sorted()
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let keys = Array(self.equitiesMetadataDict.keys).sorted()
+        let currentKey = keys[indexPath.section]
+        let currentSectionValues = self.equitiesMetadataDict[currentKey]
+        let itemTitle = currentSectionValues?[indexPath.row]
+        self.delegate?.openDetail(itemTitle!)
+    }
     // end tableview config
     
     

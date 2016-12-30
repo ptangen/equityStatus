@@ -58,7 +58,7 @@ class APIClient {
     }
     
     class func getEquitiesMetadataFromDB(completion: @escaping () -> Void) {
-        //let store = DataStore.sharedInstance
+
         let urlString = "\(Secrets.apiURL)getEquitiesMetadata.php"
         var request = URLRequest(url: URL(string: urlString)!)
         
@@ -90,7 +90,8 @@ class APIClient {
         }).resume()
     }
     
-    class func getEquitiesFromDB(completion: @escaping () -> Void) {
+    // allPass, noFailures, t:GGG
+    class func getEquitiesFromDB(mode: String, completion: @escaping () -> Void) {
         let store = DataStore.sharedInstance
         let urlString = "\(Secrets.apiURL)getEquities.php"
         var request = URLRequest(url: URL(string: urlString)!)
@@ -99,7 +100,7 @@ class APIClient {
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         
-        let parameterString = "key=\(Secrets.apiKey)&mode=selectRows&ByTarget=SomePass"
+        let parameterString = "key=\(Secrets.apiKey)&mode=\(mode)&ByTarget=SomePass"
         request.httpBody = parameterString.data(using: .utf8)
         
         URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
@@ -159,11 +160,19 @@ class APIClient {
                         guard let unwrappedQ5Status = equityDict["q5Status"] else { fatalError() }
                         guard let unwrappedQ6Status = equityDict["q6Status"] else { fatalError() }
                         
+                        // determine which tab the equity will be displayed
+                        var tabValue:String = String()
+                        if mode == "pass,noData" {
+                            tabValue = "analysis"
+                        } else {
+                            tabValue = "buy"
+                        }
+                        
                         let equityInst = Equity(
                             ticker: unwrappedTicker,
                             name: unwrappedName,
-                            ROEaResult:
-                            unwrappedROEaResult,
+                            tab: tabValue,
+                            ROEaResult: unwrappedROEaResult,
                             EPSiResult: unwrappedEPSiResult,
                             EPSvResult: unwrappedEPSvResult,
                             BViResult: unwrappedBViResult,

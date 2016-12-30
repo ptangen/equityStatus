@@ -15,8 +15,6 @@ class DataStore {
     var equitiesMetadata:[EquityMetadata] = []
     var equities:[Equity] = []
     
-    //var userName: String = String()
-    
     class func createEquityMetadata(name: String, nameFirst: String, ticker: String, tickerFirst: String) {
         
         let store = DataStore.sharedInstance
@@ -35,6 +33,15 @@ class DataStore {
         store.equitiesMetadata.append(equityMetadataInst)
         store.saveEquitiesMetadataContext()
         store.getEquitiesMetadataFromCoreData()
+    }
+    
+    func getEquityByTickerFromStore(ticker: String) -> Equity? {
+        for equity in self.equities {
+            if equity.ticker == ticker  {
+                return equity
+            }
+        }
+        return nil
     }
     
     
@@ -73,5 +80,4 @@ class DataStore {
             print("Error fetching data: \(error)")
         }
     }
-
 }

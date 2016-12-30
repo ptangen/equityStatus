@@ -55,8 +55,7 @@ class DetailView: UIView {
     let q6Desc: UILabel = UILabel()
     let q6StatusDesc: UILabel = UILabel()
     
-    
-    
+
     override init(frame:CGRect){
         super.init(frame: frame)
         self.pageLayout()
@@ -291,6 +290,5 @@ class DetailView: UIView {
         self.q6StatusDesc.topAnchor.constraint(equalTo: self.q6Desc.topAnchor, constant: 0).isActive = true
         self.q6StatusDesc.rightAnchor.constraint(equalTo: self.q6Desc.leftAnchor, constant: -10).isActive = true
         self.q6StatusDesc.font = UIFont(name: Constants.iconFont.fontAwesome.rawValue, size: Constants.fontSize.xsmall.rawValue)
-
     }
 }

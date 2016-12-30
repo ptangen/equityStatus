@@ -19,18 +19,13 @@ class Utilities {
         } else if status == "fail" || status == "100" {
             label.text = Constants.iconLibrary.faTimesCircle.rawValue
             label.textColor = UIColor(named: UIColor.ColorName.statusRed)
+        } else if status == "noData" {
+            label.text = Constants.iconLibrary.faCircleO.rawValue
+            label.textColor = UIColor(named: UIColor.ColorName.disabledText)
         } else {
             label.text = Constants.iconLibrary.faCircleO.rawValue
             label.textColor = UIColor(named: UIColor.ColorName.statusGreen)
         }
     }
-    
-//    class func getStatusColor(status: String) -> UIColor {
-//        if status == "fail" || status == "100" {
-//            return UIColor(named: UIColor.ColorName.statusRed)
-//        } else {
-//            return UIColor(named: UIColor.ColorName.statusGreen)
-//        }
-//    }
 
 }

@@ -48,5 +48,4 @@ class AnalysisTableViewCell: UITableViewCell {
         textLabel?.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 10).isActive = true
         textLabel?.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -3).isActive = true
     }
-
 }
