@@ -47,6 +47,46 @@ struct Constants{
         case regular =  "HelveticaNeue"
         case bold =     "HelveticaNeue-Bold"
     }
+    
+    enum measureLongName: String {
+        case ROEa = "Avg Return on Equity"
+        case EPSi = "Earnings Per Share Growth Rate"
+        case EPSv = "Earnings Per Share Volatility"
+        case BVi = "Book Value Growth Rate"
+        case DRa = "Avg Debt Ratio"
+        case SOr = "Shares Outstanding Reduced"
+        case previousROI = "Previous Return on Investment"
+        case expectedROI = "Expected Return on Investment"
+        case q1 = "Is there a strong upward trend in the EPS?"
+        case q2 = "Do you understand the product/service?"
+        case q3 = "Has the product/service been consistent for 10 years?"
+        case q4 = "Does the company invest in it's area of expertise?"
+        case q5 = "Are few expenditures required to maintain operations?"
+        case q6 = "Is the company free to adjust prices with inflation?"
+    }
+    
+    enum measureTargetDesc: String {
+        case ROEa = "greater than or equal to 12%"
+        case EPSi = "greater than or equal to 12% "
+        case previousROI = "greater than or equal to 12%  "
+        case expectedROI = "greater than or equal to 12%   "
+        case EPSv = "less than or equal to 1.5"
+        case BVi = "greater than or equal to 5%"
+        case DRa = "less than or equal to 5"
+        case SOr = "less than or equal to 0 shares"
+    }
+     //EPSi = 15, previousROI = 15, expectedROI = 15
+    
+    enum measureCalcDesc: String {
+        case ROEa = "The annual return on equity is collected and then the mean is found."
+        case EPSi = "The annual earnings per share (EPS) is collected and then the future value formula is applied to determine the growth rate of the EPS."
+        case EPSv = "The Buffet methodology stresses the importance of a stable EPS growth rate. The methodology does not provide a formula, but a rough calculation was found for this measure. The calculation first finds the standard deviation of the EPS values from the last ten years. Then the difference of the first and last values is compared to three times the standard deviation and a ratio is established. The lower the ratio, the less volatile the the EPS."
+        case BVi = "The annual book value is collected and then the future value formula is applied to determine the growth rate of the BV."
+        case DRa = "The annual total debt ratio is collected and then the mean is calculated."
+        case SOr = "The annual number of shares outstanding is collected. Then the value is found by subtracting the number of shares outstanding, from the current year, from the number of shares outstanding ten years earlier."
+        case previousROI = "This value is found by obtaining the stock price 5 years ago, the current price and calculating the growth rate."
+        case expectedROI = "To calculate the Expected ROI, the future value of the EPS in ten years is calculated from the current EPS value and the EPS growth rate. The mean value for the P/E ratio is also calculated. Next, the future stock price is found by multiplying the future value EPS by the mean P/E ratio. Finally, the expected ROI is found by using the future value function. The current stock price is the present value and the future value is the future stock price."
+    }
 }
 
 extension UIColor {

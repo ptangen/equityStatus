@@ -32,7 +32,7 @@ class SellViewController: UIViewController, SellViewDelegate {
     func openDetail(_ rowItem: String) {
 
         // extract the ticker from the rowItem
-        let ticker = getSubStringBetweenParens(fullString: rowItem)
+        let ticker = Utilities.getTickerFromLabel(fullString: rowItem)
 
         // try to get the equity from the dataStore, if it is not there fetch it from the API
         if let equity = store.getEquityByTickerFromStore(ticker: ticker) {
@@ -54,21 +54,4 @@ class SellViewController: UIViewController, SellViewDelegate {
             }
         }
     }
-    
-    func getSubStringBetweenParens(fullString: String) -> String {
-        
-        let chars = fullString.characters;
-        
-        // Get character indexes.
-        let indexLeftParen = chars.index(of: "(")!
-        let indexRightParen = chars.index(of: ")")!
-        
-        // Get before and after indexes.
-        let indexAfterLeftParen = chars.index(after: indexLeftParen)
-        let indexBeforeRightParen = chars.index(before: indexRightParen)
-        
-        return fullString[indexAfterLeftParen...indexBeforeRightParen]
-        
-    }
-
 }

@@ -89,20 +89,20 @@ class AnalysisView: UIView, UITableViewDataSource, UITableViewDelegate {
         cell.textLabel?.text = self.equitiesForAnalysis[indexPath.row].name
         
         // set the status icons and color for each of the equity's measures
-        Utilities.setStatusIcon(status: self.equitiesForAnalysis[indexPath.row].ROEaStatus, label: cell.statusIcons[0])
-        Utilities.setStatusIcon(status: self.equitiesForAnalysis[indexPath.row].EPSiStatus, label: cell.statusIcons[1])
-        Utilities.setStatusIcon(status: self.equitiesForAnalysis[indexPath.row].EPSvStatus, label: cell.statusIcons[2])
-        Utilities.setStatusIcon(status: self.equitiesForAnalysis[indexPath.row].BViStatus, label: cell.statusIcons[3])
-        Utilities.setStatusIcon(status: self.equitiesForAnalysis[indexPath.row].DRaStatus, label: cell.statusIcons[4])
-        Utilities.setStatusIcon(status: self.equitiesForAnalysis[indexPath.row].SOrStatus, label: cell.statusIcons[5])
-        Utilities.setStatusIcon(status: self.equitiesForAnalysis[indexPath.row].previousROIStatus, label: cell.statusIcons[6])
-        Utilities.setStatusIcon(status: self.equitiesForAnalysis[indexPath.row].expectedROIStatus, label: cell.statusIcons[7])
-        Utilities.setStatusIcon(status: self.equitiesForAnalysis[indexPath.row].q1Status, label: cell.statusIcons[8])
-        Utilities.setStatusIcon(status: self.equitiesForAnalysis[indexPath.row].q2Status, label: cell.statusIcons[9])
-        Utilities.setStatusIcon(status: self.equitiesForAnalysis[indexPath.row].q3Status, label: cell.statusIcons[10])
-        Utilities.setStatusIcon(status: self.equitiesForAnalysis[indexPath.row].q4Status, label: cell.statusIcons[11])
-        Utilities.setStatusIcon(status: self.equitiesForAnalysis[indexPath.row].q5Status, label: cell.statusIcons[12])
-        Utilities.setStatusIcon(status: self.equitiesForAnalysis[indexPath.row].q6Status, label: cell.statusIcons[13])
+        Utilities.setStatusIcon(status: self.equitiesForAnalysis[indexPath.row].ROEaStatus, uiLabel: cell.statusIcons[0])
+        Utilities.setStatusIcon(status: self.equitiesForAnalysis[indexPath.row].EPSiStatus, uiLabel: cell.statusIcons[1])
+        Utilities.setStatusIcon(status: self.equitiesForAnalysis[indexPath.row].EPSvStatus, uiLabel: cell.statusIcons[2])
+        Utilities.setStatusIcon(status: self.equitiesForAnalysis[indexPath.row].BViStatus, uiLabel: cell.statusIcons[3])
+        Utilities.setStatusIcon(status: self.equitiesForAnalysis[indexPath.row].DRaStatus, uiLabel: cell.statusIcons[4])
+        Utilities.setStatusIcon(status: self.equitiesForAnalysis[indexPath.row].SOrStatus, uiLabel: cell.statusIcons[5])
+        Utilities.setStatusIcon(status: self.equitiesForAnalysis[indexPath.row].previousROIStatus, uiLabel: cell.statusIcons[6])
+        Utilities.setStatusIcon(status: self.equitiesForAnalysis[indexPath.row].expectedROIStatus, uiLabel: cell.statusIcons[7])
+        Utilities.setStatusIcon(status: self.equitiesForAnalysis[indexPath.row].q1Status, uiLabel: cell.statusIcons[8])
+        Utilities.setStatusIcon(status: self.equitiesForAnalysis[indexPath.row].q2Status, uiLabel: cell.statusIcons[9])
+        Utilities.setStatusIcon(status: self.equitiesForAnalysis[indexPath.row].q3Status, uiLabel: cell.statusIcons[10])
+        Utilities.setStatusIcon(status: self.equitiesForAnalysis[indexPath.row].q4Status, uiLabel: cell.statusIcons[11])
+        Utilities.setStatusIcon(status: self.equitiesForAnalysis[indexPath.row].q5Status, uiLabel: cell.statusIcons[12])
+        Utilities.setStatusIcon(status: self.equitiesForAnalysis[indexPath.row].q6Status, uiLabel: cell.statusIcons[13])
         
         return cell
     }

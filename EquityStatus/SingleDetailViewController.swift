@@ -11,7 +11,9 @@ import UIKit
 class SingleDetailViewController: UIViewController {
     
     var singleDetailViewInst: SingleDetailView!
+    let store = DataStore.sharedInstance
     var source: String = String()
+    var equity: Equity!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +40,13 @@ class SingleDetailViewController: UIViewController {
         self.singleDetailViewInst.source = self.source
         self.view = self.singleDetailViewInst
         self.navigationController?.navigationBar.backItem?.title = "Back"
-        self.title = source
+        
+        let ticker = Utilities.getTickerFromLabel(fullString: source)
+        self.equity = self.store.getEquityByTickerFromStore(ticker: ticker)
+        self.title = "\(equity.name) (\(equity.ticker))"
+        
+        self.singleDetailViewInst.equity = self.equity
+        //self.singleDetailViewInst.setLabelTextValues()
+        self.singleDetailViewInst.setResultsLabelsForMeasure(fullString: source)
     }
 }
