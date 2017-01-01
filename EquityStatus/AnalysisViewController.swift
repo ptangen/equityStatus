@@ -16,16 +16,24 @@ class AnalysisViewController: UIViewController, AnalysisViewDelegate {
         super.viewDidLoad()
         //self.title = "Analysis Required"  // only used in tabBar Controller's didSelect
         self.analysisViewInst.delegate = self
+        print("viewDidLoad")
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        self.analysisViewInst.createEquitiesForAnalysis()
+        self.analysisViewInst.analysisTableViewInst.reloadData()
+        print("viewWillAppear")
+    }
+    
     override func loadView(){
         // load the view into the view controller
         self.analysisViewInst = AnalysisView(frame: CGRect.zero)
         self.view = self.analysisViewInst
+        print("loadView")
     }
     
     func openEquityDetail(_ equity: Equity) {

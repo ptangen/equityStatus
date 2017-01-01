@@ -118,6 +118,9 @@ class SignInView: UIView, UITextFieldDelegate {
                         case.noReply:
                             self.delegate?.showAlertMessage("The server is not available. Please forward this message to ptangen@ptangen.com")
                             break;
+                            
+                        default:
+                            break;
                         }
                     }) // end apiClient.requestAuth
                 }

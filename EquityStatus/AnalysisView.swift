@@ -54,6 +54,7 @@ class AnalysisView: UIView, UITableViewDataSource, UITableViewDelegate {
     
     // create array for analysis view
     func createEquitiesForAnalysis() {
+        self.equitiesForAnalysis.removeAll()
         for equity in self.store.equities {
             if equity.tab == "analysis" {
                 self.equitiesForAnalysis.append(equity)
@@ -124,7 +125,6 @@ class AnalysisView: UIView, UITableViewDataSource, UITableViewDelegate {
     }
 
     func showActivityIndicator(uiView: UIView) {
-        print("show wait indicator")
         self.activityIndicator.backgroundColor = UIColor(named: UIColor.ColorName.blue)
         self.activityIndicator.layer.cornerRadius = 10
         self.activityIndicator.clipsToBounds = true

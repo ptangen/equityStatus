@@ -11,7 +11,7 @@ import UIKit
 
 class APIClient {
     
-    class func requestAuth(userName: String, password: String, completion: @escaping (AuthResponse) -> Void) {
+    class func requestAuth(userName: String, password: String, completion: @escaping (apiResponse) -> Void) {
         
         guard let userNameSubmitted = userName.addingPercentEncoding(withAllowedCharacters: .urlUserAllowed) else {
             completion(.userNameInvalid)
@@ -48,6 +48,56 @@ class APIClient {
                             completion(.passwordInvalid)
                         } else {
                             completion(.noReply)
+                        }
+                    } catch {
+                        completion(.noReply)
+                    }
+                }
+            }
+        }).resume()
+    }
+    
+    class func setSubjectiveStatus(ticker: String, question: String, status: String, equity: Equity, completion: @escaping (apiResponse) -> Void) {
+        
+//        guard let ticker = ticker else { fatalError() }
+//        guard let question = question else { fatalError() }
+//        guard let value = value else { fatalError() }
+        
+        let urlString = "\(Secrets.apiURL)setSubjectiveStatus.php"
+        var request = URLRequest(url: URL(string: urlString)!)
+        
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        
+        let parameterString = "ticker=\(ticker)&question=\(question)&status=\(status)&key=\(Secrets.apiKey)"
+        request.httpBody = parameterString.data(using: .utf8)
+
+        URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
+            if let data = data {
+                DispatchQueue.main.async {
+                    do {
+                        let json = try JSONSerialization.jsonObject(with: data, options: []) as! [String : Int]
+                        
+                        if let results = json["results"] {
+                            if results == 1 {
+                                // update the equity
+                                switch question {
+                                case "q1": equity.q1Status = status
+                                case "q2": equity.q2Status = status
+                                case "q3": equity.q3Status = status
+                                case "q4": equity.q4Status = status
+                                case "q5": equity.q5Status = status
+                                case "q6": equity.q6Status = status
+                                default: print("error 121")
+                                }
+                                completion(.ok)
+                            
+                            } else if results == -1 {
+                                completion(.failed)
+                            } else {
+                                completion(.noReply)
+                            }
                         }
                     } catch {
                         completion(.noReply)
@@ -212,9 +262,11 @@ class APIClient {
     }
 }
 
-enum AuthResponse {
+enum apiResponse {
     case authenticated
     case userNameInvalid
     case passwordInvalid
     case noReply
+    case ok
+    case failed
 }

@@ -8,8 +8,13 @@
 
 import UIKit
 
+protocol MeasureDetailViewDelegate: class {
+    func showAlertMessage(_: String)
+}
+
 class MeasureDetailView: UIView {
     
+    weak var delegate: MeasureDetailViewDelegate?
     let store = DataStore.sharedInstance
     var measureTicker: String = String()
     var equity: Equity!
@@ -38,7 +43,6 @@ class MeasureDetailView: UIView {
     }
     
     func statusValueChanged(_ sender:UISegmentedControl!) {
-        print("Selected Segment Index is : \(sender.selectedSegmentIndex)")
         switch sender.selectedSegmentIndex {
         case 1: // pass
             print("set to pass")
@@ -54,19 +58,26 @@ class MeasureDetailView: UIView {
     
     func updateQStatus(status: String) {
         
-        switch self.measureShortName {
-        case "q1": self.equity.q1Status = status
-        case "q2": self.equity.q2Status = status
-        case "q3": self.equity.q3Status = status
-        case "q4": self.equity.q4Status = status
-        case "q5": self.equity.q5Status = status
-        case "q6": self.equity.q6Status = status
-        default: print("error 121")
-        }
-        // update the status fields in the UI to match the segmented control
-        Utilities.setStatusIcon(status: status, uiLabel: self.statusIcon)
-        self.statusValueDesc.text = "(" + getStatusDesc(status) + ")"
-        // update DB ...
+        APIClient.setSubjectiveStatus(ticker: self.equity.ticker , question: self.measureShortName, status: status, equity: self.equity, completion: { response in
+
+            switch response {
+            case .ok:
+                Utilities.setStatusIcon(status: status, uiLabel: self.statusIcon)
+                self.statusValueDesc.text = "(" + self.getStatusDesc(status) + ")"
+                break;
+                
+            case.failed:
+                self.delegate?.showAlertMessage("The server was unable to save this status change. Please forward this message to ptangen@ptangen.com")
+                break;
+                
+            case.noReply:
+                self.delegate?.showAlertMessage("The server is not available. Please forward this message to ptangen@ptangen.com")
+                break;
+                
+            default:
+                break;
+            }
+        }) // end apiClient.setSubjectiveStatus
     }
 
     
@@ -139,8 +150,6 @@ class MeasureDetailView: UIView {
         self.measureCalcDescLabel.rightAnchor.constraint(equalTo: self.targetLabel.rightAnchor).isActive = true
         self.measureCalcDescLabel.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.small.rawValue)
         self.measureCalcDescLabel.numberOfLines = 0
-        
-
     }
     
     func setResultsLabelsForMeasure(fullString: String) {

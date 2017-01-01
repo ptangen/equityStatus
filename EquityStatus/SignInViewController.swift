@@ -33,9 +33,7 @@ class SignInViewController: UIViewController, SignInViewDelegate {
     }
     
     func showAlertMessage(_ message: String) {
-        let alertController = UIAlertController(title: "Error", message: message, preferredStyle: UIAlertControllerStyle.alert)
-        alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default,handler: nil))
-        self.present(alertController, animated: true, completion: nil)
+        Utilities.showAlertMessage(message, viewControllerInst: self)
     }
     
     func openTabDisplay() {

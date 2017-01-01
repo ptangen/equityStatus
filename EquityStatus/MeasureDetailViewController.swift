@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MeasureDetailViewController: UIViewController {
+class MeasureDetailViewController: UIViewController, MeasureDetailViewDelegate {
     
     var measureDetailViewInst: MeasureDetailView!
     let store = DataStore.sharedInstance
@@ -17,7 +17,7 @@ class MeasureDetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.measureDetailViewInst.delegate = self
     }
 
     override func didReceiveMemoryWarning() {
@@ -43,5 +43,9 @@ class MeasureDetailViewController: UIViewController {
         // setup ui view
         self.measureDetailViewInst.equity = self.equity
         self.measureDetailViewInst.setResultsLabelsForMeasure(fullString: measureTicker)
+    }
+    
+    func showAlertMessage(_ message: String) {
+        Utilities.showAlertMessage(message, viewControllerInst: self)
     }
 }
