@@ -1,5 +1,5 @@
 //
-//  DetailView.swift
+//  EquityDetailView.swift
 //  EquityStatus
 //
 //  Created by Paul Tangen on 12/29/16.
@@ -8,13 +8,13 @@
 
 import UIKit
 
-protocol DetailViewDelegate: class {
-    func openSingleDetail(_: String)
+protocol EquityDetailViewDelegate: class {
+    func openMeasureDetail(_: String)
 }
 
-class DetailView: UIView {
+class EquityDetailView: UIView {
 
-    weak var delegate: DetailViewDelegate?
+    weak var delegate: EquityDetailViewDelegate?
     var equity: Equity!
     let lineSpacing: CGFloat = 14
     
@@ -354,8 +354,8 @@ class DetailView: UIView {
     }
     
     func onClickLineItem(sender: UILabel){
-        if let source = sender.accessibilityLabel {
-            self.delegate?.openSingleDetail(source)
+        if let measureTicker = sender.accessibilityLabel {
+            self.delegate?.openMeasureDetail(measureTicker)
         }
     }
 }

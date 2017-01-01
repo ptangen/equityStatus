@@ -73,7 +73,7 @@ struct Constants{
         case EPSv = "less than or equal to 1.5"
         case BVi = "greater than or equal to 5%"
         case DRa = "less than or equal to 5"
-        case SOr = "less than or equal to 0 shares"
+        case SOr = "more than or equal to 0 shares"
     }
      //EPSi = 15, previousROI = 15, expectedROI = 15
     

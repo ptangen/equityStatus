@@ -28,9 +28,10 @@ class AnalysisViewController: UIViewController, AnalysisViewDelegate {
         self.view = self.analysisViewInst
     }
     
-    func openDetail(_ equity: Equity) {
-        let detailViewControllerInst = DetailViewController()
-        detailViewControllerInst.equity = equity
-        navigationController?.pushViewController(detailViewControllerInst, animated: false) // show destination with nav bar
+    func openEquityDetail(_ equity: Equity) {
+        let equityDetailViewControllerInst = EquityDetailViewController()
+        equityDetailViewControllerInst.equity = equity
+        self.title = "" // this value is passed to the back button label in the destination VC
+        navigationController?.pushViewController(equityDetailViewControllerInst, animated: false) // show destination with nav bar
     }
 }

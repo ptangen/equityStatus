@@ -33,8 +33,10 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate  {
         // If we dont have the metadata for the equities, fetch it else use the metadata stored in coredata.
         if self.store.equitiesMetadata.count == 0 {
             
-            self.showActivityIndicatory(uiView: self)
+            self.subTitle.text = "Loading 3,500 equities (just once) ..."
+            self.showActivityIndicator(uiView: self)
             self.sellTableViewInst.isHidden = true
+            
 
             APIClient.getEquitiesMetadataFromDB() {
                 self.createSellEquitiesDict(sectionHeadings: "nameFirst")
@@ -51,8 +53,7 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate  {
         }
     }
     
-    func showActivityIndicatory(uiView: UIView) {
-        self.subTitle.text = "Loading 3,500 equities (just once) ..."
+    func showActivityIndicator(uiView: UIView) {
         self.activityIndicator.backgroundColor = UIColor(named: UIColor.ColorName.blue)
         self.activityIndicator.layer.cornerRadius = 10
         self.activityIndicator.clipsToBounds = true

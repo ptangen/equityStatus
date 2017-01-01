@@ -37,18 +37,18 @@ class SellViewController: UIViewController, SellViewDelegate {
         // try to get the equity from the dataStore, if it is not there fetch it from the API
         if let equity = store.getEquityByTickerFromStore(ticker: ticker) {
             // open the detail view for the selected equity
-            let detailViewControllerInst = DetailViewController()
-            detailViewControllerInst.equity = equity
-            navigationController?.pushViewController(detailViewControllerInst, animated: false)
+            let equityDetailViewControllerInst = EquityDetailViewController()
+            equityDetailViewControllerInst.equity = equity
+            navigationController?.pushViewController(equityDetailViewControllerInst, animated: false)
         } else {
             // fetch the equity from the api and display the details
             APIClient.getEquitiesFromDB(mode: "t:\(ticker)"){
                 OperationQueue.main.addOperation {
                     if let equity = self.store.getEquityByTickerFromStore(ticker: ticker) {
                         // open the detail view for the selected equity
-                        let detailViewControllerInst = DetailViewController()
-                        detailViewControllerInst.equity = equity
-                        self.navigationController?.pushViewController(detailViewControllerInst, animated: false)
+                        let equityDetailViewControllerInst = EquityDetailViewController()
+                        equityDetailViewControllerInst.equity = equity
+                        self.navigationController?.pushViewController(equityDetailViewControllerInst, animated: false)
                     }
                 }
             }

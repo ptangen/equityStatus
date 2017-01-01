@@ -9,7 +9,7 @@
 import UIKit
 
 protocol AnalysisViewDelegate: class {
-    func openDetail(_: Equity)
+    func openEquityDetail(_: Equity)
 }
 
 class AnalysisView: UIView, UITableViewDataSource, UITableViewDelegate {
@@ -33,9 +33,12 @@ class AnalysisView: UIView, UITableViewDataSource, UITableViewDelegate {
         // get the data
         if equitiesForAnalysis.count == 0 {
             self.subTitle.text = "Loading equities for evaluation..."
+            self.showActivityIndicator(uiView: self)
+            self.analysisTableViewInst.isHidden = true
+            
             APIClient.getEquitiesFromDB(mode: "pass,noData"){
                 OperationQueue.main.addOperation {
-                    self.subTitle.text = "Evaluate the qualitative measures."
+                    self.subTitle.text = "Evaluate the subjective measures for these equities."
                     self.activityIndicator.isHidden = true
                     self.analysisTableViewInst.isHidden = false
                     self.createEquitiesForAnalysis()
@@ -64,8 +67,10 @@ class AnalysisView: UIView, UITableViewDataSource, UITableViewDelegate {
         self.subTitle.translatesAutoresizingMaskIntoConstraints = false
         self.subTitle.topAnchor.constraint(equalTo: self.topAnchor, constant: 80).isActive = true
         self.subTitle.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 10).isActive = true
-        self.subTitle.text = "Evaluate the qualitative measures."
+        self.subTitle.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -10).isActive = true
+        self.subTitle.text = "Evaluate the subjective measures for these equities."
         self.subTitle.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.small.rawValue)
+        self.subTitle.numberOfLines = 0
         
         self.addSubview(self.analysisTableViewInst)
         self.analysisTableViewInst.translatesAutoresizingMaskIntoConstraints = false
@@ -73,6 +78,13 @@ class AnalysisView: UIView, UITableViewDataSource, UITableViewDelegate {
         self.analysisTableViewInst.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 180).isActive = true
         self.analysisTableViewInst.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0).isActive = true
         self.analysisTableViewInst.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -10).isActive = true
+        
+        self.addSubview(self.activityIndicator)
+        self.activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        self.activityIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        self.activityIndicator.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        self.activityIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        self.activityIndicator.widthAnchor.constraint(equalToConstant: 80).isActive = true
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -108,11 +120,11 @@ class AnalysisView: UIView, UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.delegate?.openDetail(self.equitiesForAnalysis[indexPath.row])
+        self.delegate?.openEquityDetail(self.equitiesForAnalysis[indexPath.row])
     }
 
-    func showActivityIndicatory(uiView: UIView) {
-        self.subTitle.text = "Loading over 4,000 equities (just once) ..."
+    func showActivityIndicator(uiView: UIView) {
+        print("show wait indicator")
         self.activityIndicator.backgroundColor = UIColor(named: UIColor.ColorName.blue)
         self.activityIndicator.layer.cornerRadius = 10
         self.activityIndicator.clipsToBounds = true
