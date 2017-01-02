@@ -3,10 +3,11 @@
     <entity name="EquityMetadata" representedClassName="EquityMetadata" syncable="YES" codeGenerationType="class">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="nameFirst" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="showInSellTab" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="ticker" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tickerFirst" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="EquityMetadata" positionX="-63" positionY="-18" width="128" height="105"/>
+        <element name="EquityMetadata" positionX="-63" positionY="-18" width="128" height="120"/>
     </elements>
 </model>

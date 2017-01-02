@@ -1,5 +1,5 @@
 //
-//  AnalysisTableViewCell.swift
+//  EvaluationTableViewCell.swift
 //  EquityStatus
 //
 //  Created by Paul Tangen on 12/26/16.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AnalysisTableViewCell: UITableViewCell {
+class EvaluationTableViewCell: UITableViewCell {
     
     var measureIconText: [String] = []
     var statusIcons: [UILabel] = []

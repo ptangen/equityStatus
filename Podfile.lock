@@ -4,11 +4,11 @@ PODS:
   - Charts/Core (3.0.1)
 
 DEPENDENCIES:
-  - Charts (~> 3.0)
+  - Charts (~> 3.0.1)
 
 SPEC CHECKSUMS:
   Charts: 0e84f4418e87dad6a9edde221fba37ebb51d3ba7
 
-PODFILE CHECKSUM: dcaac1bac1ded9df8cc286f960bf5c69d2a9b9e3
+PODFILE CHECKSUM: 877b80d0fa61590db386d3b422d426fc32bf553e
 
 COCOAPODS: 1.1.1

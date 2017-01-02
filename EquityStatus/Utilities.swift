@@ -48,5 +48,4 @@ class Utilities {
         alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default,handler: nil))
         viewControllerInst.present(alertController, animated: true, completion: nil)
     }
-
 }

@@ -6,7 +6,7 @@ target 'EquityStatus' do
   use_frameworks!
 
   # Pods for EquityStatus
-	pod 'Charts', '~> 3.0’
+	pod 'Charts', '~> 3.0.1’
 
   target 'EquityStatusTests' do
     inherit! :search_paths

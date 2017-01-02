@@ -32,27 +32,28 @@ class MeasureDetailView: UIView {
         super.init(frame: frame)
         self.pageLayout()
         
+        // configure segmented control to pick status for the measure
         self.qStatusPicker.insertSegment(withTitle: Constants.iconLibrary.faCircleO.rawValue, at: 0, animated: true)
         self.qStatusPicker.insertSegment(withTitle: Constants.iconLibrary.faCheckCircle.rawValue, at: 1, animated: true)
         self.qStatusPicker.insertSegment(withTitle: Constants.iconLibrary.faTimesCircle.rawValue, at: 2, animated: true)
         self.qStatusPicker.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: Constants.iconFont.fontAwesome.rawValue , size: CGFloat(Constants.iconSize.small.rawValue))! ], for: .normal)
-        //self.qStatusPicker.tintColor = UIColor(named: UIColor.ColorName.statusGreen)
+        
+        let segmentButtonWidth = UIScreen.main.bounds.width / 4
+        self.qStatusPicker.setWidth(segmentButtonWidth, forSegmentAt: 0)
+        self.qStatusPicker.setWidth(segmentButtonWidth, forSegmentAt: 1)
+        self.qStatusPicker.setWidth(segmentButtonWidth, forSegmentAt: 2)
 
-        // Add function to handle Value Changed events
-        qStatusPicker.addTarget(self, action: #selector(self.statusValueChanged(_:)), for: .valueChanged)
+        self.qStatusPicker.addTarget(self, action: #selector(self.statusValueChanged(_:)), for: .valueChanged)
     }
     
     func statusValueChanged(_ sender:UISegmentedControl!) {
         switch sender.selectedSegmentIndex {
-        case 1: // pass
-            print("set to pass")
+        case 1:
             self.updateQStatus(status: "pass")
-        case 2: // fail
-            print("set to fail")
+        case 2:
             self.updateQStatus(status: "fail")
         default:
-            print("set to undefined")
-            self.updateQStatus(status: "undefined")
+            self.updateQStatus(status: "undefined")  // user can only set values for subjective measures so undefined is appropriate
         }
     }
     
@@ -66,18 +67,15 @@ class MeasureDetailView: UIView {
                 self.statusValueDesc.text = "(" + self.getStatusDesc(status) + ")"
                 break;
                 
-            case.failed:
+            case.failed, .noReply:
                 self.delegate?.showAlertMessage("The server was unable to save this status change. Please forward this message to ptangen@ptangen.com")
-                break;
-                
-            case.noReply:
-                self.delegate?.showAlertMessage("The server is not available. Please forward this message to ptangen@ptangen.com")
                 break;
                 
             default:
                 break;
             }
-        }) // end apiClient.setSubjectiveStatus
+            self.store.resetTabValue(equity: self.equity)
+        })
     }
 
     
@@ -91,7 +89,7 @@ class MeasureDetailView: UIView {
         self.measureLongNameLabel.translatesAutoresizingMaskIntoConstraints = false
         self.measureLongNameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 80).isActive = true
         self.measureLongNameLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 10).isActive = true
-        self.measureLongNameLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -10).isActive = true
+        self.measureLongNameLabel.preferredMaxLayoutWidth = UIScreen.main.bounds.width - 20
         self.measureLongNameLabel.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.small.rawValue)
         self.measureLongNameLabel.numberOfLines = 0
         
@@ -114,22 +112,20 @@ class MeasureDetailView: UIView {
         self.statusValueDesc.translatesAutoresizingMaskIntoConstraints = false
         self.statusValueDesc.topAnchor.constraint(equalTo: self.statusIcon.topAnchor, constant: -2).isActive = true
         self.statusValueDesc.leftAnchor.constraint(equalTo: self.statusIcon.rightAnchor, constant: 8).isActive = true
-        //self.statusValueDesc.rightAnchor.constraint(equalTo: self.measureLongNameLabel.rightAnchor).isActive = true
         self.statusValueDesc.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.small.rawValue)
         
         // qStatusPicker
         self.addSubview(self.qStatusPicker)
         self.qStatusPicker.translatesAutoresizingMaskIntoConstraints = false
-        self.qStatusPicker.topAnchor.constraint(equalTo: self.statusValueDesc.bottomAnchor, constant: 20).isActive = true
-        self.qStatusPicker.leftAnchor.constraint(equalTo: self.statusLabel.leftAnchor).isActive = true
-        self.qStatusPicker.rightAnchor.constraint(equalTo: self.measureLongNameLabel.rightAnchor).isActive = true
-        self.qStatusPicker.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        self.qStatusPicker.topAnchor.constraint(equalTo: self.statusValueDesc.bottomAnchor, constant: 40).isActive = true
+        self.qStatusPicker.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        self.qStatusPicker.heightAnchor.constraint(equalToConstant: 50).isActive = true
         self.qStatusPicker.isHidden = true
         
         // resultsLabel
         self.addSubview(self.resultsLabel)
         self.resultsLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.resultsLabel.topAnchor.constraint(equalTo: self.statusLabel.bottomAnchor, constant: 10).isActive = true
+        self.resultsLabel.topAnchor.constraint(equalTo: self.statusLabel.bottomAnchor, constant: 30).isActive = true
         self.resultsLabel.leftAnchor.constraint(equalTo: self.statusLabel.leftAnchor).isActive = true
         self.resultsLabel.rightAnchor.constraint(equalTo: self.measureLongNameLabel.rightAnchor).isActive = true
         self.resultsLabel.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.small.rawValue)
@@ -149,6 +145,7 @@ class MeasureDetailView: UIView {
         self.measureCalcDescLabel.leftAnchor.constraint(equalTo: self.targetLabel.leftAnchor).isActive = true
         self.measureCalcDescLabel.rightAnchor.constraint(equalTo: self.targetLabel.rightAnchor).isActive = true
         self.measureCalcDescLabel.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.small.rawValue)
+        self.measureCalcDescLabel.preferredMaxLayoutWidth = UIScreen.main.bounds.width - 20
         self.measureCalcDescLabel.numberOfLines = 0
     }
     

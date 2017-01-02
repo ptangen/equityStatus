@@ -33,10 +33,9 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate  {
         // If we dont have the metadata for the equities, fetch it else use the metadata stored in coredata.
         if self.store.equitiesMetadata.count == 0 {
             
-            self.subTitle.text = "Loading 3,500 equities (just once) ..."
+            self.subTitle.text = "Loading equity metadata (just once) ..."
             self.showActivityIndicator(uiView: self)
             self.sellTableViewInst.isHidden = true
-            
 
             APIClient.getEquitiesMetadataFromDB() {
                 self.createSellEquitiesDict(sectionHeadings: "nameFirst")
@@ -145,13 +144,15 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate  {
     func createSellEquitiesDict(sectionHeadings: String) {
         // create a dictionary of the equity metadata by either first char of the ticker or name
         for equityMetadata in self.store.equitiesMetadata {
-            if sectionHeadings == "tickerFirst" {
-                if let tickerFirst = equityMetadata.tickerFirst {
-                    self.equitiesMetadataDict[tickerFirst] = []
-                }
-            } else {
-                if let nameFirst = equityMetadata.nameFirst {
-                    self.equitiesMetadataDict[nameFirst] = []
+            if equityMetadata.showInSellTab == true {
+                if sectionHeadings == "tickerFirst" {
+                    if let tickerFirst = equityMetadata.tickerFirst {
+                        self.equitiesMetadataDict[tickerFirst] = []
+                    }
+                } else {
+                    if let nameFirst = equityMetadata.nameFirst {
+                        self.equitiesMetadataDict[nameFirst] = []
+                    }
                 }
             }
         }
@@ -160,19 +161,20 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate  {
         for key in self.equitiesMetadataDict.keys {
             var valuesForCurrentKey: [String] = []
             for equityMetadata in self.store.equitiesMetadata {
-                if sectionHeadings == "tickerFirst" {
-                    if equityMetadata.tickerFirst == key {
-                        valuesForCurrentKey.append("\(equityMetadata.ticker!) (\(equityMetadata.name!))")
-                    }
-                } else {
-                    if equityMetadata.nameFirst == key {
-                        valuesForCurrentKey.append("\(equityMetadata.name!) (\(equityMetadata.ticker!))")
+                if equityMetadata.showInSellTab == true {
+                    if sectionHeadings == "tickerFirst" {
+                        if equityMetadata.tickerFirst == key {
+                            valuesForCurrentKey.append("\(equityMetadata.ticker!) (\(equityMetadata.name!))")
+                        }
+                    } else {
+                        if equityMetadata.nameFirst == key {
+                            valuesForCurrentKey.append("\(equityMetadata.name!) (\(equityMetadata.ticker!))")
+                        }
                     }
                 }
+                self.equitiesMetadataDict[key] = valuesForCurrentKey // append the array to the dictionary key
             }
-            self.equitiesMetadataDict[key] = valuesForCurrentKey // append the array to the dictionary key
         }
-        //dump(equitiesMetadataDict)
     }
     
     required init?(coder aDecoder: NSCoder) {

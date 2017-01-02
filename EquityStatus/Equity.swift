@@ -12,7 +12,7 @@ class Equity {
     
     var ticker: String
     var name: String
-    var tab: String
+    var tab: EquityTabValue
     var ROEaResult: Double
     var EPSiResult: Double
     var EPSvResult: Double
@@ -43,7 +43,7 @@ class Equity {
     var q6Status: String
     
     // use this initializer for equities on the details tab
-    init(ticker: String, name: String, tab: String, ROEaResult: Double, EPSiResult: Double, EPSvResult: Double, BViResult: Double, DRaResult: Double, SOrResult: Double, previousROIResult: Double, expectedROIResult: Double, ROEaStatus: String, EPSiStatus: String, EPSvStatus: String, BViStatus: String, DRaStatus: String, SOrStatus: String, previousROIStatus: String, expectedROIStatus: String, q1Answer: String, q2Answer: String, q3Answer: String, q4Answer: String, q5Answer: String, q6Answer: String, q1Status: String, q2Status: String, q3Status: String, q4Status: String, q5Status: String, q6Status: String) {
+    init(ticker: String, name: String, tab: EquityTabValue, ROEaResult: Double, EPSiResult: Double, EPSvResult: Double, BViResult: Double, DRaResult: Double, SOrResult: Double, previousROIResult: Double, expectedROIResult: Double, ROEaStatus: String, EPSiStatus: String, EPSvStatus: String, BViStatus: String, DRaStatus: String, SOrStatus: String, previousROIStatus: String, expectedROIStatus: String, q1Answer: String, q2Answer: String, q3Answer: String, q4Answer: String, q5Answer: String, q6Answer: String, q1Status: String, q2Status: String, q3Status: String, q4Status: String, q5Status: String, q6Status: String) {
         self.ticker = ticker
         self.name = name
         self.tab = tab
@@ -76,4 +76,11 @@ class Equity {
         self.q5Status = q5Status
         self.q6Status = q6Status
     }
+}
+
+enum EquityTabValue {
+    case buy
+    case evaluate
+    case sell
+    case notSet
 }

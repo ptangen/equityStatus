@@ -31,12 +31,12 @@
 		C07B9B351E16F8CC0093423E /* MeasureDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07B9B341E16F8CC0093423E /* MeasureDetailViewController.swift */; };
 		C07B9B371E16F99A0093423E /* MeasureDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07B9B361E16F99A0093423E /* MeasureDetailView.swift */; };
 		C07E6F6F1E11BCD1009AF89A /* FontAwesome.otf in Resources */ = {isa = PBXBuildFile; fileRef = C07E6F6E1E11BCD1009AF89A /* FontAwesome.otf */; };
-		C085E32B1E119E04008A7315 /* AnalysisTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C085E32A1E119E04008A7315 /* AnalysisTableViewCell.swift */; };
+		C085E32B1E119E04008A7315 /* EvaluationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C085E32A1E119E04008A7315 /* EvaluationTableViewCell.swift */; };
 		C0BF22261E085351005B7E55 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF22251E085351005B7E55 /* Utilities.swift */; };
 		C0BF22281E086191005B7E55 /* BuyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF22271E086191005B7E55 /* BuyViewController.swift */; };
 		C0BF222A1E0861B6005B7E55 /* BuyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF22291E0861B6005B7E55 /* BuyView.swift */; };
-		C0BF222C1E08686A005B7E55 /* AnalysisViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF222B1E08686A005B7E55 /* AnalysisViewController.swift */; };
-		C0BF222E1E086885005B7E55 /* AnalysisView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF222D1E086885005B7E55 /* AnalysisView.swift */; };
+		C0BF222C1E08686A005B7E55 /* EvaluationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF222B1E08686A005B7E55 /* EvaluationViewController.swift */; };
+		C0BF222E1E086885005B7E55 /* EvaluationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF222D1E086885005B7E55 /* EvaluationView.swift */; };
 		C0BF22301E0869B8005B7E55 /* SellViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF222F1E0869B8005B7E55 /* SellViewController.swift */; };
 		C0BF22321E086A03005B7E55 /* SellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF22311E086A03005B7E55 /* SellView.swift */; };
 		C0BF22341E086AA1005B7E55 /* TabsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF22331E086AA1005B7E55 /* TabsViewController.swift */; };
@@ -86,12 +86,12 @@
 		C07B9B341E16F8CC0093423E /* MeasureDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeasureDetailViewController.swift; sourceTree = "<group>"; };
 		C07B9B361E16F99A0093423E /* MeasureDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeasureDetailView.swift; sourceTree = "<group>"; };
 		C07E6F6E1E11BCD1009AF89A /* FontAwesome.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome.otf; sourceTree = "<group>"; };
-		C085E32A1E119E04008A7315 /* AnalysisTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalysisTableViewCell.swift; sourceTree = "<group>"; };
+		C085E32A1E119E04008A7315 /* EvaluationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EvaluationTableViewCell.swift; sourceTree = "<group>"; };
 		C0BF22251E085351005B7E55 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		C0BF22271E086191005B7E55 /* BuyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuyViewController.swift; sourceTree = "<group>"; };
 		C0BF22291E0861B6005B7E55 /* BuyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuyView.swift; sourceTree = "<group>"; };
-		C0BF222B1E08686A005B7E55 /* AnalysisViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalysisViewController.swift; sourceTree = "<group>"; };
-		C0BF222D1E086885005B7E55 /* AnalysisView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnalysisView.swift; sourceTree = "<group>"; };
+		C0BF222B1E08686A005B7E55 /* EvaluationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EvaluationViewController.swift; sourceTree = "<group>"; };
+		C0BF222D1E086885005B7E55 /* EvaluationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EvaluationView.swift; sourceTree = "<group>"; };
 		C0BF222F1E0869B8005B7E55 /* SellViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SellViewController.swift; sourceTree = "<group>"; };
 		C0BF22311E086A03005B7E55 /* SellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SellView.swift; sourceTree = "<group>"; };
 		C0BF22331E086AA1005B7E55 /* TabsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabsViewController.swift; sourceTree = "<group>"; };
@@ -199,7 +199,7 @@
 			children = (
 				C0409F871E0743CD00BEC5DD /* SignInViewController.swift */,
 				C0BF22271E086191005B7E55 /* BuyViewController.swift */,
-				C0BF222B1E08686A005B7E55 /* AnalysisViewController.swift */,
+				C0BF222B1E08686A005B7E55 /* EvaluationViewController.swift */,
 				C0BF222F1E0869B8005B7E55 /* SellViewController.swift */,
 				C0BF22331E086AA1005B7E55 /* TabsViewController.swift */,
 				C02D50A21E159BCD0000330F /* EquityDetailViewController.swift */,
@@ -213,8 +213,8 @@
 			children = (
 				C0409FA61E0745D400BEC5DD /* SignInView.swift */,
 				C0BF22291E0861B6005B7E55 /* BuyView.swift */,
-				C0BF222D1E086885005B7E55 /* AnalysisView.swift */,
-				C085E32A1E119E04008A7315 /* AnalysisTableViewCell.swift */,
+				C0BF222D1E086885005B7E55 /* EvaluationView.swift */,
+				C085E32A1E119E04008A7315 /* EvaluationTableViewCell.swift */,
 				C0BF22311E086A03005B7E55 /* SellView.swift */,
 				C02D509E1E12F2BE0000330F /* SellTableViewCell.swift */,
 				C02D50A41E159C2D0000330F /* EquityDetailView.swift */,
@@ -474,9 +474,9 @@
 				C0BF22301E0869B8005B7E55 /* SellViewController.swift in Sources */,
 				C069F5681E0830EC00913486 /* DataStore.swift in Sources */,
 				C0D2FF7A1E0C8E4400871EA3 /* KeychainWrapper.m in Sources */,
-				C0BF222C1E08686A005B7E55 /* AnalysisViewController.swift in Sources */,
+				C0BF222C1E08686A005B7E55 /* EvaluationViewController.swift in Sources */,
 				C02D509D1E12AB8D0000330F /* EquityStatus.xcdatamodeld in Sources */,
-				C0BF222E1E086885005B7E55 /* AnalysisView.swift in Sources */,
+				C0BF222E1E086885005B7E55 /* EvaluationView.swift in Sources */,
 				C0BF222A1E0861B6005B7E55 /* BuyView.swift in Sources */,
 				C0409F881E0743CD00BEC5DD /* SignInViewController.swift in Sources */,
 				C0BF22341E086AA1005B7E55 /* TabsViewController.swift in Sources */,
@@ -491,7 +491,7 @@
 				C02D50A11E154F020000330F /* Equity.swift in Sources */,
 				C07B9B351E16F8CC0093423E /* MeasureDetailViewController.swift in Sources */,
 				C05FC1161E09B5FE008EA907 /* ChartStringFormatter.swift in Sources */,
-				C085E32B1E119E04008A7315 /* AnalysisTableViewCell.swift in Sources */,
+				C085E32B1E119E04008A7315 /* EvaluationTableViewCell.swift in Sources */,
 				C061ED0C1E0784B000081030 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

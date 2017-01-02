@@ -31,16 +31,16 @@ class TabsViewController: UITabBarController, UITabBarControllerDelegate {
         tabBuy.tabBarItem = tabBuyBarItem
         
         // Create Tab Analysis
-        let tabAnalysis = AnalysisViewController()
-        let tabAnalysisBarItem = UITabBarItem(title: "Analysis Required", image: UIImage(named: "insert_chart"), selectedImage: UIImage(named: "insert_chart"))
-        tabAnalysis.tabBarItem = tabAnalysisBarItem
+        let tabEvaluation = EvaluationViewController()
+        let tabEvaluationBarItem = UITabBarItem(title: "Evaluate", image: UIImage(named: "insert_chart"), selectedImage: UIImage(named: "insert_chart"))
+        tabEvaluation.tabBarItem = tabEvaluationBarItem
         
         // Create Tab Sell
         let tabSell = SellViewController()
         let tabSellBarItem = UITabBarItem(title: "Sell", image: UIImage(named: "not_interested"), selectedImage: UIImage(named: "not_interested"))
         tabSell.tabBarItem = tabSellBarItem
         
-        self.viewControllers = [tabBuy, tabAnalysis, tabSell]
+        self.viewControllers = [tabBuy, tabEvaluation, tabSell]
         
         // add the menu button to the nav bar
         let menuButton = UIBarButtonItem(title: Constants.iconLibrary.menu.rawValue, style: .plain, target: self, action: #selector(menuButtonClicked))

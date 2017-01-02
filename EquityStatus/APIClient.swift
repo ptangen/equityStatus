@@ -59,10 +59,8 @@ class APIClient {
     
     class func setSubjectiveStatus(ticker: String, question: String, status: String, equity: Equity, completion: @escaping (apiResponse) -> Void) {
         
-//        guard let ticker = ticker else { fatalError() }
-//        guard let question = question else { fatalError() }
-//        guard let value = value else { fatalError() }
-        
+        let store = DataStore.sharedInstance
+
         let urlString = "\(Secrets.apiURL)setSubjectiveStatus.php"
         var request = URLRequest(url: URL(string: urlString)!)
         
@@ -78,7 +76,6 @@ class APIClient {
                 DispatchQueue.main.async {
                     do {
                         let json = try JSONSerialization.jsonObject(with: data, options: []) as! [String : Int]
-                        
                         if let results = json["results"] {
                             if results == 1 {
                                 // update the equity
@@ -129,7 +126,7 @@ class APIClient {
                         guard let unwrappedTicker = metadataDict["ticker"] else { fatalError() }
                         guard let unwrappedNameFirst = metadataDict["name"]?.characters.first else { print("Unable to get first initial of name."); return; }
                         guard let unwrappedTickerFirst = metadataDict["ticker"]?.characters.first else { print("Unable to get first initial of ticker."); return; }
-                            
+                        
                         DataStore.createEquityMetadata(name: unwrappedName, nameFirst: String(unwrappedNameFirst), ticker: unwrappedTicker, tickerFirst: String(unwrappedTickerFirst))
                     }
                     completion()
@@ -210,18 +207,10 @@ class APIClient {
                         guard let unwrappedQ5Status = equityDict["q5Status"] else { fatalError() }
                         guard let unwrappedQ6Status = equityDict["q6Status"] else { fatalError() }
                         
-                        // determine which tab the equity will be displayed
-                        var tabValue:String = String()
-                        if mode == "pass,noData" {
-                            tabValue = "analysis"
-                        } else {
-                            tabValue = "buy"
-                        }
-                        
                         let equityInst = Equity(
                             ticker: unwrappedTicker,
                             name: unwrappedName,
-                            tab: tabValue,
+                            tab: .notSet,
                             ROEaResult: unwrappedROEaResult,
                             EPSiResult: unwrappedEPSiResult,
                             EPSvResult: unwrappedEPSvResult,
@@ -251,7 +240,11 @@ class APIClient {
                             q5Status: unwrappedQ5Status,
                             q6Status: unwrappedQ6Status)
                         
-                        store.equities.append(equityInst)
+                        // add the new tickers to the datastore and set the tab value
+                        if store.getEquityByTickerFromStore(ticker: equityInst.ticker) == nil {
+                            store.equities.append(equityInst)
+                            store.resetTabValue(equity: equityInst)
+                        }
                     }
                     completion()
                 } catch {

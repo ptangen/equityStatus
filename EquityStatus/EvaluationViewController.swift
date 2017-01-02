@@ -1,5 +1,5 @@
 //
-//  AnalysisViewController.swift
+//  EvaluationViewController.swift
 //  EquityStatus
 //
 //  Created by Paul Tangen on 12/19/16.
@@ -8,15 +8,14 @@
 
 import UIKit
 
-class AnalysisViewController: UIViewController, AnalysisViewDelegate {
+class EvaluationViewController: UIViewController, EvaluationViewDelegate {
     
-    var analysisViewInst: AnalysisView!
+    var evaluationViewInst: EvaluationView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         //self.title = "Analysis Required"  // only used in tabBar Controller's didSelect
-        self.analysisViewInst.delegate = self
-        print("viewDidLoad")
+        self.evaluationViewInst.delegate = self
     }
 
     override func didReceiveMemoryWarning() {
@@ -24,16 +23,14 @@ class AnalysisViewController: UIViewController, AnalysisViewDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.analysisViewInst.createEquitiesForAnalysis()
-        self.analysisViewInst.analysisTableViewInst.reloadData()
-        print("viewWillAppear")
+        self.evaluationViewInst.createEquitiesForEvaluation()
+        self.evaluationViewInst.evaluationTableViewInst.reloadData()
     }
     
     override func loadView(){
         // load the view into the view controller
-        self.analysisViewInst = AnalysisView(frame: CGRect.zero)
-        self.view = self.analysisViewInst
-        print("loadView")
+        self.evaluationViewInst = EvaluationView(frame: CGRect.zero)
+        self.view = self.evaluationViewInst
     }
     
     func openEquityDetail(_ equity: Equity) {
