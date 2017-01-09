@@ -34,7 +34,7 @@ class EvaluationTableViewCell: UITableViewCell {
 
             let leftConstant: CGFloat = leftMargin + (CGFloat(i) * spacer)
             measureIcon.leftAnchor.constraint(equalTo: self.leftAnchor, constant: leftConstant).isActive = true
-            measureIcon.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -4).isActive = true
+            measureIcon.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -2).isActive = true
             
             statusIcons.append(measureIcon) // add the icons to an array so you can iterate through them and set the icon in cellForRowAt
         }

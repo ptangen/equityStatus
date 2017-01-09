@@ -22,9 +22,9 @@ struct Constants{
     }
     
     enum iconLibrary: String {
-        case chevron_left =     "\u{E5CB}"
-        case chevron_right =    "\u{E5CC}"
-        case close =            "\u{E5CD}"
+        //case chevron_left =     "\u{E5CB}"
+        //case chevron_right =    "\u{E5CC}"
+        //case close =            "\u{E5CD}"
         case menu =             "\u{E5D2}"
         case faCheckCircle =    "\u{f058}"
         case faTimesCircle =    "\u{f057}"
@@ -32,7 +32,7 @@ struct Constants{
     }
     
     enum iconSize: Int {
-        case xsmall = 16
+        case xsmall = 20
         case small = 24
         case medium = 36
         case large = 72
@@ -68,8 +68,8 @@ struct Constants{
     enum measureTargetDesc: String {
         case ROEa = "greater than or equal to 12%"
         case EPSi = "greater than or equal to 12% "
-        case previousROI = "greater than or equal to 12%  "
-        case expectedROI = "greater than or equal to 12%   "
+        case previousROI = "greater than or equal to 20%"
+        case expectedROI = "greater than or equal to 15%"
         case EPSv = "less than or equal to 1.5"
         case BVi = "greater than or equal to 5%"
         case DRa = "less than or equal to 5"
@@ -91,18 +91,19 @@ struct Constants{
 
 extension UIColor {
     enum ColorName : UInt32 {
-        case gold =     0xFFCC66ff
-        case blue =     0x174BB2ff
-        case white =    0xffffffff
-        case beige =    0xf5d1b1ff
-        case black =    0x999999ff
-        case gray3 =    0x333333ff
-        case orange =   0xFF851Bff
+        //case gold =     0xFFCC66ff
+        case blue =     0x0096EAff
+        case statusBarBlue = 0x0076B7ff
+        //case white =    0xffffffff
+        //case beige =    0xf5d1b1ff
+        //case black =    0x999999ff
+        //case gray3 =    0x333333ff
+        //case orange =   0xFF851Bff
         case disabledText = 0xCCCCCCff
-        case loginGray = 0xCAD0DCff
-        case loginTan = 0x91623eff
-        case statusGreen =  0x53d769ff
-        case statusRed =  0xdf1a21ff
+        //case loginGray =    0xCAD0DCff
+        case brown =        0x7b4e21ff
+        case statusGreen =  0x3DB66Fff
+        case statusRed =    0xdf1a21ff
     }
 }
 

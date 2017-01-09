@@ -25,7 +25,7 @@ class SignInView: UIView, UITextFieldDelegate {
     let passwordField: UITextField = UITextField()
     let signInButton: UIButton = UIButton()
     let touchIDButton: UIButton = UIButton()
-    var bullImage: UIImageView = UIImageView() //frame: CGRect(x: -640, y: 170, width: 1586, height: 510))
+    var bullImage: UIImageView = UIImageView()
     var userNamePopulated: Bool = false
     var passwordPopulated: Bool = false
     
@@ -173,7 +173,7 @@ class SignInView: UIView, UITextFieldDelegate {
         self.signInButton.alpha = 0.3
     }
 
-    // monitors the email/password fields and handles the client side validation
+    // monitors the username/password fields and handles the client side validation
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         switch textField.tag {
         case 100:   // check to see if email has a value
@@ -214,7 +214,7 @@ class SignInView: UIView, UITextFieldDelegate {
         self.welcomeLabel.translatesAutoresizingMaskIntoConstraints = false
         self.welcomeLabel.text = "Welcome to"
         self.welcomeLabel.textAlignment = .center
-        self.welcomeLabel.textColor = UIColor(named: UIColor.ColorName.loginGray)
+        self.welcomeLabel.textColor = UIColor.white
         
         self.welcomeLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         self.welcomeLabel.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
@@ -227,7 +227,7 @@ class SignInView: UIView, UITextFieldDelegate {
         self.equityStatusLabel.text = "Equity Status"
         self.equityStatusLabel.translatesAutoresizingMaskIntoConstraints = false
         self.equityStatusLabel.textAlignment = .center
-        self.equityStatusLabel.textColor = UIColor(named: UIColor.ColorName.loginGray)
+        self.equityStatusLabel.textColor = UIColor.white
         self.equityStatusLabel.font = UIFont(name: Constants.appFont.bold.rawValue, size: Constants.fontSize.xlarge.rawValue)
         self.addSubview(self.equityStatusLabel)
         
@@ -268,7 +268,7 @@ class SignInView: UIView, UITextFieldDelegate {
         self.addSubview(self.signInButton)
         self.signInButton.translatesAutoresizingMaskIntoConstraints = false
         self.signInButton.setTitle("  Sign In  ", for: .normal)
-        self.signInButton.backgroundColor = UIColor(named: UIColor.ColorName.loginTan)
+        self.signInButton.backgroundColor = UIColor(named: UIColor.ColorName.brown)
         self.signInButton.isEnabled = false
         self.signInButton.alpha = 0.3
         

@@ -76,7 +76,7 @@ class EvaluationView: UIView, UITableViewDataSource, UITableViewDelegate {
         self.addSubview(self.evaluationTableViewInst)
         self.evaluationTableViewInst.translatesAutoresizingMaskIntoConstraints = false
         self.evaluationTableViewInst.topAnchor.constraint(equalTo: self.subTitle.bottomAnchor, constant: 0).isActive = true
-        self.evaluationTableViewInst.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 180).isActive = true
+        self.evaluationTableViewInst.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -50).isActive = true
         self.evaluationTableViewInst.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0).isActive = true
         self.evaluationTableViewInst.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -10).isActive = true
         

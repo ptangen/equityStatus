@@ -16,10 +16,12 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate  {
     
     weak var delegate: SellViewDelegate?
     let store = DataStore.sharedInstance
-    var equitiesMetadataDict: [String:[String]] = [:]
+    var filteredEquitiesMetadata = [EquityMetadata]()
     let sellTableViewInst = UITableView()
     let activityIndicator: UIView = UIView()
     let subTitle: UILabel = UILabel()
+    
+    let searchController = UISearchController(searchResultsController: nil)
         
     override init(frame:CGRect){
         super.init(frame: frame)
@@ -30,25 +32,24 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate  {
         self.sellTableViewInst.separatorColor = UIColor.clear
         self.pageLayout()
         
+        self.searchController.searchResultsUpdater = self
+        self.searchController.dimsBackgroundDuringPresentation = false
+        
+        self.sellTableViewInst.tableHeaderView = self.searchController.searchBar
+        
         // If we dont have the metadata for the equities, fetch it else use the metadata stored in coredata.
         if self.store.equitiesMetadata.count == 0 {
             
-            self.subTitle.text = "Loading equity metadata (just once) ..."
             self.showActivityIndicator(uiView: self)
             self.sellTableViewInst.isHidden = true
 
             APIClient.getEquitiesMetadataFromDB() {
-                self.createSellEquitiesDict(sectionHeadings: "nameFirst")
                 OperationQueue.main.addOperation {
-                    self.subTitle.text = "Equities with one or more failed measures."
                     self.activityIndicator.isHidden = true
                     self.sellTableViewInst.isHidden = false
                     self.sellTableViewInst.reloadData()
                 }
             }
-        } else {
-            self.subTitle.text = "Equities with one or more failed measures."
-            self.createSellEquitiesDict(sectionHeadings: "nameFirst")
         }
     }
     
@@ -66,28 +67,17 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate  {
         actInd.startAnimating()
     }
     
-    
     // tableview config
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return self.equitiesMetadataDict.keys.count
-    }
-    
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return Array(self.equitiesMetadataDict.keys).sorted()[section]
-    }
-    
-    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        let header: UITableViewHeaderFooterView = view as! UITableViewHeaderFooterView
-        header.contentView.backgroundColor = UIColor(named: UIColor.ColorName(rawValue: UIColor.ColorName.gold.rawValue)!)
-        header.textLabel?.textColor = UIColor(named: UIColor.ColorName.white)
-        header.textLabel?.font = UIFont(name: Constants.appFont.bold.rawValue, size: Constants.fontSize.small.rawValue)
-        header.alpha = 0.8
+        return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let keys = Array(self.equitiesMetadataDict.keys).sorted()
-        return self.equitiesMetadataDict[keys[section]]!.count
+        if searchController.isActive && searchController.searchBar.text != "" {
+            return filteredEquitiesMetadata.count
+        }
+        return self.store.equitiesMetadata.count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
@@ -96,42 +86,41 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate  {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = SellTableViewCell(style: .default, reuseIdentifier: "prototype")
-        let keys = Array(self.equitiesMetadataDict.keys).sorted()
-        let currentKey = keys[indexPath.section]
-        let currentSectionValues = self.equitiesMetadataDict[currentKey]
-        let itemTitle = currentSectionValues?[indexPath.row]
-        cell.textLabel?.text = itemTitle
+        let equityMetadata: EquityMetadata
+        if searchController.isActive && searchController.searchBar.text != "" {
+            equityMetadata = self.filteredEquitiesMetadata[indexPath.row]
+        } else {
+            equityMetadata = self.store.equitiesMetadata[indexPath.row]
+        }
+        cell.textLabel?.text = equityMetadata.name! +  " (" + equityMetadata.ticker! + ")"
         return cell
     }
     
-    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        return Array(self.equitiesMetadataDict.keys).sorted()
-    }
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let keys = Array(self.equitiesMetadataDict.keys).sorted()
-        let currentKey = keys[indexPath.section]
-        let currentSectionValues = self.equitiesMetadataDict[currentKey]
-        let itemTitle = currentSectionValues?[indexPath.row]
-        self.delegate?.openDetail(itemTitle!)
+        
+        if searchController.isActive && searchController.searchBar.text != "" {
+            self.delegate?.openDetail(self.filteredEquitiesMetadata[indexPath.row].ticker!)
+        } else {
+            self.delegate?.openDetail(self.store.equitiesMetadata[indexPath.row].ticker!)
+        }
     }
-    // end tableview config
     
+    func filterContentForSearchText(searchText: String, scope: String = "All") {
+        self.filteredEquitiesMetadata = self.store.equitiesMetadata.filter { equityMetadata in
+            let nameAndTicker = equityMetadata.name! + equityMetadata.ticker!
+            return nameAndTicker.lowercased().contains(searchText.lowercased())
+        }
+        self.sellTableViewInst.reloadData()
+    }
     
     func pageLayout() {
-        // subtitle
-        self.addSubview(self.subTitle)
-        self.subTitle.translatesAutoresizingMaskIntoConstraints = false
-        self.subTitle.topAnchor.constraint(equalTo: self.topAnchor, constant: 80).isActive = true
-        self.subTitle.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 10).isActive = true
-        self.subTitle.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.small.rawValue)
         
         self.addSubview(self.sellTableViewInst)
         self.sellTableViewInst.translatesAutoresizingMaskIntoConstraints = false
-        self.sellTableViewInst.topAnchor.constraint(equalTo: self.subTitle.bottomAnchor, constant: 6).isActive = true
+        self.sellTableViewInst.topAnchor.constraint(equalTo: self.topAnchor, constant: 0).isActive = true
         self.sellTableViewInst.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -50).isActive = true
         self.sellTableViewInst.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0).isActive = true
-        self.sellTableViewInst.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -10).isActive = true
+        self.sellTableViewInst.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0).isActive = true
         
         self.addSubview(self.activityIndicator)
         self.activityIndicator.translatesAutoresizingMaskIntoConstraints = false
@@ -141,44 +130,13 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate  {
         self.activityIndicator.widthAnchor.constraint(equalToConstant: 80).isActive = true
     }
     
-    func createSellEquitiesDict(sectionHeadings: String) {
-        // create a dictionary of the equity metadata by either first char of the ticker or name
-        for equityMetadata in self.store.equitiesMetadata {
-            if equityMetadata.showInSellTab == true {
-                if sectionHeadings == "tickerFirst" {
-                    if let tickerFirst = equityMetadata.tickerFirst {
-                        self.equitiesMetadataDict[tickerFirst] = []
-                    }
-                } else {
-                    if let nameFirst = equityMetadata.nameFirst {
-                        self.equitiesMetadataDict[nameFirst] = []
-                    }
-                }
-            }
-        }
-        
-        // add the dictionary values to the keys
-        for key in self.equitiesMetadataDict.keys {
-            var valuesForCurrentKey: [String] = []
-            for equityMetadata in self.store.equitiesMetadata {
-                if equityMetadata.showInSellTab == true {
-                    if sectionHeadings == "tickerFirst" {
-                        if equityMetadata.tickerFirst == key {
-                            valuesForCurrentKey.append("\(equityMetadata.ticker!) (\(equityMetadata.name!))")
-                        }
-                    } else {
-                        if equityMetadata.nameFirst == key {
-                            valuesForCurrentKey.append("\(equityMetadata.name!) (\(equityMetadata.ticker!))")
-                        }
-                    }
-                }
-                self.equitiesMetadataDict[key] = valuesForCurrentKey // append the array to the dictionary key
-            }
-        }
-    }
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+}
 
+extension SellView: UISearchResultsUpdating {
+    public func updateSearchResults(for searchController: UISearchController) {
+        self.filterContentForSearchText(searchText: self.searchController.searchBar.text!)
+    }
 }

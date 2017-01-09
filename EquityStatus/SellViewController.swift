@@ -17,6 +17,7 @@ class SellViewController: UIViewController, SellViewDelegate {
         super.viewDidLoad()
         //self.title = "Sell" // only used in tabBar Controller's didSelect
         self.sellViewInst.delegate = self
+        definesPresentationContext = true  // for searchbar
     }
 
     override func didReceiveMemoryWarning() {
@@ -29,10 +30,7 @@ class SellViewController: UIViewController, SellViewDelegate {
         self.view = self.sellViewInst
     }
     
-    func openDetail(_ rowItem: String) {
-
-        // extract the ticker from the rowItem
-        let ticker = Utilities.getTickerFromLabel(fullString: rowItem)
+    func openDetail(_ ticker: String) {
 
         // try to get the equity from the dataStore, if it is not there fetch it from the API
         if let equity = store.getEquityByTickerFromStore(ticker: ticker) {

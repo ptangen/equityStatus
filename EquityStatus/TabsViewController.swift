@@ -25,6 +25,8 @@ class TabsViewController: UITabBarController, UITabBarControllerDelegate {
         self.title = "Equity Status"
         self.navigationItem.hidesBackButton = true
         
+        UITabBar.appearance().tintColor = UIColor(named: UIColor.ColorName.statusBarBlue)
+        
         // Create Tab Buy
         let tabBuy = BuyViewController()
         let tabBuyBarItem = UITabBarItem(title: "Buy", image: UIImage(named: "sentiment_satisfied"), selectedImage: UIImage(named: "sentiment_satisfied"))
@@ -43,12 +45,7 @@ class TabsViewController: UITabBarController, UITabBarControllerDelegate {
         self.viewControllers = [tabBuy, tabEvaluation, tabSell]
         
         // add the menu button to the nav bar
-        let menuButton = UIBarButtonItem(title: Constants.iconLibrary.menu.rawValue, style: .plain, target: self, action: #selector(menuButtonClicked))
-        let menuButtonAttributes = [
-            NSForegroundColorAttributeName: UIColor(named: .blue),
-            NSFontAttributeName: UIFont(name: Constants.iconFont.material.rawValue, size: CGFloat(Constants.iconSize.small.rawValue))
-        ]
-        menuButton.setTitleTextAttributes(menuButtonAttributes, for: .normal)
+        let menuButton = UIBarButtonItem(image: #imageLiteral(resourceName: "menu"), style: .plain, target: self, action: #selector(menuButtonClicked))
         self.navigationItem.rightBarButtonItems = [menuButton]
         self.navigationItem.setHidesBackButton(true, animated:false);
     }

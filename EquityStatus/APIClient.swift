@@ -59,8 +59,6 @@ class APIClient {
     
     class func setSubjectiveStatus(ticker: String, question: String, status: String, equity: Equity, completion: @escaping (apiResponse) -> Void) {
         
-        let store = DataStore.sharedInstance
-
         let urlString = "\(Secrets.apiURL)setSubjectiveStatus.php"
         var request = URLRequest(url: URL(string: urlString)!)
         

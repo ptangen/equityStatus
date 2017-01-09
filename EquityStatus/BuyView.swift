@@ -38,7 +38,7 @@ class BuyView: UIView, ChartViewDelegate {
             APIClient.getEquitiesFromDB(mode: "pass,passOrNoData"){
                 self.createEquitiesForBuy()
                 OperationQueue.main.addOperation {
-                    self.subTitle.text = "Approved equites and expected returns."
+                    self.subTitle.text = "Approved equities and expected returns."
                     self.updateChartWithData()
                     self.activityIndicator.isHidden = true
                     self.barChartView.isHidden = false
@@ -143,9 +143,9 @@ class BuyView: UIView, ChartViewDelegate {
         }
         
         let chartDataSet = BarChartDataSet(values: dataEntries, label: "")
-        chartDataSet.colors = [UIColor(named: UIColor.ColorName.blue)]
-        chartDataSet.valueFont = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.xsmall.rawValue)!
-        chartDataSet.valueTextColor = UIColor(named: UIColor.ColorName.white)
+        chartDataSet.colors = [UIColor(named: UIColor.ColorName.statusGreen)]
+        chartDataSet.valueFont = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.small.rawValue)!
+        chartDataSet.valueTextColor = UIColor.white
         chartDataSet.valueFormatter = percentFormatter      // formats the values into a %
         let chartData = BarChartData(dataSet: chartDataSet)
         barChartView.drawValueAboveBarEnabled = false       // places values inside the bars

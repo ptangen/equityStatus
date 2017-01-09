@@ -13,8 +13,17 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    let statusBarBackground = UIView(frame: CGRect(x: 0, y: 0, width: 500, height: 20))
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        
+        // set nav bar colors
+        let navigationBarAppearance = UINavigationBar.appearance()
+        navigationBarAppearance.tintColor = UIColor(named: UIColor.ColorName.blue)
+        navigationBarAppearance.barTintColor = UIColor(named: UIColor.ColorName.blue)
+        navigationBarAppearance.titleTextAttributes = [NSForegroundColorAttributeName : UIColor.white]
+        statusBarBackground.backgroundColor = UIColor(named: UIColor.ColorName.statusBarBlue)
+        UIApplication.shared.statusBarStyle = .lightContent // sets status bar text color white
         
         //let signInViewControllerInst = SignInViewController()
         let tabViewControllerInst = TabsViewController()
@@ -23,6 +32,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window!.backgroundColor = UIColor.white
         //let navigationController = UINavigationController(rootViewController: signInViewControllerInst) // show signIn on startup
         let navigationController = UINavigationController(rootViewController: tabViewControllerInst) // show analysis on startup
+        navigationController.view.addSubview(statusBarBackground)
+        navigationController.navigationBar.tintColor = UIColor.white
         
         self.window!.rootViewController = navigationController
         self.window!.makeKeyAndVisible()
