@@ -11,6 +11,8 @@ import XCTest
 
 class EquityStatusTests: XCTestCase {
     
+    let store = DataStore.sharedInstance
+    
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -21,9 +23,20 @@ class EquityStatusTests: XCTestCase {
         super.tearDown()
     }
     
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testForEquity() {
+        // This test should pass after the buy or evaluate tab is populated with one or more equities.
+        // A pass here means data was retrieved and the equities array was created successfully.
+        if let equity = store.equities.first {
+            XCTAssertNotNil(equity.ticker)
+        }
+    }
+    
+    func testForEquityMetadata() {
+        // This test should pass after the sell tab was opened and data was fetched.
+        // A pass here means data was retrieved, coredata was populated and the equitiesMetadata array was created successfully.
+        if let equityMetadata = store.equitiesMetadata.first {
+            XCTAssertNotNil(equityMetadata.ticker)
+        }
     }
     
     func testPerformanceExample() {
