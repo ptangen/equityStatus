@@ -96,7 +96,6 @@
 		C0BF22311E086A03005B7E55 /* SellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SellView.swift; sourceTree = "<group>"; };
 		C0BF22331E086AA1005B7E55 /* TabsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabsViewController.swift; sourceTree = "<group>"; };
 		C0C87C4A1E11838000759947 /* PercentValueFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PercentValueFormatter.swift; sourceTree = "<group>"; };
-		C0D2FF6D1E0C1E3C00871EA3 /* EquityStatus.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = EquityStatus.entitlements; sourceTree = "<group>"; };
 		C0D2FF771E0C8E3200871EA3 /* KeychainWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainWrapper.h; sourceTree = "<group>"; };
 		C0D2FF781E0C8E4400871EA3 /* EquityStatus-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EquityStatus-Bridging-Header.h"; sourceTree = "<group>"; };
 		C0D2FF791E0C8E4400871EA3 /* KeychainWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainWrapper.m; sourceTree = "<group>"; };
@@ -166,7 +165,6 @@
 		C0409F841E0743CD00BEC5DD /* EquityStatus */ = {
 			isa = PBXGroup;
 			children = (
-				C0D2FF6D1E0C1E3C00871EA3 /* EquityStatus.entitlements */,
 				C069F5651E082FFD00913486 /* Models */,
 				C0409FA81E0745DE00BEC5DD /* Views */,
 				C0409FA51E07459600BEC5DD /* View Controllers */,
