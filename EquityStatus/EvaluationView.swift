@@ -36,7 +36,7 @@ class EvaluationView: UIView, UITableViewDataSource, UITableViewDelegate {
             self.showActivityIndicator(uiView: self)
             self.evaluationTableViewInst.isHidden = true
             
-            APIClient.getEquitiesFromDB(mode: "pass,pass||noData"){
+            APIClient.getEquitiesFromDB(mode: "pass,passOrNoData"){
                 OperationQueue.main.addOperation {
                     self.subTitle.text = "Evaluate the subjective measures for these equities."
                     self.activityIndicator.isHidden = true

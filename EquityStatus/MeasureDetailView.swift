@@ -36,7 +36,7 @@ class MeasureDetailView: UIView {
         self.qStatusPicker.insertSegment(withTitle: Constants.iconLibrary.faCircleO.rawValue, at: 0, animated: true)
         self.qStatusPicker.insertSegment(withTitle: Constants.iconLibrary.faCheckCircle.rawValue, at: 1, animated: true)
         self.qStatusPicker.insertSegment(withTitle: Constants.iconLibrary.faTimesCircle.rawValue, at: 2, animated: true)
-        self.qStatusPicker.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: Constants.iconFont.fontAwesome.rawValue , size: CGFloat(Constants.iconSize.small.rawValue))! ], for: .normal)
+        self.qStatusPicker.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: Constants.iconFont.fontAwesome.rawValue, size: Constants.iconSize.small.rawValue)! ], for: .normal)
         
         let segmentButtonWidth = UIScreen.main.bounds.width / 4
         self.qStatusPicker.setWidth(segmentButtonWidth, forSegmentAt: 0)
@@ -104,14 +104,14 @@ class MeasureDetailView: UIView {
         // statusIcon
         self.addSubview(self.statusIcon)
         self.statusIcon.translatesAutoresizingMaskIntoConstraints = false
-        self.statusIcon.topAnchor.constraint(equalTo: self.statusLabel.topAnchor, constant: 2).isActive = true
+        self.statusIcon.topAnchor.constraint(equalTo: self.statusLabel.topAnchor, constant: 0).isActive = true
         self.statusIcon.leftAnchor.constraint(equalTo: self.statusLabel.rightAnchor, constant: 8).isActive = true
-        self.statusIcon.font = UIFont(name: Constants.iconFont.fontAwesome.rawValue, size: Constants.fontSize.small.rawValue)
+        self.statusIcon.font = UIFont(name: Constants.iconFont.fontAwesome.rawValue, size: Constants.iconSize.xsmall.rawValue)
         
         // statusValueDesc
         self.addSubview(self.statusValueDesc)
         self.statusValueDesc.translatesAutoresizingMaskIntoConstraints = false
-        self.statusValueDesc.topAnchor.constraint(equalTo: self.statusIcon.topAnchor, constant: -2).isActive = true
+        self.statusValueDesc.topAnchor.constraint(equalTo: self.statusIcon.topAnchor, constant: 0).isActive = true
         self.statusValueDesc.leftAnchor.constraint(equalTo: self.statusIcon.rightAnchor, constant: 8).isActive = true
         self.statusValueDesc.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.small.rawValue)
         
@@ -126,7 +126,7 @@ class MeasureDetailView: UIView {
         // resultsLabel
         self.addSubview(self.resultsLabel)
         self.resultsLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.resultsLabel.topAnchor.constraint(equalTo: self.statusLabel.bottomAnchor, constant: 30).isActive = true
+        self.resultsLabel.topAnchor.constraint(equalTo: self.statusLabel.bottomAnchor, constant: 10).isActive = true
         self.resultsLabel.leftAnchor.constraint(equalTo: self.statusLabel.leftAnchor).isActive = true
         self.resultsLabel.rightAnchor.constraint(equalTo: self.measureLongNameLabel.rightAnchor).isActive = true
         self.resultsLabel.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.small.rawValue)

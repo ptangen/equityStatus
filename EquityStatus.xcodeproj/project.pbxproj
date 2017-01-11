@@ -41,6 +41,8 @@
 		C0BF22321E086A03005B7E55 /* SellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF22311E086A03005B7E55 /* SellView.swift */; };
 		C0BF22341E086AA1005B7E55 /* TabsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF22331E086AA1005B7E55 /* TabsViewController.swift */; };
 		C0C87C4B1E11838000759947 /* PercentValueFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C87C4A1E11838000759947 /* PercentValueFormatter.swift */; };
+		C0CE45581E258EB3006FEF87 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CE45571E258EB3006FEF87 /* InfoViewController.swift */; };
+		C0CE455A1E258EDB006FEF87 /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CE45591E258EDB006FEF87 /* InfoView.swift */; };
 		C0D2FF7A1E0C8E4400871EA3 /* KeychainWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = C0D2FF791E0C8E4400871EA3 /* KeychainWrapper.m */; };
 /* End PBXBuildFile section */
 
@@ -96,6 +98,8 @@
 		C0BF22311E086A03005B7E55 /* SellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SellView.swift; sourceTree = "<group>"; };
 		C0BF22331E086AA1005B7E55 /* TabsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabsViewController.swift; sourceTree = "<group>"; };
 		C0C87C4A1E11838000759947 /* PercentValueFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PercentValueFormatter.swift; sourceTree = "<group>"; };
+		C0CE45571E258EB3006FEF87 /* InfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
+		C0CE45591E258EDB006FEF87 /* InfoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
 		C0D2FF771E0C8E3200871EA3 /* KeychainWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainWrapper.h; sourceTree = "<group>"; };
 		C0D2FF781E0C8E4400871EA3 /* EquityStatus-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EquityStatus-Bridging-Header.h"; sourceTree = "<group>"; };
 		C0D2FF791E0C8E4400871EA3 /* KeychainWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainWrapper.m; sourceTree = "<group>"; };
@@ -196,6 +200,7 @@
 			isa = PBXGroup;
 			children = (
 				C0409F871E0743CD00BEC5DD /* SignInViewController.swift */,
+				C0CE45571E258EB3006FEF87 /* InfoViewController.swift */,
 				C0BF22271E086191005B7E55 /* BuyViewController.swift */,
 				C0BF222B1E08686A005B7E55 /* EvaluationViewController.swift */,
 				C0BF222F1E0869B8005B7E55 /* SellViewController.swift */,
@@ -210,6 +215,7 @@
 			isa = PBXGroup;
 			children = (
 				C0409FA61E0745D400BEC5DD /* SignInView.swift */,
+				C0CE45591E258EDB006FEF87 /* InfoView.swift */,
 				C0BF22291E0861B6005B7E55 /* BuyView.swift */,
 				C0BF222D1E086885005B7E55 /* EvaluationView.swift */,
 				C085E32A1E119E04008A7315 /* EvaluationTableViewCell.swift */,
@@ -487,6 +493,8 @@
 				C02D509F1E12F2BE0000330F /* SellTableViewCell.swift in Sources */,
 				C0BF22261E085351005B7E55 /* Utilities.swift in Sources */,
 				C02D50A11E154F020000330F /* Equity.swift in Sources */,
+				C0CE455A1E258EDB006FEF87 /* InfoView.swift in Sources */,
+				C0CE45581E258EB3006FEF87 /* InfoViewController.swift in Sources */,
 				C07B9B351E16F8CC0093423E /* MeasureDetailViewController.swift in Sources */,
 				C05FC1161E09B5FE008EA907 /* ChartStringFormatter.swift in Sources */,
 				C085E32B1E119E04008A7315 /* EvaluationTableViewCell.swift in Sources */,
