@@ -61,7 +61,7 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate  {
         } else {
             // set header labels
             self.countLabel.text = "\(self.store.equitiesMetadata.count)"
-            self.pageDescLabel.text = "These companies have failed one or more evalutions. As a result, the stock from these companies is rated a sell per this methodology."
+            self.pageDescLabel.text = "These companies have failed one or more evalutions. As a result, the stock from these companies is considered a sell per this methodology."
         }
     }
     
@@ -142,9 +142,9 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate  {
         //countLabel
         self.addSubview(self.countLabel)
         self.countLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.countLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 90).isActive = true
+        self.countLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 110).isActive = true
         self.countLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0).isActive = true
-        self.countLabel.rightAnchor.constraint(equalTo: self.centerXAnchor, constant: -70).isActive = true
+        self.countLabel.rightAnchor.constraint(equalTo: self.centerXAnchor, constant: -45).isActive = true
         self.countLabel.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.xxlarge.rawValue)
         self.countLabel.textAlignment = .right
         
@@ -161,8 +161,8 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate  {
         // pageDescLabel
         self.addSubview(self.pageDescLabel)
         self.pageDescLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.pageDescLabel.leftAnchor.constraint(equalTo: self.centerXAnchor, constant: -40).isActive = true
-        self.pageDescLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -6).isActive = true
+        self.pageDescLabel.leftAnchor.constraint(equalTo: self.centerXAnchor, constant: -30).isActive = true
+        self.pageDescLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -10).isActive = true
         self.pageDescLabel.bottomAnchor.constraint(equalTo: self.companiesLabel.bottomAnchor, constant: 0).isActive = true
         self.pageDescLabel.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.xsmall.rawValue)
         self.pageDescLabel.numberOfLines = 0

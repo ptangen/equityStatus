@@ -43,7 +43,7 @@ class BuyView: UIView, ChartViewDelegate {
             APIClient.getEquitiesFromDB(mode: "pass,passOrNoData"){
                 self.createEquitiesForBuy()
                 OperationQueue.main.addOperation {
-                    self.equitiesForBuyExpectedROI.count == 1 ? (self.pageDescLabel.text = "This company has passed all 14 assessments. The expected return for the equity is displayed below.") : (self.pageDescLabel.text = "These companies have passed all 14 assessments. The expected returns for the equities are displayed below.")
+                    self.equitiesForBuyExpectedROI.count == 1 ? (self.pageDescLabel.text = "This company has passed all 14 assessments and is therefore considered a buy. The expected return for the equity is displayed below.") : (self.pageDescLabel.text = "These companies have passed all 14 assessments and are therefore considered buys. The expected returns for the equities are displayed below.")
                     self.countLabel.text = "\(self.equitiesForBuyExpectedROI.count)"
                     self.updateChartWithData()
                     self.activityIndicator.isHidden = true
@@ -66,9 +66,9 @@ class BuyView: UIView, ChartViewDelegate {
         // layout
         self.addSubview(self.countLabel)
         self.countLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.countLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 90).isActive = true
+        self.countLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 110).isActive = true
         self.countLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0).isActive = true
-        self.countLabel.rightAnchor.constraint(equalTo: self.centerXAnchor, constant: -70).isActive = true
+        self.countLabel.rightAnchor.constraint(equalTo: self.centerXAnchor, constant: -45).isActive = true
         self.countLabel.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.xxlarge.rawValue)
         self.countLabel.textAlignment = .right
         
@@ -83,8 +83,8 @@ class BuyView: UIView, ChartViewDelegate {
         
         self.addSubview(self.pageDescLabel)
         self.pageDescLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.pageDescLabel.leftAnchor.constraint(equalTo: self.centerXAnchor, constant: -40).isActive = true
-        self.pageDescLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -6).isActive = true
+        self.pageDescLabel.leftAnchor.constraint(equalTo: self.centerXAnchor, constant: -30).isActive = true
+        self.pageDescLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -10).isActive = true
         self.pageDescLabel.bottomAnchor.constraint(equalTo: self.companiesLabel.bottomAnchor, constant: 0).isActive = true
         self.pageDescLabel.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.xsmall.rawValue)
         self.pageDescLabel.numberOfLines = 0
