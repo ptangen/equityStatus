@@ -27,11 +27,6 @@ class TabsViewController: UITabBarController, UITabBarControllerDelegate {
         
         UITabBar.appearance().tintColor = UIColor(named: UIColor.ColorName.statusBarBlue)
         
-        // Create Introduction Buy
-        let tabInfo = InfoViewController()
-        let tabInfoBarItem = UITabBarItem(title: "Information", image: UIImage(named: "info_outline"), selectedImage: UIImage(named: "info_outline"))
-        tabInfo.tabBarItem = tabInfoBarItem
-        
         // Create Tab Buy
         let tabBuy = BuyViewController()
         let tabBuyBarItem = UITabBarItem(title: "Buy", image: UIImage(named: "sentiment_satisfied"), selectedImage: UIImage(named: "sentiment_satisfied"))
@@ -47,7 +42,7 @@ class TabsViewController: UITabBarController, UITabBarControllerDelegate {
         let tabSellBarItem = UITabBarItem(title: "Sell", image: UIImage(named: "not_interested"), selectedImage: UIImage(named: "not_interested"))
         tabSell.tabBarItem = tabSellBarItem
         
-        self.viewControllers = [tabInfo, tabBuy, tabEvaluation, tabSell]
+        self.viewControllers = [tabBuy, tabEvaluation, tabSell]
         
         // add the menu button to the nav bar
         let menuButton = UIBarButtonItem(image: #imageLiteral(resourceName: "menu"), style: .plain, target: self, action: #selector(menuButtonClicked))

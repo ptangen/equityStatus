@@ -22,9 +22,8 @@ class EquityDetailViewController: UIViewController, EquityDetailViewDelegate {
         super.viewWillAppear(animated)
         self.navigationController?.isNavigationBarHidden = false
         self.navigationController?.navigationBar.backItem?.title = ""
-        //self.navigationController?.navigationBar.titleTextAttribut
         self.popualateLabels()
-        self.title = "\(equity.name) (\(self.equity.ticker))"
+        self.title = "\(equity.name.capitalized) (\(self.equity.ticker))"
     }
 
     override func loadView(){

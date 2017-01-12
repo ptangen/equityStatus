@@ -17,7 +17,7 @@ class EquityDetailView: UIView {
     weak var delegate: EquityDetailViewDelegate?
     var equity: Equity!
     let scrollView = UIScrollView()
-    let heightOfScrolledContent: CGFloat = 660
+    let heightOfScrolledContent: CGFloat = 690
     
     let lineSpacing: CGFloat = 18
     
@@ -104,19 +104,19 @@ class EquityDetailView: UIView {
         // subtitle
         self.scrollView.addSubview(self.subTitle)
         self.subTitle.translatesAutoresizingMaskIntoConstraints = false
-        self.subTitle.topAnchor.constraint(equalTo: self.scrollView.topAnchor, constant: 18).isActive = true
+        self.subTitle.topAnchor.constraint(equalTo: self.scrollView.topAnchor, constant: 36).isActive = true
         self.subTitle.leftAnchor.constraint(equalTo: self.scrollView.leftAnchor, constant: 10).isActive = true
         self.subTitle.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -10).isActive = true
-        self.subTitle.text = "Review the measures for this equity and provide values for the undefined items."
+        self.subTitle.text = "Review the measures for this equity and provide values for measures with undefined values."
         self.subTitle.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.small.rawValue)
         self.subTitle.numberOfLines = 0
         
         // ROEaResultsDesc
         self.scrollView.addSubview(self.ROEaResultDesc)
         self.ROEaResultDesc.translatesAutoresizingMaskIntoConstraints = false
-        self.ROEaResultDesc.topAnchor.constraint(equalTo: self.subTitle.bottomAnchor, constant: self.lineSpacing).isActive = true
+        self.ROEaResultDesc.topAnchor.constraint(equalTo: self.subTitle.bottomAnchor, constant: 36).isActive = true
         self.ROEaResultDesc.leftAnchor.constraint(equalTo: self.subTitle.leftAnchor, constant: 30).isActive = true
-        self.ROEaResultDesc.rightAnchor.constraint(equalTo: self.subTitle.rightAnchor, constant: -10).isActive = true
+        self.ROEaResultDesc.rightAnchor.constraint(equalTo: self.subTitle.rightAnchor, constant: -6).isActive = true
         self.ROEaResultDesc.numberOfLines = 0
         self.ROEaResultDesc.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.small.rawValue)
         self.ROEaResultDescTap.addTarget(self, action: #selector(self.onClickLineItem))

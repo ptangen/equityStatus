@@ -16,7 +16,9 @@ class EvaluationView: UIView, UITableViewDataSource, UITableViewDelegate {
 
     weak var delegate: EvaluationViewDelegate?
     let evaluationTableViewInst = UITableView()
-    let subTitle: UILabel = UILabel()
+    let countLabel: UILabel = UILabel()
+    let companiesLabel: UILabel = UILabel()
+    let pageDescLabel: UILabel = UILabel()
     let store = DataStore.sharedInstance
     let activityIndicator: UIView = UIView()
     var equitiesForEvaluation: [Equity] = []
@@ -32,13 +34,13 @@ class EvaluationView: UIView, UITableViewDataSource, UITableViewDelegate {
         
         // get the data
         if equitiesForEvaluation.count == 0 {
-            self.subTitle.text = "Loading equities for evaluation..."
+            self.pageDescLabel.text = "Searching for equities to evaluate..."
+            self.countLabel.text = "?"
             self.showActivityIndicator(uiView: self)
             self.evaluationTableViewInst.isHidden = true
             
             APIClient.getEquitiesFromDB(mode: "pass,passOrNoData"){
                 OperationQueue.main.addOperation {
-                    self.subTitle.text = "Evaluate the subjective measures for these equities."
                     self.activityIndicator.isHidden = true
                     self.evaluationTableViewInst.isHidden = false
                     self.createEquitiesForEvaluation()
@@ -60,26 +62,49 @@ class EvaluationView: UIView, UITableViewDataSource, UITableViewDelegate {
                 self.equitiesForEvaluation.append(equity)
             }
         }
+        // set the labels in the heading
+        self.equitiesForEvaluation.count == 1 ? (self.pageDescLabel.text = "This company has passed several assessments and failed none. Evaluate the remaining measures to determine if the company's stock is a buy or sell.") : (self.pageDescLabel.text = "These companies have passed several assessments and failed none. Evaluate the remaining measures to determine if the companies' stock is a buy or sell.")
+        self.countLabel.text = "\(self.equitiesForEvaluation.count)"
     }
     
     func pageLayout() {
-        // subtitle
-        self.addSubview(self.subTitle)
-        self.subTitle.translatesAutoresizingMaskIntoConstraints = false
-        self.subTitle.topAnchor.constraint(equalTo: self.topAnchor, constant: 80).isActive = true
-        self.subTitle.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 10).isActive = true
-        self.subTitle.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -10).isActive = true
-        self.subTitle.text = "Evaluate the subjective measures for these equities."
-        self.subTitle.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.small.rawValue)
-        self.subTitle.numberOfLines = 0
+        //countLabel
+        self.addSubview(self.countLabel)
+        self.countLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.countLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 90).isActive = true
+        self.countLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0).isActive = true
+        self.countLabel.rightAnchor.constraint(equalTo: self.centerXAnchor, constant: -70).isActive = true
+        self.countLabel.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.xxlarge.rawValue)
+        self.countLabel.textAlignment = .right
         
+        // companiesLabel
+        self.addSubview(self.companiesLabel)
+        self.companiesLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.companiesLabel.topAnchor.constraint(equalTo: self.countLabel.bottomAnchor, constant: 0).isActive = true
+        self.companiesLabel.leftAnchor.constraint(equalTo: self.countLabel.leftAnchor, constant: 0).isActive = true
+        self.companiesLabel.rightAnchor.constraint(equalTo: self.countLabel.rightAnchor, constant: 0).isActive = true
+        self.companiesLabel.font = UIFont(name: Constants.appFont.bold.rawValue, size: Constants.fontSize.small.rawValue)
+        self.equitiesForEvaluation.count == 1 ? (self.companiesLabel.text = "company") : (self.companiesLabel.text = "companies")
+        self.companiesLabel.textAlignment = .right
+        
+        // pageDescLabel
+        self.addSubview(self.pageDescLabel)
+        self.pageDescLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.pageDescLabel.leftAnchor.constraint(equalTo: self.centerXAnchor, constant: -40).isActive = true
+        self.pageDescLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -6).isActive = true
+        self.pageDescLabel.bottomAnchor.constraint(equalTo: self.companiesLabel.bottomAnchor, constant: 0).isActive = true
+        self.pageDescLabel.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.xsmall.rawValue)
+        self.pageDescLabel.numberOfLines = 0
+        
+        // evaluationTableViewInst
         self.addSubview(self.evaluationTableViewInst)
         self.evaluationTableViewInst.translatesAutoresizingMaskIntoConstraints = false
-        self.evaluationTableViewInst.topAnchor.constraint(equalTo: self.subTitle.bottomAnchor, constant: 0).isActive = true
+        self.evaluationTableViewInst.topAnchor.constraint(equalTo: self.pageDescLabel.bottomAnchor, constant: 0).isActive = true
         self.evaluationTableViewInst.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -50).isActive = true
         self.evaluationTableViewInst.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0).isActive = true
         self.evaluationTableViewInst.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -10).isActive = true
         
+        // activityIndicator
         self.addSubview(self.activityIndicator)
         self.activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         self.activityIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
@@ -99,7 +124,8 @@ class EvaluationView: UIView, UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = EvaluationTableViewCell(style: .default, reuseIdentifier: "prototype")
         cell.selectionStyle = .none
-        cell.textLabel?.text = self.equitiesForEvaluation[indexPath.row].name
+        let textLabel = self.equitiesForEvaluation[indexPath.row].name
+        cell.textLabel?.text = textLabel.capitalized
         
         // set the status icons and color for each of the equity's measures
         Utilities.setStatusIcon(status: self.equitiesForEvaluation[indexPath.row].ROEaStatus, uiLabel: cell.statusIcons[0])

@@ -88,7 +88,7 @@ class MeasureDetailView: UIView {
         // measureLongNameLabel
         self.addSubview(self.measureLongNameLabel)
         self.measureLongNameLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.measureLongNameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 80).isActive = true
+        self.measureLongNameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 100).isActive = true
         self.measureLongNameLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 10).isActive = true
         self.measureLongNameLabel.preferredMaxLayoutWidth = UIScreen.main.bounds.width - 20
         self.measureLongNameLabel.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.small.rawValue)
@@ -97,7 +97,7 @@ class MeasureDetailView: UIView {
         // statusLabel
         self.addSubview(self.statusLabel)
         self.statusLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.statusLabel.topAnchor.constraint(equalTo: self.measureLongNameLabel.bottomAnchor, constant: 10).isActive = true
+        self.statusLabel.topAnchor.constraint(equalTo: self.measureLongNameLabel.bottomAnchor, constant: 30).isActive = true
         self.statusLabel.leftAnchor.constraint(equalTo: self.measureLongNameLabel.leftAnchor).isActive = true
         self.statusLabel.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.small.rawValue)
         
@@ -126,7 +126,7 @@ class MeasureDetailView: UIView {
         // resultsLabel
         self.addSubview(self.resultsLabel)
         self.resultsLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.resultsLabel.topAnchor.constraint(equalTo: self.statusLabel.bottomAnchor, constant: 10).isActive = true
+        self.resultsLabel.topAnchor.constraint(equalTo: self.statusLabel.bottomAnchor, constant: 30).isActive = true
         self.resultsLabel.leftAnchor.constraint(equalTo: self.statusLabel.leftAnchor).isActive = true
         self.resultsLabel.rightAnchor.constraint(equalTo: self.measureLongNameLabel.rightAnchor).isActive = true
         self.resultsLabel.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.small.rawValue)
@@ -134,7 +134,7 @@ class MeasureDetailView: UIView {
         // targetLabel
         self.addSubview(self.targetLabel)
         self.targetLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.targetLabel.topAnchor.constraint(equalTo: self.resultsLabel.bottomAnchor, constant: 10).isActive = true
+        self.targetLabel.topAnchor.constraint(equalTo: self.resultsLabel.bottomAnchor, constant: 30).isActive = true
         self.targetLabel.leftAnchor.constraint(equalTo: self.resultsLabel.leftAnchor).isActive = true
         self.targetLabel.rightAnchor.constraint(equalTo: self.resultsLabel.rightAnchor).isActive = true
         self.targetLabel.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.small.rawValue)
@@ -142,7 +142,7 @@ class MeasureDetailView: UIView {
         // measureCalcDescLabel
         self.addSubview(self.measureCalcDescLabel)
         self.measureCalcDescLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.measureCalcDescLabel.topAnchor.constraint(equalTo: self.targetLabel.bottomAnchor, constant: 10).isActive = true
+        self.measureCalcDescLabel.topAnchor.constraint(equalTo: self.targetLabel.bottomAnchor, constant: 30).isActive = true
         self.measureCalcDescLabel.leftAnchor.constraint(equalTo: self.targetLabel.leftAnchor).isActive = true
         self.measureCalcDescLabel.rightAnchor.constraint(equalTo: self.targetLabel.rightAnchor).isActive = true
         self.measureCalcDescLabel.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.small.rawValue)

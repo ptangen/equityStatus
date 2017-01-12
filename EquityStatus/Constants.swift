@@ -19,6 +19,7 @@ struct Constants{
         case medium =       18
         case large =        24
         case xlarge =       36
+        case xxlarge =      48
     }
     
     enum iconLibrary: String {

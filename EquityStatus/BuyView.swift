@@ -17,28 +17,34 @@ class BuyView: UIView, ChartViewDelegate {
     
     weak var delegate: BuyViewDelegate?
     let barChartView = HorizontalBarChartView()
-    let subTitle: UILabel = UILabel()
+    let countLabel: UILabel = UILabel()
+    let companiesLabel: UILabel = UILabel()
+    let pageDescLabel: UILabel = UILabel()
     var equitiesForBuyExpectedROI: [Double] = []
-    var equitiesForBuyTicker: [String] = []
+    var equitiesForBuyNames: [String] = []
+    var equitiesForBuyTickers: [String] = []
     let store = DataStore.sharedInstance
     let activityIndicator: UIView = UIView()
     var chartHeight: CGFloat = CGFloat()
+    let barHeight: Int = 60
     
     override init(frame:CGRect){
         super.init(frame: frame)
         self.barChartView.delegate = self
 
         // get the data
-        if equitiesForBuyTicker.count == 0 {
+        if equitiesForBuyNames.count == 0 {
             pageLayoutNoData()
-            self.subTitle.text = "Loading equities..."
+            self.pageDescLabel.text = "Searching for companies that have passed all 14 measures."
+            self.countLabel.text = "?"
             self.showActivityIndicator(uiView: self)
             self.barChartView.isHidden = true
             
             APIClient.getEquitiesFromDB(mode: "pass,passOrNoData"){
                 self.createEquitiesForBuy()
                 OperationQueue.main.addOperation {
-                    self.subTitle.text = "Approved equities and expected returns."
+                    self.equitiesForBuyExpectedROI.count == 1 ? (self.pageDescLabel.text = "This company has passed all 14 assessments. The expected return for the equity is displayed below.") : (self.pageDescLabel.text = "These companies have passed all 14 assessments. The expected returns for the equities are displayed below.")
+                    self.countLabel.text = "\(self.equitiesForBuyExpectedROI.count)"
                     self.updateChartWithData()
                     self.activityIndicator.isHidden = true
                     self.barChartView.isHidden = false
@@ -58,11 +64,30 @@ class BuyView: UIView, ChartViewDelegate {
     
     func pageLayoutNoData() {
         // layout
-        self.addSubview(self.subTitle)
-        self.subTitle.translatesAutoresizingMaskIntoConstraints = false
-        self.subTitle.topAnchor.constraint(equalTo: self.topAnchor, constant: 80).isActive = true
-        self.subTitle.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 10).isActive = true
-        self.subTitle.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.small.rawValue)
+        self.addSubview(self.countLabel)
+        self.countLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.countLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 90).isActive = true
+        self.countLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0).isActive = true
+        self.countLabel.rightAnchor.constraint(equalTo: self.centerXAnchor, constant: -70).isActive = true
+        self.countLabel.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.xxlarge.rawValue)
+        self.countLabel.textAlignment = .right
+        
+        self.addSubview(self.companiesLabel)
+        self.companiesLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.companiesLabel.topAnchor.constraint(equalTo: self.countLabel.bottomAnchor, constant: 0).isActive = true
+        self.companiesLabel.leftAnchor.constraint(equalTo: self.countLabel.leftAnchor, constant: 0).isActive = true
+        self.companiesLabel.rightAnchor.constraint(equalTo: self.countLabel.rightAnchor, constant: 0).isActive = true
+        self.companiesLabel.font = UIFont(name: Constants.appFont.bold.rawValue, size: Constants.fontSize.small.rawValue)
+        self.equitiesForBuyExpectedROI.count == 1 ? (self.companiesLabel.text = "company") : (self.companiesLabel.text = "companies")
+        self.companiesLabel.textAlignment = .right
+        
+        self.addSubview(self.pageDescLabel)
+        self.pageDescLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.pageDescLabel.leftAnchor.constraint(equalTo: self.centerXAnchor, constant: -40).isActive = true
+        self.pageDescLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -6).isActive = true
+        self.pageDescLabel.bottomAnchor.constraint(equalTo: self.companiesLabel.bottomAnchor, constant: 0).isActive = true
+        self.pageDescLabel.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.xsmall.rawValue)
+        self.pageDescLabel.numberOfLines = 0
         
         self.addSubview(self.activityIndicator)
         self.activityIndicator.translatesAutoresizingMaskIntoConstraints = false
@@ -75,14 +100,14 @@ class BuyView: UIView, ChartViewDelegate {
     func pageLayoutWithData() {
         self.addSubview(self.barChartView)
         self.barChartView.translatesAutoresizingMaskIntoConstraints = false
-        self.barChartView.topAnchor.constraint(equalTo: self.subTitle.bottomAnchor, constant: 6).isActive = true
+        self.barChartView.topAnchor.constraint(equalTo: self.pageDescLabel.bottomAnchor, constant: 24).isActive = true
         self.barChartView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0).isActive = true
         self.barChartView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
         self.barChartView.heightAnchor.constraint(equalToConstant: self.chartHeight).isActive = true
     }
     
     func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
-        if let equityClicked = store.getEquityByTickerFromStore(ticker: self.equitiesForBuyTicker[Int(entry.x)]) {
+        if let equityClicked = store.getEquityByTickerFromStore(ticker: self.equitiesForBuyTickers[Int(entry.x)]) {
             self.delegate?.openEquityDetail(equityClicked)
         }
     }
@@ -90,18 +115,21 @@ class BuyView: UIView, ChartViewDelegate {
     // create array for buy view
     func createEquitiesForBuy() {
         self.equitiesForBuyExpectedROI.removeAll()
-        self.equitiesForBuyTicker.removeAll()
+        self.equitiesForBuyNames.removeAll()
+        self.equitiesForBuyTickers.removeAll()
         
         for equity in self.store.equities {
             if equity.tab == .buy {
                 self.equitiesForBuyExpectedROI.append(equity.expectedROIResult)
-                self.equitiesForBuyTicker.append(equity.ticker)
+                self.equitiesForBuyNames.append(equity.name.capitalized)
+                self.equitiesForBuyTickers.append(equity.ticker)
             }
         }
         self.equitiesForBuyExpectedROI.reverse()
-        self.equitiesForBuyTicker.reverse()
+        self.equitiesForBuyNames.reverse()
+        self.equitiesForBuyTickers.reverse()
         
-        self.chartHeight = CGFloat(self.equitiesForBuyTicker.count * 80)
+        self.chartHeight = CGFloat(self.equitiesForBuyNames.count * self.barHeight)
         let maxChartHeight: CGFloat = UIScreen.main.bounds.height - 150 // subtract for heading and tabs at bottom
         
         if self.chartHeight > maxChartHeight {
@@ -117,7 +145,7 @@ class BuyView: UIView, ChartViewDelegate {
         
         // data and names of the bars
         let dataPoints: [Double] = self.equitiesForBuyExpectedROI   // values for the bars
-        stringFormatter.nameValues = self.equitiesForBuyTicker      // labels for the y axis
+        stringFormatter.nameValues = self.equitiesForBuyNames      // labels for the y axis
         
         // formatting, the horizontal bar chart is rotated so the axis labels are odd
         barChartView.xAxis.valueFormatter = stringFormatter // allow labels to be shown for bars
