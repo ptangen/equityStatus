@@ -22,13 +22,7 @@ class EvaluationViewController: UIViewController, EvaluationViewDelegate {
         super.didReceiveMemoryWarning()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        self.evaluationViewInst.createEquitiesForEvaluation()
-        self.evaluationViewInst.evaluationTableViewInst.reloadData()
-    }
-    
     override func loadView(){
-        // load the view into the view controller
         self.evaluationViewInst = EvaluationView(frame: CGRect.zero)
         self.view = self.evaluationViewInst
     }
@@ -38,5 +32,9 @@ class EvaluationViewController: UIViewController, EvaluationViewDelegate {
         equityDetailViewControllerInst.equity = equity
         self.title = "" // this value is passed to the back button label in the destination VC
         navigationController?.pushViewController(equityDetailViewControllerInst, animated: false) // show destination with nav bar
+    }
+    
+    func showAlertMessage(_ message: String) {
+        Utilities.showAlertMessage(message, viewControllerInst: self)
     }
 }

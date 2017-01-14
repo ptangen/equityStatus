@@ -10,6 +10,7 @@ import UIKit
 
 protocol SellViewDelegate: class {
     func openDetail(_: String)
+    func showAlertMessage(_: String)
 }
 
 class SellView: UIView, UITableViewDataSource, UITableViewDelegate  {
@@ -47,15 +48,23 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate  {
             self.showActivityIndicator(uiView: self)
             self.sellTableViewInst.isHidden = true
             self.countLabel.text = "?"
-            self.pageDescLabel.text = "Searching for companies that have failed a measure."
+            self.pageDescLabel.text = "Searching for companies that have failed an evaluation."
 
-            APIClient.getEquitiesMetadataFromDB() {
-                OperationQueue.main.addOperation {
-                    self.activityIndicator.isHidden = true
-                    self.sellTableViewInst.isHidden = false
-                    self.sellTableViewInst.reloadData()
-                    self.countLabel.text = Utilities.getSellTabCount()
-                    self.pageDescLabel.text = "These companies have failed one or more evalutions. As a result, these company's stock is rated a sell per this methodology."
+            APIClient.getEquitiesMetadataFromDB() {isSuccessful in
+                
+                if isSuccessful {
+                    OperationQueue.main.addOperation {
+                        self.activityIndicator.isHidden = true
+                        self.sellTableViewInst.isHidden = false
+                        self.sellTableViewInst.reloadData()
+                        self.countLabel.text = Utilities.getSellTabCount()
+                        self.pageDescLabel.text = "These companies have failed one or more evalutions. As a result, these company's stock is rated a sell per this methodology."
+                    }
+                } else {
+                    OperationQueue.main.addOperation {
+                        self.activityIndicator.isHidden = true
+                    }
+                    self.delegate?.showAlertMessage("Unable to retrieve data from the server.")
                 }
             }
         } else {

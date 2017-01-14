@@ -22,7 +22,6 @@ class SignInViewController: UIViewController, SignInViewDelegate {
         // hide nav bar on login page
         self.navigationController?.setNavigationBarHidden(true, animated: .init(true))
         
-        // load the view into the view controller
         self.signInViewInst = SignInView(frame: CGRect.zero)
         self.view = self.signInViewInst
     }

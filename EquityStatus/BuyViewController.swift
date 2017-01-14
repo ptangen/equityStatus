@@ -24,7 +24,6 @@ class BuyViewController: UIViewController, BuyViewDelegate  {
     }
     
     override func loadView(){
-        // load the view into the view controller
         self.buyViewInst = BuyView(frame: CGRect.zero)
         self.view = self.buyViewInst
     }
@@ -34,5 +33,9 @@ class BuyViewController: UIViewController, BuyViewDelegate  {
         equityDetailViewControllerInst.equity = equity
         self.title = "" // this value is passed to the back button label in the destination VC
         navigationController?.pushViewController(equityDetailViewControllerInst, animated: false) // show destination with nav bar
+    }
+    
+    func showAlertMessage(_ message: String) {
+        Utilities.showAlertMessage(message, viewControllerInst: self)
     }
 }

@@ -10,6 +10,7 @@ import UIKit
 
 protocol EvaluationViewDelegate: class {
     func openEquityDetail(_: Equity)
+    func showAlertMessage(_: String)
 }
 
 class EvaluationView: UIView, UITableViewDataSource, UITableViewDelegate {
@@ -39,12 +40,19 @@ class EvaluationView: UIView, UITableViewDataSource, UITableViewDelegate {
             self.showActivityIndicator(uiView: self)
             self.evaluationTableViewInst.isHidden = true
             
-            APIClient.getEquitiesFromDB(mode: "pass,passOrNoData"){
-                OperationQueue.main.addOperation {
-                    self.activityIndicator.isHidden = true
-                    self.evaluationTableViewInst.isHidden = false
-                    self.createEquitiesForEvaluation()
-                    self.evaluationTableViewInst.reloadData()
+            APIClient.getEquitiesFromDB(mode: "pass,passOrNoData"){isSuccessful in
+                if isSuccessful {
+                    OperationQueue.main.addOperation {
+                        self.activityIndicator.isHidden = true
+                        self.evaluationTableViewInst.isHidden = false
+                        self.createEquitiesForEvaluation()
+                        self.evaluationTableViewInst.reloadData()
+                    }
+                } else {
+                    OperationQueue.main.addOperation {
+                        self.activityIndicator.isHidden = true
+                    }
+                    self.delegate?.showAlertMessage("Unable to retrieve data from the server.")
                 }
             }
         }

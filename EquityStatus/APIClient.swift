@@ -102,7 +102,7 @@ class APIClient {
         }).resume()
     }
     
-    class func getEquitiesMetadataFromDB(completion: @escaping () -> Void) {
+    class func getEquitiesMetadataFromDB(completion: @escaping (Bool) -> Void) {
 
         let urlString = "\(Secrets.apiURL)getEquitiesMetadata.php"
         var request = URLRequest(url: URL(string: urlString)!)
@@ -120,23 +120,25 @@ class APIClient {
                     let responseJSON = try JSONSerialization.jsonObject(with: unwrappedData, options: []) as! [[String: String]]
                     for metadataDict in responseJSON {
                         // unwrap the incoming data and create equityMeta entities in core data
-                        guard let unwrappedName = metadataDict["name"] else { fatalError() }
-                        guard let unwrappedTicker = metadataDict["ticker"] else { fatalError() }
-                        guard let unwrappedNameFirst = metadataDict["name"]?.characters.first else { print("Unable to get first initial of name."); return; }
-                        guard let unwrappedTickerFirst = metadataDict["ticker"]?.characters.first else { print("Unable to get first initial of ticker."); return; }
-                        
-                        DataStore.createEquityMetadata(name: unwrappedName, nameFirst: String(unwrappedNameFirst), ticker: unwrappedTicker, tickerFirst: String(unwrappedTickerFirst))
+                        if let unwrappedName = metadataDict["name"], let unwrappedTicker = metadataDict["ticker"] {
+                            
+                            let unwrappedNameFirst = unwrappedName.characters.first
+                            let unwrappedTickerFirst = unwrappedTicker.characters.first
+                            
+                            DataStore.createEquityMetadata(name: unwrappedName, nameFirst: String(describing: unwrappedNameFirst), ticker: unwrappedTicker, tickerFirst: String(describing: unwrappedTickerFirst))
+                        }
                     }
-                    completion()
+                    completion(true)
                 } catch {
-                    print("An error occurred when creating responseJSON")
+                    // An error occurred when creating responseJSON
+                    completion(false)
                 }
             }
         }).resume()
     }
     
     // allPass, noFailures, t:GGG
-    class func getEquitiesFromDB(mode: String, completion: @escaping () -> Void) {
+    class func getEquitiesFromDB(mode: String, completion: @escaping (Bool) -> Void) {
         let store = DataStore.sharedInstance
         let urlString = "\(Secrets.apiURL)getEquities.php"
         var request = URLRequest(url: URL(string: urlString)!)
@@ -155,98 +157,108 @@ class APIClient {
                     //print(responseJSON)
                     for equityDict in responseJSON {
                         // unwrap the incoming data and create equity
-                        guard let unwrappedTicker = equityDict["Ticker"]  else { fatalError() }
-                        guard let unwrappedName = equityDict["Name"] else { fatalError() }
                         
-                        guard let unwrappedROEaResultString = equityDict["ROEaResult"] else { fatalError() }
-                        guard let unwrappedROEaResult = Double(unwrappedROEaResultString) else { fatalError() }
+                        if let unwrappedTicker = equityDict["Ticker"],
+                            let unwrappedName = equityDict["Name"],
+                            
+                            // extract the financial results from the equityDict into strings
+                            let unwrappedROEaResultString = equityDict["ROEaResult"],
+                            let unwrappedEPSiResultString = equityDict["EPSiResult"],
+                            let unwrappedEPSvResultString = equityDict["EPSvResult"],
+                            let unwrappedBViResultString = equityDict["BViResult"],
+                            let unwrappedDRaResultString = equityDict["DRaResult"],
+                            let unwrappedSOrResultString = equityDict["SOrResult"],
+                            let unwrappedPreviousROIResultString = equityDict["previousROIResult"],
+                            let unwrappedExpectedROIResultString = equityDict["expectedROIResult"],
+                            
+                            // convert the financial results into doubles
+                            let unwrappedROEaResult = Double(unwrappedROEaResultString),
+                            let unwrappedEPSiResult = Double(unwrappedEPSiResultString),
+                            let unwrappedEPSvResult = Double(unwrappedEPSvResultString),
+                            let unwrappedBViResult = Double(unwrappedBViResultString),
+                            let unwrappedDRaResult = Double(unwrappedDRaResultString),
+                            let unwrappedSOrResult = Double(unwrappedSOrResultString),
+                            let unwrappedPreviousROIResult = Double(unwrappedPreviousROIResultString),
+                            let unwrappedExpectedROIResult = Double(unwrappedExpectedROIResultString),
                         
-                        guard let unwrappedEPSiResultString = equityDict["EPSiResult"] else { fatalError() }
-                        guard let unwrappedEPSiResult = Double(unwrappedEPSiResultString) else { fatalError() }
+                            // extract the financial status values from the equityDict
+                            let unwrappedROEaStatus = equityDict["ROEaStatus"],
+                            let unwrappedEPSiStatus = equityDict["EPSiStatus"],
+                            let unwrappedEPSvStatus = equityDict["EPSvStatus"],
+                            let unwrappedBViStatus = equityDict["BViStatus"],
+                            let unwrappedDRaStatus = equityDict["DRaStatus"],
+                            let unwrappedSOrStatus = equityDict["SOrStatus"],
+                            let unwrappedPreviousROIStatus = equityDict["previousROIStatus"],
+                            let unwrappedExpectedROIStatus = equityDict["expectedROIStatus"],
                         
-                        guard let unwrappedEPSvResultString = equityDict["EPSvResult"] else { fatalError() }
-                        guard let unwrappedEPSvResult = Double(unwrappedEPSvResultString) else { fatalError() }
+                            // extract the question answers and status from the equityDict
+                            let unwrappedQ1Answer = equityDict["q1Answer"],
+                            let unwrappedQ1Status = equityDict["q1Status"],
+                            
+                            let unwrappedQ2Answer = equityDict["q2Answer"],
+                            let unwrappedQ2Status = equityDict["q2Status"],
+                            
+                            let unwrappedQ3Answer = equityDict["q3Answer"],
+                            let unwrappedQ3Status = equityDict["q3Status"],
                         
-                        guard let unwrappedBViResultString = equityDict["BViResult"] else { fatalError() }
-                        guard let unwrappedBViResult = Double(unwrappedBViResultString) else { fatalError() }
+                            let unwrappedQ4Answer = equityDict["q4Answer"],
+                            let unwrappedQ4Status = equityDict["q4Status"],
                         
-                        guard let unwrappedDRaResultString = equityDict["DRaResult"] else { fatalError() }
-                        guard let unwrappedDRaResult = Double(unwrappedDRaResultString) else { fatalError() }
+                            let unwrappedQ5Answer = equityDict["q5Answer"],
+                            let unwrappedQ5Status = equityDict["q5Status"],
                         
-                        guard let unwrappedSOrResultString = equityDict["SOrResult"] else { fatalError() }
-                        guard let unwrappedSOrResult = Double(unwrappedSOrResultString) else { fatalError() }
+                            let unwrappedQ6Answer = equityDict["q6Answer"],
+                            let unwrappedQ6Status = equityDict["q6Status"] {
                         
-                        guard let unwrappedPreviousROIResultString = equityDict["previousROIResult"] else { fatalError() }
-                        guard let unwrappedPreviousROIResult = Double(unwrappedPreviousROIResultString) else { fatalError() }
+                            // create the object
+                            let equityInst = Equity(
+                                ticker: unwrappedTicker,
+                                name: unwrappedName,
+                                tab: .notSet,
+                                
+                                ROEaResult: unwrappedROEaResult,
+                                EPSiResult: unwrappedEPSiResult,
+                                EPSvResult: unwrappedEPSvResult,
+                                BViResult: unwrappedBViResult,
+                                DRaResult: unwrappedDRaResult,
+                                SOrResult: unwrappedSOrResult,
+                                previousROIResult: unwrappedPreviousROIResult,
+                                expectedROIResult: unwrappedExpectedROIResult,
+                                
+                                ROEaStatus: unwrappedROEaStatus,
+                                EPSiStatus: unwrappedEPSiStatus,
+                                EPSvStatus: unwrappedEPSvStatus,
+                                BViStatus: unwrappedBViStatus,
+                                DRaStatus: unwrappedDRaStatus,
+                                SOrStatus: unwrappedSOrStatus,
+                                previousROIStatus: unwrappedPreviousROIStatus,
+                                expectedROIStatus: unwrappedExpectedROIStatus,
+                                
+                                q1Answer: unwrappedQ1Answer,
+                                q2Answer: unwrappedQ2Answer,
+                                q3Answer: unwrappedQ3Answer,
+                                q4Answer: unwrappedQ4Answer,
+                                q5Answer: unwrappedQ5Answer,
+                                q6Answer: unwrappedQ6Answer,
+                                
+                                q1Status: unwrappedQ1Status,
+                                q2Status: unwrappedQ2Status,
+                                q3Status: unwrappedQ3Status,
+                                q4Status: unwrappedQ4Status,
+                                q5Status: unwrappedQ5Status,
+                                q6Status: unwrappedQ6Status)
                         
-                        guard let unwrappedExpectedROIResultString = equityDict["expectedROIResult"] else { fatalError() }
-                        guard let unwrappedExpectedROIResult = Double(unwrappedExpectedROIResultString) else { fatalError() }
-                        
-                        guard let unwrappedROEaStatus = equityDict["ROEaStatus"] else { fatalError() }
-                        guard let unwrappedEPSiStatus = equityDict["EPSiStatus"] else { fatalError() }
-                        guard let unwrappedEPSvStatus = equityDict["EPSvStatus"] else { fatalError() }
-                        guard let unwrappedBViStatus = equityDict["BViStatus"] else { fatalError() }
-                        guard let unwrappedDRaStatus = equityDict["DRaStatus"] else { fatalError() }
-                        guard let unwrappedSOrStatus = equityDict["SOrStatus"] else { fatalError() }
-                        guard let unwrappedPreviousROIStatus = equityDict["previousROIStatus"] else { fatalError() }
-                        guard let unwrappedExpectedROIStatus = equityDict["expectedROIStatus"] else { fatalError() }
-                        
-                        guard let unwrappedQ1Answer = equityDict["q1Answer"] else { fatalError() }
-                        guard let unwrappedQ2Answer = equityDict["q2Answer"] else { fatalError() }
-                        guard let unwrappedQ3Answer = equityDict["q3Answer"] else { fatalError() }
-                        guard let unwrappedQ4Answer = equityDict["q4Answer"] else { fatalError() }
-                        guard let unwrappedQ5Answer = equityDict["q5Answer"] else { fatalError() }
-                        guard let unwrappedQ6Answer = equityDict["q6Answer"] else { fatalError() }
-
-                        guard let unwrappedQ1Status = equityDict["q1Status"] else { fatalError() }
-                        guard let unwrappedQ2Status = equityDict["q2Status"] else { fatalError() }
-                        guard let unwrappedQ3Status = equityDict["q3Status"] else { fatalError() }
-                        guard let unwrappedQ4Status = equityDict["q4Status"] else { fatalError() }
-                        guard let unwrappedQ5Status = equityDict["q5Status"] else { fatalError() }
-                        guard let unwrappedQ6Status = equityDict["q6Status"] else { fatalError() }
-                        
-                        let equityInst = Equity(
-                            ticker: unwrappedTicker,
-                            name: unwrappedName,
-                            tab: .notSet,
-                            ROEaResult: unwrappedROEaResult,
-                            EPSiResult: unwrappedEPSiResult,
-                            EPSvResult: unwrappedEPSvResult,
-                            BViResult: unwrappedBViResult,
-                            DRaResult: unwrappedDRaResult,
-                            SOrResult: unwrappedSOrResult,
-                            previousROIResult: unwrappedPreviousROIResult,
-                            expectedROIResult: unwrappedExpectedROIResult,
-                            ROEaStatus: unwrappedROEaStatus,
-                            EPSiStatus: unwrappedEPSiStatus,
-                            EPSvStatus: unwrappedEPSvStatus,
-                            BViStatus: unwrappedBViStatus,
-                            DRaStatus: unwrappedDRaStatus,
-                            SOrStatus: unwrappedSOrStatus,
-                            previousROIStatus: unwrappedPreviousROIStatus,
-                            expectedROIStatus: unwrappedExpectedROIStatus,
-                            q1Answer: unwrappedQ1Answer,
-                            q2Answer: unwrappedQ2Answer,
-                            q3Answer: unwrappedQ3Answer,
-                            q4Answer: unwrappedQ4Answer,
-                            q5Answer: unwrappedQ5Answer,
-                            q6Answer: unwrappedQ6Answer,
-                            q1Status: unwrappedQ1Status,
-                            q2Status: unwrappedQ2Status,
-                            q3Status: unwrappedQ3Status,
-                            q4Status: unwrappedQ4Status,
-                            q5Status: unwrappedQ5Status,
-                            q6Status: unwrappedQ6Status)
-                        
-                        // add the new tickers to the datastore and set the tab value
-                        if store.getEquityByTickerFromStore(ticker: equityInst.ticker) == nil {
-                            store.equities.append(equityInst)
-                            store.resetTabValue(equity: equityInst)
+                            // add the new tickers to the datastore and set the tab value
+                            if store.getEquityByTickerFromStore(ticker: equityInst.ticker) == nil {
+                                store.equities.append(equityInst)
+                                store.resetTabValue(equity: equityInst)
+                            }
                         }
                     }
-                    completion()
+                    completion(true)
                 } catch {
-                    print("An error occurred when creating responseJSON")
+                    // An error occurred when creating responseJSON
+                    completion(false)
                 }
             }
         }).resume()

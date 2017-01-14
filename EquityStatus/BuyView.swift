@@ -11,6 +11,7 @@ import Charts
 
 protocol BuyViewDelegate: class {
     func openEquityDetail(_: Equity)
+    func showAlertMessage(_: String)
 }
 
 class BuyView: UIView, ChartViewDelegate {
@@ -40,15 +41,22 @@ class BuyView: UIView, ChartViewDelegate {
             self.showActivityIndicator(uiView: self)
             self.barChartView.isHidden = true
             
-            APIClient.getEquitiesFromDB(mode: "pass,passOrNoData"){
-                self.createEquitiesForBuy()
-                OperationQueue.main.addOperation {
-                    self.equitiesForBuyExpectedROI.count == 1 ? (self.pageDescLabel.text = "This company has passed all 14 assessments and is therefore considered a buy. The expected return for the equity is displayed below.") : (self.pageDescLabel.text = "These companies have passed all 14 assessments and are therefore considered buys. The expected returns for the equities are displayed below.")
-                    self.countLabel.text = "\(self.equitiesForBuyExpectedROI.count)"
-                    self.updateChartWithData()
-                    self.activityIndicator.isHidden = true
-                    self.barChartView.isHidden = false
-                    self.pageLayoutWithData()
+            APIClient.getEquitiesFromDB(mode: "pass,passOrNoData"){isSuccessful in
+                if isSuccessful {
+                    self.createEquitiesForBuy()
+                    OperationQueue.main.addOperation {
+                        self.equitiesForBuyExpectedROI.count == 1 ? (self.pageDescLabel.text = "This company has passed all 14 assessments and is therefore considered a buy. The expected return for the equity is displayed below.") : (self.pageDescLabel.text = "These companies have passed all 14 assessments and are therefore considered buys. The expected returns for the equities are displayed below.")
+                        self.countLabel.text = "\(self.equitiesForBuyExpectedROI.count)"
+                        self.updateChartWithData()
+                        self.activityIndicator.isHidden = true
+                        self.barChartView.isHidden = false
+                        self.pageLayoutWithData()
+                    }
+                } else {
+                    OperationQueue.main.addOperation {
+                        self.activityIndicator.isHidden = true
+                    }
+                    self.delegate?.showAlertMessage("Unable to retrieve data from the server.")
                 }
             }
         } else {
