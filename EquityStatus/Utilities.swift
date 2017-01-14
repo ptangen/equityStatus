@@ -15,16 +15,16 @@ class Utilities {
     class func setStatusIcon(status: String, uiLabel: UILabel) {
         if status == "pass" || status == "101" {
             uiLabel.text = Constants.iconLibrary.faCheckCircle.rawValue
-            uiLabel.textColor = UIColor(named: UIColor.ColorName.statusGreen)
+            uiLabel.textColor = UIColor(named: .statusGreen)
         } else if status == "fail" || status == "100" {
             uiLabel.text = Constants.iconLibrary.faTimesCircle.rawValue
-            uiLabel.textColor = UIColor(named: UIColor.ColorName.statusRed)
+            uiLabel.textColor = UIColor(named: .statusRed)
         } else if status == "noData" {
             uiLabel.text = Constants.iconLibrary.faCircleO.rawValue
-            uiLabel.textColor = UIColor(named: UIColor.ColorName.disabledText)
+            uiLabel.textColor = UIColor(named: .disabledText)
         } else {
             uiLabel.text = Constants.iconLibrary.faCircleO.rawValue
-            uiLabel.textColor = UIColor(named: UIColor.ColorName.statusGreen)
+            uiLabel.textColor = UIColor(named: .statusGreen)
         }
     }
     

@@ -17,7 +17,7 @@ class EquityDetailView: UIView {
     weak var delegate: EquityDetailViewDelegate?
     var equity: Equity!
     let scrollView = UIScrollView()
-    let heightOfScrolledContent:CGFloat = 690
+    let heightOfScrolledContent:CGFloat = 800
     
     let lineSpacing:CGFloat = 18
     

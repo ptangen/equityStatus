@@ -47,6 +47,7 @@ class BuyView: UIView, ChartViewDelegate {
                     OperationQueue.main.addOperation {
                         self.equitiesForBuyExpectedROI.count == 1 ? (self.pageDescLabel.text = "This company has passed all 14 assessments and is therefore considered a buy. The expected return for the equity is displayed below.") : (self.pageDescLabel.text = "These companies have passed all 14 assessments and are therefore considered buys. The expected returns for the equities are displayed below.")
                         self.countLabel.text = "\(self.equitiesForBuyExpectedROI.count)"
+                        self.equitiesForBuyExpectedROI.count == 1 ? (self.companiesLabel.text = "company") : (self.companiesLabel.text = "companies")
                         self.updateChartWithData()
                         self.activityIndicator.isHidden = true
                         self.barChartView.isHidden = false
@@ -86,7 +87,6 @@ class BuyView: UIView, ChartViewDelegate {
         self.companiesLabel.leftAnchor.constraint(equalTo: self.countLabel.leftAnchor, constant: 0).isActive = true
         self.companiesLabel.rightAnchor.constraint(equalTo: self.countLabel.rightAnchor, constant: 0).isActive = true
         self.companiesLabel.font = UIFont(name: Constants.appFont.bold.rawValue, size: Constants.fontSize.small.rawValue)
-        self.equitiesForBuyExpectedROI.count == 1 ? (self.companiesLabel.text = "company") : (self.companiesLabel.text = "companies")
         self.companiesLabel.textAlignment = .right
         
         self.addSubview(self.pageDescLabel)
@@ -161,6 +161,8 @@ class BuyView: UIView, ChartViewDelegate {
         barChartView.xAxis.drawAxisLineEnabled = false      // hide right axis
         barChartView.xAxis.labelFont = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.small.rawValue)!
         barChartView.xAxis.setLabelCount(stringFormatter.nameValues.count, force: false)
+        barChartView.xAxis.granularityEnabled = true
+        barChartView.xAxis.granularity = 1.0
         
         barChartView.rightAxis.enabled = false              // hide values on bottom axis
         barChartView.leftAxis.enabled = false               // hide values on top axis
@@ -180,7 +182,7 @@ class BuyView: UIView, ChartViewDelegate {
         }
         
         let chartDataSet = BarChartDataSet(values: dataEntries, label: "")
-        chartDataSet.colors = [UIColor(named: UIColor.ColorName.statusGreen)]
+        chartDataSet.colors = [UIColor(named: .statusGreen)]
         chartDataSet.valueFont = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.small.rawValue)!
         chartDataSet.valueTextColor = UIColor.white
         chartDataSet.valueFormatter = percentFormatter      // formats the values into a %
@@ -190,7 +192,7 @@ class BuyView: UIView, ChartViewDelegate {
     }
     
     func showActivityIndicator(uiView: UIView) {
-        self.activityIndicator.backgroundColor = UIColor(named: UIColor.ColorName.blue)
+        self.activityIndicator.backgroundColor = UIColor(named: .blue)
         self.activityIndicator.layer.cornerRadius = 10
         self.activityIndicator.clipsToBounds = true
         

@@ -25,7 +25,7 @@ class TabsViewController: UITabBarController, UITabBarControllerDelegate {
         self.title = "Equity Status"
         self.navigationItem.hidesBackButton = true
         
-        UITabBar.appearance().tintColor = UIColor(named: UIColor.ColorName.statusBarBlue)
+        UITabBar.appearance().tintColor = UIColor(named: .statusBarBlue)
         
         // Create Tab Buy
         let tabBuy = BuyViewController()

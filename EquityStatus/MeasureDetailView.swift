@@ -42,7 +42,7 @@ class MeasureDetailView: UIView {
         self.qStatusPicker.setWidth(segmentButtonWidth, forSegmentAt: 0)
         self.qStatusPicker.setWidth(segmentButtonWidth, forSegmentAt: 1)
         self.qStatusPicker.setWidth(segmentButtonWidth, forSegmentAt: 2)
-        self.qStatusPicker.tintColor = UIColor(named: UIColor.ColorName.blue)
+        self.qStatusPicker.tintColor = UIColor(named: .blue)
 
         self.qStatusPicker.addTarget(self, action: #selector(self.statusValueChanged(_:)), for: .valueChanged)
     }

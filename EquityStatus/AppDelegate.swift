@@ -19,10 +19,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // set nav bar colors
         let navigationBarAppearance = UINavigationBar.appearance()
-        navigationBarAppearance.tintColor = UIColor(named: UIColor.ColorName.blue)
-        navigationBarAppearance.barTintColor = UIColor(named: UIColor.ColorName.blue)
+        navigationBarAppearance.tintColor = UIColor(named: .blue)
+        navigationBarAppearance.barTintColor = UIColor(named: .blue)
         navigationBarAppearance.titleTextAttributes = [NSForegroundColorAttributeName : UIColor.white]
-        statusBarBackground.backgroundColor = UIColor(named: UIColor.ColorName.statusBarBlue)
+        statusBarBackground.backgroundColor = UIColor(named: .statusBarBlue)
         UIApplication.shared.statusBarStyle = .lightContent // sets status bar text color white
         
         //let signInViewControllerInst = SignInViewController()

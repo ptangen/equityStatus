@@ -21,7 +21,6 @@ class SellViewController: UIViewController, SellViewDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-
         sellViewInst.countLabel.text = Utilities.getSellTabCount()
     }
 

@@ -30,7 +30,7 @@ class EvaluationTableViewCell: UITableViewCell {
             contentView.addSubview(measureIcon)
             measureIcon.translatesAutoresizingMaskIntoConstraints = false
             measureIcon.font = UIFont(name: Constants.iconFont.fontAwesome.rawValue, size: CGFloat(Constants.iconSize.xsmall.rawValue))
-            measureIcon.textColor = UIColor(named: UIColor.ColorName.statusGreen)
+            measureIcon.textColor = UIColor(named: .statusGreen)
 
             let leftConstant: CGFloat = leftMargin + (CGFloat(i) * spacer)
             measureIcon.leftAnchor.constraint(equalTo: self.leftAnchor, constant: leftConstant).isActive = true

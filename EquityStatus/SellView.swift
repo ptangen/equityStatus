@@ -75,7 +75,7 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate  {
     }
     
     func showActivityIndicator(uiView: UIView) {
-        self.activityIndicator.backgroundColor = UIColor(named: UIColor.ColorName.blue)
+        self.activityIndicator.backgroundColor = UIColor(named: .blue)
         self.activityIndicator.layer.cornerRadius = 10
         self.activityIndicator.clipsToBounds = true
         

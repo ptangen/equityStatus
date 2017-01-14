@@ -268,7 +268,7 @@ class SignInView: UIView, UITextFieldDelegate {
         self.addSubview(self.signInButton)
         self.signInButton.translatesAutoresizingMaskIntoConstraints = false
         self.signInButton.setTitle("  Sign In  ", for: .normal)
-        self.signInButton.backgroundColor = UIColor(named: UIColor.ColorName.brown)
+        self.signInButton.backgroundColor = UIColor(named: .brown)
         self.signInButton.isEnabled = false
         self.signInButton.alpha = 0.3
         
