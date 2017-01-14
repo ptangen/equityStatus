@@ -54,13 +54,13 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate  {
                     self.activityIndicator.isHidden = true
                     self.sellTableViewInst.isHidden = false
                     self.sellTableViewInst.reloadData()
-                    self.countLabel.text = "\(self.store.equitiesMetadata.count)"
+                    self.countLabel.text = Utilities.getSellTabCount()
                     self.pageDescLabel.text = "These companies have failed one or more evalutions. As a result, these company's stock is rated a sell per this methodology."
                 }
             }
         } else {
             // set header labels
-            self.countLabel.text = "\(self.store.equitiesMetadata.count)"
+            self.countLabel.text = Utilities.getSellTabCount()
             self.pageDescLabel.text = "These companies have failed one or more evalutions. As a result, the stock from these companies is considered a sell per this methodology."
         }
     }
@@ -104,7 +104,9 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate  {
         } else {
             equityMetadata = self.store.equitiesMetadata[indexPath.row]
         }
-        cell.textLabel?.text = (equityMetadata.name?.capitalized)! +  " (" + equityMetadata.ticker! + ")"
+        if equityMetadata.showInSellTab {
+            cell.textLabel?.text = (equityMetadata.name?.capitalized)! +  " (" + equityMetadata.ticker! + ")"
+        }
         return cell
     }
     

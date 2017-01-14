@@ -82,6 +82,7 @@ class DataStore {
         } else {
             equity.tab = .sell
             self.setShowInSellTab(equity: equity, value: true)
+            
         }
         
         // determine if any of the items in the evaluate tab should move to the buy tab
@@ -103,6 +104,7 @@ class DataStore {
         for equityMetadata in equitiesMetadata {
             if equityMetadata.ticker == equity.ticker {
                 equityMetadata.showInSellTab = value
+                
             }
         }
         self.saveEquitiesMetadataContext()

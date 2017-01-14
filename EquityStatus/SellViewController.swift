@@ -19,6 +19,10 @@ class SellViewController: UIViewController, SellViewDelegate {
         self.sellViewInst.delegate = self
         definesPresentationContext = true  // for searchbar
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        sellViewInst.countLabel.text = Utilities.getSellTabCount()
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

@@ -12,7 +12,7 @@ class MeasureDetailViewController: UIViewController, MeasureDetailViewDelegate {
     
     var measureDetailViewInst: MeasureDetailView!
     let store = DataStore.sharedInstance
-    var measureTicker: String = String()
+    var measureTicker = String()
     var equity: Equity!
 
     override func viewDidLoad() {

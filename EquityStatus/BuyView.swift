@@ -177,7 +177,6 @@ class BuyView: UIView, ChartViewDelegate {
         chartDataSet.valueTextColor = UIColor.white
         chartDataSet.valueFormatter = percentFormatter      // formats the values into a %
         let chartData = BarChartData(dataSet: chartDataSet)
-        
 
         self.barChartView.data = chartData
     }

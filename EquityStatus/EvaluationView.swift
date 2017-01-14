@@ -63,7 +63,7 @@ class EvaluationView: UIView, UITableViewDataSource, UITableViewDelegate {
             }
         }
         // set the labels in the heading
-        self.equitiesForEvaluation.count == 1 ? (self.pageDescLabel.text = "This company has passed several assessments and failed none. Evaluate the remaining measures to determine if the company's stock is a buy or sell.") : (self.pageDescLabel.text = "These companies have passed several assessments and failed none. Evaluate the remaining measures to determine if the companies' stock is a buy or sell.")
+        self.equitiesForEvaluation.count == 1 ? (self.pageDescLabel.text = "This company has passed several assessments and failed none. Evaluate the remaining measures to determine if the company's stock is a buy or sell.") : (self.pageDescLabel.text = "These companies have passed several assessments and failed none. Evaluate the remaining measures to determine if the companies' stock is a buy or a sell.")
         self.countLabel.text = "\(self.equitiesForEvaluation.count)"
     }
     
