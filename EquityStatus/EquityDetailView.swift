@@ -17,67 +17,67 @@ class EquityDetailView: UIView {
     weak var delegate: EquityDetailViewDelegate?
     var equity: Equity!
     let scrollView = UIScrollView()
-    let heightOfScrolledContent: CGFloat = 690
+    let heightOfScrolledContent:CGFloat = 690
     
-    let lineSpacing: CGFloat = 18
+    let lineSpacing:CGFloat = 18
     
-    let subTitle: UILabel = UILabel()
+    let subTitle = UILabel()
     
-    let ROEaResultDesc: UILabel = UILabel()
-    let ROEaResultDescTap: UITapGestureRecognizer = UITapGestureRecognizer()
-    let ROEaStatusDesc: UILabel = UILabel()
+    let ROEaResultDesc = UILabel()
+    let ROEaResultDescTap = UITapGestureRecognizer()
+    let ROEaStatusDesc = UILabel()
     
-    let EPSiResultDesc: UILabel = UILabel()
-    let EPSiResultDescTap: UITapGestureRecognizer = UITapGestureRecognizer()
-    let EPSiStatusDesc: UILabel = UILabel()
+    let EPSiResultDesc = UILabel()
+    let EPSiResultDescTap = UITapGestureRecognizer()
+    let EPSiStatusDesc = UILabel()
     
-    let EPSvResultDesc: UILabel = UILabel()
-    let EPSvResultDescTap: UITapGestureRecognizer = UITapGestureRecognizer()
-    let EPSvStatusDesc: UILabel = UILabel()
+    let EPSvResultDesc = UILabel()
+    let EPSvResultDescTap = UITapGestureRecognizer()
+    let EPSvStatusDesc = UILabel()
     
-    let BViResultDesc: UILabel = UILabel()
-    let BViResultDescTap: UITapGestureRecognizer = UITapGestureRecognizer()
-    let BViStatusDesc: UILabel = UILabel()
+    let BViResultDesc = UILabel()
+    let BViResultDescTap = UITapGestureRecognizer()
+    let BViStatusDesc = UILabel()
     
-    let DRaResultDesc: UILabel = UILabel()
-    let DRaResultDescTap: UITapGestureRecognizer = UITapGestureRecognizer()
-    let DRaStatusDesc: UILabel = UILabel()
+    let DRaResultDesc = UILabel()
+    let DRaResultDescTap = UITapGestureRecognizer()
+    let DRaStatusDesc = UILabel()
     
-    let SOrResultDesc: UILabel = UILabel()
-    let SOrResultDescTap: UITapGestureRecognizer = UITapGestureRecognizer()
-    let SOrStatusDesc: UILabel = UILabel()
+    let SOrResultDesc = UILabel()
+    let SOrResultDescTap = UITapGestureRecognizer()
+    let SOrStatusDesc = UILabel()
     
-    let previousROIResultDesc: UILabel = UILabel()
-    let previousROIResultDescTap: UITapGestureRecognizer = UITapGestureRecognizer()
-    let previousROIStatusDesc: UILabel = UILabel()
+    let previousROIResultDesc = UILabel()
+    let previousROIResultDescTap = UITapGestureRecognizer()
+    let previousROIStatusDesc = UILabel()
     
-    let expectedROIResultDesc: UILabel = UILabel()
-    let expectedROIResultDescTap: UITapGestureRecognizer = UITapGestureRecognizer()
-    let expectedROIStatusDesc: UILabel = UILabel()
+    let expectedROIResultDesc = UILabel()
+    let expectedROIResultDescTap = UITapGestureRecognizer()
+    let expectedROIStatusDesc = UILabel()
     
-    let q1Desc: UILabel = UILabel()
-    let q1DescTap: UITapGestureRecognizer = UITapGestureRecognizer()
-    let q1StatusDesc: UILabel = UILabel()
+    let q1Desc = UILabel()
+    let q1DescTap = UITapGestureRecognizer()
+    let q1StatusDesc = UILabel()
     
-    let q2Desc: UILabel = UILabel()
-    let q2DescTap: UITapGestureRecognizer = UITapGestureRecognizer()
-    let q2StatusDesc: UILabel = UILabel()
+    let q2Desc = UILabel()
+    let q2DescTap = UITapGestureRecognizer()
+    let q2StatusDesc = UILabel()
     
-    let q3Desc: UILabel = UILabel()
-    let q3DescTap: UITapGestureRecognizer = UITapGestureRecognizer()
-    let q3StatusDesc: UILabel = UILabel()
+    let q3Desc = UILabel()
+    let q3DescTap = UITapGestureRecognizer()
+    let q3StatusDesc = UILabel()
     
-    let q4Desc: UILabel = UILabel()
-    let q4DescTap: UITapGestureRecognizer = UITapGestureRecognizer()
-    let q4StatusDesc: UILabel = UILabel()
+    let q4Desc = UILabel()
+    let q4DescTap = UITapGestureRecognizer()
+    let q4StatusDesc = UILabel()
     
-    let q5Desc: UILabel = UILabel()
-    let q5DescTap: UITapGestureRecognizer = UITapGestureRecognizer()
-    let q5StatusDesc: UILabel = UILabel()
+    let q5Desc = UILabel()
+    let q5DescTap = UITapGestureRecognizer()
+    let q5StatusDesc = UILabel()
     
-    let q6Desc: UILabel = UILabel()
-    let q6DescTap: UITapGestureRecognizer = UITapGestureRecognizer()
-    let q6StatusDesc: UILabel = UILabel()
+    let q6Desc = UILabel()
+    let q6DescTap = UITapGestureRecognizer()
+    let q6StatusDesc = UILabel()
     
     override init(frame:CGRect){
         super.init(frame: frame)

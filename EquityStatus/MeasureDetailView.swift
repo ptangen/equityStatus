@@ -16,17 +16,17 @@ class MeasureDetailView: UIView {
     
     weak var delegate: MeasureDetailViewDelegate?
     let store = DataStore.sharedInstance
-    var measureTicker: String = String()
+    var measureTicker = String()
     var equity: Equity!
-    var measureShortName: String = String()
-    var measureLongNameLabel: UILabel = UILabel()
-    var statusLabel: UILabel = UILabel()
-    var statusIcon: UILabel = UILabel()
-    var statusValueDesc: UILabel = UILabel()
-    var resultsLabel: UILabel = UILabel()
-    var targetLabel: UILabel = UILabel()
-    var measureCalcDescLabel: UILabel = UILabel()
-    var qStatusPicker: UISegmentedControl = UISegmentedControl()
+    var measureShortName = String()
+    var measureLongNameLabel = UILabel()
+    var statusLabel = UILabel()
+    var statusIcon = UILabel()
+    var statusValueDesc = UILabel()
+    var resultsLabel = UILabel()
+    var targetLabel = UILabel()
+    var measureCalcDescLabel = UILabel()
+    var qStatusPicker = UISegmentedControl()
 
     override init(frame:CGRect){
         super.init(frame: frame)

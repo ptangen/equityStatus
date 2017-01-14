@@ -10,8 +10,8 @@ import UIKit
 
 class EvaluationTableViewCell: UITableViewCell {
     
-    var measureIconText: [String] = []
-    var statusIcons: [UILabel] = []
+    var measureIconText = [String]()
+    var statusIcons = [UILabel]()
     let measureCount:Int = 14
 
     required init(coder aDecoder: NSCoder) {

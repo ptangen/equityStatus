@@ -16,7 +16,6 @@
 		C02D50A11E154F020000330F /* Equity.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02D50A01E154F020000330F /* Equity.swift */; };
 		C02D50A31E159BCD0000330F /* EquityDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02D50A21E159BCD0000330F /* EquityDetailViewController.swift */; };
 		C02D50A51E159C2D0000330F /* EquityDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02D50A41E159C2D0000330F /* EquityDetailView.swift */; };
-		C03A39D91E1BF05A00903B43 /* SellViewDict.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03A39D81E1BF05A00903B43 /* SellViewDict.swift */; };
 		C0409F861E0743CD00BEC5DD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0409F851E0743CD00BEC5DD /* AppDelegate.swift */; };
 		C0409F881E0743CD00BEC5DD /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0409F871E0743CD00BEC5DD /* SignInViewController.swift */; };
 		C0409F8D1E0743CD00BEC5DD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0409F8C1E0743CD00BEC5DD /* Assets.xcassets */; };
@@ -67,7 +66,6 @@
 		C02D50A01E154F020000330F /* Equity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Equity.swift; sourceTree = "<group>"; };
 		C02D50A21E159BCD0000330F /* EquityDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EquityDetailViewController.swift; sourceTree = "<group>"; };
 		C02D50A41E159C2D0000330F /* EquityDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EquityDetailView.swift; sourceTree = "<group>"; };
-		C03A39D81E1BF05A00903B43 /* SellViewDict.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SellViewDict.swift; sourceTree = "<group>"; };
 		C0409F821E0743CD00BEC5DD /* EquityStatus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EquityStatus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0409F851E0743CD00BEC5DD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C0409F871E0743CD00BEC5DD /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
@@ -217,7 +215,6 @@
 				C02D509E1E12F2BE0000330F /* SellTableViewCell.swift */,
 				C02D50A41E159C2D0000330F /* EquityDetailView.swift */,
 				C07B9B361E16F99A0093423E /* MeasureDetailView.swift */,
-				C03A39D81E1BF05A00903B43 /* SellViewDict.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -474,7 +471,6 @@
 				C0BF222C1E08686A005B7E55 /* EvaluationViewController.swift in Sources */,
 				C02D509D1E12AB8D0000330F /* EquityStatus.xcdatamodeld in Sources */,
 				C0BF222E1E086885005B7E55 /* EvaluationView.swift in Sources */,
-				C03A39D91E1BF05A00903B43 /* SellViewDict.swift in Sources */,
 				C0BF222A1E0861B6005B7E55 /* BuyView.swift in Sources */,
 				C0409F881E0743CD00BEC5DD /* SignInViewController.swift in Sources */,
 				C0BF22341E086AA1005B7E55 /* TabsViewController.swift in Sources */,

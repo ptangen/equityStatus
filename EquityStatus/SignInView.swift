@@ -19,15 +19,15 @@ class SignInView: UIView, UITextFieldDelegate {
     weak var delegate: SignInViewDelegate?
 
     // controls
-    let welcomeLabel: UILabel = UILabel()
-    let equityStatusLabel: UILabel = UILabel()
-    let userNameField: UITextField = UITextField()
-    let passwordField: UITextField = UITextField()
-    let signInButton: UIButton = UIButton()
-    let touchIDButton: UIButton = UIButton()
-    var bullImage: UIImageView = UIImageView()
-    var userNamePopulated: Bool = false
-    var passwordPopulated: Bool = false
+    let welcomeLabel = UILabel()
+    let equityStatusLabel = UILabel()
+    let userNameField = UITextField()
+    let passwordField = UITextField()
+    let signInButton = UIButton()
+    let touchIDButton = UIButton()
+    var bullImage = UIImageView()
+    var userNamePopulated:Bool = false
+    var passwordPopulated:Bool = false
     
     let myKeyChainWrapper = KeychainWrapper()
     var laContext = LAContext()

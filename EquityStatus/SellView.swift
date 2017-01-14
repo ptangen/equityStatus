@@ -18,10 +18,10 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate  {
     let store = DataStore.sharedInstance
     var filteredEquitiesMetadata = [EquityMetadata]()
     let sellTableViewInst = UITableView()
-    let activityIndicator: UIView = UIView()
-    let countLabel: UILabel = UILabel()
-    let companiesLabel: UILabel = UILabel()
-    let pageDescLabel: UILabel = UILabel()
+    let activityIndicator = UIView()
+    let countLabel = UILabel()
+    let companiesLabel = UILabel()
+    let pageDescLabel = UILabel()
     var sellTableViewInstYConstraintWithHeading: NSLayoutConstraint!
     var sellTableViewInstYConstraintWithoutHeading: NSLayoutConstraint!
     

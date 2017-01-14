@@ -14,14 +14,14 @@ protocol EvaluationViewDelegate: class {
 
 class EvaluationView: UIView, UITableViewDataSource, UITableViewDelegate {
 
+    let store = DataStore.sharedInstance
     weak var delegate: EvaluationViewDelegate?
     let evaluationTableViewInst = UITableView()
-    let countLabel: UILabel = UILabel()
-    let companiesLabel: UILabel = UILabel()
-    let pageDescLabel: UILabel = UILabel()
-    let store = DataStore.sharedInstance
-    let activityIndicator: UIView = UIView()
-    var equitiesForEvaluation: [Equity] = []
+    let countLabel = UILabel()
+    let companiesLabel = UILabel()
+    let pageDescLabel = UILabel()
+    let activityIndicator = UIView()
+    var equitiesForEvaluation = [Equity]()
     
     override init(frame:CGRect){
         super.init(frame: frame)

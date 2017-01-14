@@ -15,18 +15,18 @@ protocol BuyViewDelegate: class {
 
 class BuyView: UIView, ChartViewDelegate {
     
+    let store = DataStore.sharedInstance
     weak var delegate: BuyViewDelegate?
     let barChartView = HorizontalBarChartView()
-    let countLabel: UILabel = UILabel()
-    let companiesLabel: UILabel = UILabel()
-    let pageDescLabel: UILabel = UILabel()
-    var equitiesForBuyExpectedROI: [Double] = []
-    var equitiesForBuyNames: [String] = []
-    var equitiesForBuyTickers: [String] = []
-    let store = DataStore.sharedInstance
-    let activityIndicator: UIView = UIView()
-    var chartHeight: CGFloat = CGFloat()
-    let barHeight: Int = 60
+    let countLabel = UILabel()
+    let companiesLabel = UILabel()
+    let pageDescLabel = UILabel()
+    var equitiesForBuyExpectedROI = [Double]()
+    var equitiesForBuyNames = [String]()
+    var equitiesForBuyTickers = [String]()
+    let activityIndicator = UIView()
+    var chartHeight = CGFloat()
+    let barHeight:Int = 60
     
     override init(frame:CGRect){
         super.init(frame: frame)
@@ -159,6 +159,7 @@ class BuyView: UIView, ChartViewDelegate {
         barChartView.animate(xAxisDuration: 0.0, yAxisDuration: 0.6)
         barChartView.legend.enabled = false
         barChartView.chartDescription?.enabled = false
+        barChartView.drawValueAboveBarEnabled = false       // places values inside the bars
 
         barChartView.leftAxis.axisMinimum = 0.0             // required to show values on the horz bars, its a bug
         if let maxBarValue = self.equitiesForBuyExpectedROI.max() {
@@ -176,7 +177,7 @@ class BuyView: UIView, ChartViewDelegate {
         chartDataSet.valueTextColor = UIColor.white
         chartDataSet.valueFormatter = percentFormatter      // formats the values into a %
         let chartData = BarChartData(dataSet: chartDataSet)
-        barChartView.drawValueAboveBarEnabled = false       // places values inside the bars
+        
 
         self.barChartView.data = chartData
     }
