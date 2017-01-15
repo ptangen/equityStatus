@@ -69,15 +69,12 @@ struct Constants{
     
     enum measureTargetDesc: String {
         case ROEa = "greater than or equal to 12%"
-        case EPSi = "greater than or equal to 12% "
-        case previousROI = "greater than or equal to 20%"
-        case expectedROI = "greater than or equal to 15%"
+        case EPSiPreviousROIExpectedROI = "greater than or equal to 15%"
         case EPSv = "less than or equal to 1.5"
         case BVi = "greater than or equal to 5%"
         case DRa = "less than or equal to 5"
         case SOr = "more than or equal to 0 shares"
     }
-     //EPSi = 15, previousROI = 15, expectedROI = 15
     
     enum measureCalcDesc: String {
         case ROEa = "The annual return on equity is collected and then the mean is found."

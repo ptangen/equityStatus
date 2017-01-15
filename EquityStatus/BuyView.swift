@@ -45,7 +45,7 @@ class BuyView: UIView, ChartViewDelegate {
                 if isSuccessful {
                     self.createEquitiesForBuy()
                     OperationQueue.main.addOperation {
-                        self.equitiesForBuyExpectedROI.count == 1 ? (self.pageDescLabel.text = "This company has passed all 14 assessments and is therefore considered a buy. The expected return for the equity is displayed below.") : (self.pageDescLabel.text = "These companies have passed all 14 assessments and are therefore considered buys. The expected returns for the equities are displayed below.")
+                        self.equitiesForBuyExpectedROI.count == 1 ? (self.pageDescLabel.text = "This company has passed all 14 assessments, therefore it's stock is considered a buy. The expected return for the equity is displayed below.") : (self.pageDescLabel.text = "These companies have passed all 14 assessments, therefore their stock are considered buys. The expected returns for the equities are displayed below.")
                         self.countLabel.text = "\(self.equitiesForBuyExpectedROI.count)"
                         self.equitiesForBuyExpectedROI.count == 1 ? (self.companiesLabel.text = "company") : (self.companiesLabel.text = "companies")
                         self.updateChartWithData()
@@ -163,6 +163,7 @@ class BuyView: UIView, ChartViewDelegate {
         barChartView.xAxis.setLabelCount(stringFormatter.nameValues.count, force: false)
         barChartView.xAxis.granularityEnabled = true
         barChartView.xAxis.granularity = 1.0
+        barChartView.xAxis.labelPosition = XAxis.LabelPosition.bottom
         
         barChartView.rightAxis.enabled = false              // hide values on bottom axis
         barChartView.leftAxis.enabled = false               // hide values on top axis

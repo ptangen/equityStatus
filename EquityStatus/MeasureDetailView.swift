@@ -176,7 +176,7 @@ class MeasureDetailView: UIView {
             Utilities.setStatusIcon(status: self.equity.EPSiStatus, uiLabel: self.statusIcon)
             self.statusValueDesc.text = "(" + getStatusDesc(self.equity.EPSiStatus) + ")"
             self.resultsLabel.text = "Result: " + getResultString(resultDouble: self.equity.EPSiResult, percentage: true)
-            self.targetLabel.text = "Target: " + Constants.measureTargetDesc.EPSi.rawValue
+            self.targetLabel.text = "Target: " + Constants.measureTargetDesc.EPSiPreviousROIExpectedROI.rawValue
             self.measureCalcDescLabel.text = "Description: "  + Constants.measureCalcDesc.EPSi.rawValue
             
         } else if self.measureShortName == "EPSv" {
@@ -221,7 +221,7 @@ class MeasureDetailView: UIView {
             Utilities.setStatusIcon(status: self.equity.previousROIStatus, uiLabel: self.statusIcon)
             self.statusValueDesc.text = "(" + getStatusDesc(self.equity.previousROIStatus) + ")"
             self.resultsLabel.text = "Result: " + getResultString(resultDouble: self.equity.previousROIResult, percentage: true)
-            self.targetLabel.text = "Target: " + Constants.measureTargetDesc.previousROI.rawValue
+            self.targetLabel.text = "Target: " + Constants.measureTargetDesc.EPSiPreviousROIExpectedROI.rawValue
             self.measureCalcDescLabel.text = "Description: "  + Constants.measureCalcDesc.previousROI.rawValue
 
         } else if self.measureShortName == "expectedROI" {
@@ -230,7 +230,7 @@ class MeasureDetailView: UIView {
             Utilities.setStatusIcon(status: self.equity.expectedROIStatus, uiLabel: self.statusIcon)
             self.statusValueDesc.text = "(" + getStatusDesc(self.equity.expectedROIStatus) + ")"
             self.resultsLabel.text = "Result: " + getResultString(resultDouble: self.equity.expectedROIResult, percentage: true)
-            self.targetLabel.text = "Target: " + Constants.measureTargetDesc.expectedROI.rawValue
+            self.targetLabel.text = "Target: " + Constants.measureTargetDesc.EPSiPreviousROIExpectedROI.rawValue
             self.measureCalcDescLabel.text = "Description: "  + Constants.measureCalcDesc.expectedROI.rawValue
             
         } else if self.measureShortName == "q1" {
