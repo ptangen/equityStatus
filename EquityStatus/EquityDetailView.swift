@@ -17,7 +17,7 @@ class EquityDetailView: UIView {
     weak var delegate: EquityDetailViewDelegate?
     var equity: Equity!
     let scrollView = UIScrollView()
-    let heightOfScrolledContent:CGFloat = 800
+    var heightOfScrolledContent = CGFloat()
     
     let lineSpacing:CGFloat = 18
     
@@ -81,6 +81,8 @@ class EquityDetailView: UIView {
     
     override init(frame:CGRect){
         super.init(frame: frame)
+        // the 5 and SE devices (width=320) need more vertical space
+        UIScreen.main.bounds.width == 320 ? (self.heightOfScrolledContent = 800) : (self.heightOfScrolledContent = 700)
         self.pageLayout()
     }
     

@@ -163,109 +163,109 @@ class MeasureDetailView: UIView {
         // get the measure results and set the label text
         if self.measureShortName == "ROEa" {
             self.showObjectiveMeasureControls()
-            self.measureLongNameLabel.text = "Measure: " + Constants.measureLongName.ROEa.rawValue
+            self.measureLongNameLabel.text = "Measure: \(Constants.measureMetadata.longName(.ROEa)())"
             Utilities.setStatusIcon(status: self.equity.ROEaStatus, uiLabel: self.statusIcon)
             self.statusValueDesc.text = "(" + getStatusDesc(self.equity.ROEaStatus) + ")"
             self.resultsLabel.text = "Result: " + getResultString(resultDouble: self.equity.ROEaResult, percentage: true)
-            self.targetLabel.text = "Target: " + Constants.measureTargetDesc.ROEa.rawValue
-            self.measureCalcDescLabel.text = "Description: "  + Constants.measureCalcDesc.ROEa.rawValue
+            self.targetLabel.text = Constants.measureMetadata.threshold(.ROEa)()
+            self.measureCalcDescLabel.text = Constants.measureMetadata.calcDesc(.ROEa)()
             
         } else if self.measureShortName == "EPSi" {
             self.showObjectiveMeasureControls()
-            self.measureLongNameLabel.text = "Measure: " + Constants.measureLongName.EPSi.rawValue
+            self.measureLongNameLabel.text = "Measure: \(Constants.measureMetadata.longName(.EPSi)())"
             Utilities.setStatusIcon(status: self.equity.EPSiStatus, uiLabel: self.statusIcon)
             self.statusValueDesc.text = "(" + getStatusDesc(self.equity.EPSiStatus) + ")"
             self.resultsLabel.text = "Result: " + getResultString(resultDouble: self.equity.EPSiResult, percentage: true)
-            self.targetLabel.text = "Target: " + Constants.measureTargetDesc.EPSiPreviousROIExpectedROI.rawValue
-            self.measureCalcDescLabel.text = "Description: "  + Constants.measureCalcDesc.EPSi.rawValue
+            self.targetLabel.text = Constants.measureMetadata.threshold(.EPSi)()
+            self.measureCalcDescLabel.text = Constants.measureMetadata.calcDesc(.EPSi)()
             
         } else if self.measureShortName == "EPSv" {
             self.showObjectiveMeasureControls()
-            self.measureLongNameLabel.text = "Measure: " + Constants.measureLongName.EPSv.rawValue
+            self.measureLongNameLabel.text = "Measure: \(Constants.measureMetadata.longName(.EPSv)())"
             Utilities.setStatusIcon(status: self.equity.EPSvStatus, uiLabel: self.statusIcon)
             self.statusValueDesc.text = "(" + getStatusDesc(self.equity.EPSvStatus) + ")"
             self.resultsLabel.text = "Result: " + getResultString(resultDouble: self.equity.EPSvResult, percentage: false)
-            self.targetLabel.text = "Target: " + Constants.measureTargetDesc.EPSv.rawValue
-            self.measureCalcDescLabel.text = "Description: "  + Constants.measureCalcDesc.EPSv.rawValue
+            self.targetLabel.text = Constants.measureMetadata.threshold(.EPSv)()
+            self.measureCalcDescLabel.text = Constants.measureMetadata.calcDesc(.EPSv)()
             
         } else if self.measureShortName == "BVi" {
             self.showObjectiveMeasureControls()
-            self.measureLongNameLabel.text = "Measure: " + Constants.measureLongName.BVi.rawValue
+            self.measureLongNameLabel.text = "Measure: \(Constants.measureMetadata.longName(.BVi)())"
             Utilities.setStatusIcon(status: self.equity.BViStatus, uiLabel: self.statusIcon)
             self.statusValueDesc.text = "(" + getStatusDesc(self.equity.BViStatus) + ")"
             self.resultsLabel.text = "Result: " + getResultString(resultDouble: self.equity.BViResult, percentage: true)
-            self.targetLabel.text = "Target: " + Constants.measureTargetDesc.BVi.rawValue
-            self.measureCalcDescLabel.text = "Description: "  + Constants.measureCalcDesc.BVi.rawValue
+            self.targetLabel.text = Constants.measureMetadata.threshold(.BVi)()
+            self.measureCalcDescLabel.text = Constants.measureMetadata.calcDesc(.BVi)()
             
         } else if self.measureShortName == "DRa" {
             self.showObjectiveMeasureControls()
-            self.measureLongNameLabel.text = "Measure: " + Constants.measureLongName.DRa.rawValue
+            self.measureLongNameLabel.text = "Measure: \(Constants.measureMetadata.longName(.DRa)())"
             Utilities.setStatusIcon(status: self.equity.DRaStatus, uiLabel: self.statusIcon)
             self.statusValueDesc.text = "(" + getStatusDesc(self.equity.DRaStatus) + ")"
             self.resultsLabel.text = "Result: " + getResultString(resultDouble: self.equity.DRaResult, percentage: false)
-            self.targetLabel.text = "Target: " + Constants.measureTargetDesc.DRa.rawValue
-            self.measureCalcDescLabel.text = "Description: "  + Constants.measureCalcDesc.DRa.rawValue
+            self.targetLabel.text = Constants.measureMetadata.threshold(.DRa)()
+            self.measureCalcDescLabel.text = Constants.measureMetadata.calcDesc(.DRa)()
             
         } else if self.measureShortName == "SOr" {
             self.showObjectiveMeasureControls()
-            self.measureLongNameLabel.text = "Measure: " + Constants.measureLongName.SOr.rawValue
+            self.measureLongNameLabel.text = "Measure: \(Constants.measureMetadata.longName(.SOr)())"
             Utilities.setStatusIcon(status: self.equity.SOrStatus, uiLabel: self.statusIcon)
             self.statusValueDesc.text = "(" + getStatusDesc(self.equity.SOrStatus) + ")"
             self.resultsLabel.text = "Result: " + getResultString(resultDouble: self.equity.SOrResult, percentage: false)
-            self.targetLabel.text = "Target: " + Constants.measureTargetDesc.SOr.rawValue
-            self.measureCalcDescLabel.text = "Description: "  + Constants.measureCalcDesc.SOr.rawValue
+            self.targetLabel.text = Constants.measureMetadata.threshold(.SOr)()
+            self.measureCalcDescLabel.text = Constants.measureMetadata.calcDesc(.SOr)()
             
         } else if self.measureShortName == "previousROI" {
             self.showObjectiveMeasureControls()
-            self.measureLongNameLabel.text = "Measure: " + Constants.measureLongName.previousROI.rawValue
+            self.measureLongNameLabel.text = "Measure: \(Constants.measureMetadata.longName(.previousROI)())"
             Utilities.setStatusIcon(status: self.equity.previousROIStatus, uiLabel: self.statusIcon)
             self.statusValueDesc.text = "(" + getStatusDesc(self.equity.previousROIStatus) + ")"
             self.resultsLabel.text = "Result: " + getResultString(resultDouble: self.equity.previousROIResult, percentage: true)
-            self.targetLabel.text = "Target: " + Constants.measureTargetDesc.EPSiPreviousROIExpectedROI.rawValue
-            self.measureCalcDescLabel.text = "Description: "  + Constants.measureCalcDesc.previousROI.rawValue
+            self.targetLabel.text = Constants.measureMetadata.threshold(.previousROI)()
+            self.measureCalcDescLabel.text = Constants.measureMetadata.calcDesc(.previousROI)()
 
         } else if self.measureShortName == "expectedROI" {
             self.showObjectiveMeasureControls()
-            self.measureLongNameLabel.text = "Measure: " + Constants.measureLongName.expectedROI.rawValue
+            self.measureLongNameLabel.text = "Measure: \(Constants.measureMetadata.longName(.expectedROI)())"
             Utilities.setStatusIcon(status: self.equity.expectedROIStatus, uiLabel: self.statusIcon)
             self.statusValueDesc.text = "(" + getStatusDesc(self.equity.expectedROIStatus) + ")"
             self.resultsLabel.text = "Result: " + getResultString(resultDouble: self.equity.expectedROIResult, percentage: true)
-            self.targetLabel.text = "Target: " + Constants.measureTargetDesc.EPSiPreviousROIExpectedROI.rawValue
-            self.measureCalcDescLabel.text = "Description: "  + Constants.measureCalcDesc.expectedROI.rawValue
+            self.targetLabel.text = Constants.measureMetadata.threshold(.expectedROI)()
+            self.measureCalcDescLabel.text = Constants.measureMetadata.calcDesc(.expectedROI)()
             
         } else if self.measureShortName == "q1" {
             self.showSubjectiveMeasureControls(qStatus: self.equity.q1Status)
-            self.measureLongNameLabel.text = Constants.measureLongName.q1.rawValue
+            self.measureLongNameLabel.text = Constants.measureMetadata.longName(.q1)()
             Utilities.setStatusIcon(status: self.equity.q1Status, uiLabel: self.statusIcon)
             self.statusValueDesc.text = "(" + getStatusDesc(self.equity.q1Status) + ")"
             
         } else if self.measureShortName == "q2" {
             self.showSubjectiveMeasureControls(qStatus: self.equity.q2Status)
-            self.measureLongNameLabel.text = Constants.measureLongName.q2.rawValue
+            self.measureLongNameLabel.text = Constants.measureMetadata.longName(.q2)()
             Utilities.setStatusIcon(status: self.equity.q2Status, uiLabel: self.statusIcon)
             self.statusValueDesc.text = "(" + getStatusDesc(self.equity.q2Status) + ")"
             
         } else if self.measureShortName == "q3" {
             self.showSubjectiveMeasureControls(qStatus: self.equity.q3Status)
-            self.measureLongNameLabel.text = Constants.measureLongName.q3.rawValue
+            self.measureLongNameLabel.text = Constants.measureMetadata.longName(.q3)()
             Utilities.setStatusIcon(status: self.equity.q3Status, uiLabel: self.statusIcon)
             self.statusValueDesc.text = "(" + getStatusDesc(self.equity.q3Status) + ")"
             
         } else if self.measureShortName == "q4" {
             self.showSubjectiveMeasureControls(qStatus: self.equity.q4Status)
-            self.measureLongNameLabel.text = Constants.measureLongName.q4.rawValue
+            self.measureLongNameLabel.text = Constants.measureMetadata.longName(.q4)()
             Utilities.setStatusIcon(status: self.equity.q4Status, uiLabel: self.statusIcon)
             self.statusValueDesc.text = "(" + getStatusDesc(self.equity.q4Status) + ")"
             
         } else if self.measureShortName == "q5" {
             self.showSubjectiveMeasureControls(qStatus: self.equity.q5Status)
-            self.measureLongNameLabel.text = Constants.measureLongName.q5.rawValue
+            self.measureLongNameLabel.text = Constants.measureMetadata.longName(.q5)()
             Utilities.setStatusIcon(status: self.equity.q5Status, uiLabel: self.statusIcon)
             self.statusValueDesc.text = "(" + getStatusDesc(self.equity.q5Status) + ")"
             
         } else {
             self.showSubjectiveMeasureControls(qStatus: self.equity.q6Status)
-            self.measureLongNameLabel.text = Constants.measureLongName.q6.rawValue
+            self.measureLongNameLabel.text = Constants.measureMetadata.longName(.q6)()
             Utilities.setStatusIcon(status: self.equity.q6Status, uiLabel: self.statusIcon)
             self.statusValueDesc.text = "(" + getStatusDesc(self.equity.q6Status) + ")"
         }
