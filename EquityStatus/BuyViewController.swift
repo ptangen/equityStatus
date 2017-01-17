@@ -11,7 +11,7 @@ import UIKit
 
 class BuyViewController: UIViewController, BuyViewDelegate  {
     
-    var buyViewInst: BuyView!
+    var buyViewInst = BuyView()
 
     override func viewDidLoad() {
         super.viewDidLoad()

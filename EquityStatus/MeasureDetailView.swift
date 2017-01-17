@@ -156,9 +156,10 @@ class MeasureDetailView: UIView {
         
         // extract the measure name
         let chars = fullString.characters;
-        let indexLeftParen = chars.index(of: "(")!
-        let indexBeforeLeftParen = chars.index(before: indexLeftParen)
-        self.measureShortName = fullString[chars.startIndex...indexBeforeLeftParen]
+        if let indexLeftParen = chars.index(of: "(") {
+            let indexBeforeLeftParen = chars.index(before: indexLeftParen)
+            self.measureShortName = fullString[chars.startIndex...indexBeforeLeftParen]
+        }
         
         // get the measure results and set the label text
         if self.measureShortName == "ROEa" {

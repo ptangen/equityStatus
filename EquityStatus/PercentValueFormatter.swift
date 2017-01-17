@@ -47,9 +47,9 @@ class PercentValueFormatter: NSObject, IValueFormatter {
         
         var r = String(format: "%2.f", sig) + suffix[length]
         
-        if appendix != nil
+        if let appendix = appendix
         {
-            r += appendix!
+            r += appendix
         }
         
         return r

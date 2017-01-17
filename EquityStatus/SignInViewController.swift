@@ -10,7 +10,7 @@ import UIKit
 
 class SignInViewController: UIViewController, SignInViewDelegate {
     
-    var signInViewInst: SignInView!
+    var signInViewInst = SignInView()
 
     override func viewDidLoad() {
         super.viewDidLoad()

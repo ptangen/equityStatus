@@ -33,14 +33,13 @@ class Utilities {
         let chars = fullString.characters;
         
         // Get character indexes.
-        let indexLeftParen = chars.index(of: "(")!
-        let indexRightParen = chars.index(of: ")")!
-        
-        // Get before and after indexes.
-        let indexAfterLeftParen = chars.index(after: indexLeftParen)
-        let indexBeforeRightParen = chars.index(before: indexRightParen)
-        
-        return fullString[indexAfterLeftParen...indexBeforeRightParen]
+        if let indexLeftParen = chars.index(of: "("), let indexRightParen = chars.index(of: ")") {
+            // Get before and after indexes.
+            let indexAfterLeftParen = chars.index(after: indexLeftParen)
+            let indexBeforeRightParen = chars.index(before: indexRightParen)
+            return fullString[indexAfterLeftParen...indexBeforeRightParen]
+        }
+        return "" // should never be used
     }
     
     class func showAlertMessage(_ message: String, viewControllerInst: UIViewController) {

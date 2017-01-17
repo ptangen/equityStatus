@@ -24,7 +24,7 @@ class EquityStatusTests: XCTestCase {
     }
     
     func testForEquity() {
-        // This test should pass after the buy or evaluate tab is populated with one or more equities.
+        // This test should pass AFTER the buy or evaluate tab is populated with one or more equities by running the app.
         // A pass here means data was retrieved and the equities array was created successfully.
         if let equity = store.equities.first {
             XCTAssertNotNil(equity.ticker)
@@ -32,7 +32,7 @@ class EquityStatusTests: XCTestCase {
     }
     
     func testForEquityMetadata() {
-        // This test should pass after the sell tab was opened and data was fetched.
+        // This test should pass AFTER the sell tab was opened and data was fetched by running the app.
         // A pass here means data was retrieved, coredata was populated and the equitiesMetadata array was created successfully.
         if let equityMetadata = store.equitiesMetadata.first {
             XCTAssertNotNil(equityMetadata.ticker)

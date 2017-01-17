@@ -30,24 +30,26 @@ class DataStore {
         
         // create the core data object
         let context = store.persistentContainer.viewContext
-        let equityMetadataInst = NSEntityDescription.insertNewObject(forEntityName: "EquityMetadata", into: context) as! EquityMetadata
+        let equityMetadataInst = NSEntityDescription.insertNewObject(forEntityName: "EquityMetadata", into: context) as? EquityMetadata
         
         // set the properties
-        equityMetadataInst.name = name
-        equityMetadataInst.nameFirst = nameFirst
-        equityMetadataInst.ticker = ticker
-        equityMetadataInst.tickerFirst = tickerFirst
+        if let equityMetadataInst = equityMetadataInst {
+            equityMetadataInst.name = name
+            equityMetadataInst.nameFirst = nameFirst
+            equityMetadataInst.ticker = ticker
+            equityMetadataInst.tickerFirst = tickerFirst
         
-        if tickersInEvalAndBuy.contains(ticker) {
-            equityMetadataInst.showInSellTab = false
-        } else {
-            equityMetadataInst.showInSellTab = true
+            if tickersInEvalAndBuy.contains(ticker) {
+                equityMetadataInst.showInSellTab = false
+            } else {
+                equityMetadataInst.showInSellTab = true
+            }
+        
+            // add new equity to dataStore/coredata
+            store.equitiesMetadata.append(equityMetadataInst)
+            store.saveEquitiesMetadataContext()
+            store.getEquitiesMetadataFromCoreData()
         }
-        
-        // add new equity to dataStore/coredata
-        store.equitiesMetadata.append(equityMetadataInst)
-        store.saveEquitiesMetadataContext()
-        store.getEquitiesMetadataFromCoreData()
     }
     
     func getEquityByTickerFromStore(ticker: String) -> Equity? {

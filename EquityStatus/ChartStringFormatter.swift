@@ -12,7 +12,7 @@ import Charts
 
 class ChartStringFormatter: NSObject, IAxisValueFormatter {
     
-    var nameValues: [String]!
+    var nameValues = [String]()
     
     public func stringForValue(_ value: Double, axis: AxisBase?) -> String {
         return String(describing: nameValues[Int(value)])

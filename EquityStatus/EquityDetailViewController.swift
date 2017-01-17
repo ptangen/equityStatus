@@ -10,7 +10,7 @@ import UIKit
 
 class EquityDetailViewController: UIViewController, EquityDetailViewDelegate {
     
-    var equityDetailViewInst: EquityDetailView!
+    var equityDetailViewInst = EquityDetailView()
     var equity: Equity!
 
     override func viewDidLoad() {

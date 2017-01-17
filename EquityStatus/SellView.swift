@@ -23,8 +23,8 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate  {
     let countLabel = UILabel()
     let companiesLabel = UILabel()
     let pageDescLabel = UILabel()
-    var sellTableViewInstYConstraintWithHeading: NSLayoutConstraint!
-    var sellTableViewInstYConstraintWithoutHeading: NSLayoutConstraint!
+    var sellTableViewInstYConstraintWithHeading = NSLayoutConstraint()
+    var sellTableViewInstYConstraintWithoutHeading = NSLayoutConstraint()
     
     let searchController = UISearchController(searchResultsController: nil)
         
@@ -114,7 +114,9 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate  {
             equityMetadata = self.store.equitiesMetadata[indexPath.row]
         }
         if equityMetadata.showInSellTab {
-            cell.textLabel?.text = (equityMetadata.name?.capitalized)! +  " (" + equityMetadata.ticker! + ")"
+            if let name = equityMetadata.name?.capitalized, let ticker = equityMetadata.ticker {
+                cell.textLabel?.text = name +  " (" + ticker + ")"
+            }
         }
         return cell
     }
@@ -122,9 +124,13 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate  {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if searchController.isActive && searchController.searchBar.text != "" {
-            self.delegate?.openDetail(self.filteredEquitiesMetadata[indexPath.row].ticker!)
+            if let ticker = self.filteredEquitiesMetadata[indexPath.row].ticker {
+                self.delegate?.openDetail(ticker)
+            }
         } else {
-            self.delegate?.openDetail(self.store.equitiesMetadata[indexPath.row].ticker!)
+            if let ticker = self.store.equitiesMetadata[indexPath.row].ticker {
+                self.delegate?.openDetail(ticker)
+            }
         }
     }
     
@@ -142,7 +148,10 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate  {
         }
         
         self.filteredEquitiesMetadata = self.store.equitiesMetadata.filter { equityMetadata in
-            let nameAndTicker = equityMetadata.name! + equityMetadata.ticker!
+            var nameAndTicker = String()
+            if let name = equityMetadata.name, let ticker = equityMetadata.ticker {
+                nameAndTicker = name + ticker
+            }
             return nameAndTicker.lowercased().contains(searchText.lowercased())
         }
         self.sellTableViewInst.reloadData()
@@ -205,6 +214,8 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate  {
 
 extension SellView: UISearchResultsUpdating {
     public func updateSearchResults(for searchController: UISearchController) {
-        self.filterContentForSearchText(searchText: self.searchController.searchBar.text!)
+        if let searchText = self.searchController.searchBar.text {
+            self.filterContentForSearchText(searchText: searchText)
+        }
     }
 }

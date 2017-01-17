@@ -10,7 +10,7 @@ import UIKit
 
 class MeasureDetailViewController: UIViewController, MeasureDetailViewDelegate {
     
-    var measureDetailViewInst: MeasureDetailView!
+    var measureDetailViewInst = MeasureDetailView()
     let store = DataStore.sharedInstance
     var measureTicker = String()
     var equity: Equity!

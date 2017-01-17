@@ -33,25 +33,25 @@ class SignInView: UIView, UITextFieldDelegate {
     var laContext = LAContext()
     
     // constraints
-    var welcomeLabelYConstraintStart: NSLayoutConstraint!
-    var welcomeLabelYConstraintEnd: NSLayoutConstraint!
+    var welcomeLabelYConstraintStart = NSLayoutConstraint()
+    var welcomeLabelYConstraintEnd = NSLayoutConstraint()
     
-    var equityStatusYConstraintStart: NSLayoutConstraint!
-    var equityStatusYConstraintEnd: NSLayoutConstraint!
+    var equityStatusYConstraintStart = NSLayoutConstraint()
+    var equityStatusYConstraintEnd = NSLayoutConstraint()
 
-    var bullImageXConstraintStart: NSLayoutConstraint!
-    var bullImageXConstraintEnd: NSLayoutConstraint!
-    var bullImageYConstraintStart: NSLayoutConstraint!
-    var bullImageYConstraintEnd: NSLayoutConstraint!
-    var bullImageWidthConstraintStart: NSLayoutConstraint!
-    var bullImageWidthConstraintEnd: NSLayoutConstraint!
-    var bullImageHeightConstraintStart: NSLayoutConstraint!
-    var bullImageHeightConstraintEnd: NSLayoutConstraint!
+    var bullImageXConstraintStart = NSLayoutConstraint()
+    var bullImageXConstraintEnd = NSLayoutConstraint()
+    var bullImageYConstraintStart = NSLayoutConstraint()
+    var bullImageYConstraintEnd = NSLayoutConstraint()
+    var bullImageWidthConstraintStart = NSLayoutConstraint()
+    var bullImageWidthConstraintEnd = NSLayoutConstraint()
+    var bullImageHeightConstraintStart = NSLayoutConstraint()
+    var bullImageHeightConstraintEnd = NSLayoutConstraint()
 
-    var signInButtonRightConstraintStart: NSLayoutConstraint!
-    var signInButtonRightConstraintEnd: NSLayoutConstraint!
-    var passwordFieldWidthConstraintStart: NSLayoutConstraint!
-    var passwordFieldWidthConstraintEnd: NSLayoutConstraint!
+    var signInButtonRightConstraintStart = NSLayoutConstraint()
+    var signInButtonRightConstraintEnd = NSLayoutConstraint()
+    var passwordFieldWidthConstraintStart = NSLayoutConstraint()
+    var passwordFieldWidthConstraintEnd = NSLayoutConstraint()
     
     override init(frame:CGRect){
         super.init(frame: frame)
@@ -141,8 +141,8 @@ class SignInView: UIView, UITextFieldDelegate {
                             self.delegate?.openTabDisplay()
                         }
                                         
-                        if error != nil {
-                            switch(error!._code) {
+                        if let error = error {
+                            switch(error._code) {
                             case LAError.authenticationFailed.rawValue:
                                 self.delegate?.showAlertMessage("Unable to login with fingerprint. Signin with your username and password.")
                                 break;
@@ -177,19 +177,23 @@ class SignInView: UIView, UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         switch textField.tag {
         case 100:   // check to see if email has a value
-            if self.userNameField.text!.utf16.count > 1 {
-                self.userNamePopulated = true
-            } else {
-                self.userNamePopulated = false
+            if let userNameText = self.userNameField.text {
+                if userNameText.utf16.count > 1 {
+                    self.userNamePopulated = true
+                } else {
+                    self.userNamePopulated = false
+                }
+                self.enableDisableSignIn()
             }
-            self.enableDisableSignIn()
         case 101: // verify password > 1 characters  - the character count is odd, delete counts as a character...
-            if self.passwordField.text!.utf16.count > 1 {
-                self.passwordPopulated = true
-            } else {
-                self.passwordPopulated = false
+            if let passwordText = self.passwordField.text {
+                if passwordText.utf16.count > 1 {
+                    self.passwordPopulated = true
+                } else {
+                    self.passwordPopulated = false
+                }
+                self.enableDisableSignIn()
             }
-            self.enableDisableSignIn()
         default: break
         }
         return true

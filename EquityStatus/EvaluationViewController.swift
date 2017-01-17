@@ -10,7 +10,7 @@ import UIKit
 
 class EvaluationViewController: UIViewController, EvaluationViewDelegate {
     
-    var evaluationViewInst: EvaluationView!
+    var evaluationViewInst = EvaluationView()
 
     override func viewDidLoad() {
         super.viewDidLoad()

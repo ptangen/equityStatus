@@ -10,7 +10,7 @@ import UIKit
 
 class SellViewController: UIViewController, SellViewDelegate {
     
-    var sellViewInst: SellView!
+    var sellViewInst = SellView()
     let store = DataStore.sharedInstance
 
     override func viewDidLoad() {
