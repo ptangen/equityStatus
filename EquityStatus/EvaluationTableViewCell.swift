@@ -14,8 +14,8 @@ class EvaluationTableViewCell: UITableViewCell {
     var statusIcons = [UILabel]()
     let measureCount:Int = 14
 
-    required init(coder aDecoder: NSCoder) {
-        fatalError("init(coder:)")
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
     }
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
