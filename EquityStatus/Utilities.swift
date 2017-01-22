@@ -48,12 +48,12 @@ class Utilities {
         viewControllerInst.present(alertController, animated: true, completion: nil)
     }
     
-    class func getSellTabCount() -> String {
+    class func getSellTabCount() -> Int {
         let store = DataStore.sharedInstance
         // get the count of equityMetadata items where showInSellTab == true and then show that value in the sell tab
-        let equityMetadataForSellTab = store.equitiesMetadata.filter({(item: EquityMetadata) -> Bool in
+        let equityMetadataForSellTabCount = store.equitiesMetadata.filter({(item: EquityMetadata) -> Bool in
             return item.showInSellTab
-        })
-        return String(equityMetadataForSellTab.count)
+        }).count
+        return equityMetadataForSellTabCount
     }
 }

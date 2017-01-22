@@ -13,7 +13,7 @@ protocol SellViewDelegate: class {
     func showAlertMessage(_: String)
 }
 
-class SellView: UIView, UITableViewDataSource, UITableViewDelegate  {
+class SellView: UIView, UITableViewDataSource, UITableViewDelegate {
     
     weak var delegate: SellViewDelegate?
     let store = DataStore.sharedInstance
@@ -39,25 +39,24 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate  {
         
         self.searchController.searchResultsUpdater = self
         self.searchController.dimsBackgroundDuringPresentation = false
-        
         self.sellTableViewInst.tableHeaderView = self.searchController.searchBar
-        
+    }
+    
+    func getEquityMetadata () {
         // If we dont have the metadata for the equities, fetch it else use the metadata stored in coredata.
         if self.store.equitiesMetadata.count == 0 {
             
             self.showActivityIndicator(uiView: self)
             self.sellTableViewInst.isHidden = true
-            self.countLabel.text = "?"
             self.pageDescLabel.text = "Searching for companies that have failed an evaluation."
-
+            
             APIClient.getEquitiesMetadataFromDB() {isSuccessful in
-                
                 if isSuccessful {
                     OperationQueue.main.addOperation {
                         self.activityIndicator.isHidden = true
                         self.sellTableViewInst.isHidden = false
                         self.sellTableViewInst.reloadData()
-                        self.countLabel.text = Utilities.getSellTabCount()
+                        self.countLabel.text = String(Utilities.getSellTabCount())
                         self.pageDescLabel.text = "These companies have failed one or more evalutions. As a result, these company's stock is rated a sell per this methodology."
                     }
                 } else {
@@ -68,8 +67,7 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate  {
                 }
             }
         } else {
-            // set header labels
-            self.countLabel.text = Utilities.getSellTabCount()
+            // set header label
             self.pageDescLabel.text = "These companies have failed one or more evalutions. As a result, the stock from these companies is considered a sell per this methodology."
         }
     }
@@ -98,7 +96,7 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate  {
         if searchController.isActive && searchController.searchBar.text != "" {
             return filteredEquitiesMetadata.count
         }
-        return self.store.equitiesMetadata.count
+        return Utilities.getSellTabCount()
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{

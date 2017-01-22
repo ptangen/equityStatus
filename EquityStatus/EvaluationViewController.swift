@@ -14,7 +14,6 @@ class EvaluationViewController: UIViewController, EvaluationViewDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        //self.title = "Analysis Required"  // only used in tabBar Controller's didSelect
         self.evaluationViewInst.delegate = self
     }
 

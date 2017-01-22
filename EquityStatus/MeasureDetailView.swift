@@ -12,7 +12,7 @@ protocol MeasureDetailViewDelegate: class {
     func showAlertMessage(_: String)
 }
 
-class MeasureDetailView: UIView {
+class MeasureDetailView: UIView, UITextViewDelegate {
     
     weak var delegate: MeasureDetailViewDelegate?
     let store = DataStore.sharedInstance
@@ -27,6 +27,8 @@ class MeasureDetailView: UIView {
     var targetLabel = UILabel()
     var measureCalcDescLabel = UILabel()
     var qStatusPicker = UISegmentedControl()
+    var qAnswerView = UITextView()
+    var qAnswerViewDidChange = false
 
     override init(frame:CGRect){
         super.init(frame: frame)
@@ -45,16 +47,21 @@ class MeasureDetailView: UIView {
         self.qStatusPicker.tintColor = UIColor(named: .blue)
 
         self.qStatusPicker.addTarget(self, action: #selector(self.statusValueChanged(_:)), for: .valueChanged)
+        
+        self.qAnswerView.delegate = self
     }
     
     func statusValueChanged(_ sender:UISegmentedControl!) {
+        
+        self.qAnswerView.resignFirstResponder()
+        
         switch sender.selectedSegmentIndex {
         case 1:
             self.updateQStatus(status: "pass")
         case 2:
             self.updateQStatus(status: "fail")
         default:
-            self.updateQStatus(status: "undefined")  // user can only set values for subjective measures so undefined is appropriate
+            self.updateQStatus(status: "undefined")  // user can only set values for subjective measures so undefined is valid response
         }
     }
     
@@ -78,9 +85,111 @@ class MeasureDetailView: UIView {
             self.store.resetTabValue(equity: self.equity)
         })
     }
+    
+    func updateQAnswer(answer: String) {
+        
+        APIClient.setSubjectiveAnswer(ticker: self.equity.ticker , question: self.measureShortName, answer: answer, equity: self.equity, completion: { response in
+            
+            switch response {
+            case .ok:
+                
+                break;
+                
+            case.failed, .noReply:
+                self.delegate?.showAlertMessage("The server was unable to save this status change. Please forward this message to ptangen@ptangen.com")
+                break;
+                
+            default:
+                break;
+            }
+        })
+    }
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+    }
+    
+    func getResultString(resultDouble: Double, percentage: Bool) -> String {
+        if resultDouble == -1000 {
+            return "no data"
+        } else {
+            if percentage == true {
+                return String(resultDouble) + "%"
+            } else {
+                return String(resultDouble)
+            }
+        }
+    }
+    
+    func getStatusDesc(_ statusDesc: String) -> String {
+        if statusDesc == "noData" {
+            return "no data"
+        } else {
+            return statusDesc;
+        }
+    }
+    
+    func showSubjectiveMeasureControls(qStatus: String) {
+        // show
+        self.qStatusPicker.isHidden = false
+        self.qAnswerView.isHidden = false
+        
+        // set status on button bar
+        switch qStatus {
+        case "pass":
+            self.qStatusPicker.selectedSegmentIndex = 1
+        case "fail":
+            self.qStatusPicker.selectedSegmentIndex = 2
+        default:
+            self.qStatusPicker.selectedSegmentIndex = 0
+        }
+        
+        // hide
+        self.resultsLabel.isHidden = true
+        self.targetLabel.isHidden = true
+        self.measureCalcDescLabel.isHidden = true
+    }
+    
+    func showObjectiveMeasureControls() {
+        // show
+        self.resultsLabel.isHidden = false
+        self.targetLabel.isHidden = false
+        self.measureCalcDescLabel.isHidden = false
+    
+        // hide
+        self.qStatusPicker.isHidden = true
+        self.qAnswerView.isHidden = true
+    }
+    
+    func setTextInQAnswerView(textToDisplay: String) {
+        // set the comment in the qAnswerView
+        if textToDisplay.isEmpty {
+            self.qAnswerView.text = "Comments"
+            self.qAnswerView.textColor = UIColor(named: .disabledText)
+        } else {
+            self.qAnswerView.text = textToDisplay
+            self.qAnswerView.textColor = UIColor.black
+        }
+    }
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.textColor == UIColor(named: .disabledText) {
+            self.qAnswerView.text = nil
+            self.qAnswerView.textColor = UIColor.black
+        }
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        self.qAnswerViewDidChange = true
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        // send text to the DB
+        self.qAnswerViewDidChange ? self.updateQAnswer(answer: textView.text) : ()
+        if textView.text.isEmpty {
+            textView.text = "Comment"
+            textView.textColor = UIColor(named: .disabledText)
+        }
     }
     
     func pageLayout() {
@@ -147,6 +256,17 @@ class MeasureDetailView: UIView {
         self.measureCalcDescLabel.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.small.rawValue)
         self.measureCalcDescLabel.preferredMaxLayoutWidth = UIScreen.main.bounds.width - 20
         self.measureCalcDescLabel.numberOfLines = 0
+        
+        self.addSubview(self.qAnswerView)
+        self.qAnswerView.translatesAutoresizingMaskIntoConstraints = false
+        self.qAnswerView.topAnchor.constraint(equalTo: self.qStatusPicker.bottomAnchor, constant: 30).isActive = true
+        self.qAnswerView.leftAnchor.constraint(equalTo: self.qStatusPicker.leftAnchor, constant: -30).isActive = true
+        self.qAnswerView.rightAnchor.constraint(equalTo: self.qStatusPicker.rightAnchor, constant: 30).isActive = true
+        self.qAnswerView.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        
+        self.qAnswerView.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.small.rawValue)
+        self.qAnswerView.layer.borderColor = UIColor(named: .blue).cgColor
+        self.qAnswerView.layer.borderWidth = 1.0
     }
     
     func setResultsLabelsForMeasure(fullString: String) {
@@ -223,7 +343,7 @@ class MeasureDetailView: UIView {
             self.resultsLabel.text = "Result: " + getResultString(resultDouble: self.equity.previousROIResult, percentage: true)
             self.targetLabel.text = Constants.measureMetadata.threshold(.previousROI)()
             self.measureCalcDescLabel.text = Constants.measureMetadata.calcDesc(.previousROI)()
-
+            
         } else if self.measureShortName == "expectedROI" {
             self.showObjectiveMeasureControls()
             self.measureLongNameLabel.text = "Measure: \(Constants.measureMetadata.longName(.expectedROI)())"
@@ -238,86 +358,42 @@ class MeasureDetailView: UIView {
             self.measureLongNameLabel.text = Constants.measureMetadata.longName(.q1)()
             Utilities.setStatusIcon(status: self.equity.q1Status, uiLabel: self.statusIcon)
             self.statusValueDesc.text = "(" + getStatusDesc(self.equity.q1Status) + ")"
+            self.setTextInQAnswerView(textToDisplay: self.equity.q1Answer)
             
         } else if self.measureShortName == "q2" {
             self.showSubjectiveMeasureControls(qStatus: self.equity.q2Status)
             self.measureLongNameLabel.text = Constants.measureMetadata.longName(.q2)()
             Utilities.setStatusIcon(status: self.equity.q2Status, uiLabel: self.statusIcon)
             self.statusValueDesc.text = "(" + getStatusDesc(self.equity.q2Status) + ")"
+            self.setTextInQAnswerView(textToDisplay: self.equity.q2Answer)
             
         } else if self.measureShortName == "q3" {
             self.showSubjectiveMeasureControls(qStatus: self.equity.q3Status)
             self.measureLongNameLabel.text = Constants.measureMetadata.longName(.q3)()
             Utilities.setStatusIcon(status: self.equity.q3Status, uiLabel: self.statusIcon)
             self.statusValueDesc.text = "(" + getStatusDesc(self.equity.q3Status) + ")"
+            self.setTextInQAnswerView(textToDisplay: self.equity.q3Answer)
             
         } else if self.measureShortName == "q4" {
             self.showSubjectiveMeasureControls(qStatus: self.equity.q4Status)
             self.measureLongNameLabel.text = Constants.measureMetadata.longName(.q4)()
             Utilities.setStatusIcon(status: self.equity.q4Status, uiLabel: self.statusIcon)
             self.statusValueDesc.text = "(" + getStatusDesc(self.equity.q4Status) + ")"
+            self.setTextInQAnswerView(textToDisplay: self.equity.q4Answer)
             
         } else if self.measureShortName == "q5" {
             self.showSubjectiveMeasureControls(qStatus: self.equity.q5Status)
             self.measureLongNameLabel.text = Constants.measureMetadata.longName(.q5)()
             Utilities.setStatusIcon(status: self.equity.q5Status, uiLabel: self.statusIcon)
             self.statusValueDesc.text = "(" + getStatusDesc(self.equity.q5Status) + ")"
+            self.setTextInQAnswerView(textToDisplay: self.equity.q5Answer)
             
         } else {
             self.showSubjectiveMeasureControls(qStatus: self.equity.q6Status)
             self.measureLongNameLabel.text = Constants.measureMetadata.longName(.q6)()
             Utilities.setStatusIcon(status: self.equity.q6Status, uiLabel: self.statusIcon)
             self.statusValueDesc.text = "(" + getStatusDesc(self.equity.q6Status) + ")"
+            self.setTextInQAnswerView(textToDisplay: self.equity.q6Answer)
         }
-    }
-    
-    func getResultString(resultDouble: Double, percentage: Bool) -> String {
-        if resultDouble == -1000 {
-            return "no data"
-        } else {
-            if percentage == true {
-                return String(resultDouble) + "%"
-            } else {
-                return String(resultDouble)
-            }
-        }
-    }
-    
-    func getStatusDesc(_ statusDesc: String) -> String {
-        if statusDesc == "noData" {
-            return "no data"
-        } else {
-            return statusDesc;
-        }
-    }
-    
-    func showSubjectiveMeasureControls(qStatus: String) {
-        // show
-        self.qStatusPicker.isHidden = false
-        
-        // set status on button bar
-        switch qStatus {
-        case "pass":
-            self.qStatusPicker.selectedSegmentIndex = 1
-        case "fail":
-            self.qStatusPicker.selectedSegmentIndex = 2
-        default:
-            self.qStatusPicker.selectedSegmentIndex = 0
-        }
-        
-        // hide
-        self.resultsLabel.isHidden = true
-        self.targetLabel.isHidden = true
-        self.measureCalcDescLabel.isHidden = true
-    }
-    
-    func showObjectiveMeasureControls() {
-        // show
-        self.resultsLabel.isHidden = false
-        self.targetLabel.isHidden = false
-        self.measureCalcDescLabel.isHidden = false
-    
-        // hide
-        self.qStatusPicker.isHidden = true
     }
 }

@@ -16,7 +16,6 @@ class BuyViewController: UIViewController, BuyViewDelegate  {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.buyViewInst.delegate = self
-        //self.title = "Buy"  // only used in tabBar Controller's didSelect
     }
 
     override func didReceiveMemoryWarning() {

@@ -7,6 +7,7 @@ target 'EquityStatus' do
 
   # Pods for EquityStatus
 	pod 'Charts', '~> 3.0.1’
+	pod 'MSSimpleGauge'
 
   target 'EquityStatusTests' do
     inherit! :search_paths

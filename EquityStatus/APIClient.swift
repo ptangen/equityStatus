@@ -112,6 +112,59 @@ class APIClient {
         }
     }
     
+    class func setSubjectiveAnswer(ticker: String, question: String, answer: String, equity: Equity, completion: @escaping (apiResponse) -> Void) {
+        
+        let urlString = "\(Secrets.apiURL)setSubjectiveAnswer.php"
+        let url = URL(string: urlString)
+        if let url = url {
+            var request = URLRequest(url: url)
+            
+            request.httpMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "Accept")
+            request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+            
+            var parameterString = String()
+            if let answerUnwrapped = answer.addingPercentEncoding(withAllowedCharacters: .urlUserAllowed) {
+                parameterString = "ticker=\(ticker)&question=\(question)&answer=\(answerUnwrapped)&key=\(Secrets.apiKey)"
+            }
+            request.httpBody = parameterString.data(using: .utf8)
+            
+            URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
+                if let data = data {
+                    DispatchQueue.main.async {
+                        do {
+                            let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String : Int]
+                            if let results = json?["results"] {
+                                if results == 1 {
+                                    // update the equity
+                                    switch question {
+                                    case "q1": equity.q1Answer = answer
+                                    case "q2": equity.q2Answer = answer
+                                    case "q3": equity.q3Answer = answer
+                                    case "q4": equity.q4Answer = answer
+                                    case "q5": equity.q5Answer = answer
+                                    case "q6": equity.q6Answer = answer
+                                    default: print("error 122")
+                                    }
+                                    completion(.ok)
+                                    
+                                } else if results == -1 {
+                                    completion(.failed)
+                                } else {
+                                    completion(.noReply)
+                                }
+                            }
+                        } catch {
+                            completion(.noReply)
+                        }
+                    }
+                }
+            }).resume()
+        } else {
+            print("error: unable to unwrap url")
+        }
+    }
+
     class func getEquitiesMetadataFromDB(completion: @escaping (Bool) -> Void) {
 
         let urlString = "\(Secrets.apiURL)getEquitiesMetadata.php"
@@ -156,6 +209,7 @@ class APIClient {
     
     // allPass, noFailures, t:GGG
     class func getEquitiesFromDB(mode: String, completion: @escaping (Bool) -> Void) {
+
         let store = DataStore.sharedInstance
         let urlString = "\(Secrets.apiURL)getEquities.php"
         let url = URL(string: urlString)

@@ -18,6 +18,7 @@ class MeasureDetailViewController: UIViewController, MeasureDetailViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.measureDetailViewInst.delegate = self
+        //self.measureDetailViewInst.qAnswerView.delegate = self
     }
 
     override func didReceiveMemoryWarning() {

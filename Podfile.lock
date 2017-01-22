@@ -2,13 +2,16 @@ PODS:
   - Charts (3.0.1):
     - Charts/Core (= 3.0.1)
   - Charts/Core (3.0.1)
+  - MSSimpleGauge (0.5)
 
 DEPENDENCIES:
   - Charts (~> 3.0.1)
+  - MSSimpleGauge
 
 SPEC CHECKSUMS:
   Charts: 0e84f4418e87dad6a9edde221fba37ebb51d3ba7
+  MSSimpleGauge: e5f7bf2561f1338055fcd321c5469b0d6c689d14
 
-PODFILE CHECKSUM: 877b80d0fa61590db386d3b422d426fc32bf553e
+PODFILE CHECKSUM: d50d9dbceaefcd975895375eb1e9e2ecf48e70e4
 
 COCOAPODS: 1.1.1

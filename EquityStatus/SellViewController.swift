@@ -15,13 +15,14 @@ class SellViewController: UIViewController, SellViewDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        //self.title = "Sell" // only used in tabBar Controller's didSelect
         self.sellViewInst.delegate = self
         definesPresentationContext = true  // for searchbar
+        self.sellViewInst.getEquityMetadata()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        sellViewInst.countLabel.text = Utilities.getSellTabCount()
+        let count = Utilities.getSellTabCount()
+        count == 0 ? (sellViewInst.countLabel.text = "?") : (sellViewInst.countLabel.text = String(count))
     }
 
     override func didReceiveMemoryWarning() {
