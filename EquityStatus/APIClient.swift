@@ -166,7 +166,6 @@ class APIClient {
     }
 
     class func getEquitiesMetadataFromDB(completion: @escaping (Bool) -> Void) {
-
         let urlString = "\(Secrets.apiURL)getEquitiesMetadata.php"
         let url = URL(string: urlString)
         if let url = url {
@@ -209,20 +208,18 @@ class APIClient {
     
     // allPass, noFailures, t:GGG
     class func getEquitiesFromDB(mode: String, completion: @escaping (Bool) -> Void) {
-
         let store = DataStore.sharedInstance
         let urlString = "\(Secrets.apiURL)getEquities.php"
         let url = URL(string: urlString)
         if let url = url {
             var request = URLRequest(url: url)
-        
+            
             request.httpMethod = "POST"
             request.setValue("application/json", forHTTPHeaderField: "Accept")
             request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         
             let parameterString = "key=\(Secrets.apiKey)&mode=\(mode)&ByTarget=SomePass"
             request.httpBody = parameterString.data(using: .utf8)
-        
             URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
                 if let unwrappedData = data {
                     do {

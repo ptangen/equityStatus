@@ -24,18 +24,62 @@ class EquityStatusTests: XCTestCase {
     }
     
     func testForEquity() {
-        // This test should pass AFTER the buy or evaluate tab is populated with one or more equities by running the app.
-        // A pass here means data was retrieved and the equities array was created successfully.
-        if let equity = store.equities.first {
-            XCTAssertNotNil(equity.ticker)
+
+        let testForEquityExpectation = expectation(description: "A pass here means an equity was retrieved and the equities array was created successfully.")
+
+        APIClient.getEquitiesFromDB(mode: "t:GGG"){isSuccessful in
+            XCTAssertTrue(isSuccessful)
+            if isSuccessful {
+                if let equity = self.store.equities.first {
+                    XCTAssertNotNil(equity.ticker)
+                    testForEquityExpectation.fulfill()
+                } else {
+                    XCTFail("Unable to retrieve the ticker from an equity in the datastore.")
+                }
+            } else {
+                XCTFail("Unable to retrieve data from the server.")
+            }
+        }
+        
+        waitForExpectations(timeout: 5) { error in
+            if let error = error {
+                XCTFail("testForEquityExpectation waitForExpectationsWithTimeout errored: \(error)")
+            }
         }
     }
     
     func testForEquityMetadata() {
-        // This test should pass AFTER the sell tab was opened and data was fetched by running the app.
-        // A pass here means data was retrieved, coredata was populated and the equitiesMetadata array was created successfully.
-        if let equityMetadata = store.equitiesMetadata.first {
-            XCTAssertNotNil(equityMetadata.ticker)
+        self.store.getEquitiesMetadataFromCoreData() // builds the equitiesMetadata if core data has data
+
+        if self.store.equitiesMetadata.count == 0 {
+            let testForEquityMetadataExpectation = expectation(description: "A pass here means data was retrieved, coredata was populated and the equitiesMetadata array was created successfully.")
+            
+             APIClient.getEquitiesMetadataFromDB() {isSuccessful in
+                XCTAssertTrue(isSuccessful)
+                if isSuccessful {
+                    if let equityMetadata = self.store.equitiesMetadata.first {
+                        if let ticker = equityMetadata.ticker {
+                            XCTAssertNotNil(ticker)
+                            testForEquityMetadataExpectation.fulfill()
+                        }
+                    }
+                } else {
+                    XCTFail("Unable to fetch equity metadata from the server.")
+                }
+            }
+            waitForExpectations(timeout: 60) { error in
+                if let error = error {
+                    XCTFail("testForEquityMetadataExpectation waitForExpectationsWithTimeout errored: \(error)")
+                }
+            }
+        } else {
+            if let equityMetadata = self.store.equitiesMetadata.first {
+                if let ticker = equityMetadata.ticker {
+                    XCTAssertNotNil(ticker)
+                }
+            } else {
+                XCTFail("The equityMetadata array exists, but unable to get a ticker from the object.")
+            }
         }
     }
     
