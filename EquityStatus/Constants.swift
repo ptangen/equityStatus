@@ -86,6 +86,40 @@ struct Constants{
             }
         }
         
+        // long names for the measures
+        func index() -> Int {
+            switch self {
+            case .ROEa:
+                return 0
+            case .EPSi:
+                return 1
+            case .EPSv:
+                return 2
+            case .BVi:
+                return 3
+            case .DRa:
+                return 4
+            case .SOr:
+                return 5
+            case .previousROI:
+                return 6
+            case .expectedROI:
+                return 7
+            case .q1:
+                return 8
+            case .q2:
+                return 9
+            case .q3:
+                return 10
+            case .q4:
+                return 11
+            case .q5:
+                return 12
+            case .q6:
+                return 13
+            }
+        }
+        
         // thresholds for each measure
         func threshold() -> String {
             switch self {

@@ -42,6 +42,16 @@ class Utilities {
         return "" // should never be used
     }
     
+    class func getMeasureName(fullString: String) -> String {
+        // extract the measure name
+        let chars = fullString.characters;
+        if let indexLeftParen = chars.index(of: "(") {
+            let indexBeforeLeftParen = chars.index(before: indexLeftParen)
+            return fullString[chars.startIndex...indexBeforeLeftParen]
+        }
+        return ""
+    }
+    
     class func showAlertMessage(_ message: String, viewControllerInst: UIViewController) {
         let alertController = UIAlertController(title: "Error", message: message, preferredStyle: UIAlertControllerStyle.alert)
         alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default,handler: nil))

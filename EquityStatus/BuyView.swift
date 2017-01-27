@@ -138,7 +138,7 @@ class BuyView: UIView, ChartViewDelegate {
         self.equitiesForBuyTickers.reverse()
         
         self.chartHeight = CGFloat(self.equitiesForBuyNames.count * self.barHeight)
-        let maxChartHeight: CGFloat = UIScreen.main.bounds.height - 150 // subtract for heading and tabs at bottom
+        let maxChartHeight: CGFloat = UIScreen.main.bounds.height - 250 // subtract for heading and tabs at bottom
         
         if self.chartHeight > maxChartHeight {
             self.chartHeight = maxChartHeight

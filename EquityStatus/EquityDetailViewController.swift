@@ -37,10 +37,12 @@ class EquityDetailViewController: UIViewController, EquityDetailViewDelegate {
     }
     
     func openMeasureDetail(_ measureTicker: String) {
-        let measureDetailViewControllerInst = MeasureDetailViewController()
-        measureDetailViewControllerInst.measureTicker = measureTicker
+        //let measureDetailViewControllerInst = MeasureDetailViewController()
+        let measurePageViewControllerInst = MeasurePageViewController()
+        measurePageViewControllerInst.measureTicker = measureTicker
         self.title = "" // this value is passed to the back button label in the destination VC
-        navigationController?.pushViewController(measureDetailViewControllerInst, animated: true) // show destination with nav bar
+        //navigationController?.pushViewController(measureDetailViewControllerInst, animated: true) // show destination with nav bar
+        navigationController?.pushViewController(measurePageViewControllerInst, animated: true) // show destination with nav bar
     }
     
     func popualateLabels() {
