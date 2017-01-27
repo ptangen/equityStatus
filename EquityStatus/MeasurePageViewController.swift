@@ -13,15 +13,40 @@ class MeasurePageViewController: UIPageViewController, UIPageViewControllerDataS
     let store = DataStore.sharedInstance
     var equity: Equity!
     var measureTicker = String()
-
     
-    var pages = [UIViewController]()
+    var pages = [UIViewController](repeating: UIViewController(), count: 14)
     let pageControl = UIPageControl()
     
     func getMeasureIndex(measureShortName: String) -> Int {
         switch measureShortName {
         case "ROEa":
             return Constants.measureMetadata.ROEa.index()
+        case "EPSi":
+            return Constants.measureMetadata.EPSi.index()
+        case "EPSv":
+            return Constants.measureMetadata.EPSv.index()
+        case "BVi":
+            return Constants.measureMetadata.BVi.index()
+        case "DRa":
+            return Constants.measureMetadata.DRa.index()
+        case "SOr":
+            return Constants.measureMetadata.SOr.index()
+        case "previousROI":
+            return Constants.measureMetadata.previousROI.index()
+        case "expectedROI":
+            return Constants.measureMetadata.expectedROI.index()
+        case "q1":
+            return Constants.measureMetadata.q1.index()
+        case "q2":
+            return Constants.measureMetadata.q2.index()
+        case "q3":
+            return Constants.measureMetadata.q3.index()
+        case "q4":
+            return Constants.measureMetadata.q4.index()
+        case "q5":
+            return Constants.measureMetadata.q5.index()
+        case "q6":
+            return Constants.measureMetadata.q6.index()
         default:
             return 0
         }
@@ -41,16 +66,50 @@ class MeasurePageViewController: UIPageViewController, UIPageViewControllerDataS
         let ROEaViewControllerInst = ROEaViewController()
         let EPSiViewControllerInst = EPSiViewController()
         let EPSvViewControllerInst = EPSvViewController()
+        let BViViewControllerInst = BViViewController()
+        let DRaViewControllerInst = DRaViewController()
+        let SOrViewControllerInst = SOrViewController()
+        let previousROIViewControllerInst = PreviousROIViewController()
+        let expectedROIViewControllerInst = ExpectedROIViewController()
+        let q1ViewControllerInst = Q1ViewController()
+        let q2ViewControllerInst = Q2ViewController()
+        let q3ViewControllerInst = Q3ViewController()
+        let q4ViewControllerInst = Q4ViewController()
+        let q5ViewControllerInst = Q5ViewController()
+        let q6ViewControllerInst = Q6ViewController()
         
         // set measureTicker on each VC
         ROEaViewControllerInst.measureTicker = "ROEa(\(ticker))"
         EPSiViewControllerInst.measureTicker = "EPSi(\(ticker))"
         EPSvViewControllerInst.measureTicker = "EPSv(\(ticker))"
+        BViViewControllerInst.measureTicker = "BVi(\(ticker))"
+        DRaViewControllerInst.measureTicker = "DRa(\(ticker))"
+        SOrViewControllerInst.measureTicker = "SOr(\(ticker))"
+        previousROIViewControllerInst.measureTicker = "previousROI(\(ticker))"
+        expectedROIViewControllerInst.measureTicker = "expectedROI(\(ticker))"
+        q1ViewControllerInst.measureTicker = "q1(\(ticker))"
+        q2ViewControllerInst.measureTicker = "q2(\(ticker))"
+        q3ViewControllerInst.measureTicker = "q3(\(ticker))"
+        q4ViewControllerInst.measureTicker = "q4(\(ticker))"
+        q5ViewControllerInst.measureTicker = "q5(\(ticker))"
+        q6ViewControllerInst.measureTicker = "q6(\(ticker))"
         
-        // add the individual viewControllers to the pageViewController
-        self.pages.append(ROEaViewControllerInst)
-        self.pages.append(EPSiViewControllerInst)
-        self.pages.append(EPSvViewControllerInst)
+        // place the individual viewControllers in the pageViewController
+        self.pages[getMeasureIndex(measureShortName: "ROEa")] = ROEaViewControllerInst
+        self.pages[getMeasureIndex(measureShortName: "EPSi")] = EPSiViewControllerInst
+        self.pages[getMeasureIndex(measureShortName: "EPSv")] = EPSvViewControllerInst
+        self.pages[getMeasureIndex(measureShortName: "BVi")] = BViViewControllerInst
+        self.pages[getMeasureIndex(measureShortName: "DRa")] = DRaViewControllerInst
+        self.pages[getMeasureIndex(measureShortName: "SOr")] = SOrViewControllerInst
+        self.pages[getMeasureIndex(measureShortName: "previousROI")] = previousROIViewControllerInst
+        self.pages[getMeasureIndex(measureShortName: "expectedROI")] = expectedROIViewControllerInst
+        self.pages[getMeasureIndex(measureShortName: "q1")] = q1ViewControllerInst
+        self.pages[getMeasureIndex(measureShortName: "q2")] = q2ViewControllerInst
+        self.pages[getMeasureIndex(measureShortName: "q3")] = q3ViewControllerInst
+        self.pages[getMeasureIndex(measureShortName: "q4")] = q4ViewControllerInst
+        self.pages[getMeasureIndex(measureShortName: "q5")] = q5ViewControllerInst
+        self.pages[getMeasureIndex(measureShortName: "q6")] = q6ViewControllerInst
+        
         setViewControllers([pages[initialPage]], direction: .forward, animated: true, completion: nil)
         
         // pageControl
@@ -70,7 +129,6 @@ class MeasurePageViewController: UIPageViewController, UIPageViewControllerDataS
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        //self.navigationController?.isNavigationBarHidden = false
         self.title = "\(self.equity.name.capitalized) (\(self.equity.ticker))"
     }
     

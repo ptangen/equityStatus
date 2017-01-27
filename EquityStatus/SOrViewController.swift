@@ -1,5 +1,5 @@
 //
-//  EPSvViewController.swift
+//  SOrViewController.swift
 //  EquityStatus
 //
 //  Created by Paul Tangen on 1/27/17.
@@ -8,21 +8,21 @@
 
 import UIKit
 
-class EPSvViewController: UIViewController, MeasureDetailViewDelegate {
-
-    var EPSvViewInst = CalcMeasureView()
+class SOrViewController: UIViewController, MeasureDetailViewDelegate {
+    
+    var SOrViewInst = CalcMeasureView()
     let store = DataStore.sharedInstance
     var measureTicker = String()
     var equity: Equity!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.EPSvViewInst.delegate = self
+        self.SOrViewInst.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.EPSvViewInst.measureTicker = self.measureTicker
+        self.SOrViewInst.measureTicker = self.measureTicker
     }
     
     override func loadView(){
@@ -31,12 +31,12 @@ class EPSvViewController: UIViewController, MeasureDetailViewDelegate {
         self.equity = self.store.getEquityByTickerFromStore(ticker: ticker)
         
         // load the ui view into the view controller
-        self.EPSvViewInst = CalcMeasureView(frame: CGRect.zero)
-        self.view = self.EPSvViewInst
+        self.SOrViewInst = CalcMeasureView(frame: CGRect.zero)
+        self.view = self.SOrViewInst
         
         // setup ui view
-        self.EPSvViewInst.equity = self.equity
-        self.EPSvViewInst.setResultsLabelsForMeasure(fullString: measureTicker)
+        self.SOrViewInst.equity = self.equity
+        self.SOrViewInst.setResultsLabelsForMeasure(fullString: measureTicker)
         print(measureTicker)
     }
     
@@ -48,5 +48,5 @@ class EPSvViewController: UIViewController, MeasureDetailViewDelegate {
     func showAlertMessage(_ message: String) {
         Utilities.showAlertMessage(message, viewControllerInst: self)
     }
-
+    
 }

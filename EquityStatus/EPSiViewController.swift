@@ -22,8 +22,6 @@ class EPSiViewController: UIViewController, MeasureDetailViewDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.isNavigationBarHidden = false
-        self.title = "\(equity.name.capitalized) (\(equity.ticker))"
         self.EPSiViewInst.measureTicker = self.measureTicker
     }
     
@@ -50,5 +48,4 @@ class EPSiViewController: UIViewController, MeasureDetailViewDelegate {
     func showAlertMessage(_ message: String) {
         Utilities.showAlertMessage(message, viewControllerInst: self)
     }
-
 }

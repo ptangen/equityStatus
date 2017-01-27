@@ -22,8 +22,6 @@ class ROEaViewController: UIViewController, MeasureDetailViewDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.isNavigationBarHidden = false
-        self.title = "\(equity.name.capitalized) (\(equity.ticker))"
         self.ROEaViewInst.measureTicker = self.measureTicker
     }
     
