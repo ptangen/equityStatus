@@ -17,41 +17,6 @@ class MeasurePageViewController: UIPageViewController, UIPageViewControllerDataS
     var pages = [UIViewController](repeating: UIViewController(), count: 14)
     let pageControl = UIPageControl()
     
-    func getMeasureIndex(measureShortName: String) -> Int {
-        switch measureShortName {
-        case "ROEa":
-            return Constants.measureMetadata.ROEa.index()
-        case "EPSi":
-            return Constants.measureMetadata.EPSi.index()
-        case "EPSv":
-            return Constants.measureMetadata.EPSv.index()
-        case "BVi":
-            return Constants.measureMetadata.BVi.index()
-        case "DRa":
-            return Constants.measureMetadata.DRa.index()
-        case "SOr":
-            return Constants.measureMetadata.SOr.index()
-        case "previousROI":
-            return Constants.measureMetadata.previousROI.index()
-        case "expectedROI":
-            return Constants.measureMetadata.expectedROI.index()
-        case "q1":
-            return Constants.measureMetadata.q1.index()
-        case "q2":
-            return Constants.measureMetadata.q2.index()
-        case "q3":
-            return Constants.measureMetadata.q3.index()
-        case "q4":
-            return Constants.measureMetadata.q4.index()
-        case "q5":
-            return Constants.measureMetadata.q5.index()
-        case "q6":
-            return Constants.measureMetadata.q6.index()
-        default:
-            return 0
-        }
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -62,6 +27,8 @@ class MeasurePageViewController: UIPageViewController, UIPageViewControllerDataS
         self.delegate = self
         let measureShortName = Utilities.getMeasureName(fullString: measureTicker)
         let initialPage = getMeasureIndex(measureShortName: measureShortName)
+        
+        self.edgesForExtendedLayout = []   // prevents view from siding under nav bar
         
         let ROEaViewControllerInst = ROEaViewController()
         let EPSiViewControllerInst = EPSiViewController()
@@ -132,7 +99,6 @@ class MeasurePageViewController: UIPageViewController, UIPageViewControllerDataS
         self.title = "\(self.equity.name.capitalized) (\(self.equity.ticker))"
     }
     
-    
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         
         if let viewControllerIndex = self.pages.index(of: viewController) {
@@ -171,5 +137,39 @@ class MeasurePageViewController: UIPageViewController, UIPageViewControllerDataS
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
+    func getMeasureIndex(measureShortName: String) -> Int {
+        switch measureShortName {
+        case "ROEa":
+            return Constants.measureMetadata.ROEa.index()
+        case "EPSi":
+            return Constants.measureMetadata.EPSi.index()
+        case "EPSv":
+            return Constants.measureMetadata.EPSv.index()
+        case "BVi":
+            return Constants.measureMetadata.BVi.index()
+        case "DRa":
+            return Constants.measureMetadata.DRa.index()
+        case "SOr":
+            return Constants.measureMetadata.SOr.index()
+        case "previousROI":
+            return Constants.measureMetadata.previousROI.index()
+        case "expectedROI":
+            return Constants.measureMetadata.expectedROI.index()
+        case "q1":
+            return Constants.measureMetadata.q1.index()
+        case "q2":
+            return Constants.measureMetadata.q2.index()
+        case "q3":
+            return Constants.measureMetadata.q3.index()
+        case "q4":
+            return Constants.measureMetadata.q4.index()
+        case "q5":
+            return Constants.measureMetadata.q5.index()
+        case "q6":
+            return Constants.measureMetadata.q6.index()
+        default:
+            return 0
+        }
+    }
 }

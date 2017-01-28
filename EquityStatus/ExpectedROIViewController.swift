@@ -37,7 +37,6 @@ class ExpectedROIViewController: UIViewController, MeasureDetailViewDelegate {
         // setup ui view
         self.expectedROIViewInst.equity = self.equity
         self.expectedROIViewInst.setResultsLabelsForMeasure(fullString: measureTicker)
-        print(measureTicker)
     }
     
     override func didReceiveMemoryWarning() {
@@ -48,5 +47,4 @@ class ExpectedROIViewController: UIViewController, MeasureDetailViewDelegate {
     func showAlertMessage(_ message: String) {
         Utilities.showAlertMessage(message, viewControllerInst: self)
     }
-    
 }

@@ -37,7 +37,6 @@ class PreviousROIViewController: UIViewController, MeasureDetailViewDelegate {
         // setup ui view
         self.previousROIViewInst.equity = self.equity
         self.previousROIViewInst.setResultsLabelsForMeasure(fullString: measureTicker)
-        print(measureTicker)
     }
     
     override func didReceiveMemoryWarning() {
@@ -48,5 +47,4 @@ class PreviousROIViewController: UIViewController, MeasureDetailViewDelegate {
     func showAlertMessage(_ message: String) {
         Utilities.showAlertMessage(message, viewControllerInst: self)
     }
-    
 }

@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol MeasureDetailViewDelegate: class {
+    func showAlertMessage(_: String)
+}
+
 class CalcMeasureView: UIView {
 
     weak var delegate: MeasureDetailViewDelegate?
@@ -69,10 +73,10 @@ class CalcMeasureView: UIView {
         // measureLongNameLabel
         self.addSubview(self.measureLongNameLabel)
         self.measureLongNameLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.measureLongNameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 100).isActive = true
+        self.measureLongNameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 30).isActive = true
         self.measureLongNameLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 10).isActive = true
         self.measureLongNameLabel.preferredMaxLayoutWidth = UIScreen.main.bounds.width - 20
-        self.measureLongNameLabel.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.small.rawValue)
+        self.measureLongNameLabel.font = UIFont(name: Constants.appFont.bold.rawValue, size: Constants.fontSize.small.rawValue)
         self.measureLongNameLabel.numberOfLines = 0
         
         // statusLabel
@@ -130,7 +134,7 @@ class CalcMeasureView: UIView {
 
         // get the measure results and set the label text
         if self.measureShortName == "ROEa" {
-            self.measureLongNameLabel.text = "Measure: \(Constants.measureMetadata.longName(.ROEa)())"
+            self.measureLongNameLabel.text = Constants.measureMetadata.longName(.ROEa)()
             Utilities.setStatusIcon(status: self.equity.ROEaStatus, uiLabel: self.statusIcon)
             self.statusValueDesc.text = "(" + getStatusDesc(self.equity.ROEaStatus) + ")"
             self.resultsLabel.text = "Result: " + getResultString(resultDouble: self.equity.ROEaResult, percentage: true)
@@ -138,7 +142,7 @@ class CalcMeasureView: UIView {
             self.measureCalcDescLabel.text = Constants.measureMetadata.calcDesc(.ROEa)()
             
         } else if self.measureShortName == "EPSi" {
-            self.measureLongNameLabel.text = "Measure: \(Constants.measureMetadata.longName(.EPSi)())"
+            self.measureLongNameLabel.text = Constants.measureMetadata.longName(.EPSi)()
             Utilities.setStatusIcon(status: self.equity.EPSiStatus, uiLabel: self.statusIcon)
             self.statusValueDesc.text = "(" + getStatusDesc(self.equity.EPSiStatus) + ")"
             self.resultsLabel.text = "Result: " + getResultString(resultDouble: self.equity.EPSiResult, percentage: true)
@@ -146,7 +150,7 @@ class CalcMeasureView: UIView {
             self.measureCalcDescLabel.text = Constants.measureMetadata.calcDesc(.EPSi)()
             
         } else if self.measureShortName == "EPSv" {
-            self.measureLongNameLabel.text = "Measure: \(Constants.measureMetadata.longName(.EPSv)())"
+            self.measureLongNameLabel.text = Constants.measureMetadata.longName(.EPSv)()
             Utilities.setStatusIcon(status: self.equity.EPSvStatus, uiLabel: self.statusIcon)
             self.statusValueDesc.text = "(" + getStatusDesc(self.equity.EPSvStatus) + ")"
             self.resultsLabel.text = "Result: " + getResultString(resultDouble: self.equity.EPSvResult, percentage: false)
@@ -154,7 +158,7 @@ class CalcMeasureView: UIView {
             self.measureCalcDescLabel.text = Constants.measureMetadata.calcDesc(.EPSv)()
             
         } else if self.measureShortName == "BVi" {
-            self.measureLongNameLabel.text = "Measure: \(Constants.measureMetadata.longName(.BVi)())"
+            self.measureLongNameLabel.text = Constants.measureMetadata.longName(.BVi)()
             Utilities.setStatusIcon(status: self.equity.BViStatus, uiLabel: self.statusIcon)
             self.statusValueDesc.text = "(" + getStatusDesc(self.equity.BViStatus) + ")"
             self.resultsLabel.text = "Result: " + getResultString(resultDouble: self.equity.BViResult, percentage: true)
@@ -162,7 +166,7 @@ class CalcMeasureView: UIView {
             self.measureCalcDescLabel.text = Constants.measureMetadata.calcDesc(.BVi)()
             
         } else if self.measureShortName == "DRa" {
-            self.measureLongNameLabel.text = "Measure: \(Constants.measureMetadata.longName(.DRa)())"
+            self.measureLongNameLabel.text = Constants.measureMetadata.longName(.DRa)()
             Utilities.setStatusIcon(status: self.equity.DRaStatus, uiLabel: self.statusIcon)
             self.statusValueDesc.text = "(" + getStatusDesc(self.equity.DRaStatus) + ")"
             self.resultsLabel.text = "Result: " + getResultString(resultDouble: self.equity.DRaResult, percentage: false)
@@ -170,7 +174,7 @@ class CalcMeasureView: UIView {
             self.measureCalcDescLabel.text = Constants.measureMetadata.calcDesc(.DRa)()
             
         } else if self.measureShortName == "SOr" {
-            self.measureLongNameLabel.text = "Measure: \(Constants.measureMetadata.longName(.SOr)())"
+            self.measureLongNameLabel.text = Constants.measureMetadata.longName(.SOr)()
             Utilities.setStatusIcon(status: self.equity.SOrStatus, uiLabel: self.statusIcon)
             self.statusValueDesc.text = "(" + getStatusDesc(self.equity.SOrStatus) + ")"
             self.resultsLabel.text = "Result: " + getResultString(resultDouble: self.equity.SOrResult, percentage: false)
@@ -178,7 +182,7 @@ class CalcMeasureView: UIView {
             self.measureCalcDescLabel.text = Constants.measureMetadata.calcDesc(.SOr)()
             
         } else if self.measureShortName == "previousROI" {
-            self.measureLongNameLabel.text = "Measure: \(Constants.measureMetadata.longName(.previousROI)())"
+            self.measureLongNameLabel.text = Constants.measureMetadata.longName(.previousROI)()
             Utilities.setStatusIcon(status: self.equity.previousROIStatus, uiLabel: self.statusIcon)
             self.statusValueDesc.text = "(" + getStatusDesc(self.equity.previousROIStatus) + ")"
             self.resultsLabel.text = "Result: " + getResultString(resultDouble: self.equity.previousROIResult, percentage: true)
@@ -186,16 +190,12 @@ class CalcMeasureView: UIView {
             self.measureCalcDescLabel.text = Constants.measureMetadata.calcDesc(.previousROI)()
             
         } else if self.measureShortName == "expectedROI" {
-            self.measureLongNameLabel.text = "Measure: \(Constants.measureMetadata.longName(.expectedROI)())"
+            self.measureLongNameLabel.text = Constants.measureMetadata.longName(.expectedROI)()
             Utilities.setStatusIcon(status: self.equity.expectedROIStatus, uiLabel: self.statusIcon)
             self.statusValueDesc.text = "(" + getStatusDesc(self.equity.expectedROIStatus) + ")"
             self.resultsLabel.text = "Result: " + getResultString(resultDouble: self.equity.expectedROIResult, percentage: true)
             self.targetLabel.text = Constants.measureMetadata.threshold(.expectedROI)()
             self.measureCalcDescLabel.text = Constants.measureMetadata.calcDesc(.expectedROI)()
-            
         }
     }
-
-
-
 }

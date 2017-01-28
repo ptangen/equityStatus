@@ -37,7 +37,6 @@ class ROEaViewController: UIViewController, MeasureDetailViewDelegate {
         // setup ui view
         self.ROEaViewInst.equity = self.equity
         self.ROEaViewInst.setResultsLabelsForMeasure(fullString: measureTicker)
-        print(measureTicker)
     }
 
     override func didReceiveMemoryWarning() {

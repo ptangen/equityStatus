@@ -37,7 +37,6 @@ class DRaViewController: UIViewController, MeasureDetailViewDelegate {
         // setup ui view
         self.DraViewInst.equity = self.equity
         self.DraViewInst.setResultsLabelsForMeasure(fullString: measureTicker)
-        print(measureTicker)
     }
     
     override func didReceiveMemoryWarning() {
@@ -48,5 +47,4 @@ class DRaViewController: UIViewController, MeasureDetailViewDelegate {
     func showAlertMessage(_ message: String) {
         Utilities.showAlertMessage(message, viewControllerInst: self)
     }
-
 }

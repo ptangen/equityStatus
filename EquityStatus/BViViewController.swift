@@ -37,7 +37,6 @@ class BViViewController: UIViewController, MeasureDetailViewDelegate {
         // setup ui view
         self.BViViewInst.equity = self.equity
         self.BViViewInst.setResultsLabelsForMeasure(fullString: measureTicker)
-        print(measureTicker)
     }
     
     override func didReceiveMemoryWarning() {
@@ -48,5 +47,4 @@ class BViViewController: UIViewController, MeasureDetailViewDelegate {
     func showAlertMessage(_ message: String) {
         Utilities.showAlertMessage(message, viewControllerInst: self)
     }
-    
 }

@@ -37,7 +37,6 @@ class Q4ViewController: UIViewController, MeasureDetailViewDelegate {
         // setup ui view
         self.q4ViewInst.equity = self.equity
         self.q4ViewInst.setResultsLabelsForMeasure(fullString: measureTicker)
-        print(measureTicker)
     }
     
     override func didReceiveMemoryWarning() {

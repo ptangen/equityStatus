@@ -37,7 +37,6 @@ class EPSvViewController: UIViewController, MeasureDetailViewDelegate {
         // setup ui view
         self.EPSvViewInst.equity = self.equity
         self.EPSvViewInst.setResultsLabelsForMeasure(fullString: measureTicker)
-        print(measureTicker)
     }
     
     override func didReceiveMemoryWarning() {
@@ -48,5 +47,4 @@ class EPSvViewController: UIViewController, MeasureDetailViewDelegate {
     func showAlertMessage(_ message: String) {
         Utilities.showAlertMessage(message, viewControllerInst: self)
     }
-
 }

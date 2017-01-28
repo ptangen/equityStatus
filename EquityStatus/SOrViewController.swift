@@ -37,7 +37,6 @@ class SOrViewController: UIViewController, MeasureDetailViewDelegate {
         // setup ui view
         self.SOrViewInst.equity = self.equity
         self.SOrViewInst.setResultsLabelsForMeasure(fullString: measureTicker)
-        print(measureTicker)
     }
     
     override func didReceiveMemoryWarning() {
@@ -48,5 +47,4 @@ class SOrViewController: UIViewController, MeasureDetailViewDelegate {
     func showAlertMessage(_ message: String) {
         Utilities.showAlertMessage(message, viewControllerInst: self)
     }
-    
 }

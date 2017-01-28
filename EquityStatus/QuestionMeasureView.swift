@@ -24,6 +24,7 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
     var qAnswerViewDidChange = false
     
     override init(frame:CGRect){
+        
         super.init(frame: frame)
         self.pageLayout()
         
@@ -40,7 +41,6 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
         self.qStatusPicker.tintColor = UIColor(named: .blue)
         
         self.qStatusPicker.addTarget(self, action: #selector(self.statusValueChanged(_:)), for: .valueChanged)
-        
         self.qAnswerView.delegate = self
     }
     
@@ -160,10 +160,10 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
         // measureLongNameLabel
         self.addSubview(self.measureLongNameLabel)
         self.measureLongNameLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.measureLongNameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 100).isActive = true
+        self.measureLongNameLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 30).isActive = true
         self.measureLongNameLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 10).isActive = true
         self.measureLongNameLabel.preferredMaxLayoutWidth = UIScreen.main.bounds.width - 20
-        self.measureLongNameLabel.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.small.rawValue)
+        self.measureLongNameLabel.font = UIFont(name: Constants.appFont.bold.rawValue, size: Constants.fontSize.small.rawValue)
         self.measureLongNameLabel.numberOfLines = 0
         
         // statusLabel

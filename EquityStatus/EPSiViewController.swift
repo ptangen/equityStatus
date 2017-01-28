@@ -37,7 +37,6 @@ class EPSiViewController: UIViewController, MeasureDetailViewDelegate {
         // setup ui view
         self.EPSiViewInst.equity = self.equity
         self.EPSiViewInst.setResultsLabelsForMeasure(fullString: measureTicker)
-        print(measureTicker)
     }
     
     override func didReceiveMemoryWarning() {
