@@ -23,6 +23,7 @@ class ROEaViewController: UIViewController, MeasureDetailViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.ROEaViewInst.measureTicker = self.measureTicker
+        self.ROEaViewInst.drawChart()
     }
     
     override func loadView(){

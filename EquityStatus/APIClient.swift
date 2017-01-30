@@ -22,7 +22,7 @@ class APIClient {
             completion(.passwordInvalid)
             return
         }
-        
+
         let urlString = "\(Secrets.apiURL)auth.php"
         let url = URL(string: urlString)
         if let url = url {
@@ -334,6 +334,40 @@ class APIClient {
                     }
                 }
             }).resume()
+        } else {
+            print("error: unable to unwrap url")
+        }
+    }
+    
+    // allPass, noFailures, t:GGG
+    class func getMeasureValuesFromDB(ticker: String, measure: String, completion: @escaping ([String:Double]) -> Void) {
+        //let store = DataStore.sharedInstance
+        let urlString = "\(Secrets.apiURL)getMeasureValues.php"
+        let url = URL(string: urlString)
+        if let url = url {
+            var request = URLRequest(url: url)
+            
+            request.httpMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "Accept")
+            request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+            
+            let parameterString = "key=\(Secrets.apiKey)&ticker=\(ticker)&measure=\(measure)"
+            request.httpBody = parameterString.data(using: .utf8)
+            URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
+                if let unwrappedData = data {
+                    do {
+                        let responseJSON = try JSONSerialization.jsonObject(with: unwrappedData, options: []) as AnyObject
+                        let value2006 = responseJSON["2006"] as! String
+                        let measureDict = ["2006": Double(value2006)] // create the inner dictionary
+                        
+                        completion(measureDict as! [String : Double])
+                    } catch {
+                        // An error occurred when creating responseJSON
+                        completion(["error":0])
+                    }
+                }
+            }).resume()
+            
         } else {
             print("error: unable to unwrap url")
         }

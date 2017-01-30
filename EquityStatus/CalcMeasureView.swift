@@ -69,6 +69,15 @@ class CalcMeasureView: UIView {
         }
     }
     
+    func drawChart(){
+        APIClient.getMeasureValuesFromDB(ticker: "AAPL", measure: "ReturnOnEquity", completion: {measureValues in
+            
+            dump(measureValues)
+            
+        }) // end apiClient.getMeasureValues
+        print("drawChart \(self.measureShortName)")
+    }
+    
     func pageLayout() {
         // measureLongNameLabel
         self.addSubview(self.measureLongNameLabel)
