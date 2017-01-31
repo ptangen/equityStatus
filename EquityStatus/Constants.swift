@@ -86,6 +86,28 @@ struct Constants{
             }
         }
         
+        // use these labels to gether historical data for the charts on the measures listed below
+        func historicalDataLabel() -> String {
+            switch self {
+            case .ROEa:
+                return "ReturnOnEquity"
+            case .EPSi:
+                return "EarningsPerShare"
+            case .EPSv:
+                return "EarningsPerShare"
+            case .BVi:
+                return "BookValuePerShare"
+            case .DRa:
+                return "DebtEquity"
+            case .SOr:
+                return "Shares"
+            case .q1:
+                return "EarningsPerShare"
+            default:
+                return ""
+            }
+        }
+        
         // long names for the measures
         func index() -> Int {
             switch self {

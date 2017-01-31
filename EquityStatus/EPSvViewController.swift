@@ -23,6 +23,7 @@ class EPSvViewController: UIViewController, MeasureDetailViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.EPSvViewInst.measureTicker = self.measureTicker
+        self.EPSvViewInst.fetchChartData(historicalDataLabel: Constants.measureMetadata.historicalDataLabel(.EPSv)())
     }
     
     override func loadView(){

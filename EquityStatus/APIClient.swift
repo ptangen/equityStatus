@@ -357,17 +357,22 @@ class APIClient {
                 if let unwrappedData = data {
                     do {
                         let responseJSON = try JSONSerialization.jsonObject(with: unwrappedData, options: []) as AnyObject
-                        let value2006 = responseJSON["2006"] as! String
-                        let measureDict = ["2006": Double(value2006)] // create the inner dictionary
+                        var measureDict = [String: Double]()
                         
-                        completion(measureDict as! [String : Double])
+                        // create a dictionary of values returned for each year
+                        for index in 2006...2030 {
+                            if responseJSON[String(index)] as? String != nil {
+                                let valueForYear = responseJSON[String(index)] as! String
+                                measureDict[String(index)] = Double(valueForYear)
+                            }
+                        }
+                        completion(measureDict)
                     } catch {
                         // An error occurred when creating responseJSON
                         completion(["error":0])
                     }
                 }
             }).resume()
-            
         } else {
             print("error: unable to unwrap url")
         }

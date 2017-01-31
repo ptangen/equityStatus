@@ -23,6 +23,7 @@ class SOrViewController: UIViewController, MeasureDetailViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.SOrViewInst.measureTicker = self.measureTicker
+        self.SOrViewInst.fetchChartData(historicalDataLabel: Constants.measureMetadata.historicalDataLabel(.SOr)())
     }
     
     override func loadView(){

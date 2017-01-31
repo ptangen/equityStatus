@@ -69,13 +69,27 @@ class CalcMeasureView: UIView {
         }
     }
     
-    func drawChart(){
-        APIClient.getMeasureValuesFromDB(ticker: "AAPL", measure: "ReturnOnEquity", completion: {measureValues in
-            
-            dump(measureValues)
-            
-        }) // end apiClient.getMeasureValues
+    func fetchChartData(historicalDataLabel: String){
         print("drawChart \(self.measureShortName)")
+        
+        // here we fetch the historical data that was used to calculate the value for the measure
+        let ticker = Utilities.getTickerFromLabel(fullString: self.measureTicker)
+        APIClient.getMeasureValuesFromDB(ticker: ticker, measure: historicalDataLabel, completion: { chartData in
+            
+            if chartData["error"] == 0 {
+                print("error fetching data")
+            } else {
+                if chartData.keys.count == 0 {
+                    print("No data for this measure/company.")
+                } else {
+                    self.drawChart(chartData: chartData)
+                }
+            }
+        }) // end apiClient.getMeasureValues
+    }
+    
+    func drawChart(chartData: [String:Double]){
+        dump(chartData)
     }
     
     func pageLayout() {

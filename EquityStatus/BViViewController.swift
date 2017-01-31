@@ -23,6 +23,7 @@ class BViViewController: UIViewController, MeasureDetailViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.BViViewInst.measureTicker = self.measureTicker
+        self.BViViewInst.fetchChartData(historicalDataLabel: Constants.measureMetadata.historicalDataLabel(.BVi)())
     }
     
     override func loadView(){

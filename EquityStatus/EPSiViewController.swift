@@ -23,6 +23,7 @@ class EPSiViewController: UIViewController, MeasureDetailViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.EPSiViewInst.measureTicker = self.measureTicker
+        self.EPSiViewInst.fetchChartData(historicalDataLabel: Constants.measureMetadata.historicalDataLabel(.EPSi)())
     }
     
     override func loadView(){
