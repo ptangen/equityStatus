@@ -104,7 +104,9 @@ class SignInView: UIView, UITextFieldDelegate {
                             // set the password in the keychain
                             self.myKeyChainWrapper.mySetObject(password, forKey:kSecValueData)
                             self.myKeyChainWrapper.writeToKeychain()
-                            self.delegate?.openTabDisplay()
+                            if let delegate = self.delegate {
+                                delegate.openTabDisplay()
+                            }
                             break;
                             
                         case.userNameInvalid:

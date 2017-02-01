@@ -70,7 +70,7 @@ class CalcMeasureView: UIView {
     }
     
     func fetchChartData(historicalDataLabel: String){
-        print("drawChart \(self.measureShortName)")
+        print("drawChart \(self.measureShortName), \(historicalDataLabel)")
         
         // here we fetch the historical data that was used to calculate the value for the measure
         let ticker = Utilities.getTickerFromLabel(fullString: self.measureTicker)

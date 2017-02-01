@@ -30,14 +30,25 @@ class MeasurePageViewController: UIPageViewController, UIPageViewControllerDataS
         
         self.edgesForExtendedLayout = []   // prevents view from siding under nav bar
         
-        let ROEaViewControllerInst = ROEaViewController()
-        let EPSiViewControllerInst = EPSiViewController()
-        let EPSvViewControllerInst = EPSvViewController()
-        let BViViewControllerInst = BViViewController()
-        let DRaViewControllerInst = DRaViewController()
-        let SOrViewControllerInst = SOrViewController()
-        let previousROIViewControllerInst = PreviousROIViewController()
-        let expectedROIViewControllerInst = ExpectedROIViewController()
+        let ROEaViewControllerInst = CalcMeasureViewController()
+
+        let EPSiViewControllerInst = CalcMeasureViewController()
+        
+
+        let EPSvViewControllerInst = CalcMeasureViewController()
+        let BViViewControllerInst = CalcMeasureViewController()
+        let DRaViewControllerInst = CalcMeasureViewController()
+        let SOrViewControllerInst = CalcMeasureViewController()
+        let previousROIViewControllerInst = CalcMeasureViewController()
+        let expectedROIViewControllerInst = CalcMeasureViewController()
+        
+//        let EPSiViewControllerInst = EPSiViewController()
+//        let EPSvViewControllerInst = EPSvViewController()
+//        let BViViewControllerInst = BViViewController()
+//        let DRaViewControllerInst = DRaViewController()
+//        let SOrViewControllerInst = SOrViewController()
+//        let previousROIViewControllerInst = PreviousROIViewController()
+//        let expectedROIViewControllerInst = ExpectedROIViewController()
         let q1ViewControllerInst = Q1ViewController()
         let q2ViewControllerInst = Q2ViewController()
         let q3ViewControllerInst = Q3ViewController()
@@ -60,6 +71,14 @@ class MeasurePageViewController: UIPageViewController, UIPageViewControllerDataS
         q4ViewControllerInst.measureTicker = "q4(\(ticker))"
         q5ViewControllerInst.measureTicker = "q5(\(ticker))"
         q6ViewControllerInst.measureTicker = "q6(\(ticker))"
+        
+        // set historicalDataLabel on VC
+        ROEaViewControllerInst.historicalDataLabel = Constants.measureMetadata.historicalDataLabel(.ROEa)()
+        EPSiViewControllerInst.historicalDataLabel = Constants.measureMetadata.historicalDataLabel(.EPSi)()
+        EPSvViewControllerInst.historicalDataLabel = Constants.measureMetadata.historicalDataLabel(.EPSv)()
+        BViViewControllerInst.historicalDataLabel = Constants.measureMetadata.historicalDataLabel(.BVi)()
+        DRaViewControllerInst.historicalDataLabel = Constants.measureMetadata.historicalDataLabel(.DRa)()
+        SOrViewControllerInst.historicalDataLabel = Constants.measureMetadata.historicalDataLabel(.SOr)()
         
         // place the individual viewControllers in the pageViewController
         self.pages[getMeasureIndex(measureShortName: "ROEa")] = ROEaViewControllerInst
