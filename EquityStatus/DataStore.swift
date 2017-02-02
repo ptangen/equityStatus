@@ -14,6 +14,8 @@ class DataStore {
     fileprivate init() {}
     var equitiesMetadata:[EquityMetadata] = []
     var equities:[Equity] = []
+    var equitiesForBuyNames = [String]()
+    var equitiesForEvaluation = [Equity]()
     
     func getTickersInEvalAndBuy() -> [String] {
         var tickersInEvalAndBuy: [String] = []

@@ -91,9 +91,7 @@ struct Constants{
             switch self {
             case .ROEa:
                 return "ReturnOnEquity"
-            case .EPSi:
-                return "EarningsPerShare"
-            case .EPSv:
+            case .EPSi, .EPSv:
                 return "EarningsPerShare"
             case .BVi:
                 return "BookValuePerShare"
@@ -103,6 +101,24 @@ struct Constants{
                 return "Shares"
             case .q1:
                 return "EarningsPerShare"
+            default:
+                return ""
+            }
+        }
+        
+        // use these labels to gether historical data for the charts on the measures listed below
+        func chartLabel() -> String {
+            switch self {
+            case .ROEa:
+                return "  Return On Equity (%)"
+            case .EPSi, .EPSv, .q1:
+                return "  Earnings Per Share ($)"
+            case .BVi:
+                return "  Book Value Per Share ($)"
+            case .DRa:
+                return "  Debt Equity Ratio"
+            case .SOr:
+                return "  Shares Outstanding"
             default:
                 return ""
             }
@@ -170,13 +186,13 @@ struct Constants{
             case .EPSi:
                 return "Calculation: The annual earnings per share (EPS) is collected and then the future value formula is applied to determine the growth rate of the EPS."
             case .EPSv:
-                return "Calculation: The Buffet methodology stresses the importance of a stable EPS growth rate. The methodology does not provide a formula, but a rough calculation was found for this measure. The calculation first finds the standard deviation of the EPS values from the last ten years. Then the difference of the first and last values is compared to three times the standard deviation and a ratio is established. The lower the ratio, the less volatile the the EPS."
+                return "Calculation: First, the standard deviation of the EPS values from the last ten years is calculated. Then the difference of the first and last values is compared to three times the standard deviation and a ratio is established. The lower the ratio, the less volatile the the EPS."
             case .BVi:
                 return "Calculation: The annual book value is collected and then the future value formula is applied to determine the growth rate of the BV."
             case .DRa:
                 return "Calculation: The annual total debt ratio is collected and then the mean is calculated."
             case .SOr:
-                return "Calculation: The annual number of shares outstanding is collected. Then the value is found by subtracting the number of shares outstanding, from the current year, from the number of shares outstanding ten years earlier."
+                return "Calculation: The value is found by subtracting the number of shares outstanding in the current year, from the number of shares outstanding ten years earlier."
             case .previousROI:
                 return "Calculation: This value is found by obtaining the stock price 5 years ago, the current price and calculating the growth rate."
             case .expectedROI:
@@ -196,6 +212,7 @@ extension UIColor {
         case brown =            0x7b4e21ff
         case statusGreen =      0x3DB66Fff
         case statusRed =        0xdf1a21ff
+        case beige =            0xF5F5DCff
     }
 }
 

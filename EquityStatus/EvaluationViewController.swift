@@ -22,7 +22,7 @@ class EvaluationViewController: UIViewController, EvaluationViewDelegate {
     }
     
     override func loadView(){
-        self.evaluationViewInst = EvaluationView(frame: CGRect.zero)
+        self.evaluationViewInst.frame = CGRect.zero
         self.view = self.evaluationViewInst
     }
     

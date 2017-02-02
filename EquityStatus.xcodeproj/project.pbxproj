@@ -33,12 +33,7 @@
 		C08EC7531E3B9369005A5A5E /* CalcMeasureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08EC7521E3B9369005A5A5E /* CalcMeasureViewController.swift */; };
 		C08EC7551E3B9536005A5A5E /* CalcMeasureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08EC7541E3B9536005A5A5E /* CalcMeasureView.swift */; };
 		C08EC7661E3BD92F005A5A5E /* QuestionMeasureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08EC7651E3BD92F005A5A5E /* QuestionMeasureView.swift */; };
-		C08EC7681E3BDAEA005A5A5E /* Q1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08EC7671E3BDAEA005A5A5E /* Q1ViewController.swift */; };
-		C08EC76A1E3BDCC6005A5A5E /* Q2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08EC7691E3BDCC6005A5A5E /* Q2ViewController.swift */; };
-		C08EC76C1E3BDD6C005A5A5E /* Q3ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08EC76B1E3BDD6C005A5A5E /* Q3ViewController.swift */; };
-		C08EC76E1E3BDE2B005A5A5E /* Q4ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08EC76D1E3BDE2B005A5A5E /* Q4ViewController.swift */; };
-		C08EC7701E3BDEC1005A5A5E /* Q5ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08EC76F1E3BDEC1005A5A5E /* Q5ViewController.swift */; };
-		C08EC7721E3BE03C005A5A5E /* Q6ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08EC7711E3BE03C005A5A5E /* Q6ViewController.swift */; };
+		C08EC7681E3BDAEA005A5A5E /* QuestionMeasureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08EC7671E3BDAEA005A5A5E /* QuestionMeasureViewController.swift */; };
 		C0BF22261E085351005B7E55 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF22251E085351005B7E55 /* Utilities.swift */; };
 		C0BF22281E086191005B7E55 /* BuyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF22271E086191005B7E55 /* BuyViewController.swift */; };
 		C0BF222A1E0861B6005B7E55 /* BuyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF22291E0861B6005B7E55 /* BuyView.swift */; };
@@ -95,12 +90,7 @@
 		C08EC7521E3B9369005A5A5E /* CalcMeasureViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalcMeasureViewController.swift; sourceTree = "<group>"; };
 		C08EC7541E3B9536005A5A5E /* CalcMeasureView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalcMeasureView.swift; sourceTree = "<group>"; };
 		C08EC7651E3BD92F005A5A5E /* QuestionMeasureView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionMeasureView.swift; sourceTree = "<group>"; };
-		C08EC7671E3BDAEA005A5A5E /* Q1ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Q1ViewController.swift; sourceTree = "<group>"; };
-		C08EC7691E3BDCC6005A5A5E /* Q2ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Q2ViewController.swift; sourceTree = "<group>"; };
-		C08EC76B1E3BDD6C005A5A5E /* Q3ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Q3ViewController.swift; sourceTree = "<group>"; };
-		C08EC76D1E3BDE2B005A5A5E /* Q4ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Q4ViewController.swift; sourceTree = "<group>"; };
-		C08EC76F1E3BDEC1005A5A5E /* Q5ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Q5ViewController.swift; sourceTree = "<group>"; };
-		C08EC7711E3BE03C005A5A5E /* Q6ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Q6ViewController.swift; sourceTree = "<group>"; };
+		C08EC7671E3BDAEA005A5A5E /* QuestionMeasureViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionMeasureViewController.swift; sourceTree = "<group>"; };
 		C0BF22251E085351005B7E55 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		C0BF22271E086191005B7E55 /* BuyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuyViewController.swift; sourceTree = "<group>"; };
 		C0BF22291E0861B6005B7E55 /* BuyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuyView.swift; sourceTree = "<group>"; };
@@ -217,7 +207,7 @@
 				C02D50A21E159BCD0000330F /* EquityDetailViewController.swift */,
 				C08EC7501E3B91FA005A5A5E /* MeasurePageViewController.swift */,
 				C08EC7521E3B9369005A5A5E /* CalcMeasureViewController.swift */,
-				C08EC7731E3BF65A005A5A5E /* QuestionMeasures */,
+				C08EC7671E3BDAEA005A5A5E /* QuestionMeasureViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -258,19 +248,6 @@
 				C012D0E81E0DD77700AA8C4C /* MaterialIcons-Regular.otf */,
 			);
 			name = Media;
-			sourceTree = "<group>";
-		};
-		C08EC7731E3BF65A005A5A5E /* QuestionMeasures */ = {
-			isa = PBXGroup;
-			children = (
-				C08EC7671E3BDAEA005A5A5E /* Q1ViewController.swift */,
-				C08EC7691E3BDCC6005A5A5E /* Q2ViewController.swift */,
-				C08EC76B1E3BDD6C005A5A5E /* Q3ViewController.swift */,
-				C08EC76D1E3BDE2B005A5A5E /* Q4ViewController.swift */,
-				C08EC76F1E3BDEC1005A5A5E /* Q5ViewController.swift */,
-				C08EC7711E3BE03C005A5A5E /* Q6ViewController.swift */,
-			);
-			name = QuestionMeasures;
 			sourceTree = "<group>";
 		};
 		C0C87C4D1E118E9700759947 /* chart formatters */ = {
@@ -495,21 +472,17 @@
 			files = (
 				C0409FA71E0745D400BEC5DD /* SignInView.swift in Sources */,
 				C02D50A51E159C2D0000330F /* EquityDetailView.swift in Sources */,
-				C08EC7681E3BDAEA005A5A5E /* Q1ViewController.swift in Sources */,
+				C08EC7681E3BDAEA005A5A5E /* QuestionMeasureViewController.swift in Sources */,
 				C02D50A31E159BCD0000330F /* EquityDetailViewController.swift in Sources */,
 				C05FC11C1E0A08CD008EA907 /* Secrets.swift in Sources */,
 				C08EC7661E3BD92F005A5A5E /* QuestionMeasureView.swift in Sources */,
 				C0BF22301E0869B8005B7E55 /* SellViewController.swift in Sources */,
 				C069F5681E0830EC00913486 /* DataStore.swift in Sources */,
 				C0D2FF7A1E0C8E4400871EA3 /* KeychainWrapper.m in Sources */,
-				C08EC76C1E3BDD6C005A5A5E /* Q3ViewController.swift in Sources */,
-				C08EC76A1E3BDCC6005A5A5E /* Q2ViewController.swift in Sources */,
 				C0BF222C1E08686A005B7E55 /* EvaluationViewController.swift in Sources */,
 				C02D509D1E12AB8D0000330F /* EquityStatus.xcdatamodeld in Sources */,
 				C0BF222E1E086885005B7E55 /* EvaluationView.swift in Sources */,
-				C08EC76E1E3BDE2B005A5A5E /* Q4ViewController.swift in Sources */,
 				C0BF222A1E0861B6005B7E55 /* BuyView.swift in Sources */,
-				C08EC7701E3BDEC1005A5A5E /* Q5ViewController.swift in Sources */,
 				C08EC7531E3B9369005A5A5E /* CalcMeasureViewController.swift in Sources */,
 				C0409F881E0743CD00BEC5DD /* SignInViewController.swift in Sources */,
 				C0BF22341E086AA1005B7E55 /* TabsViewController.swift in Sources */,
@@ -524,7 +497,6 @@
 				C02D50A11E154F020000330F /* Equity.swift in Sources */,
 				C05FC1161E09B5FE008EA907 /* ChartStringFormatter.swift in Sources */,
 				C085E32B1E119E04008A7315 /* EvaluationTableViewCell.swift in Sources */,
-				C08EC7721E3BE03C005A5A5E /* Q6ViewController.swift in Sources */,
 				C061ED0C1E0784B000081030 /* Constants.swift in Sources */,
 				C08EC7551E3B9536005A5A5E /* CalcMeasureView.swift in Sources */,
 			);

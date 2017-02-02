@@ -27,7 +27,7 @@ class EquityDetailViewController: UIViewController, EquityDetailViewDelegate {
     }
 
     override func loadView(){
-        self.equityDetailViewInst = EquityDetailView(frame: CGRect.zero)
+        self.equityDetailViewInst.frame = CGRect.zero
         self.equityDetailViewInst.equity = self.equity
         self.view = self.equityDetailViewInst
     }

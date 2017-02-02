@@ -120,7 +120,6 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         if searchController.isActive && searchController.searchBar.text != "" {
             if let ticker = self.filteredEquitiesMetadata[indexPath.row].ticker {
                 self.delegate?.openDetail(ticker)

@@ -21,6 +21,13 @@ class Equity {
     var SOrResult: Double
     var previousROIResult: Double
     var expectedROIResult: Double
+    
+    var ROEHistory: ([String],[Double])
+    var EPSHistory: ([String],[Double])
+    var BVHistory: ([String],[Double])
+    var DRHistory: ([String],[Double])
+    var SOHistory: ([String],[Double])
+    
     var ROEaStatus: String
     var EPSiStatus: String
     var EPSvStatus: String
@@ -29,12 +36,14 @@ class Equity {
     var SOrStatus: String
     var previousROIStatus: String
     var expectedROIStatus: String
+    
     var q1Answer: String
     var q2Answer: String
     var q3Answer: String
     var q4Answer: String
     var q5Answer: String
     var q6Answer: String
+    
     var q1Status: String
     var q2Status: String
     var q3Status: String
@@ -43,10 +52,18 @@ class Equity {
     var q6Status: String
     
     // use this initializer for equities on the details tab
-    init(ticker: String, name: String, tab: EquityTabValue, ROEaResult: Double, EPSiResult: Double, EPSvResult: Double, BViResult: Double, DRaResult: Double, SOrResult: Double, previousROIResult: Double, expectedROIResult: Double, ROEaStatus: String, EPSiStatus: String, EPSvStatus: String, BViStatus: String, DRaStatus: String, SOrStatus: String, previousROIStatus: String, expectedROIStatus: String, q1Answer: String, q2Answer: String, q3Answer: String, q4Answer: String, q5Answer: String, q6Answer: String, q1Status: String, q2Status: String, q3Status: String, q4Status: String, q5Status: String, q6Status: String) {
+    init(ticker: String, name: String, tab: EquityTabValue,
+         ROEaResult: Double, EPSiResult: Double, EPSvResult: Double, BViResult: Double, DRaResult: Double, SOrResult: Double,previousROIResult: Double, expectedROIResult: Double,
+         
+         ROEHistory: ([String],[Double]),EPSHistory: ([String],[Double]),BVHistory: ([String],[Double]), DRHistory: ([String],[Double]), SOHistory: ([String],[Double]),
+         
+         ROEaStatus: String, EPSiStatus: String, EPSvStatus: String, BViStatus: String, DRaStatus: String, SOrStatus: String, previousROIStatus: String, expectedROIStatus: String,
+         q1Answer: String, q2Answer: String, q3Answer: String, q4Answer: String, q5Answer: String, q6Answer: String,
+         q1Status: String, q2Status: String, q3Status: String, q4Status: String, q5Status: String, q6Status: String) {
         self.ticker = ticker
         self.name = name
         self.tab = tab
+        
         self.ROEaResult = ROEaResult
         self.EPSiResult = EPSiResult
         self.EPSvResult = EPSvResult
@@ -55,6 +72,13 @@ class Equity {
         self.SOrResult = SOrResult
         self.previousROIResult = previousROIResult
         self.expectedROIResult = expectedROIResult
+        
+        self.ROEHistory = ROEHistory
+        self.EPSHistory = EPSHistory
+        self.BVHistory = BVHistory
+        self.DRHistory = DRHistory
+        self.SOHistory = SOHistory
+        
         self.ROEaStatus = ROEaStatus
         self.EPSiStatus = EPSiStatus
         self.EPSvStatus = EPSvStatus
@@ -63,12 +87,14 @@ class Equity {
         self.SOrStatus = SOrStatus
         self.previousROIStatus = previousROIStatus
         self.expectedROIStatus = expectedROIStatus
+        
         self.q1Answer = q1Answer
         self.q2Answer = q2Answer
         self.q3Answer = q3Answer
         self.q4Answer = q4Answer
         self.q5Answer = q5Answer
         self.q6Answer = q6Answer
+        
         self.q1Status = q1Status
         self.q2Status = q2Status
         self.q3Status = q3Status

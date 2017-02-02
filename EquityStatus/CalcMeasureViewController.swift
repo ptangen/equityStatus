@@ -15,6 +15,7 @@ class CalcMeasureViewController: UIViewController, MeasureDetailViewDelegate {
     var measureTicker = String()
     var equity: Equity!
     var historicalDataLabel: String?
+    var chartLabel: String?
   
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,8 +25,14 @@ class CalcMeasureViewController: UIViewController, MeasureDetailViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.calcMeasureViewInst.measureTicker = self.measureTicker
-        if let historicalDataLabel = self.historicalDataLabel {
+        
+        // if the view has a chart, pass the historicalDataLabel and chartLabel
+        if let historicalDataLabel = self.historicalDataLabel, let chartLabel = self.chartLabel {
             self.calcMeasureViewInst.fetchChartData(historicalDataLabel: historicalDataLabel)
+            self.calcMeasureViewInst.chartLabel.text = chartLabel
+        } else {
+            self.calcMeasureViewInst.barChartView.isHidden = true
+            self.calcMeasureViewInst.chartLabel.isHidden = true
         }
     }
     
@@ -35,7 +42,7 @@ class CalcMeasureViewController: UIViewController, MeasureDetailViewDelegate {
         self.equity = self.store.getEquityByTickerFromStore(ticker: ticker)
 
         // load the ui view into the view controller
-        self.calcMeasureViewInst = CalcMeasureView(frame: CGRect.zero)
+        self.calcMeasureViewInst.frame = CGRect.zero
         self.view = self.calcMeasureViewInst
         
         // setup ui view

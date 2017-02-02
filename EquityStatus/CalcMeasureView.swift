@@ -7,12 +7,13 @@
 //
 
 import UIKit
+import Charts
 
 protocol MeasureDetailViewDelegate: class {
     func showAlertMessage(_: String)
 }
 
-class CalcMeasureView: UIView {
+class CalcMeasureView: UIView, ChartViewDelegate {
 
     weak var delegate: MeasureDetailViewDelegate?
     let store = DataStore.sharedInstance
@@ -26,23 +27,14 @@ class CalcMeasureView: UIView {
     var resultsLabel = UILabel()
     var targetLabel = UILabel()
     var measureCalcDescLabel = UILabel()
-    var qStatusPicker = UISegmentedControl()
+    var chartLabel = UILabel()
+    
+    let barChartView = BarChartView()
     
     override init(frame:CGRect){
         super.init(frame: frame)
         self.pageLayout()
-        
-        // configure segmented control to pick status for the measure
-        self.qStatusPicker.insertSegment(withTitle: Constants.iconLibrary.faCircleO.rawValue, at: 0, animated: true)
-        self.qStatusPicker.insertSegment(withTitle: Constants.iconLibrary.faCheckCircle.rawValue, at: 1, animated: true)
-        self.qStatusPicker.insertSegment(withTitle: Constants.iconLibrary.faTimesCircle.rawValue, at: 2, animated: true)
-        self.qStatusPicker.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: Constants.iconFont.fontAwesome.rawValue, size: Constants.iconSize.small.rawValue)! ], for: .normal)
-        
-        let segmentButtonWidth = UIScreen.main.bounds.width / 4
-        self.qStatusPicker.setWidth(segmentButtonWidth, forSegmentAt: 0)
-        self.qStatusPicker.setWidth(segmentButtonWidth, forSegmentAt: 1)
-        self.qStatusPicker.setWidth(segmentButtonWidth, forSegmentAt: 2)
-        self.qStatusPicker.tintColor = UIColor(named: .blue)
+        self.barChartView.delegate = self
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -69,27 +61,91 @@ class CalcMeasureView: UIView {
         }
     }
     
-    func fetchChartData(historicalDataLabel: String){
-        print("drawChart \(self.measureShortName), \(historicalDataLabel)")
-        
-        // here we fetch the historical data that was used to calculate the value for the measure
-        let ticker = Utilities.getTickerFromLabel(fullString: self.measureTicker)
-        APIClient.getMeasureValuesFromDB(ticker: ticker, measure: historicalDataLabel, completion: { chartData in
+    func fetchChartDataFromDataStore(historicalDataLabel: String) -> ([String],[Double]) {
+        switch historicalDataLabel {
+        case "ReturnOnEquity":
+            return self.equity.ROEHistory
+        case "EarningsPerShare":
+            return equity.EPSHistory
+        case "BookValuePerShare":
+            return equity.BVHistory
+        case "DebtEquity":
+            return equity.DRHistory
+        case "Shares":
+            return equity.SOHistory
+        default:
+            break
             
-            if chartData["error"] == 0 {
-                print("error fetching data")
-            } else {
-                if chartData.keys.count == 0 {
-                    print("No data for this measure/company.")
-                } else {
-                    self.drawChart(chartData: chartData)
-                }
-            }
-        }) // end apiClient.getMeasureValues
+        }
+        return ([],[])
     }
     
-    func drawChart(chartData: [String:Double]){
-        dump(chartData)
+    func fetchChartData(historicalDataLabel: String){
+        // try to get the historicalData from the dataStore
+        let chartDataFromStore = fetchChartDataFromDataStore(historicalDataLabel: historicalDataLabel)
+        
+        if chartDataFromStore.1.isEmpty {
+            // here we fetch the historical data that was used to calculate the value for the measure
+            let ticker = Utilities.getTickerFromLabel(fullString: self.measureTicker)
+            APIClient.getMeasureValuesFromDB(ticker: ticker, measure: historicalDataLabel, completion: { chartDataFromAPI in
+                if chartDataFromAPI.1.isEmpty {
+                    // print("No data for this measure/company.")
+                    // the chart displays a nice message when no data exists
+                } else if chartDataFromAPI.0[0] == "error" {
+                    print("error fetching data")
+                    if let delegate = self.delegate {
+                        delegate.showAlertMessage("Unable to fetch chart data. Please contact ptangen@ptangen.com about this situation.")
+                    }
+                } else {
+                    self.drawChart(chartData: chartDataFromAPI)
+                }
+            }) // end apiClient.getMeasureValues
+        } else {
+            self.drawChart(chartData: chartDataFromStore)
+        }
+    }
+    
+    func drawChart(chartData: (annualLabels: [String], annualValues: [Double])){
+        
+        let stringFormatter = ChartStringFormatter()            // allow labels to be shown for bars
+        //let percentFormatter = PercentValueFormatter()        // allow labels to be shown for bars
+        var dataEntries: [BarChartDataEntry] = []
+        
+        // data and names of the bars
+        let dataPoints: [Double] = chartData.annualValues       // values for the bars
+        stringFormatter.nameValues = chartData.annualLabels     // labels for the x axis
+        
+        // formatting
+        barChartView.xAxis.valueFormatter = stringFormatter     // allow labels to be shown for bars
+        barChartView.xAxis.drawGridLinesEnabled = false         // hide horizontal grid lines
+        barChartView.xAxis.drawAxisLineEnabled = false          // hide right axis
+        barChartView.xAxis.labelFont = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.xsmall.rawValue)!
+        barChartView.xAxis.setLabelCount(stringFormatter.nameValues.count, force: false)
+        barChartView.xAxis.granularityEnabled = true
+        barChartView.xAxis.granularity = 1.0
+        barChartView.xAxis.labelPosition = .bottom
+        
+        barChartView.rightAxis.enabled = false                  // hide values
+        barChartView.leftAxis.enabled = false                   // hide values
+        barChartView.animate(xAxisDuration: 0.0, yAxisDuration: 0.6)
+        barChartView.legend.enabled = false
+        if let chartDescription = barChartView.chartDescription {
+            chartDescription.enabled = false
+        }
+
+        for (index, dataPoint) in dataPoints.enumerated() {
+            let dataEntry = BarChartDataEntry(x: Double(index), y: dataPoint)
+            dataEntries.append(dataEntry)
+        }
+        
+        let chartDataSet = BarChartDataSet(values: dataEntries, label: "")
+        chartDataSet.colors = [UIColor(named: .statusGreen)]
+        chartDataSet.valueFont = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.xsmall.rawValue)!
+        chartDataSet.valueTextColor = UIColor.black
+        //chartDataSet.valueFormatter = percentFormatter      // formats the values into a %
+        let chartData = BarChartData(dataSet: chartDataSet)
+        
+        self.barChartView.data = chartData
     }
     
     func pageLayout() {
@@ -148,6 +204,26 @@ class CalcMeasureView: UIView {
         self.measureCalcDescLabel.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.small.rawValue)
         self.measureCalcDescLabel.preferredMaxLayoutWidth = UIScreen.main.bounds.width - 20
         self.measureCalcDescLabel.numberOfLines = 0
+        
+        // chartLabel
+        self.addSubview(self.chartLabel)
+        self.chartLabel.translatesAutoresizingMaskIntoConstraints = false
+        self.chartLabel.topAnchor.constraint(equalTo: self.measureCalcDescLabel.bottomAnchor, constant: 30).isActive = true
+        self.chartLabel.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+        self.chartLabel.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+        self.chartLabel.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        self.chartLabel.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.small.rawValue)
+        self.chartLabel.numberOfLines = 0
+        self.chartLabel.backgroundColor = UIColor(named: .beige)
+        
+        // chart label
+        self.addSubview(self.barChartView)
+        self.barChartView.translatesAutoresizingMaskIntoConstraints = false
+        self.barChartView.topAnchor.constraint(equalTo: self.chartLabel.bottomAnchor, constant: 0).isActive = true
+        self.barChartView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0).isActive = true
+        self.barChartView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
+        self.barChartView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -30).isActive = true
+        self.barChartView.backgroundColor = UIColor(named: .beige)
     }
     
     func setResultsLabelsForMeasure(fullString: String) {

@@ -23,7 +23,7 @@ class BuyViewController: UIViewController, BuyViewDelegate  {
     }
     
     override func loadView(){
-        self.buyViewInst = BuyView(frame: CGRect.zero)
+        self.buyViewInst.frame = CGRect.zero
         self.view = self.buyViewInst
     }
     

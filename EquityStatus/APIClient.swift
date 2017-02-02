@@ -12,7 +12,6 @@ import UIKit
 class APIClient {
     
     class func requestAuth(userName: String, password: String, completion: @escaping (apiResponse) -> Void) {
-        
         guard let userNameSubmitted = userName.addingPercentEncoding(withAllowedCharacters: .urlUserAllowed) else {
             completion(.userNameInvalid)
             return
@@ -63,7 +62,6 @@ class APIClient {
     }
     
     class func setSubjectiveStatus(ticker: String, question: String, status: String, equity: Equity, completion: @escaping (apiResponse) -> Void) {
-        
         let urlString = "\(Secrets.apiURL)setSubjectiveStatus.php"
         let url = URL(string: urlString)
         if let url = url {
@@ -113,7 +111,6 @@ class APIClient {
     }
     
     class func setSubjectiveAnswer(ticker: String, question: String, answer: String, equity: Equity, completion: @escaping (apiResponse) -> Void) {
-        
         let urlString = "\(Secrets.apiURL)setSubjectiveAnswer.php"
         let url = URL(string: urlString)
         if let url = url {
@@ -228,7 +225,7 @@ class APIClient {
                         if let responseJSON = responseJSON {
                             for equityDict in responseJSON {
                                 // unwrap the incoming data and create equity
-                        
+
                                 if let unwrappedTicker = equityDict["Ticker"],
                                     let unwrappedName = equityDict["Name"],
                             
@@ -280,13 +277,16 @@ class APIClient {
                         
                                     let unwrappedQ6Answer = equityDict["q6Answer"],
                                     let unwrappedQ6Status = equityDict["q6Status"] {
-                        
+                                    
+                                    
+                                    let emptyTuple = ([String](),[Double]())
+
                                     // create the object
                                     let equityInst = Equity(
                                         ticker: unwrappedTicker,
                                         name: unwrappedName,
                                         tab: .notSet,
-                                
+                                        
                                         ROEaResult: unwrappedROEaResult,
                                         EPSiResult: unwrappedEPSiResult,
                                         EPSvResult: unwrappedEPSvResult,
@@ -295,7 +295,13 @@ class APIClient {
                                         SOrResult: unwrappedSOrResult,
                                         previousROIResult: unwrappedPreviousROIResult,
                                         expectedROIResult: unwrappedExpectedROIResult,
-                                
+                                        
+                                        ROEHistory: emptyTuple,
+                                        EPSHistory: emptyTuple,
+                                        BVHistory: emptyTuple,
+                                        DRHistory: emptyTuple,
+                                        SOHistory: emptyTuple,
+
                                         ROEaStatus: unwrappedROEaStatus,
                                         EPSiStatus: unwrappedEPSiStatus,
                                         EPSvStatus: unwrappedEPSvStatus,
@@ -318,7 +324,7 @@ class APIClient {
                                         q4Status: unwrappedQ4Status,
                                         q5Status: unwrappedQ5Status,
                                         q6Status: unwrappedQ6Status)
-                        
+                                    
                                     // add the new tickers to the datastore and set the tab value
                                     if store.getEquityByTickerFromStore(ticker: equityInst.ticker) == nil {
                                         store.equities.append(equityInst)
@@ -339,9 +345,10 @@ class APIClient {
         }
     }
     
-    // allPass, noFailures, t:GGG
-    class func getMeasureValuesFromDB(ticker: String, measure: String, completion: @escaping ([String:Double]) -> Void) {
-        //let store = DataStore.sharedInstance
+    // get data for charts
+    class func getMeasureValuesFromDB(ticker: String, measure: String, completion: @escaping (([String],[Double])) -> Void) {
+        let store = DataStore.sharedInstance
+        var historicalValues = (annualLabels: [String](), annualValues: [Double]())
         let urlString = "\(Secrets.apiURL)getMeasureValues.php"
         let url = URL(string: urlString)
         if let url = url {
@@ -357,19 +364,41 @@ class APIClient {
                 if let unwrappedData = data {
                     do {
                         let responseJSON = try JSONSerialization.jsonObject(with: unwrappedData, options: []) as AnyObject
-                        var measureDict = [String: Double]()
-                        
-                        // create a dictionary of values returned for each year
+
+                        // the chart needs two arrays as inputs so, create a tuple of arrays, one for labels and one for values
                         for index in 2006...2030 {
                             if responseJSON[String(index)] as? String != nil {
-                                let valueForYear = responseJSON[String(index)] as! String
-                                measureDict[String(index)] = Double(valueForYear)
+                                let labelForYearFull = String(index)
+                                let labelForYearShort = labelForYearFull.characters.suffix(2) //grab the last two chars in the year
+                                let valueForYearString = responseJSON[String(index)] as! String
+                                if let valueForYear = Double(valueForYearString) {
+                                    historicalValues.annualLabels.append(String(labelForYearShort))
+                                    historicalValues.annualValues.append(valueForYear)
+                                }
                             }
                         }
-                        completion(measureDict)
+                        // add the historicalValues to the dataStore
+                        if let equity = store.getEquityByTickerFromStore(ticker: ticker) {
+                            switch measure {
+                            case "ReturnOnEquity":
+                                equity.ROEHistory = historicalValues
+                            case "EarningsPerShare":
+                                equity.EPSHistory = historicalValues
+                            case "BookValuePerShare":
+                                equity.BVHistory = historicalValues
+                            case "DebtEquity":
+                                equity.DRHistory = historicalValues
+                            case "Shares":
+                                equity.SOHistory = historicalValues
+                            default:
+                                break
+                            }
+                        }
+                        completion(historicalValues)
                     } catch {
                         // An error occurred when creating responseJSON
-                        completion(["error":0])
+                        historicalValues = (annualLabels: ["error"], annualValues: [0.0])
+                        completion(historicalValues)
                     }
                 }
             }).resume()

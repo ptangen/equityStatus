@@ -1,5 +1,5 @@
 //
-//  Q1ViewController.swift
+//  QuestionMeasureViewController.swift
 //  EquityStatus
 //
 //  Created by Paul Tangen on 1/27/17.
@@ -8,21 +8,21 @@
 
 import UIKit
 
-class Q1ViewController: UIViewController, MeasureDetailViewDelegate {
-    
-    var q1ViewInst = QuestionMeasureView()
+class QuestionMeasureViewController: UIViewController, MeasureDetailViewDelegate {
+
+    var questionMeasureViewInst = QuestionMeasureView()
     let store = DataStore.sharedInstance
     var measureTicker = String()
     var equity: Equity!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.q1ViewInst.delegate = self
+        self.questionMeasureViewInst.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.q1ViewInst.measureTicker = self.measureTicker
+        self.questionMeasureViewInst.measureTicker = self.measureTicker
     }
     
     override func loadView(){
@@ -31,12 +31,12 @@ class Q1ViewController: UIViewController, MeasureDetailViewDelegate {
         self.equity = self.store.getEquityByTickerFromStore(ticker: ticker)
         
         // load the ui view into the view controller
-        self.q1ViewInst = QuestionMeasureView(frame: CGRect.zero)
-        self.view = self.q1ViewInst
+        self.questionMeasureViewInst.frame = CGRect.zero
+        self.view = self.questionMeasureViewInst
         
         // setup ui view
-        self.q1ViewInst.equity = self.equity
-        self.q1ViewInst.setResultsLabelsForMeasure(fullString: measureTicker)
+        self.questionMeasureViewInst.equity = self.equity
+        self.questionMeasureViewInst.setResultsLabelsForMeasure(fullString: measureTicker)
     }
     
     override func didReceiveMemoryWarning() {

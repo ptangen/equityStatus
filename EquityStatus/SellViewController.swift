@@ -30,12 +30,11 @@ class SellViewController: UIViewController, SellViewDelegate {
     }
     
     override func loadView(){
-        self.sellViewInst = SellView(frame: CGRect.zero)
+        self.sellViewInst.frame = CGRect.zero
         self.view = self.sellViewInst
     }
     
     func openDetail(_ ticker: String) {
-
         // try to get the equity from the dataStore, if it is not there fetch it from the API
         if let equity = store.getEquityByTickerFromStore(ticker: ticker) {
             // open the detail view for the selected equity

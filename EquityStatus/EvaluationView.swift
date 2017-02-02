@@ -22,7 +22,7 @@ class EvaluationView: UIView, UITableViewDataSource, UITableViewDelegate {
     let companiesLabel = UILabel()
     let pageDescLabel = UILabel()
     let activityIndicator = UIView()
-    var equitiesForEvaluation = [Equity]()
+    //var equitiesForEvaluation = [Equity]()
     
     override init(frame:CGRect){
         super.init(frame: frame)
@@ -34,12 +34,12 @@ class EvaluationView: UIView, UITableViewDataSource, UITableViewDelegate {
         self.pageLayout()
         
         // get the data
-        if equitiesForEvaluation.count == 0 {
+        if self.store.equitiesForEvaluation.count == 0 {
             self.pageDescLabel.text = "Searching for equities to evaluate..."
             self.countLabel.text = "?"
             self.showActivityIndicator(uiView: self)
             self.evaluationTableViewInst.isHidden = true
-            
+
             APIClient.getEquitiesFromDB(mode: "pass,passOrNoData"){isSuccessful in
                 if isSuccessful {
                     OperationQueue.main.addOperation {
@@ -64,15 +64,15 @@ class EvaluationView: UIView, UITableViewDataSource, UITableViewDelegate {
     
     // create array for analysis view
     func createEquitiesForEvaluation() {
-        self.equitiesForEvaluation.removeAll()
+        self.store.equitiesForEvaluation.removeAll()
         for equity in self.store.equities {
             if equity.tab == .evaluate {
-                self.equitiesForEvaluation.append(equity)
+                self.store.equitiesForEvaluation.append(equity)
             }
         }
         // set the labels in the heading
-        self.equitiesForEvaluation.count == 1 ? (self.pageDescLabel.text = "This company has passed several assessments and failed none. Tap to evaluate the remaining measures and determine if the company's stock is a buy or sell.") : (self.pageDescLabel.text = "These companies have passed several assessments and failed none. Tap to evaluate the remaining measures and determine if the companies' stock is a buy or a sell.")
-        self.countLabel.text = "\(self.equitiesForEvaluation.count)"
+        self.store.equitiesForEvaluation.count == 1 ? (self.pageDescLabel.text = "This company has passed several assessments and failed none. Tap to evaluate the remaining measures and determine if the company's stock is a buy or sell.") : (self.pageDescLabel.text = "These companies have passed several assessments and failed none. Tap to evaluate the remaining measures and determine if the companies' stock is a buy or a sell.")
+        self.countLabel.text = "\(self.store.equitiesForEvaluation.count)"
     }
     
     func pageLayout() {
@@ -92,7 +92,7 @@ class EvaluationView: UIView, UITableViewDataSource, UITableViewDelegate {
         self.companiesLabel.leftAnchor.constraint(equalTo: self.countLabel.leftAnchor, constant: 0).isActive = true
         self.companiesLabel.rightAnchor.constraint(equalTo: self.countLabel.rightAnchor, constant: 0).isActive = true
         self.companiesLabel.font = UIFont(name: Constants.appFont.bold.rawValue, size: Constants.fontSize.small.rawValue)
-        self.equitiesForEvaluation.count == 1 ? (self.companiesLabel.text = "company") : (self.companiesLabel.text = "companies")
+        self.store.equitiesForEvaluation.count == 1 ? (self.companiesLabel.text = "company") : (self.companiesLabel.text = "companies")
         self.companiesLabel.textAlignment = .right
         
         // pageDescLabel
@@ -122,7 +122,7 @@ class EvaluationView: UIView, UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.equitiesForEvaluation.count
+        return self.store.equitiesForEvaluation.count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
@@ -132,30 +132,30 @@ class EvaluationView: UIView, UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = EvaluationTableViewCell(style: .default, reuseIdentifier: "prototype")
         cell.selectionStyle = .none
-        let textLabel = self.equitiesForEvaluation[indexPath.row].name
+        let textLabel = self.store.equitiesForEvaluation[indexPath.row].name
         cell.textLabel?.text = textLabel.capitalized
         
         // set the status icons and color for each of the equity's measures
-        Utilities.setStatusIcon(status: self.equitiesForEvaluation[indexPath.row].ROEaStatus, uiLabel: cell.statusIcons[0])
-        Utilities.setStatusIcon(status: self.equitiesForEvaluation[indexPath.row].EPSiStatus, uiLabel: cell.statusIcons[1])
-        Utilities.setStatusIcon(status: self.equitiesForEvaluation[indexPath.row].EPSvStatus, uiLabel: cell.statusIcons[2])
-        Utilities.setStatusIcon(status: self.equitiesForEvaluation[indexPath.row].BViStatus, uiLabel: cell.statusIcons[3])
-        Utilities.setStatusIcon(status: self.equitiesForEvaluation[indexPath.row].DRaStatus, uiLabel: cell.statusIcons[4])
-        Utilities.setStatusIcon(status: self.equitiesForEvaluation[indexPath.row].SOrStatus, uiLabel: cell.statusIcons[5])
-        Utilities.setStatusIcon(status: self.equitiesForEvaluation[indexPath.row].previousROIStatus, uiLabel: cell.statusIcons[6])
-        Utilities.setStatusIcon(status: self.equitiesForEvaluation[indexPath.row].expectedROIStatus, uiLabel: cell.statusIcons[7])
-        Utilities.setStatusIcon(status: self.equitiesForEvaluation[indexPath.row].q1Status, uiLabel: cell.statusIcons[8])
-        Utilities.setStatusIcon(status: self.equitiesForEvaluation[indexPath.row].q2Status, uiLabel: cell.statusIcons[9])
-        Utilities.setStatusIcon(status: self.equitiesForEvaluation[indexPath.row].q3Status, uiLabel: cell.statusIcons[10])
-        Utilities.setStatusIcon(status: self.equitiesForEvaluation[indexPath.row].q4Status, uiLabel: cell.statusIcons[11])
-        Utilities.setStatusIcon(status: self.equitiesForEvaluation[indexPath.row].q5Status, uiLabel: cell.statusIcons[12])
-        Utilities.setStatusIcon(status: self.equitiesForEvaluation[indexPath.row].q6Status, uiLabel: cell.statusIcons[13])
+        Utilities.setStatusIcon(status: self.store.equitiesForEvaluation[indexPath.row].ROEaStatus, uiLabel: cell.statusIcons[0])
+        Utilities.setStatusIcon(status: self.store.equitiesForEvaluation[indexPath.row].EPSiStatus, uiLabel: cell.statusIcons[1])
+        Utilities.setStatusIcon(status: self.store.equitiesForEvaluation[indexPath.row].EPSvStatus, uiLabel: cell.statusIcons[2])
+        Utilities.setStatusIcon(status: self.store.equitiesForEvaluation[indexPath.row].BViStatus, uiLabel: cell.statusIcons[3])
+        Utilities.setStatusIcon(status: self.store.equitiesForEvaluation[indexPath.row].DRaStatus, uiLabel: cell.statusIcons[4])
+        Utilities.setStatusIcon(status: self.store.equitiesForEvaluation[indexPath.row].SOrStatus, uiLabel: cell.statusIcons[5])
+        Utilities.setStatusIcon(status: self.store.equitiesForEvaluation[indexPath.row].previousROIStatus, uiLabel: cell.statusIcons[6])
+        Utilities.setStatusIcon(status: self.store.equitiesForEvaluation[indexPath.row].expectedROIStatus, uiLabel: cell.statusIcons[7])
+        Utilities.setStatusIcon(status: self.store.equitiesForEvaluation[indexPath.row].q1Status, uiLabel: cell.statusIcons[8])
+        Utilities.setStatusIcon(status: self.store.equitiesForEvaluation[indexPath.row].q2Status, uiLabel: cell.statusIcons[9])
+        Utilities.setStatusIcon(status: self.store.equitiesForEvaluation[indexPath.row].q3Status, uiLabel: cell.statusIcons[10])
+        Utilities.setStatusIcon(status: self.store.equitiesForEvaluation[indexPath.row].q4Status, uiLabel: cell.statusIcons[11])
+        Utilities.setStatusIcon(status: self.store.equitiesForEvaluation[indexPath.row].q5Status, uiLabel: cell.statusIcons[12])
+        Utilities.setStatusIcon(status: self.store.equitiesForEvaluation[indexPath.row].q6Status, uiLabel: cell.statusIcons[13])
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.delegate?.openEquityDetail(self.equitiesForEvaluation[indexPath.row])
+        self.delegate?.openEquityDetail(self.store.equitiesForEvaluation[indexPath.row])
     }
 
     func showActivityIndicator(uiView: UIView) {

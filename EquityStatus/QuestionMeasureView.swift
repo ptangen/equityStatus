@@ -66,6 +66,9 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
             case .ok:
                 Utilities.setStatusIcon(status: status, uiLabel: self.statusIcon)
                 self.statusValueDesc.text = "(" + self.getStatusDesc(status) + ")"
+                // empty these array as the list companies may have changed
+                self.store.equitiesForBuyNames.removeAll()
+                self.store.equitiesForEvaluation.removeAll()
                 break;
                 
             case.failed, .noReply:
