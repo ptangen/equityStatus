@@ -32,8 +32,4 @@ class EvaluationViewController: UIViewController, EvaluationViewDelegate {
         self.title = "" // this value is passed to the back button label in the destination VC
         navigationController?.pushViewController(equityDetailViewControllerInst, animated: false) // show destination with nav bar
     }
-    
-    func showAlertMessage(_ message: String) {
-        Utilities.showAlertMessage(message, viewControllerInst: self)
-    }
 }

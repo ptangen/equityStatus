@@ -11,7 +11,6 @@ import Charts
 
 protocol BuyViewDelegate: class {
     func openEquityDetail(_: Equity)
-    func showAlertMessage(_: String)
 }
 
 class BuyView: UIView, ChartViewDelegate {
@@ -34,38 +33,9 @@ class BuyView: UIView, ChartViewDelegate {
         self.pageLayoutLabels()
         self.store.equities.count > 0 ? self.createEquitiesForBuy() : ()
         
-        // get the data
-        if self.store.equities.count == 0 {
-            print("Buy: get the data, API")
-            self.pageLayoutNoData()
-            self.pageDescLabel.text = "Searching for companies that have passed all 14 measures."
-            self.countLabel.text = "?"
-            self.showActivityIndicator(uiView: self)
-            self.barChartView.isHidden = true
-
-            APIClient.getEquitiesFromDB(mode: "pass,passOrNoData"){isSuccessful in
-                if isSuccessful {
-                    self.createEquitiesForBuy()
-                    OperationQueue.main.addOperation {
-                        // update the display
-                        self.setHeadingLabels()
-                        self.updateChartWithData()
-                        self.activityIndicator.isHidden = true
-                        self.barChartView.isHidden = false
-                        self.pageLayoutWithData()
-                    }
-                } else {
-                    OperationQueue.main.addOperation {
-                        self.activityIndicator.isHidden = true
-                    }
-                    self.delegate?.showAlertMessage("Unable to retrieve data from the server.")
-                }
-            }
-        } else {
-            // data is available, update the display
-            print("Buy: data available, no API request")
+        // if data is available, update the display
+        if self.store.equities.count > 0 {
             self.setHeadingLabels()
-            self.updateChartWithData()
             self.pageLayoutWithData()
         }
     }
@@ -122,6 +92,7 @@ class BuyView: UIView, ChartViewDelegate {
         self.barChartView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0).isActive = true
         self.barChartView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
         self.barChartView.heightAnchor.constraint(equalToConstant: self.chartHeight).isActive = true
+        self.updateChartWithData()
     }
     
     func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
@@ -132,7 +103,6 @@ class BuyView: UIView, ChartViewDelegate {
     
     // create array for buy view
     func createEquitiesForBuy() {
-        print("createEquitiesForBuy")
         self.equitiesForBuyExpectedROI.removeAll()
         self.store.equitiesForBuyNames.removeAll()
         self.equitiesForBuyTickers.removeAll()
@@ -157,7 +127,6 @@ class BuyView: UIView, ChartViewDelegate {
     }
     
     func updateChartWithData() {
-        
         let stringFormatter = ChartStringFormatter()        // allow labels to be shown for bars
         let percentFormatter = PercentValueFormatter()      // allow labels to be shown for bars
         var dataEntries: [BarChartDataEntry] = []

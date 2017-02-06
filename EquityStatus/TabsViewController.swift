@@ -9,10 +9,18 @@
 import UIKit
 
 class TabsViewController: UITabBarController, UITabBarControllerDelegate {
+    
+    var buyViewControllerInst = BuyViewController()
+    var evaluationViewControllerInst = EvaluationViewController()
+    var sellViewControllerInst = SellViewController()
+    let store = DataStore.sharedInstance
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.delegate = self
+        
+        // fetch the equities if needed
+        self.store.equities.isEmpty ? self.fetchBuyEvalData() : ()
     }
 
     override func didReceiveMemoryWarning() {
@@ -24,25 +32,25 @@ class TabsViewController: UITabBarController, UITabBarControllerDelegate {
         self.navigationController?.isNavigationBarHidden = false
         self.title = "Equity Status"
         self.navigationItem.hidesBackButton = true
-        
         UITabBar.appearance().tintColor = UIColor(named: .statusBarBlue)
         
         // Create Tab Buy
-        let tabBuy = BuyViewController()
+        self.buyViewControllerInst = BuyViewController()
         let tabBuyBarItem = UITabBarItem(title: "Buy", image: UIImage(named: "sentiment_satisfied"), selectedImage: UIImage(named: "sentiment_satisfied"))
-        tabBuy.tabBarItem = tabBuyBarItem
+        self.buyViewControllerInst.tabBarItem = tabBuyBarItem
+        self.buyViewControllerInst.buyViewInst.setHeadingLabels()
         
         // Create Tab Analysis
-        let tabEvaluation = EvaluationViewController()
+        self.evaluationViewControllerInst = EvaluationViewController()
         let tabEvaluationBarItem = UITabBarItem(title: "Evaluate", image: UIImage(named: "insert_chart"), selectedImage: UIImage(named: "insert_chart"))
-        tabEvaluation.tabBarItem = tabEvaluationBarItem
+        self.evaluationViewControllerInst.tabBarItem = tabEvaluationBarItem
         
         // Create Tab Sell
-        let tabSell = SellViewController()
+        self.sellViewControllerInst = SellViewController()
         let tabSellBarItem = UITabBarItem(title: "Sell", image: UIImage(named: "not_interested"), selectedImage: UIImage(named: "not_interested"))
-        tabSell.tabBarItem = tabSellBarItem
+        sellViewControllerInst.tabBarItem = tabSellBarItem
         
-        self.viewControllers = [tabBuy, tabEvaluation, tabSell]
+        self.viewControllers = [buyViewControllerInst, evaluationViewControllerInst, sellViewControllerInst]
         
         // add the menu button to the nav bar
         let menuButton = UIBarButtonItem(image: #imageLiteral(resourceName: "menu"), style: .plain, target: self, action: #selector(menuButtonClicked))
@@ -50,10 +58,55 @@ class TabsViewController: UITabBarController, UITabBarControllerDelegate {
         self.navigationItem.setHidesBackButton(true, animated:false);
     }
     
-    // UITabBarControllerDelegate method
-    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        //print("Selected \(viewController.title!)")
+    func fetchBuyEvalData() {
+
+        // display buy tab with no data
+        OperationQueue.main.addOperation {
+            self.buyViewControllerInst.buyViewInst.pageLayoutNoData()
+            self.buyViewControllerInst.buyViewInst.pageDescLabel.text = "Searching for companies that have passed all 14 measures."
+            self.buyViewControllerInst.buyViewInst.countLabel.text = "?"
+            self.buyViewControllerInst.buyViewInst.showActivityIndicator(uiView: self.buyViewControllerInst.buyViewInst)
+            self.buyViewControllerInst.buyViewInst.barChartView.isHidden = true
+        
+            // display eval tab with no data
+            self.evaluationViewControllerInst.evaluationViewInst.pageDescLabel.text = "Searching for equities to evaluate..."
+            self.evaluationViewControllerInst.evaluationViewInst.countLabel.text = "?"
+            self.evaluationViewControllerInst.evaluationViewInst.showActivityIndicator(uiView: self.evaluationViewControllerInst.evaluationViewInst)
+            self.evaluationViewControllerInst.evaluationViewInst.evaluationTableViewInst.isHidden = true
+        }
+        
+        APIClient.getEquitiesFromDB(mode: "pass,passOrNoData"){isSuccessful in
+            if isSuccessful {
+                OperationQueue.main.addOperation {
+                    // update the buy View
+                    self.buyViewControllerInst.buyViewInst.createEquitiesForBuy()
+                    self.buyViewControllerInst.buyViewInst.setHeadingLabels()
+                    self.buyViewControllerInst.buyViewInst.pageLayoutWithData()
+                    self.buyViewControllerInst.buyViewInst.barChartView.isHidden = false
+                    self.buyViewControllerInst.buyViewInst.activityIndicator.isHidden = true
+                    
+                    // update the evaluation tab
+                    self.evaluationViewControllerInst.evaluationViewInst.createEquitiesForEvaluation()
+                    self.evaluationViewControllerInst.evaluationViewInst.evaluationTableViewInst.reloadData()
+                    self.evaluationViewControllerInst.evaluationViewInst.setHeadingLabels()
+                    self.evaluationViewControllerInst.evaluationViewInst.evaluationTableViewInst.isHidden = false
+                    self.evaluationViewControllerInst.evaluationViewInst.activityIndicator.isHidden = true
+                }
+            } else {
+                OperationQueue.main.addOperation {
+                    self.buyViewControllerInst.buyViewInst.activityIndicator.isHidden = true
+                    self.evaluationViewControllerInst.evaluationViewInst.activityIndicator.isHidden = true
+                }
+                // show error message
+                Utilities.showAlertMessage("Unable to retrieve data from the server. Please notify ptangen@ptangen.com of situation.", viewControllerInst: self)
+            }
+        }
     }
+    
+//    // UITabBarControllerDelegate method
+//    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+//        //print("Selected \(viewController.title!)")
+//    }
     
     func menuButtonClicked(sender: UIBarButtonItem) {
         

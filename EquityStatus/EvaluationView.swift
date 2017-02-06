@@ -10,7 +10,6 @@ import UIKit
 
 protocol EvaluationViewDelegate: class {
     func openEquityDetail(_: Equity)
-    func showAlertMessage(_: String)
 }
 
 class EvaluationView: UIView, UITableViewDataSource, UITableViewDelegate {
@@ -22,7 +21,6 @@ class EvaluationView: UIView, UITableViewDataSource, UITableViewDelegate {
     let companiesLabel = UILabel()
     let pageDescLabel = UILabel()
     let activityIndicator = UIView()
-    //var equitiesForEvaluation = [Equity]()
     
     override init(frame:CGRect){
         super.init(frame: frame)
@@ -34,34 +32,8 @@ class EvaluationView: UIView, UITableViewDataSource, UITableViewDelegate {
         self.store.equities.count > 0 ? self.createEquitiesForEvaluation() : ()
         self.pageLayout()
         
-        // get the data
-        if self.store.equities.count == 0 {
-            print("Eval get the data, API")
-            self.pageDescLabel.text = "Searching for equities to evaluate..."
-            self.countLabel.text = "?"
-            self.showActivityIndicator(uiView: self)
-            self.evaluationTableViewInst.isHidden = true
-
-            APIClient.getEquitiesFromDB(mode: "pass,passOrNoData"){isSuccessful in
-                if isSuccessful {
-                    OperationQueue.main.addOperation {
-                        // update the display
-                        self.activityIndicator.isHidden = true
-                        self.evaluationTableViewInst.isHidden = false
-                        self.createEquitiesForEvaluation()
-                        self.evaluationTableViewInst.reloadData()
-                        self.setHeadingLabels()
-                    }
-                } else {
-                    OperationQueue.main.addOperation {
-                        self.activityIndicator.isHidden = true
-                    }
-                    self.delegate?.showAlertMessage("Unable to retrieve data from the server.")
-                }
-            }
-        } else {
-            // data is available, update the display
-            print("Evaluation: data available, no API request")
+        // if data is available, update the display
+        if self.store.equities.count > 0 {
             self.setHeadingLabels()
         }
     }
@@ -78,12 +50,9 @@ class EvaluationView: UIView, UITableViewDataSource, UITableViewDelegate {
     
     // create array for analysis view
     func createEquitiesForEvaluation() {
-        print("createEquitiesForEvaluation")
         self.store.equitiesForEvaluation.removeAll()
         for equity in self.store.equities {
-            if equity.tab == .evaluate {
-                self.store.equitiesForEvaluation.append(equity)
-            }
+            equity.tab == .evaluate ? self.store.equitiesForEvaluation.append(equity) : ()
         }
     }
     

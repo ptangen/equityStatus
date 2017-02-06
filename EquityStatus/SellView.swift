@@ -41,8 +41,6 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate {
         self.searchController.searchResultsUpdater = self
         self.searchController.dimsBackgroundDuringPresentation = false
         self.sellTableViewInst.tableHeaderView = self.searchController.searchBar
-        
-        print("sell view init")
     }
     
     func getEquityMetadata () {

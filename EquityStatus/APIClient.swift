@@ -205,7 +205,6 @@ class APIClient {
     
     // allPass, noFailures, t:GGG
     class func getEquitiesFromDB(mode: String, completion: @escaping (Bool) -> Void) {
-        print("getEquitiesFromDB \(mode)")
         let store = DataStore.sharedInstance
         let urlString = "\(Secrets.apiURL)getEquities.php"
         let url = URL(string: urlString)
