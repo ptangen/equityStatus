@@ -35,7 +35,7 @@ class EvaluationView: UIView, UITableViewDataSource, UITableViewDelegate {
         self.pageLayout()
         
         // get the data
-        if self.store.equitiesForEvaluation.count == 0 {
+        if self.store.equities.count == 0 {
             print("Eval get the data, API")
             self.pageDescLabel.text = "Searching for equities to evaluate..."
             self.countLabel.text = "?"

@@ -35,7 +35,7 @@ class BuyView: UIView, ChartViewDelegate {
         self.store.equities.count > 0 ? self.createEquitiesForBuy() : ()
         
         // get the data
-        if self.store.equitiesForBuyNames.count == 0 {
+        if self.store.equities.count == 0 {
             print("Buy: get the data, API")
             self.pageLayoutNoData()
             self.pageDescLabel.text = "Searching for companies that have passed all 14 measures."

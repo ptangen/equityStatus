@@ -12,6 +12,7 @@ class SellViewController: UIViewController, SellViewDelegate {
     
     var sellViewInst = SellView()
     let store = DataStore.sharedInstance
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,8 +22,8 @@ class SellViewController: UIViewController, SellViewDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        let count = Utilities.getSellTabCount()
-        count == 0 ? (sellViewInst.countLabel.text = "?") : (sellViewInst.countLabel.text = String(count))
+        self.sellViewInst.sellViewItemCount = Utilities.getSellTabCount()
+        self.sellViewInst.sellViewItemCount == 0 ? (sellViewInst.countLabel.text = "?") : (sellViewInst.countLabel.text = String(self.sellViewInst.sellViewItemCount))
     }
 
     override func didReceiveMemoryWarning() {

@@ -25,6 +25,7 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate {
     let pageDescLabel = UILabel()
     var sellTableViewInstYConstraintWithHeading = NSLayoutConstraint()
     var sellTableViewInstYConstraintWithoutHeading = NSLayoutConstraint()
+    var sellViewItemCount = Int()
     
     let searchController = UISearchController(searchResultsController: nil)
         
@@ -40,6 +41,8 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate {
         self.searchController.searchResultsUpdater = self
         self.searchController.dimsBackgroundDuringPresentation = false
         self.sellTableViewInst.tableHeaderView = self.searchController.searchBar
+        
+        print("sell view init")
     }
     
     func getEquityMetadata () {
@@ -55,8 +58,9 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate {
                     OperationQueue.main.addOperation {
                         self.activityIndicator.isHidden = true
                         self.sellTableViewInst.isHidden = false
+                        self.sellViewItemCount = Utilities.getSellTabCount()
+                        self.countLabel.text = String(self.sellViewItemCount)
                         self.sellTableViewInst.reloadData()
-                        self.countLabel.text = String(Utilities.getSellTabCount())
                         self.pageDescLabel.text = "These companies have failed one or more evalutions. As a result, these company's stock is rated a sell per this methodology."
                     }
                 } else {
@@ -96,7 +100,7 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate {
         if searchController.isActive && searchController.searchBar.text != "" {
             return filteredEquitiesMetadata.count
         }
-        return Utilities.getSellTabCount()
+        return self.sellViewItemCount
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
