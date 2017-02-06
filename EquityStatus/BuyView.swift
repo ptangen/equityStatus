@@ -32,9 +32,11 @@ class BuyView: UIView, ChartViewDelegate {
         super.init(frame: frame)
         self.barChartView.delegate = self
         self.pageLayoutLabels()
+        self.store.equities.count > 0 ? self.createEquitiesForBuy() : ()
         
         // get the data
         if self.store.equitiesForBuyNames.count == 0 {
+            print("Buy: get the data, API")
             self.pageLayoutNoData()
             self.pageDescLabel.text = "Searching for companies that have passed all 14 measures."
             self.countLabel.text = "?"
@@ -45,6 +47,7 @@ class BuyView: UIView, ChartViewDelegate {
                 if isSuccessful {
                     self.createEquitiesForBuy()
                     OperationQueue.main.addOperation {
+                        // update the display
                         self.setHeadingLabels()
                         self.updateChartWithData()
                         self.activityIndicator.isHidden = true
@@ -59,8 +62,9 @@ class BuyView: UIView, ChartViewDelegate {
                 }
             }
         } else {
+            // data is available, update the display
+            print("Buy: data available, no API request")
             self.setHeadingLabels()
-            self.createEquitiesForBuy()
             self.updateChartWithData()
             self.pageLayoutWithData()
         }
@@ -100,7 +104,6 @@ class BuyView: UIView, ChartViewDelegate {
         self.pageDescLabel.bottomAnchor.constraint(equalTo: self.companiesLabel.bottomAnchor, constant: 0).isActive = true
         self.pageDescLabel.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.xsmall.rawValue)
         self.pageDescLabel.numberOfLines = 0
-        
     }
     
     func pageLayoutNoData() {
@@ -129,6 +132,7 @@ class BuyView: UIView, ChartViewDelegate {
     
     // create array for buy view
     func createEquitiesForBuy() {
+        print("createEquitiesForBuy")
         self.equitiesForBuyExpectedROI.removeAll()
         self.store.equitiesForBuyNames.removeAll()
         self.equitiesForBuyTickers.removeAll()

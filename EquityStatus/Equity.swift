@@ -44,12 +44,38 @@ class Equity {
     var q5Answer: String
     var q6Answer: String
     
-    var q1Status: String
-    var q2Status: String
-    var q3Status: String
-    var q4Status: String
-    var q5Status: String
-    var q6Status: String
+    var q1Status: String {
+        didSet {
+            oldValue != self.q1Status ? clearBuyEvalArrays() : ()
+        }
+    }
+    var q2Status: String {
+        didSet {
+            oldValue != self.q2Status ? clearBuyEvalArrays() : ()
+        }
+    }
+    var q3Status: String {
+        didSet {
+            oldValue != self.q3Status ? clearBuyEvalArrays() : ()
+        }
+    }
+    var q4Status: String {
+        didSet {
+            oldValue != self.q4Status ? clearBuyEvalArrays() : ()
+        }
+    }
+    var q5Status: String {
+        didSet {
+            oldValue != self.q5Status ? clearBuyEvalArrays() : ()
+        }
+    }
+
+    var q6Status: String {
+        didSet {
+            oldValue != self.q6Status ? clearBuyEvalArrays() : ()
+        }
+    }
+
     
     // use this initializer for equities on the details tab
     init(ticker: String, name: String, tab: EquityTabValue,
@@ -102,6 +128,12 @@ class Equity {
         self.q5Status = q5Status
         self.q6Status = q6Status
     }
+}
+
+func clearBuyEvalArrays() {
+    // empty these array as the list companies may be incorrect
+    DataStore.sharedInstance.equitiesForBuyNames.removeAll()
+    DataStore.sharedInstance.equitiesForEvaluation.removeAll()
 }
 
 enum EquityTabValue {

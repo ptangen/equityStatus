@@ -66,10 +66,24 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
             case .ok:
                 Utilities.setStatusIcon(status: status, uiLabel: self.statusIcon)
                 self.statusValueDesc.text = "(" + self.getStatusDesc(status) + ")"
-                // empty these array as the list companies may have changed
-                self.store.equitiesForBuyNames.removeAll()
-                self.store.equitiesForEvaluation.removeAll()
-                break;
+                
+                // udpate the status in the equity
+                switch self.measureShortName {
+                case "q1":
+                    self.equity.q1Status = status
+                case "q2":
+                    self.equity.q2Status = status
+                case "q3":
+                    self.equity.q3Status = status
+                case "q4":
+                    self.equity.q4Status = status
+                case "q5":
+                    self.equity.q5Status = status
+                case "q6":
+                    self.equity.q6Status = status
+                default:
+                    break
+                }
                 
             case.failed, .noReply:
                 self.delegate?.showAlertMessage("The server was unable to save this status change. Please forward this message to ptangen@ptangen.com")

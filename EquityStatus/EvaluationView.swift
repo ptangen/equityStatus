@@ -30,11 +30,13 @@ class EvaluationView: UIView, UITableViewDataSource, UITableViewDelegate {
         self.evaluationTableViewInst.dataSource = self
         self.evaluationTableViewInst.register(EvaluationTableViewCell.self, forCellReuseIdentifier: "prototype")
         self.evaluationTableViewInst.separatorColor = UIColor.clear
-        createEquitiesForEvaluation()
+
+        self.store.equities.count > 0 ? self.createEquitiesForEvaluation() : ()
         self.pageLayout()
         
         // get the data
         if self.store.equitiesForEvaluation.count == 0 {
+            print("Eval get the data, API")
             self.pageDescLabel.text = "Searching for equities to evaluate..."
             self.countLabel.text = "?"
             self.showActivityIndicator(uiView: self)
@@ -43,10 +45,12 @@ class EvaluationView: UIView, UITableViewDataSource, UITableViewDelegate {
             APIClient.getEquitiesFromDB(mode: "pass,passOrNoData"){isSuccessful in
                 if isSuccessful {
                     OperationQueue.main.addOperation {
+                        // update the display
                         self.activityIndicator.isHidden = true
                         self.evaluationTableViewInst.isHidden = false
                         self.createEquitiesForEvaluation()
                         self.evaluationTableViewInst.reloadData()
+                        self.setHeadingLabels()
                     }
                 } else {
                     OperationQueue.main.addOperation {
@@ -55,6 +59,10 @@ class EvaluationView: UIView, UITableViewDataSource, UITableViewDelegate {
                     self.delegate?.showAlertMessage("Unable to retrieve data from the server.")
                 }
             }
+        } else {
+            // data is available, update the display
+            print("Evaluation: data available, no API request")
+            self.setHeadingLabels()
         }
     }
     
@@ -62,17 +70,21 @@ class EvaluationView: UIView, UITableViewDataSource, UITableViewDelegate {
         super.init(coder: aDecoder)
     }
     
+    func setHeadingLabels() {
+        // set the labels in the heading
+        self.store.equitiesForEvaluation.count == 1 ? (self.pageDescLabel.text = "This company has passed several assessments and failed none. Tap to evaluate the remaining measures and determine if the company's stock is a buy or sell.") : (self.pageDescLabel.text = "These companies have passed several assessments and failed none. Tap to evaluate the remaining measures and determine if the companies' stock is a buy or a sell.")
+        self.countLabel.text = "\(self.store.equitiesForEvaluation.count)"
+    }
+    
     // create array for analysis view
     func createEquitiesForEvaluation() {
+        print("createEquitiesForEvaluation")
         self.store.equitiesForEvaluation.removeAll()
         for equity in self.store.equities {
             if equity.tab == .evaluate {
                 self.store.equitiesForEvaluation.append(equity)
             }
         }
-        // set the labels in the heading
-        self.store.equitiesForEvaluation.count == 1 ? (self.pageDescLabel.text = "This company has passed several assessments and failed none. Tap to evaluate the remaining measures and determine if the company's stock is a buy or sell.") : (self.pageDescLabel.text = "These companies have passed several assessments and failed none. Tap to evaluate the remaining measures and determine if the companies' stock is a buy or a sell.")
-        self.countLabel.text = "\(self.store.equitiesForEvaluation.count)"
     }
     
     func pageLayout() {
