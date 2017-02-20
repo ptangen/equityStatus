@@ -10,17 +10,17 @@ import Foundation
 
 class Equity {
     
-    var ticker: String
-    var name: String
+    let ticker: String
+    let name: String
     var tab: EquityTabValue
-    var ROEaResult: Double
-    var EPSiResult: Double
-    var EPSvResult: Double
-    var BViResult: Double
-    var DRaResult: Double
-    var SOrResult: Double
-    var previousROIResult: Double
-    var expectedROIResult: Double
+    let ROEaResult: Double
+    let EPSiResult: Double
+    let EPSvResult: Double
+    let BViResult: Double
+    let DRaResult: Double
+    let SOrResult: Double
+    let previousROIResult: Double
+    let expectedROIResult: Double
     
     var ROEHistory: ([String],[Double])
     var EPSHistory: ([String],[Double])
@@ -28,14 +28,14 @@ class Equity {
     var DRHistory: ([String],[Double])
     var SOHistory: ([String],[Double])
     
-    var ROEaStatus: String
-    var EPSiStatus: String
-    var EPSvStatus: String
-    var BViStatus: String
-    var DRaStatus: String
-    var SOrStatus: String
-    var previousROIStatus: String
-    var expectedROIStatus: String
+    let ROEaStatus: String
+    let EPSiStatus: String
+    let EPSvStatus: String
+    let BViStatus: String
+    let DRaStatus: String
+    let SOrStatus: String
+    let previousROIStatus: String
+    let expectedROIStatus: String
     
     var q1Answer: String
     var q2Answer: String

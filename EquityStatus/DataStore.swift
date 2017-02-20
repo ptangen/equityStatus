@@ -108,7 +108,6 @@ class DataStore {
         for equityMetadata in equitiesMetadata {
             if equityMetadata.ticker == equity.ticker {
                 equityMetadata.showInSellTab = value
-                
             }
         }
         self.saveEquitiesMetadataContext()

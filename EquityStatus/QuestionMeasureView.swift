@@ -223,6 +223,14 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
         self.qAnswerView.layer.borderWidth = 1.0
     }
     
+    func getMeasureResultsAndSetLabelText(status: String, longName: String, answer: String) {
+        self.showSubjectiveMeasureControls(qStatus: status)
+        self.measureLongNameLabel.text = longName
+        Utilities.setStatusIcon(status: status, uiLabel: self.statusIcon)
+        self.statusValueDesc.text = "(" + getStatusDesc(status) + ")"
+        self.setTextInQAnswerView(textToDisplay: answer)
+    }
+    
     func setResultsLabelsForMeasure(fullString: String) {
         
         self.statusLabel.text = "Status:"
@@ -236,46 +244,22 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
         
         // get the measure results and set the label text
         if self.measureShortName == "q1" {
-            self.showSubjectiveMeasureControls(qStatus: self.equity.q1Status)
-            self.measureLongNameLabel.text = Constants.measureMetadata.longName(.q1)()
-            Utilities.setStatusIcon(status: self.equity.q1Status, uiLabel: self.statusIcon)
-            self.statusValueDesc.text = "(" + getStatusDesc(self.equity.q1Status) + ")"
-            self.setTextInQAnswerView(textToDisplay: self.equity.q1Answer)
+            self.getMeasureResultsAndSetLabelText(status: self.equity.q1Status, longName: Constants.measureMetadata.longName(.q1)(), answer: self.equity.q1Answer)
             
         } else if self.measureShortName == "q2" {
-            self.showSubjectiveMeasureControls(qStatus: self.equity.q2Status)
-            self.measureLongNameLabel.text = Constants.measureMetadata.longName(.q2)()
-            Utilities.setStatusIcon(status: self.equity.q2Status, uiLabel: self.statusIcon)
-            self.statusValueDesc.text = "(" + getStatusDesc(self.equity.q2Status) + ")"
-            self.setTextInQAnswerView(textToDisplay: self.equity.q2Answer)
+            self.getMeasureResultsAndSetLabelText(status: self.equity.q2Status, longName: Constants.measureMetadata.longName(.q2)(), answer: self.equity.q2Answer)
             
         } else if self.measureShortName == "q3" {
-            self.showSubjectiveMeasureControls(qStatus: self.equity.q3Status)
-            self.measureLongNameLabel.text = Constants.measureMetadata.longName(.q3)()
-            Utilities.setStatusIcon(status: self.equity.q3Status, uiLabel: self.statusIcon)
-            self.statusValueDesc.text = "(" + getStatusDesc(self.equity.q3Status) + ")"
-            self.setTextInQAnswerView(textToDisplay: self.equity.q3Answer)
+            self.getMeasureResultsAndSetLabelText(status: self.equity.q3Status, longName: Constants.measureMetadata.longName(.q3)(), answer: self.equity.q3Answer)
             
         } else if self.measureShortName == "q4" {
-            self.showSubjectiveMeasureControls(qStatus: self.equity.q4Status)
-            self.measureLongNameLabel.text = Constants.measureMetadata.longName(.q4)()
-            Utilities.setStatusIcon(status: self.equity.q4Status, uiLabel: self.statusIcon)
-            self.statusValueDesc.text = "(" + getStatusDesc(self.equity.q4Status) + ")"
-            self.setTextInQAnswerView(textToDisplay: self.equity.q4Answer)
+            self.getMeasureResultsAndSetLabelText(status: self.equity.q4Status, longName: Constants.measureMetadata.longName(.q4)(), answer: self.equity.q4Answer)
             
         } else if self.measureShortName == "q5" {
-            self.showSubjectiveMeasureControls(qStatus: self.equity.q5Status)
-            self.measureLongNameLabel.text = Constants.measureMetadata.longName(.q5)()
-            Utilities.setStatusIcon(status: self.equity.q5Status, uiLabel: self.statusIcon)
-            self.statusValueDesc.text = "(" + getStatusDesc(self.equity.q5Status) + ")"
-            self.setTextInQAnswerView(textToDisplay: self.equity.q5Answer)
+            self.getMeasureResultsAndSetLabelText(status: self.equity.q5Status, longName: Constants.measureMetadata.longName(.q5)(), answer: self.equity.q5Answer)
             
         } else {
-            self.showSubjectiveMeasureControls(qStatus: self.equity.q6Status)
-            self.measureLongNameLabel.text = Constants.measureMetadata.longName(.q6)()
-            Utilities.setStatusIcon(status: self.equity.q6Status, uiLabel: self.statusIcon)
-            self.statusValueDesc.text = "(" + getStatusDesc(self.equity.q6Status) + ")"
-            self.setTextInQAnswerView(textToDisplay: self.equity.q6Answer)
+            self.getMeasureResultsAndSetLabelText(status: self.equity.q6Status, longName: Constants.measureMetadata.longName(.q6)(), answer: self.equity.q6Answer)
         }
     }
 }

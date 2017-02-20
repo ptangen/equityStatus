@@ -226,6 +226,15 @@ class CalcMeasureView: UIView, ChartViewDelegate {
         self.barChartView.backgroundColor = UIColor(named: .beige)
     }
     
+    func getMeasureResultsAndSetLabelText(status: String, result: Double, percentage: Bool, longName: String, targetLabel: String, measureCalcDescLabel: String) {
+        self.measureLongNameLabel.text = longName
+        Utilities.setStatusIcon(status: status, uiLabel: self.statusIcon)
+        self.statusValueDesc.text = "(" + getStatusDesc(status) + ")"
+        self.resultsLabel.text = "Result: " + getResultString(resultDouble: result, percentage: percentage)
+        self.targetLabel.text = targetLabel
+        self.measureCalcDescLabel.text = measureCalcDescLabel
+    }
+    
     func setResultsLabelsForMeasure(fullString: String) {
         
         self.statusLabel.text = "Status:"
@@ -233,68 +242,44 @@ class CalcMeasureView: UIView, ChartViewDelegate {
 
         // get the measure results and set the label text
         if self.measureShortName == "ROEa" {
-            self.measureLongNameLabel.text = Constants.measureMetadata.longName(.ROEa)()
-            Utilities.setStatusIcon(status: self.equity.ROEaStatus, uiLabel: self.statusIcon)
-            self.statusValueDesc.text = "(" + getStatusDesc(self.equity.ROEaStatus) + ")"
-            self.resultsLabel.text = "Result: " + getResultString(resultDouble: self.equity.ROEaResult, percentage: true)
-            self.targetLabel.text = Constants.measureMetadata.threshold(.ROEa)()
-            self.measureCalcDescLabel.text = Constants.measureMetadata.calcDesc(.ROEa)()
+            self.getMeasureResultsAndSetLabelText(status: self.equity.ROEaStatus, result: self.equity.ROEaResult, percentage: true,
+                longName: Constants.measureMetadata.longName(.ROEa)(), targetLabel: Constants.measureMetadata.threshold(.ROEa)(),
+                measureCalcDescLabel: Constants.measureMetadata.calcDesc(.ROEa)())
             
         } else if self.measureShortName == "EPSi" {
-            self.measureLongNameLabel.text = Constants.measureMetadata.longName(.EPSi)()
-            Utilities.setStatusIcon(status: self.equity.EPSiStatus, uiLabel: self.statusIcon)
-            self.statusValueDesc.text = "(" + getStatusDesc(self.equity.EPSiStatus) + ")"
-            self.resultsLabel.text = "Result: " + getResultString(resultDouble: self.equity.EPSiResult, percentage: true)
-            self.targetLabel.text = Constants.measureMetadata.threshold(.EPSi)()
-            self.measureCalcDescLabel.text = Constants.measureMetadata.calcDesc(.EPSi)()
+            self.getMeasureResultsAndSetLabelText(status: self.equity.EPSiStatus, result: self.equity.EPSiResult, percentage: true,
+                longName: Constants.measureMetadata.longName(.EPSi)(), targetLabel: Constants.measureMetadata.threshold(.EPSi)(),
+                measureCalcDescLabel: Constants.measureMetadata.calcDesc(.EPSi)())
             
         } else if self.measureShortName == "EPSv" {
-            self.measureLongNameLabel.text = Constants.measureMetadata.longName(.EPSv)()
-            Utilities.setStatusIcon(status: self.equity.EPSvStatus, uiLabel: self.statusIcon)
-            self.statusValueDesc.text = "(" + getStatusDesc(self.equity.EPSvStatus) + ")"
-            self.resultsLabel.text = "Result: " + getResultString(resultDouble: self.equity.EPSvResult, percentage: false)
-            self.targetLabel.text = Constants.measureMetadata.threshold(.EPSv)()
-            self.measureCalcDescLabel.text = Constants.measureMetadata.calcDesc(.EPSv)()
+            self.getMeasureResultsAndSetLabelText(status: self.equity.EPSvStatus, result: self.equity.EPSvResult, percentage: false,
+                longName: Constants.measureMetadata.longName(.EPSv)(), targetLabel: Constants.measureMetadata.threshold(.EPSv)(),
+                measureCalcDescLabel: Constants.measureMetadata.calcDesc(.EPSv)())
             
         } else if self.measureShortName == "BVi" {
-            self.measureLongNameLabel.text = Constants.measureMetadata.longName(.BVi)()
-            Utilities.setStatusIcon(status: self.equity.BViStatus, uiLabel: self.statusIcon)
-            self.statusValueDesc.text = "(" + getStatusDesc(self.equity.BViStatus) + ")"
-            self.resultsLabel.text = "Result: " + getResultString(resultDouble: self.equity.BViResult, percentage: true)
-            self.targetLabel.text = Constants.measureMetadata.threshold(.BVi)()
-            self.measureCalcDescLabel.text = Constants.measureMetadata.calcDesc(.BVi)()
+            self.getMeasureResultsAndSetLabelText(status: self.equity.BViStatus, result: self.equity.BViResult, percentage: true,
+                longName: Constants.measureMetadata.longName(.BVi)(), targetLabel: Constants.measureMetadata.threshold(.BVi)(),
+                measureCalcDescLabel: Constants.measureMetadata.calcDesc(.BVi)())
             
         } else if self.measureShortName == "DRa" {
-            self.measureLongNameLabel.text = Constants.measureMetadata.longName(.DRa)()
-            Utilities.setStatusIcon(status: self.equity.DRaStatus, uiLabel: self.statusIcon)
-            self.statusValueDesc.text = "(" + getStatusDesc(self.equity.DRaStatus) + ")"
-            self.resultsLabel.text = "Result: " + getResultString(resultDouble: self.equity.DRaResult, percentage: false)
-            self.targetLabel.text = Constants.measureMetadata.threshold(.DRa)()
-            self.measureCalcDescLabel.text = Constants.measureMetadata.calcDesc(.DRa)()
+            self.getMeasureResultsAndSetLabelText(status: self.equity.DRaStatus, result: self.equity.DRaResult, percentage: false,
+                longName: Constants.measureMetadata.longName(.DRa)(), targetLabel: Constants.measureMetadata.threshold(.DRa)(),
+                measureCalcDescLabel: Constants.measureMetadata.calcDesc(.DRa)())
             
         } else if self.measureShortName == "SOr" {
-            self.measureLongNameLabel.text = Constants.measureMetadata.longName(.SOr)()
-            Utilities.setStatusIcon(status: self.equity.SOrStatus, uiLabel: self.statusIcon)
-            self.statusValueDesc.text = "(" + getStatusDesc(self.equity.SOrStatus) + ")"
-            self.resultsLabel.text = "Result: " + getResultString(resultDouble: self.equity.SOrResult, percentage: false)
-            self.targetLabel.text = Constants.measureMetadata.threshold(.SOr)()
-            self.measureCalcDescLabel.text = Constants.measureMetadata.calcDesc(.SOr)()
+            self.getMeasureResultsAndSetLabelText(status: self.equity.SOrStatus, result: self.equity.SOrResult, percentage: false,
+                longName: Constants.measureMetadata.longName(.SOr)(), targetLabel: Constants.measureMetadata.threshold(.SOr)(),
+                measureCalcDescLabel: Constants.measureMetadata.calcDesc(.SOr)())
             
         } else if self.measureShortName == "previousROI" {
-            self.measureLongNameLabel.text = Constants.measureMetadata.longName(.previousROI)()
-            Utilities.setStatusIcon(status: self.equity.previousROIStatus, uiLabel: self.statusIcon)
-            self.statusValueDesc.text = "(" + getStatusDesc(self.equity.previousROIStatus) + ")"
-            self.resultsLabel.text = "Result: " + getResultString(resultDouble: self.equity.previousROIResult, percentage: true)
-            self.targetLabel.text = Constants.measureMetadata.threshold(.previousROI)()
-            self.measureCalcDescLabel.text = Constants.measureMetadata.calcDesc(.previousROI)()
+            self.getMeasureResultsAndSetLabelText(status: self.equity.previousROIStatus, result: self.equity.previousROIResult, percentage: true,
+                longName: Constants.measureMetadata.longName(.previousROI)(), targetLabel: Constants.measureMetadata.threshold(.previousROI)(),
+                measureCalcDescLabel: Constants.measureMetadata.calcDesc(.previousROI)())
             
         } else if self.measureShortName == "expectedROI" {
-            self.measureLongNameLabel.text = Constants.measureMetadata.longName(.expectedROI)()
-            Utilities.setStatusIcon(status: self.equity.expectedROIStatus, uiLabel: self.statusIcon)
-            self.statusValueDesc.text = "(" + getStatusDesc(self.equity.expectedROIStatus) + ")"
-            self.resultsLabel.text = "Result: " + getResultString(resultDouble: self.equity.expectedROIResult, percentage: true)
-            self.targetLabel.text = Constants.measureMetadata.threshold(.expectedROI)()
-            self.measureCalcDescLabel.text = Constants.measureMetadata.calcDesc(.expectedROI)()
+            self.getMeasureResultsAndSetLabelText(status: self.equity.expectedROIStatus, result: self.equity.expectedROIResult, percentage: true,
+                longName: Constants.measureMetadata.longName(.expectedROI)(), targetLabel: Constants.measureMetadata.threshold(.expectedROI)(),
+                measureCalcDescLabel: Constants.measureMetadata.calcDesc(.expectedROI)())
         }
     }
 }
