@@ -78,6 +78,13 @@ class SignInView: UIView, UITextFieldDelegate {
         if laContext.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: nil) {
             self.touchIDButton.isHidden = false
         }
+        
+        // accessibility labels
+        self.accessibilityLabel = "signInView"
+        self.userNameField.accessibilityLabel = "userNameField"
+        self.passwordField.accessibilityLabel = "passwordField"
+        self.signInButton.accessibilityLabel = "signInButton"
+        
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -30,6 +30,7 @@ class BuyView: UIView, ChartViewDelegate {
     override init(frame:CGRect){
         super.init(frame: frame)
         self.barChartView.delegate = self
+        self.accessibilityLabel = "buyView"
         self.pageLayoutLabels()
         self.store.equities.count > 0 ? self.createEquitiesForBuy() : ()
         

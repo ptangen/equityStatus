@@ -9,6 +9,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>KIF.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-EquityStatus.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -22,7 +27,12 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>8BFA245FCA7171136C1F1F395420D2D5</key>
+		<key>898C4182891DCF5CC594EB02B2032D4F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B77E574CFB05B8DF8E181BFC1672038C</key>
 		<dict>
 			<key>primary</key>
 			<true/>

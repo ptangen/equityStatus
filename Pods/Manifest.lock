@@ -2,13 +2,18 @@ PODS:
   - Charts (3.0.1):
     - Charts/Core (= 3.0.1)
   - Charts/Core (3.0.1)
+  - KIF (3.5.1):
+    - KIF/Core (= 3.5.1)
+  - KIF/Core (3.5.1)
 
 DEPENDENCIES:
   - Charts (~> 3.0.1)
+  - KIF
 
 SPEC CHECKSUMS:
   Charts: 0e84f4418e87dad6a9edde221fba37ebb51d3ba7
+  KIF: 082eb65279e51c3092923802849eb796a04982ab
 
-PODFILE CHECKSUM: 877b80d0fa61590db386d3b422d426fc32bf553e
+PODFILE CHECKSUM: ead427eb734be99adeb6d542327beca1629fbca6
 
 COCOAPODS: 1.1.1
