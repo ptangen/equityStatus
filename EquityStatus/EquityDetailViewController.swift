@@ -16,6 +16,7 @@ class EquityDetailViewController: UIViewController, EquityDetailViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.equityDetailViewInst.delegate = self
+        self.navigationItem.backBarButtonItem?.accessibilityLabel = "backButton"
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -62,6 +62,10 @@ class MeasurePageViewController: UIPageViewController, UIPageViewControllerDataS
         q5ViewControllerInst.measureTicker = "q5(\(ticker))"
         q6ViewControllerInst.measureTicker = "q6(\(ticker))"
         
+        // accessibility labels
+        expectedROIViewControllerInst.view.accessibilityLabel = "expectedROIViewControllerInst"
+        q1ViewControllerInst.view.accessibilityLabel = "q1ViewControllerInst"
+        
         // set historicalDataLabel on VC with views that render a chart
         ROEaViewControllerInst.historicalDataLabel = Constants.measureMetadata.historicalDataLabel(.ROEa)()
         EPSiViewControllerInst.historicalDataLabel = Constants.measureMetadata.historicalDataLabel(.EPSi)()
@@ -109,6 +113,9 @@ class MeasurePageViewController: UIPageViewController, UIPageViewControllerDataS
         self.pageControl.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -20).isActive = true
         self.pageControl.heightAnchor.constraint(equalToConstant: 20).isActive = true
         self.pageControl.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        
+        // back button accessibility label
+        self.navigationItem.backBarButtonItem?.accessibilityLabel = "backButtonMeasurePageView"
     }
     
     override func viewWillAppear(_ animated: Bool) {

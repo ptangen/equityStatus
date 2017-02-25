@@ -20,6 +20,9 @@ class CalcMeasureViewController: UIViewController, MeasureDetailViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.calcMeasureViewInst.delegate = self
+        
+        // back button accessibility label
+        self.navigationItem.backBarButtonItem?.accessibilityLabel = "backButton"
     }
     
     override func viewWillAppear(_ animated: Bool) {

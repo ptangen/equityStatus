@@ -36,7 +36,7 @@
 		C08EC7661E3BD92F005A5A5E /* QuestionMeasureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08EC7651E3BD92F005A5A5E /* QuestionMeasureView.swift */; };
 		C08EC7681E3BDAEA005A5A5E /* QuestionMeasureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08EC7671E3BDAEA005A5A5E /* QuestionMeasureViewController.swift */; };
 		C0979C4F1E6073110023B5C4 /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0979C4C1E6073110023B5C4 /* Charts.framework */; };
-		C0A0D4631E6061500076C84F /* SignInTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A0D4621E6061500076C84F /* SignInTests.swift */; };
+		C0A0D4631E6061500076C84F /* UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A0D4621E6061500076C84F /* UITests.swift */; };
 		C0BF22261E085351005B7E55 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF22251E085351005B7E55 /* Utilities.swift */; };
 		C0BF22281E086191005B7E55 /* BuyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF22271E086191005B7E55 /* BuyViewController.swift */; };
 		C0BF222A1E0861B6005B7E55 /* BuyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF22291E0861B6005B7E55 /* BuyView.swift */; };
@@ -95,7 +95,7 @@
 		C08EC7651E3BD92F005A5A5E /* QuestionMeasureView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionMeasureView.swift; sourceTree = "<group>"; };
 		C08EC7671E3BDAEA005A5A5E /* QuestionMeasureViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionMeasureViewController.swift; sourceTree = "<group>"; };
 		C0979C4C1E6073110023B5C4 /* Charts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Charts.framework; path = "../../Library/Developer/Xcode/DerivedData/EquityStatus-gqdhunwwfjscevammixdczwbqums/Build/Products/Debug-iphonesimulator/Charts/Charts.framework"; sourceTree = "<group>"; };
-		C0A0D4621E6061500076C84F /* SignInTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInTests.swift; sourceTree = "<group>"; };
+		C0A0D4621E6061500076C84F /* UITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITests.swift; sourceTree = "<group>"; };
 		C0BF22251E085351005B7E55 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		C0BF22271E086191005B7E55 /* BuyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuyViewController.swift; sourceTree = "<group>"; };
 		C0BF22291E0861B6005B7E55 /* BuyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuyView.swift; sourceTree = "<group>"; };
@@ -200,7 +200,7 @@
 			isa = PBXGroup;
 			children = (
 				C0409F9A1E0743CD00BEC5DD /* APITests.swift */,
-				C0A0D4621E6061500076C84F /* SignInTests.swift */,
+				C0A0D4621E6061500076C84F /* UITests.swift */,
 				C02DA6481E606B9700663820 /* KIF+Extensions.swift */,
 				C05BD1861E6083B8001F54D5 /* EquityStatusTests-Bridging-Header.h */,
 				C0409F9C1E0743CD00BEC5DD /* Info.plist */,
@@ -519,7 +519,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C0A0D4631E6061500076C84F /* SignInTests.swift in Sources */,
+				C0A0D4631E6061500076C84F /* UITests.swift in Sources */,
 				C0409F9B1E0743CD00BEC5DD /* APITests.swift in Sources */,
 				C02DA6491E606B9700663820 /* KIF+Extensions.swift in Sources */,
 			);

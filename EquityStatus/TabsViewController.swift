@@ -54,6 +54,7 @@ class TabsViewController: UITabBarController, UITabBarControllerDelegate {
         
         // add the menu button to the nav bar
         let menuButton = UIBarButtonItem(image: #imageLiteral(resourceName: "menu"), style: .plain, target: self, action: #selector(menuButtonClicked))
+        menuButton.accessibilityLabel = "menuButton"
         self.navigationItem.rightBarButtonItems = [menuButton]
         self.navigationItem.setHidesBackButton(true, animated:false);
     }
@@ -102,11 +103,6 @@ class TabsViewController: UITabBarController, UITabBarControllerDelegate {
             }
         }
     }
-    
-//    // UITabBarControllerDelegate method
-//    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-//        //print("Selected \(viewController.title!)")
-//    }
     
     func menuButtonClicked(sender: UIBarButtonItem) {
         

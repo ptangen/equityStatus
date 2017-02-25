@@ -84,6 +84,7 @@ class EquityDetailView: UIView {
         // the 5 and SE devices (width=320) need more vertical space
         UIScreen.main.bounds.width == 320 ? (self.heightOfScrolledContent = 800) : (self.heightOfScrolledContent = 700)
         self.pageLayout()
+        self.accessibilityLabel = "equityDetailViewInst"
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -257,6 +258,7 @@ class EquityDetailView: UIView {
         self.expectedROIResultDescTap.addTarget(self, action: #selector(self.onClickLineItem))
         self.expectedROIResultDesc.isUserInteractionEnabled = true
         self.expectedROIResultDesc.addGestureRecognizer(expectedROIResultDescTap)
+        self.expectedROIResultDesc.accessibilityLabel = "expectedROIResultDesc"
         
         // expectedROIStatusDesc
         self.scrollView.addSubview(self.expectedROIStatusDesc)

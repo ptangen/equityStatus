@@ -33,6 +33,7 @@ class EquityStatusTests: XCTestCase {
                 if let equity = self.store.equities.first {
                     XCTAssertNotNil(equity.ticker)
                     testForEquityExpectation.fulfill()
+                    self.store.equities.removeAll()
                 } else {
                     XCTFail("Unable to retrieve the ticker from an equity in the datastore.")
                 }
