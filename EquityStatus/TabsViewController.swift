@@ -39,16 +39,20 @@ class TabsViewController: UITabBarController, UITabBarControllerDelegate {
         let tabBuyBarItem = UITabBarItem(title: "Buy", image: UIImage(named: "sentiment_satisfied"), selectedImage: UIImage(named: "sentiment_satisfied"))
         self.buyViewControllerInst.tabBarItem = tabBuyBarItem
         self.buyViewControllerInst.buyViewInst.setHeadingLabels()
+        self.buyViewControllerInst.tabBarItem.accessibilityLabel = "buyTab"
         
         // Create Tab Analysis
         self.evaluationViewControllerInst = EvaluationViewController()
         let tabEvaluationBarItem = UITabBarItem(title: "Evaluate", image: UIImage(named: "insert_chart"), selectedImage: UIImage(named: "insert_chart"))
         self.evaluationViewControllerInst.tabBarItem = tabEvaluationBarItem
+        self.evaluationViewControllerInst.tabBarItem.accessibilityLabel = "evalTab"
         
         // Create Tab Sell
         self.sellViewControllerInst = SellViewController()
         let tabSellBarItem = UITabBarItem(title: "Sell", image: UIImage(named: "not_interested"), selectedImage: UIImage(named: "not_interested"))
-        sellViewControllerInst.tabBarItem = tabSellBarItem
+        self.sellViewControllerInst.tabBarItem = tabSellBarItem
+        self.sellViewControllerInst.tabBarItem.accessibilityLabel = "sellTab"
+        
         
         self.viewControllers = [buyViewControllerInst, evaluationViewControllerInst, sellViewControllerInst]
         

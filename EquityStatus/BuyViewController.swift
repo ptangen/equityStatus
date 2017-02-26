@@ -32,6 +32,7 @@ class BuyViewController: UIViewController, BuyViewDelegate  {
         equityDetailViewControllerInst.equity = equity
         self.title = "" // this value is passed to the back button label in the destination VC
         navigationController?.pushViewController(equityDetailViewControllerInst, animated: false) // show destination with nav bar
+        navigationController?.navigationBar.backItem?.accessibilityLabel = "backButton"
     }
     
     func showAlertMessage(_ message: String) {

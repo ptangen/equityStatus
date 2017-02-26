@@ -61,7 +61,7 @@ class APIClient {
         }
     }
     
-    class func setSubjectiveStatus(ticker: String, question: String, status: String, equity: Equity, completion: @escaping (apiResponse) -> Void) {
+    class func setSubjectiveStatus(question: String, status: String, equity: Equity, completion: @escaping (apiResponse) -> Void) {
         let urlString = "\(Secrets.apiURL)setSubjectiveStatus.php"
         let url = URL(string: urlString)
         if let url = url {
@@ -71,7 +71,7 @@ class APIClient {
             request.setValue("application/json", forHTTPHeaderField: "Accept")
             request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         
-            let parameterString = "ticker=\(ticker)&question=\(question)&status=\(status)&key=\(Secrets.apiKey)"
+            let parameterString = "ticker=\(equity.ticker)&question=\(question)&status=\(status)&key=\(Secrets.apiKey)"
             request.httpBody = parameterString.data(using: .utf8)
 
             URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
@@ -110,7 +110,7 @@ class APIClient {
         }
     }
     
-    class func setSubjectiveAnswer(ticker: String, question: String, answer: String, equity: Equity, completion: @escaping (apiResponse) -> Void) {
+    class func setSubjectiveAnswer(question: String, answer: String, equity: Equity, completion: @escaping (apiResponse) -> Void) {
         let urlString = "\(Secrets.apiURL)setSubjectiveAnswer.php"
         let url = URL(string: urlString)
         if let url = url {
@@ -122,7 +122,7 @@ class APIClient {
             
             var parameterString = String()
             if let answerUnwrapped = answer.addingPercentEncoding(withAllowedCharacters: .urlUserAllowed) {
-                parameterString = "ticker=\(ticker)&question=\(question)&answer=\(answerUnwrapped)&key=\(Secrets.apiKey)"
+                parameterString = "ticker=\(equity.ticker)&question=\(question)&answer=\(answerUnwrapped)&key=\(Secrets.apiKey)"
             }
             request.httpBody = parameterString.data(using: .utf8)
             

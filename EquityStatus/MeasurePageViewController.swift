@@ -113,9 +113,6 @@ class MeasurePageViewController: UIPageViewController, UIPageViewControllerDataS
         self.pageControl.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -20).isActive = true
         self.pageControl.heightAnchor.constraint(equalToConstant: 20).isActive = true
         self.pageControl.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        
-        // back button accessibility label
-        self.navigationItem.backBarButtonItem?.accessibilityLabel = "backButtonMeasurePageView"
     }
     
     override func viewWillAppear(_ animated: Bool) {

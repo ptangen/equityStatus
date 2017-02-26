@@ -24,10 +24,13 @@ class EvaluationView: UIView, UITableViewDataSource, UITableViewDelegate {
     
     override init(frame:CGRect){
         super.init(frame: frame)
+        self.accessibilityLabel = "evaluationViewInst"
         self.evaluationTableViewInst.delegate = self
         self.evaluationTableViewInst.dataSource = self
         self.evaluationTableViewInst.register(EvaluationTableViewCell.self, forCellReuseIdentifier: "prototype")
         self.evaluationTableViewInst.separatorColor = UIColor.clear
+        self.evaluationTableViewInst.accessibilityLabel = "evaluationTableViewInst"
+        self.evaluationTableViewInst.accessibilityIdentifier = "evaluationTableViewInst"
 
         self.store.equities.count > 0 ? self.createEquitiesForEvaluation() : ()
         self.pageLayout()

@@ -30,6 +30,7 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
         
         // configure segmented control to pick status for the measure
         self.qStatusPicker.insertSegment(withTitle: Constants.iconLibrary.faCircleO.rawValue, at: 0, animated: true)
+
         self.qStatusPicker.insertSegment(withTitle: Constants.iconLibrary.faCheckCircle.rawValue, at: 1, animated: true)
         self.qStatusPicker.insertSegment(withTitle: Constants.iconLibrary.faTimesCircle.rawValue, at: 2, animated: true)
         self.qStatusPicker.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: Constants.iconFont.fontAwesome.rawValue, size: Constants.iconSize.small.rawValue)! ], for: .normal)
@@ -60,7 +61,7 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
     
     func updateQStatus(status: String) {
         
-        APIClient.setSubjectiveStatus(ticker: self.equity.ticker , question: self.measureShortName, status: status, equity: self.equity, completion: { response in
+        APIClient.setSubjectiveStatus(question: self.measureShortName, status: status, equity: self.equity, completion: { response in
             
             switch response {
             case .ok:
@@ -98,7 +99,7 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
     
     func updateQAnswer(answer: String) {
         
-        APIClient.setSubjectiveAnswer(ticker: self.equity.ticker , question: self.measureShortName, answer: answer, equity: self.equity, completion: { response in
+        APIClient.setSubjectiveAnswer(question: self.measureShortName, answer: answer, equity: self.equity, completion: { response in
             
             switch response {
             case .ok:

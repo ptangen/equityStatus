@@ -32,7 +32,6 @@ class BuyView: UIView, ChartViewDelegate {
         self.barChartView.delegate = self
         self.accessibilityLabel = "buyView"
         self.barChartView.accessibilityLabel = "barChartView"
-        self.activityIndicator.accessibilityLabel = "activityIndicator"
         self.pageLayoutLabels()
         self.store.equities.count > 0 ? self.createEquitiesForBuy() : ()
         

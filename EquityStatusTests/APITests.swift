@@ -33,6 +33,8 @@ class EquityStatusTests: XCTestCase {
                 if let equity = self.store.equities.first {
                     XCTAssertNotNil(equity.ticker)
                     testForEquityExpectation.fulfill()
+                    self.testSetStatus(equity: equity)
+                    self.testSetAnswer(equity: equity)
                     self.store.equities.removeAll()
                 } else {
                     XCTFail("Unable to retrieve the ticker from an equity in the datastore.")
@@ -82,6 +84,20 @@ class EquityStatusTests: XCTestCase {
                 XCTFail("The equityMetadata array exists, but unable to get a ticker from the object.")
             }
         }
+    }
+    
+    func testSetStatus(equity: Equity) {
+
+        APIClient.setSubjectiveStatus(question: "q1", status: equity.q1Status, equity: equity, completion: { response in
+            response == .failed || response == .noReply ? XCTFail("Unable to set equity status on the server.") : ()
+        })
+    }
+    
+    func testSetAnswer(equity: Equity) {
+        
+        APIClient.setSubjectiveAnswer(question: "q1", answer: equity.q1Answer, equity: equity, completion: { response in
+            response == .failed || response == .noReply ? XCTFail("Unable to set equity answer on the server.") : ()
+        })
     }
     
     func testPerformanceExample() {

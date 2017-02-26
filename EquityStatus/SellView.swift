@@ -31,16 +31,19 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate {
         
     override init(frame:CGRect){
         super.init(frame: frame)
+        self.accessibilityLabel = "sellViewInst"
         self.store.getEquitiesMetadataFromCoreData()
         self.sellTableViewInst.delegate = self
         self.sellTableViewInst.dataSource = self
         self.sellTableViewInst.register(SellTableViewCell.self, forCellReuseIdentifier: "prototype")
         self.sellTableViewInst.separatorColor = UIColor.clear
+        self.sellTableViewInst.accessibilityIdentifier = "sellTableViewInst"
         self.pageLayout()
         
         self.searchController.searchResultsUpdater = self
         self.searchController.dimsBackgroundDuringPresentation = false
         self.sellTableViewInst.tableHeaderView = self.searchController.searchBar
+        self.searchController.searchBar.accessibilityLabel = "searchBar"
     }
     
     func getEquityMetadata () {

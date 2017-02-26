@@ -11,28 +11,23 @@ import KIF
 
 class UITests : KIFTestCase {
 
-    func clearOutUsernameAndPasswordFields() {
-        tester().clearTextFromView(withAccessibilityLabel: "userNameField")
-        tester().clearTextFromView(withAccessibilityLabel: "passwordField")
-    }
-
-    
-    func testSignIn() {
+    func testNavigtion() {
+        
         // sign in with bad credentials
-        clearOutUsernameAndPasswordFields()
-        tester().enterText("swift3", intoViewWithAccessibilityLabel: "userNameField")
-        tester().enterText("123", intoViewWithAccessibilityLabel: "passwordField")
+        tester().clearTextFromView(withAccessibilityLabel: "userNameField")
+        tester().enterText("jim", intoViewWithAccessibilityLabel: "userNameField")
+        tester().enterText("712", intoViewWithAccessibilityLabel: "passwordField")
         tester().tapView(withAccessibilityLabel:"signInButton")
-        // view does not change, error is displayed through an animation
         tester().waitForView(withAccessibilityLabel: "signInView")
         
-        
         // sign in with good credentials
-        clearOutUsernameAndPasswordFields()
+        tester().clearTextFromView(withAccessibilityLabel: "userNameField")
+        tester().clearTextFromView(withAccessibilityLabel: "passwordField")
         tester().enterText("swift3", intoViewWithAccessibilityLabel: "userNameField")
         tester().enterText("1234", intoViewWithAccessibilityLabel: "passwordField")
         tester().tapView(withAccessibilityLabel:"signInButton")
         
+        // open equity from chart
         // click the first item on the bar chart
         tester().waitForAbsenceOfView(withAccessibilityLabel: "activityIndicator")
         tester().waitForView(withAccessibilityLabel: "barChartView")
@@ -45,18 +40,34 @@ class UITests : KIFTestCase {
         tester().swipeView(withAccessibilityLabel: "expectedROIViewControllerInst", in: .left)
         tester().waitForView(withAccessibilityLabel: "q1ViewControllerInst")
         
-        //tester().waitForView(withAccessibilityLabel: "activityIndicator")
-        
         // go back up to chart
         tester().tapScreen(at: CGPoint(x: 15, y: 20)) // tap back button
         tester().tapScreen(at: CGPoint(x: 15, y: 20)) // tap back button
         
-        // menu > Cancel
+        // open eval tab and show the first equity in the tableview
+        tester().tapView(withAccessibilityLabel:"evalTab")
+        tester().waitForView(withAccessibilityLabel: "evaluationViewInst")
+        let indexPath = IndexPath(row: 0, section: 0)
+        tester().waitForCell(at: indexPath, inTableViewWithAccessibilityIdentifier: "evaluationTableViewInst", at: .top)
+        tester().tapRow(at: indexPath, inTableViewWithAccessibilityIdentifier: "evaluationTableViewInst")
+        tester().waitForView(withAccessibilityLabel: "equityDetailViewInst")
+        tester().tapScreen(at: CGPoint(x: 15, y: 20)) // tap back button
+
+        // open sell tab, search for GGG and verify company name in results
+        tester().tapView(withAccessibilityLabel:"sellTab")
+        tester().waitForView(withAccessibilityLabel: "sellViewInst")
+        tester().enterText("GGG", intoViewWithAccessibilityLabel: "searchBar")
+        tester().waitForAnimationsToFinish(withTimeout: 2)
+        let searchResults = tester().waitForCell(at: indexPath, inTableViewWithAccessibilityIdentifier: "sellTableViewInst")
+        tester().expect(searchResults?.textLabel, toContainText: "Graco Inc (GGG)")
+        tester().tapScreen(at: CGPoint(x: UIScreen.main.bounds.width-40, y: 50)) // tap cancel to show nav bar
+        tester().waitForView(withAccessibilityLabel: "sellViewInst")
+        
+        // test global nav menu
         tester().tapView(withAccessibilityLabel: "menuButton")
         tester().tapView(withAccessibilityLabel: "Cancel")
-        tester().waitForView(withAccessibilityLabel: "buyView")
-        
-        // menu sign out
+        tester().waitForView(withAccessibilityLabel: "sellViewInst")
+
         tester().tapView(withAccessibilityLabel: "menuButton")
         tester().tapView(withAccessibilityLabel: "Sign Out")
         tester().waitForView(withAccessibilityLabel: "signInView")
