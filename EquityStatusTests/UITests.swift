@@ -1,5 +1,5 @@
 //
-//  BuyTabTests.swift
+//  UITests.swift
 //  EquityStatus
 //
 //  Created by Paul Tangen on 2/24/17.
