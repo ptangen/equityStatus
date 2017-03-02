@@ -39,10 +39,6 @@ class SignInView: UIView, UITextFieldDelegate {
     var equityStatusYConstraintStart = NSLayoutConstraint()
     var equityStatusYConstraintEnd = NSLayoutConstraint()
 
-    var bullImageXConstraintStart = NSLayoutConstraint()
-    var bullImageXConstraintEnd = NSLayoutConstraint()
-    var bullImageYConstraintStart = NSLayoutConstraint()
-    var bullImageYConstraintEnd = NSLayoutConstraint()
     var bullImageWidthConstraintStart = NSLayoutConstraint()
     var bullImageWidthConstraintEnd = NSLayoutConstraint()
     var bullImageHeightConstraintStart = NSLayoutConstraint()
@@ -143,7 +139,7 @@ class SignInView: UIView, UITextFieldDelegate {
         // 3. Check to see if the fingerprint matches, if success, open tab display
         if myKeyChainWrapper.myObject(forKey: "v_Data") != nil {
             if laContext.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error:nil) {
-                laContext.evaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, localizedReason: "Logging in with Touch ID", reply: { (success : Bool, error : Error? ) -> Void in
+                laContext.evaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, localizedReason: "Sign in with Touch ID", reply: { (success : Bool, error : Error? ) -> Void in
 
                     DispatchQueue.main.async(execute: {
                         if success {
@@ -257,15 +253,8 @@ class SignInView: UIView, UITextFieldDelegate {
         self.addSubview(self.bullImage)
         self.bullImage.translatesAutoresizingMaskIntoConstraints = false
 
-        bullImageXConstraintStart = self.bullImage.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0)
-        bullImageXConstraintStart.isActive = true
-        bullImageXConstraintEnd = self.bullImage.centerXAnchor.constraint(equalTo: self.centerXAnchor, constant: 0)
-        bullImageXConstraintEnd.isActive = false
-
-        bullImageYConstraintStart = self.bullImage.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0)
-        bullImageYConstraintStart.isActive = true
-        bullImageYConstraintEnd = self.bullImage.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0)
-        bullImageYConstraintEnd.isActive = false
+        self.bullImage.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        self.bullImage.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
         
         self.bullImageWidthConstraintStart = self.bullImage.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width * 3)
         self.bullImageWidthConstraintStart.isActive = true
@@ -300,7 +289,7 @@ class SignInView: UIView, UITextFieldDelegate {
         self.passwordField.placeholder = "password"
         self.passwordField.isSecureTextEntry = true
         
-        self.passwordField.rightAnchor.constraint(equalTo: self.signInButton.rightAnchor, constant: 0).isActive = true
+        self.passwordField.rightAnchor.constraint(equalTo: self.signInButton.rightAnchor).isActive = true
         self.passwordField.bottomAnchor.constraint(equalTo: self.signInButton.topAnchor, constant: -20).isActive = true
         
         self.passwordFieldWidthConstraintStart = self.passwordField.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.4)
@@ -319,7 +308,7 @@ class SignInView: UIView, UITextFieldDelegate {
         
         self.userNameField.bottomAnchor.constraint(equalTo: self.passwordField.topAnchor, constant: -20).isActive = true
         self.userNameField.widthAnchor.constraint(equalTo: self.passwordField.widthAnchor).isActive = true
-        self.userNameField.rightAnchor.constraint(equalTo: self.passwordField.rightAnchor, constant: 0).isActive = true
+        self.userNameField.rightAnchor.constraint(equalTo: self.passwordField.rightAnchor).isActive = true
         
         // touch id button
         self.addSubview(self.touchIDButton)
@@ -329,7 +318,7 @@ class SignInView: UIView, UITextFieldDelegate {
         self.touchIDButton.heightAnchor.constraint(equalToConstant: 36).isActive = true
         self.touchIDButton.widthAnchor.constraint(equalToConstant: 36).isActive = true
         self.touchIDButton.rightAnchor.constraint(equalTo: self.signInButton.leftAnchor, constant: -20).isActive = true
-        self.touchIDButton.topAnchor.constraint(equalTo: self.signInButton.topAnchor, constant: 0).isActive = true
+        self.touchIDButton.topAnchor.constraint(equalTo: self.signInButton.topAnchor).isActive = true
         
         // all
         self.layoutIfNeeded()

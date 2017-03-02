@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class SignInViewController: UIViewController, SignInViewDelegate {
     
     var signInViewInst = SignInView()
@@ -48,11 +47,6 @@ class SignInViewController: UIViewController, SignInViewDelegate {
             
             self.signInViewInst.equityStatusYConstraintStart.isActive = false
             self.signInViewInst.equityStatusYConstraintEnd.isActive = true
-            
-            self.signInViewInst.bullImageXConstraintStart.isActive = false
-            self.signInViewInst.bullImageXConstraintEnd.isActive = true
-            self.signInViewInst.bullImageYConstraintStart.isActive = false
-            self.signInViewInst.bullImageYConstraintEnd.isActive = true
 
             self.signInViewInst.bullImageWidthConstraintStart.isActive = false
             self.signInViewInst.bullImageWidthConstraintEnd.isActive = true
@@ -65,5 +59,4 @@ class SignInViewController: UIViewController, SignInViewDelegate {
             self.signInViewInst.layoutIfNeeded()
         }
     }
-    
 }
