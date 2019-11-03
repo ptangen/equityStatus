@@ -382,7 +382,7 @@ class EquityDetailView: UIView {
         self.q6StatusDesc.font = UIFont(name: Constants.iconFont.fontAwesome.rawValue, size: Constants.iconSize.xsmall.rawValue)
     }
     
-    func onClickLineItem(sender: UILabel){
+    @objc func onClickLineItem(sender: UILabel){
         if let measureTicker = sender.accessibilityLabel {
             self.delegate?.openMeasureDetail(measureTicker)
         }

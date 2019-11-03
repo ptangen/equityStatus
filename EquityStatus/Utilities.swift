@@ -30,30 +30,34 @@ class Utilities {
     
     class func getTickerFromLabel(fullString: String) -> String {
         // function used to extract the ticker symbol
-        let chars = fullString.characters;
+        let chars = fullString;
         
         // Get character indexes.
         if let indexLeftParen = chars.index(of: "("), let indexRightParen = chars.index(of: ")") {
             // Get before and after indexes.
-            let indexAfterLeftParen = chars.index(after: indexLeftParen)
-            let indexBeforeRightParen = chars.index(before: indexRightParen)
-            return fullString[indexAfterLeftParen...indexBeforeRightParen]
+            // 4.2 error:
+            // let indexAfterLeftParen = chars.index(after: indexLeftParen)
+            // let indexBeforeRightParen = chars.index(before: indexRightParen)
+            // return fullString[indexAfterLeftParen...indexBeforeRightParen]
+            return fullString
         }
         return "" // should never be used
     }
     
     class func getMeasureName(fullString: String) -> String {
         // extract the measure name
-        let chars = fullString.characters;
-        if let indexLeftParen = chars.index(of: "(") {
-            let indexBeforeLeftParen = chars.index(before: indexLeftParen)
-            return fullString[chars.startIndex...indexBeforeLeftParen]
+        let chars = fullString;
+        if let indexLeftParen = chars.firstIndex(of: "(") {
+            // 4.2 error:
+            // let indexBeforeLeftParen = chars.index(before: indexLeftParen)
+            // return fullString[chars.startIndex...indexBeforeLeftParen]
+            return fullString
         }
         return ""
     }
     
     class func showAlertMessage(_ message: String, viewControllerInst: UIViewController) {
-        let alertController = UIAlertController(title: "Error", message: message, preferredStyle: UIAlertControllerStyle.alert)
+        let alertController = UIAlertController(title: "Error", message: message, preferredStyle: UIAlertController.Style.alert)
         alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default,handler: nil))
         viewControllerInst.present(alertController, animated: true, completion: nil)
     }

@@ -108,7 +108,7 @@ class TabsViewController: UITabBarController, UITabBarControllerDelegate {
         }
     }
     
-    func menuButtonClicked(sender: UIBarButtonItem) {
+    @objc func menuButtonClicked(sender: UIBarButtonItem) {
         
         let optionMenu = UIAlertController(title: nil, message: "Menu", preferredStyle: .actionSheet)
         

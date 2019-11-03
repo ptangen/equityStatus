@@ -24,6 +24,8 @@ class SignInViewController: UIViewController, SignInViewDelegate {
         self.signInViewInst.frame = CGRect.zero
         self.view = self.signInViewInst
     }
+    
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

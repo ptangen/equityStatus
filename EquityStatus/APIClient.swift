@@ -184,8 +184,8 @@ class APIClient {
                                 // unwrap the incoming data and create equityMeta entities in core data
                                 if let unwrappedName = metadataDict["name"], let unwrappedTicker = metadataDict["ticker"] {
                             
-                                    let unwrappedNameFirst = unwrappedName.characters.first
-                                    let unwrappedTickerFirst = unwrappedTicker.characters.first
+                                    let unwrappedNameFirst = unwrappedName.first
+                                    let unwrappedTickerFirst = unwrappedTicker.first
                             
                                     DataStore.createEquityMetadata(name: unwrappedName, nameFirst: String(describing: unwrappedNameFirst), ticker: unwrappedTicker, tickerFirst: String(describing: unwrappedTickerFirst))
                                 }
@@ -369,7 +369,7 @@ class APIClient {
                         for index in 2006...2030 {
                             if responseJSON[String(index)] as? String != nil {
                                 let labelForYearFull = String(index)
-                                let labelForYearShort = labelForYearFull.characters.suffix(2) //grab the last two chars in the year
+                                let labelForYearShort = labelForYearFull.suffix(2) //grab the last two chars in the year
                                 let valueForYearString = responseJSON[String(index)] as! String
                                 if let valueForYear = Double(valueForYearString) {
                                     historicalValues.annualLabels.append(String(labelForYearShort))

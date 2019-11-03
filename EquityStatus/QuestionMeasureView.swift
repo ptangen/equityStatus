@@ -33,7 +33,7 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
 
         self.qStatusPicker.insertSegment(withTitle: Constants.iconLibrary.faCheckCircle.rawValue, at: 1, animated: true)
         self.qStatusPicker.insertSegment(withTitle: Constants.iconLibrary.faTimesCircle.rawValue, at: 2, animated: true)
-        self.qStatusPicker.setTitleTextAttributes([ NSFontAttributeName: UIFont(name: Constants.iconFont.fontAwesome.rawValue, size: Constants.iconSize.small.rawValue)! ], for: .normal)
+        self.qStatusPicker.setTitleTextAttributes([ NSAttributedString.Key.font: UIFont(name: Constants.iconFont.fontAwesome.rawValue, size: Constants.iconSize.small.rawValue)! ], for: .normal)
         
         let segmentButtonWidth = UIScreen.main.bounds.width / 4
         self.qStatusPicker.setWidth(segmentButtonWidth, forSegmentAt: 0)
@@ -45,7 +45,7 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
         self.qAnswerView.delegate = self
     }
     
-    func statusValueChanged(_ sender:UISegmentedControl!) {
+    @objc func statusValueChanged(_ sender:UISegmentedControl!) {
         
         self.qAnswerView.resignFirstResponder()
         
@@ -237,10 +237,11 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
         self.statusLabel.text = "Status:"
         
         // extract the measure name
-        let chars = fullString.characters;
-        if let indexLeftParen = chars.index(of: "(") {
-            let indexBeforeLeftParen = chars.index(before: indexLeftParen)
-            self.measureShortName = fullString[chars.startIndex...indexBeforeLeftParen]
+        let chars = fullString;
+        if let indexLeftParen = chars.firstIndex(of: "(") {
+            _ = chars.index(before: indexLeftParen)
+            // 4.2 error: self.measureShortName = fullString[chars.startIndex...indexBeforeLeftParen]
+            self.measureShortName = fullString
         }
         
         // get the measure results and set the label text

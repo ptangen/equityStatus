@@ -41,9 +41,10 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate {
         self.pageLayout()
         
         self.searchController.searchResultsUpdater = self
-        self.searchController.dimsBackgroundDuringPresentation = false
+        // deprecated in 4.2: self.searchController.dimsBackgroundDuringPresentation = false
         self.sellTableViewInst.tableHeaderView = self.searchController.searchBar
         self.searchController.searchBar.accessibilityLabel = "searchBar"
+        
     }
     
     func getEquityMetadata () {

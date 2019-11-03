@@ -87,7 +87,12 @@ class SignInView: UIView, UITextFieldDelegate {
         super.init(coder: aDecoder)
     }
     
-    func onClickSignIn() {
+    @objc func onClickSignIn() {
+        // skip authentication
+        if let delegate = self.delegate {
+            delegate.openTabDisplay()
+        }
+        
         if let userName = self.userNameField.text {
             if let password = self.passwordField.text {
                 
@@ -133,7 +138,7 @@ class SignInView: UIView, UITextFieldDelegate {
         }
     }
     
-    func touchIDLoginAction() {
+    @objc func touchIDLoginAction() {
         // 1. Check to see if we have a password for the site in the keychain.
         // 2. Check to see if the device has a finger print reader.
         // 3. Check to see if the fingerprint matches, if success, open tab display

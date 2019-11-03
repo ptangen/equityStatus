@@ -1,7 +1,7 @@
 PODS:
-  - Charts (3.0.1):
-    - Charts/Core (= 3.0.1)
-  - Charts/Core (3.0.1)
+  - Charts (3.0.5):
+    - Charts/Core (= 3.0.5)
+  - Charts/Core (3.0.5)
   - KIF (3.5.1):
     - KIF/Core (= 3.5.1)
   - KIF/Core (3.5.1)
@@ -10,10 +10,15 @@ DEPENDENCIES:
   - Charts (~> 3.0.1)
   - KIF
 
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Charts
+    - KIF
+
 SPEC CHECKSUMS:
-  Charts: 0e84f4418e87dad6a9edde221fba37ebb51d3ba7
+  Charts: 45cdc985b764c838b35ee47eb1365d15735f6d1a
   KIF: 082eb65279e51c3092923802849eb796a04982ab
 
 PODFILE CHECKSUM: ead427eb734be99adeb6d542327beca1629fbca6
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.7.5

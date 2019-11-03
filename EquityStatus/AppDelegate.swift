@@ -15,15 +15,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     let statusBarBackground = UIView(frame: CGRect(x: 0, y: 0, width: 500, height: 20))
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         // set nav bar colors
         let navigationBarAppearance = UINavigationBar.appearance()
         navigationBarAppearance.tintColor = UIColor(named: .blue)
         navigationBarAppearance.barTintColor = UIColor(named: .blue)
-        navigationBarAppearance.titleTextAttributes = [NSForegroundColorAttributeName : UIColor.white]
+        navigationBarAppearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
         statusBarBackground.backgroundColor = UIColor(named: .statusBarBlue)
-        UIApplication.shared.statusBarStyle = .lightContent // sets status bar text color white
+        //deprecated in 4.2: UIApplication.shared.statusBarStyle = .lightContent // sets status bar text color white
         
         let signInViewControllerInst = SignInViewController()
         //let tabViewControllerInst = TabsViewController()
