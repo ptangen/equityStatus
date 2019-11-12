@@ -61,6 +61,67 @@ class APIClient {
         }
     }
     
+    class func requestRawData(measure: String, ticker: String, completion: @escaping ([String: Any]) -> Void) {
+        // get values for some measure from the API
+        let urlString = "https://api-v2.intrinio.com/historical_data/\(ticker)/\(measure)"
+        let url = URL(string: urlString)
+        if let url = url {
+            var request = URLRequest(url: url)
+
+            request.httpMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "Accept")
+            request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        
+            let parameterString = "api_key=\(Secrets.rawDataApiKey)&type=FY&sort_order=desc"
+            request.httpBody = parameterString.data(using: .utf8)
+       
+            URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
+                if let data = data {
+                    DispatchQueue.main.async {
+                        do {
+                            let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+                            
+                            //print(json)
+                            if let results = json?["message"] {
+                                //print(results)
+                                completion(["message": results])
+                            } else if let results = json?["historical_data"] as? [Any] {
+                                let extractedValues = self.extractValuesFromJSON(results: results)
+                                completion(["extractedValues": extractedValues])
+                            } else {
+                                completion(["message": "no data found"])
+                            }
+                        } catch {
+                            print("server not found")
+                            completion(["message": "server not found"])
+                        }
+                    }
+                }
+                if let error = error {
+                    completion(["message": error])
+                }
+            }).resume()
+        } else {
+            print("error: unable to unwrap url")
+        }
+    }
+    
+    class func extractValuesFromJSON(results: [Any]) -> [NSNumber]{
+        // extract the values from the JSON, there should be 10 yrs of values, but sometimes there is less.
+        var valuesFound = [NSNumber]()
+        for resultForYear in results {
+            if let unwrappedDict = resultForYear as? [String: Any] {
+                if let unwrappedValue = unwrappedDict["value"] as! NSNumber?{
+                    valuesFound.append(unwrappedValue)
+                }
+            }
+        }
+        
+        
+        
+        return valuesFound
+    }
+    
     class func setSubjectiveStatus(question: String, status: String, equity: Equity, completion: @escaping (apiResponse) -> Void) {
         let urlString = "\(Secrets.apiURL)setSubjectiveStatus.php"
         let url = URL(string: urlString)

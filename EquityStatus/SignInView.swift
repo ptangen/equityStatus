@@ -24,6 +24,7 @@ class SignInView: UIView, UITextFieldDelegate {
     let userNameField = UITextField()
     let passwordField = UITextField()
     let signInButton = UIButton()
+    let apiButton = UIButton()
     let touchIDButton = UIButton()
     var bullImage = UIImageView()
     var userNamePopulated:Bool = false
@@ -43,6 +44,9 @@ class SignInView: UIView, UITextFieldDelegate {
     var bullImageWidthConstraintEnd = NSLayoutConstraint()
     var bullImageHeightConstraintStart = NSLayoutConstraint()
     var bullImageHeightConstraintEnd = NSLayoutConstraint()
+    
+    var apiButtonRightConstraintStart = NSLayoutConstraint()
+    var apiButtonRightConstraintEnd = NSLayoutConstraint()
 
     var signInButtonRightConstraintStart = NSLayoutConstraint()
     var signInButtonRightConstraintEnd = NSLayoutConstraint()
@@ -61,6 +65,7 @@ class SignInView: UIView, UITextFieldDelegate {
         self.passwordField.delegate = self
         
         self.signInButton.addTarget(self, action: #selector(SignInView.onClickSignIn), for: UIControlEvents.touchUpInside)
+        self.apiButton.addTarget(self, action: #selector(SignInView.onClickAPI), for: UIControlEvents.touchUpInside)
         self.touchIDButton.addTarget(self, action: #selector(SignInView.touchIDLoginAction), for: UIControlEvents.touchUpInside)
         
         // if we have a stored username, populate the username field with that value.
@@ -136,6 +141,21 @@ class SignInView: UIView, UITextFieldDelegate {
                 }
             }
         }
+    }
+    
+    @objc func onClickAPI() {
+        print("api")
+        APIClient.requestRawData(measure: "basiceps", ticker: "AAPL", completion: { response in
+            if let responseUnwrapped = response["message"]{
+                print(responseUnwrapped)
+            }
+            if let responseUnwrapped = response["extractedValues"]{
+                print(responseUnwrapped)
+                // calc EPSi
+                // calc EPSv
+            }
+                
+        }) // end apiClient.requestAuth
     }
     
     @objc func touchIDLoginAction() {
@@ -285,6 +305,21 @@ class SignInView: UIView, UITextFieldDelegate {
         self.signInButtonRightConstraintStart.isActive = true
         self.signInButtonRightConstraintEnd = self.signInButton.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -20)
         self.signInButtonRightConstraintEnd.isActive = false
+        
+        // api button
+          self.addSubview(self.apiButton)
+          self.apiButton.translatesAutoresizingMaskIntoConstraints = false
+          self.apiButton.setTitle("  API  ", for: .normal)
+          self.apiButton.backgroundColor = UIColor(named: .brown)
+          self.apiButton.isEnabled = true
+        self.apiButton.alpha = 1.0
+          
+          self.apiButton.bottomAnchor.constraint(equalTo: self.centerYAnchor, constant: -20).isActive = true
+        
+          self.apiButtonRightConstraintStart = self.apiButton.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 20)
+          self.apiButtonRightConstraintStart.isActive = true
+            self.apiButtonRightConstraintEnd = self.apiButton.rightAnchor.constraint(equalTo: self.signInButton.leftAnchor, constant: -20)
+          self.apiButtonRightConstraintEnd.isActive = false
         
         // passwordField Field
         self.addSubview(self.passwordField)
