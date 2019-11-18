@@ -7,7 +7,7 @@ target 'EquityStatus' do
 
   # Pods for EquityStatus
 	pod 'Charts', '~> 3.0.1'
-	pod 'SQLite.swift', '~> 0.12.0'
+	pod 'SQLite.swift', '~> 0.11.6'
 
 
   target 'EquityStatusTests' do

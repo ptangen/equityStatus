@@ -11,7 +11,7 @@
 #endif
 
 #import "SQLite.h"
-#import "SQLiteObjc.h"
+#import "SQLite-Bridging.h"
 
 FOUNDATION_EXPORT double SQLiteVersionNumber;
 FOUNDATION_EXPORT const unsigned char SQLiteVersionString[];

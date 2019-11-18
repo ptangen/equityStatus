@@ -112,15 +112,15 @@ class TabsViewController: UITabBarController, UITabBarControllerDelegate {
         
         let optionMenu = UIAlertController(title: nil, message: "Menu", preferredStyle: .actionSheet)
         
-        let signOutAction = UIAlertAction(title: "Sign Out", style: .default, handler: { (alert: UIAlertAction!) -> Void in
-            let signInControllerInst = SignInViewController()
-            self.navigationController?.pushViewController(signInControllerInst, animated: true) // show destination with nav bar
-        })
+//        let signOutAction = UIAlertAction(title: "Sign Out", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+//            let signInControllerInst = SignInViewController()
+//            self.navigationController?.pushViewController(signInControllerInst, animated: true) // show destination with nav bar
+//        })
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: { (alert: UIAlertAction!) -> Void in })
         
         // Add actions to menu and display
-        optionMenu.addAction(signOutAction)
+        //optionMenu.addAction(signOutAction)
         optionMenu.addAction(cancelAction)
         self.present(optionMenu, animated: true, completion: nil)
     }

@@ -25,13 +25,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         statusBarBackground.backgroundColor = UIColor(named: .statusBarBlue)
         //deprecated in 4.2: UIApplication.shared.statusBarStyle = .lightContent // sets status bar text color white
         
-        let signInViewControllerInst = SignInViewController()
+        let adminTabsViewControllerInst = AdminTabsViewController()
+        //let signInViewControllerInst = SignInViewController()
         //let tabViewControllerInst = TabsViewController()
         
         self.window = UIWindow(frame: UIScreen.main.bounds)
         if let window = self.window {
             window.backgroundColor = UIColor.white
-            let navigationController = UINavigationController(rootViewController: signInViewControllerInst) // show signIn on startup
+            let navigationController = UINavigationController(rootViewController: adminTabsViewControllerInst)
+            //let navigationController = UINavigationController(rootViewController: signInViewControllerInst) // show signIn on startup
             //let navigationController = UINavigationController(rootViewController: tabViewControllerInst) // show buy on startup
             navigationController.view.addSubview(statusBarBackground)
             navigationController.navigationBar.tintColor = UIColor.white

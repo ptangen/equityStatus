@@ -11,57 +11,7 @@ import UIKit
 
 class APIClient {
     
-    class func requestAuth(userName: String, password: String, completion: @escaping (apiResponse) -> Void) {
-        guard let userNameSubmitted = userName.addingPercentEncoding(withAllowedCharacters: .urlUserAllowed) else {
-            completion(.userNameInvalid)
-            return
-        }
-        
-        guard let passwordSubmitted = password.addingPercentEncoding(withAllowedCharacters: .urlPasswordAllowed) else {
-            completion(.passwordInvalid)
-            return
-        }
-
-        let urlString = "\(Secrets.apiURL)auth.php"
-        let url = URL(string: urlString)
-        if let url = url {
-            var request = URLRequest(url: url)
-
-            request.httpMethod = "POST"
-            request.setValue("application/json", forHTTPHeaderField: "Accept")
-            request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-        
-            let parameterString = "userNameSubmitted=\(userNameSubmitted)&passwordSubmitted=\(passwordSubmitted)"
-            request.httpBody = parameterString.data(using: .utf8)
-       
-            URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
-                if let data = data {
-                    DispatchQueue.main.async {
-                        do {
-                            let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String : String]
-                            let results = json?["results"]
-                
-                            if results == "authenticated" {
-                                completion(.authenticated)
-                            } else if results == "userNameInvalid" {
-                                completion(.userNameInvalid)
-                            } else if results == "passwordInvalid" {
-                                completion(.passwordInvalid)
-                            } else {
-                                completion(.noReply)
-                            }
-                        } catch {
-                            completion(.noReply)
-                        }
-                    }
-                }
-            }).resume()
-        } else {
-            print("error: unable to unwrap url")
-        }
-    }
-    
-    class func requestRawData(measure: String, ticker: String, completion: @escaping ([String: Any]) -> Void) {
+    class func requestHistoricalData(measure: String, ticker: String, completion: @escaping ([String: Any]) -> Void) {
         // get values for some measure from the API
         let urlString = "https://api-v2.intrinio.com/historical_data/\(ticker)/\(measure)"
         let url = URL(string: urlString)
@@ -72,7 +22,7 @@ class APIClient {
             request.setValue("application/json", forHTTPHeaderField: "Accept")
             request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         
-            let parameterString = "api_key=\(Secrets.rawDataApiKey)&type=FY&sort_order=desc"
+            let parameterString = "api_key=\(Secrets.intrinioKey)&type=FY&sort_order=desc"
             request.httpBody = parameterString.data(using: .utf8)
        
             URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
@@ -106,6 +56,53 @@ class APIClient {
         }
     }
     
+    class func requestCompanies(completion: @escaping ([String: Any]) -> Void) {
+        // get values for some measure from the API
+        let urlString = "https://api-v2.intrinio.com/securities"
+        let url = URL(string: urlString)
+        if let url = url {
+            var request = URLRequest(url: url)
+            
+            print("requestCompanies")
+
+            request.httpMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "Accept")
+            request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        
+            let parameterString = "api_key=\(Secrets.intrinioKey)&currency=USD&code=EQS&composite_mic=USCOMP"
+            request.httpBody = parameterString.data(using: .utf8)
+       
+            URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
+                if let data = data {
+                    DispatchQueue.main.async {
+                        do {
+                            let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+                            
+                            //print(json)
+                            if let results = json?["message"] {
+                                //print(results)
+                                completion(["message": results])
+                            } else if let results = json?["securities"] as? [Any] {
+                                //print(results)
+                                completion(["results": results])
+                            } else {
+                                completion(["message": "no data found"])
+                            }
+                        } catch {
+                            print("server not found")
+                            completion(["message": "server not found"])
+                        }
+                    }
+                }
+                if let error = error {
+                    completion(["message": error])
+                }
+            }).resume()
+        } else {
+            print("error: unable to unwrap url")
+        }
+    }
+    
     class func extractValuesFromJSON(results: [Any]) -> [NSNumber]{
         // extract the values from the JSON, there should be 10 yrs of values, but sometimes there is less.
         var valuesFound = [NSNumber]()
@@ -116,9 +113,6 @@ class APIClient {
                 }
             }
         }
-        
-        
-        
         return valuesFound
     }
     
@@ -466,6 +460,22 @@ class APIClient {
         } else {
             print("error: unable to unwrap url")
         }
+    }
+    
+    class func fetchValues() {
+        print("fetchValues")
+        APIClient.requestHistoricalData(measure: "basiceps", ticker: "AAPL", completion: { response in
+            if let responseUnwrapped = response["message"]{
+                print(responseUnwrapped)
+            }
+            if let responseUnwrapped = response["extractedValues"]{
+                print(responseUnwrapped)
+                // calc EPSi
+                // calc EPSv
+            }
+                
+        }) // end apiClient.requestAuth
+        
     }
 }
 
