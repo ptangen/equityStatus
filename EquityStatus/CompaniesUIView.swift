@@ -31,15 +31,20 @@ class CompaniesView: UIView, UITableViewDataSource, UITableViewDelegate {
         self.companiesTableViewInst.accessibilityLabel = "companiesTableViewInst"
         self.companiesTableViewInst.accessibilityIdentifier = "companiesTableViewInst"
         
-        //self.createTable()
+        //self.dropTables()
+        //self.createTables()
+        //self.insertCompanies()
         //self.insertRows(tickerVal: "AA", nameVal: "A_Name", fyEndMonthVal: 05)
         //self.runCommand()
         //self.renameColumn()
         //self.updateRows()
-        self.selectRows()
-        self.pageLayout()
-        //self.insertCompanies()
         
+        // select the rows and update the table
+        self.selectRows() {isSuccessful in
+            if isSuccessful {
+                self.pageLayout()
+            }
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -74,22 +79,6 @@ class CompaniesView: UIView, UITableViewDataSource, UITableViewDelegate {
         return cell
     }
     
-    func insertCompanies() {
-        print("fetchValues")
-        APIClient.requestCompanies(completion: { response in
-            if let responseUnwrapped = response["message"]{
-                print("Message 3: \(responseUnwrapped)")
-            }
-           
-            for companyFound in response["results"] as! [Any] {
-                let companyFoundDict = companyFound as! [String: String]
-                if let nameUnwrapped = companyFoundDict["name"], let tickerUnwrapped = companyFoundDict["ticker"] {
-                    self.insertRows(tickerVal: tickerUnwrapped, nameVal: nameUnwrapped, fyEndMonthVal: 00)
-                }
-            }
-        })
-    }
-    
     // doc: https://github.com/stephencelis/SQLite.swift/blob/master/Documentation/Index.md#updating-rows
     func getDBConnection() -> Connection {
         var database: Connection!
@@ -104,26 +93,41 @@ class CompaniesView: UIView, UITableViewDataSource, UITableViewDelegate {
         return database
     }
     
-    func createTable(){
-        print("create table")
+    func addTables(completion: @escaping (Bool) -> Void){
+        print("addTables")
         let database = getDBConnection()
         
-        // create table
-        let sqlStatement = companies.create{ (table) in
+        // define table
+        let addCompaniesTable = companies.create{ (table) in
             table.column(ticker, primaryKey: true)
             table.column(name)
             table.column(fyEndMonth)
         }
         
         do {
-            try database.run(sqlStatement)
+            try database.run(addCompaniesTable)
+            // populate the companies table
+            APIClient.requestCompanies(completion: { response in
+                if let responseUnwrapped = response["message"]{
+                    print("Message 3: \(responseUnwrapped)")
+                }
+               
+                for companyFound in response["results"] as! [Any] {
+                    let companyFoundDict = companyFound as! [String: String]
+                    if let nameUnwrapped = companyFoundDict["name"], let tickerUnwrapped = companyFoundDict["ticker"] {
+                        self.insertRows(tickerVal: tickerUnwrapped, nameVal: nameUnwrapped, fyEndMonthVal: 00)
+                    }
+                }
+                completion(true)
+            })
         } catch {
             print(error)
+            completion(false)
         }
     }
     
     func insertRows(tickerVal: String, nameVal: String, fyEndMonthVal: Int){
-        print("insert completed")
+        //print("insert completed")
         let database = getDBConnection()
         
         // insert a row
@@ -135,15 +139,17 @@ class CompaniesView: UIView, UITableViewDataSource, UITableViewDelegate {
         }
     }
     
-    func runCommand(){
-        print("runCommand")
+    func dropTables(completion: @escaping (Bool) -> Void){
+        print("drop tables")
         let database = getDBConnection()
         
         do {
             try database.run(companies.drop())
-            
+            self.companiesArr = []
+            completion(true)
         } catch {
             print(error)
+            completion(false)
         }
     }
     
@@ -160,20 +166,24 @@ class CompaniesView: UIView, UITableViewDataSource, UITableViewDelegate {
         }
     }
     
-    func selectRows(){
+    func selectRows(completion: @escaping (Bool) -> Void) {
         print("selectRows")
         let database = getDBConnection()
 
         do {
             let companyRows = try database.prepare(companies.order(ticker.asc))
+            self.companiesArr.removeAll()
             for company in companyRows {
                 //print("ticker: \(company[ticker]), name: \(company[name]), fyEndMonth: \(String(describing: company[fyEndMonth]))")
                 
                 let companyInst = Company(ticker: company[ticker], name: company[name], fyEndMonth: Int(company[fyEndMonth]))
-                companiesArr.append(companyInst)
+                self.companiesArr.append(companyInst)
             }
+            completion(true)
         } catch {
             print(error)
+            self.companiesArr.removeAll()
+            completion(true)
         }
     }
 }

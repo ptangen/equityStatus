@@ -48,16 +48,51 @@ class AdminTabsViewController: UITabBarController, UITabBarControllerDelegate {
     @objc func menuButtonClicked(sender: UIBarButtonItem) {
         
         let optionMenu = UIAlertController(title: nil, message: "Menu", preferredStyle: .actionSheet)
+        let companiesViewControllerInst = CompaniesViewController()
         
-        let signOutAction = UIAlertAction(title: "Sign Out", style: .default, handler: { (alert: UIAlertAction!) -> Void in
-            //let signInControllerInst = SignInViewController()
-            //self.navigationController?.pushViewController(signInControllerInst, animated: true) // show destination with nav bar
+        let dropTables = UIAlertAction(title: "Drop Tables", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+            companiesViewControllerInst.companiesViewInst.dropTables(){isSuccessful in
+                if isSuccessful {
+                    // select the rows and update the table
+                    self.companiesViewControllerInst.companiesViewInst.selectRows() {isSuccessful in
+                        if isSuccessful {
+                            self.companiesViewControllerInst.companiesViewInst.companiesTableViewInst.reloadData()
+                        }
+                    }
+                }
+            }
+        })
+        
+        let addTables = UIAlertAction(title: "Add Tables", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+            companiesViewControllerInst.companiesViewInst.addTables(){isSuccessful in
+                if isSuccessful {
+                    // select the rows and update the table
+                    self.companiesViewControllerInst.companiesViewInst.selectRows() {isSuccessful in
+                        if isSuccessful {
+                            self.companiesViewControllerInst.companiesViewInst.companiesTableViewInst.reloadData()
+                        }
+                    }
+                }
+            }
+        })
+        
+        let reloadCompaniesTable = UIAlertAction(title: "Reload Table", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+                
+                print("refreshTableView")
+                self.companiesViewControllerInst.companiesViewInst.selectRows() {isSuccessful in
+                    if isSuccessful {
+                        self.companiesViewControllerInst.companiesViewInst.companiesTableViewInst.reloadData()
+                    }
+                }
         })
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: { (alert: UIAlertAction!) -> Void in })
         
         // Add actions to menu and display
-        //optionMenu.addAction(signOutAction)
+        
+        optionMenu.addAction(reloadCompaniesTable)
+        optionMenu.addAction(dropTables)
+        optionMenu.addAction(addTables)
         optionMenu.addAction(cancelAction)
         self.present(optionMenu, animated: true, completion: nil)
     }
