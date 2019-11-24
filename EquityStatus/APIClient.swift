@@ -103,6 +103,103 @@ class APIClient {
         }
     }
     
+    class func requestLastFilingDate(tickerParameter: String, year: String, completion: @escaping ([String: Any]) -> Void) {
+        // get the last filing date for the FY given a ticker and year
+        
+        let urlString = "https://api-v2.intrinio.com/companies/\(tickerParameter)/fundamentals/lookup/income_statement/\(year)/FY?api_key=\(Secrets.intrinioKey)"
+        let url = URL(string: urlString)
+        if let url = url {
+            var request = URLRequest(url: url)
+            
+            request.httpMethod = "GET"
+            request.setValue("application/json", forHTTPHeaderField: "Accept")
+            request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+       
+            URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
+                if let data = data {
+                    DispatchQueue.main.async {
+                        do {
+                            let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+                            if (json?["message"]) != nil {
+                                completion(["results": "error" as String])
+                            } else if let dateUnwrapped = json?["end_date"] {
+                                completion(["results": dateUnwrapped as! String])
+                            } else {
+                                completion(["results": "no data found" as String])
+                            }
+                        } catch {
+                            print("server not found")
+                            completion(["results": "server not found"])
+                        }
+                    }
+                }
+                if let error = error {
+                    completion(["message": error])
+                }
+            }).resume()
+        } else {
+            print("error: unable to unwrap url")
+        }
+    }
+    
+    class func requestEPS(ticker: String, measure: String, completion: @escaping ([String: Any]) -> Void) {
+        let apiTags:[String: String] = ["epsi": "basiceps", "roei": "roe"]
+        let urlString = "https://api-v2.intrinio.com/historical_data/\(ticker)/\(apiTags[measure]!)" //roe" //basiceps"
+        let url = URL(string: urlString)
+        if let url = url {
+            var request = URLRequest(url: url)
+            
+            request.httpMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "Accept")
+            request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+            
+            let parameterString = "sort_order=desc&api_key=\(Secrets.intrinioKey)"
+            request.httpBody = parameterString.data(using: .utf8)
+
+            URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
+                if let data = data {
+                    DispatchQueue.main.async {
+                        do {
+                            let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+                            if let message = (json?["message"]) {
+                                completion(["error": message as! String])
+                            } else if let epsArr = json?["historical_data"] {
+                                //print("historical data: \(epsArr)")
+                                var epsValues = [Double]()
+                                var nilValueFound: Bool = false
+                                for eps in epsArr as! [[String: Any?]] {
+                                    if let epsValue = (eps["value"]) {
+                                        if epsValues.count < 40 && !nilValueFound {
+                                            // collect values for the most recent 40 quarters
+                                            //print("value to append: \(String(describing: epsValue))")
+                                            if let epsValueUnwrapped = epsValue as! Double? {
+                                                epsValues.append(epsValueUnwrapped)
+                                            } else {
+                                                nilValueFound = true // after no value found dont add remaining values
+                                            }
+                                        }
+                                    }
+                                }
+                                //print(epsValues)
+                                completion(["results": epsValues])
+                            } else {
+                                completion(["error": "no data found" as String])
+                            }
+                        } catch {
+                            print("server not found")
+                            completion(["results": "server not found"])
+                        }
+                    }
+                }
+                if let error = error {
+                    completion(["message": error])
+                }
+            }).resume()
+        } else {
+            print("error: unable to unwrap url")
+        }
+    }
+    
     class func extractValuesFromJSON(results: [Any]) -> [NSNumber]{
         // extract the values from the JSON, there should be 10 yrs of values, but sometimes there is less.
         var valuesFound = [NSNumber]()

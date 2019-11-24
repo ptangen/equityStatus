@@ -21,6 +21,7 @@
 		C0409F8D1E0743CD00BEC5DD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0409F8C1E0743CD00BEC5DD /* Assets.xcassets */; };
 		C0409F901E0743CD00BEC5DD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0409F8E1E0743CD00BEC5DD /* LaunchScreen.storyboard */; };
 		C0409F9B1E0743CD00BEC5DD /* APITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0409F9A1E0743CD00BEC5DD /* APITests.swift */; };
+		C04ECC9C23837E8500187790 /* Measure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04ECC9B23837E8500187790 /* Measure.swift */; };
 		C05FC1161E09B5FE008EA907 /* ChartStringFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05FC1151E09B5FE008EA907 /* ChartStringFormatter.swift */; };
 		C05FC11C1E0A08CD008EA907 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05FC11B1E0A08CD008EA907 /* Secrets.swift */; };
 		C061ED0C1E0784B000081030 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C061ED0B1E0784B000081030 /* Constants.swift */; };
@@ -30,7 +31,7 @@
 		C085E32B1E119E04008A7315 /* EvaluationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C085E32A1E119E04008A7315 /* EvaluationTableViewCell.swift */; };
 		C08C417923804D6D002F0543 /* CompaniesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08C417823804D6D002F0543 /* CompaniesViewController.swift */; };
 		C08C417C23804E3A002F0543 /* CompaniesUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08C417B23804E3A002F0543 /* CompaniesUIView.swift */; };
-		C08C417E2380513D002F0543 /* CompaniesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08C417D2380513D002F0543 /* CompaniesTableViewCell.swift */; };
+		C08C417E2380513D002F0543 /* tableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08C417D2380513D002F0543 /* tableViewCell.swift */; };
 		C08C418123807519002F0543 /* Company.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08C418023807519002F0543 /* Company.swift */; };
 		C08EC7511E3B91FA005A5A5E /* MeasurePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08EC7501E3B91FA005A5A5E /* MeasurePageViewController.swift */; };
 		C08EC7531E3B9369005A5A5E /* CalcMeasureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08EC7521E3B9369005A5A5E /* CalcMeasureViewController.swift */; };
@@ -83,6 +84,7 @@
 		C0409F961E0743CD00BEC5DD /* EquityStatusTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EquityStatusTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0409F9A1E0743CD00BEC5DD /* APITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APITests.swift; sourceTree = "<group>"; };
 		C0409F9C1E0743CD00BEC5DD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C04ECC9B23837E8500187790 /* Measure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Measure.swift; sourceTree = "<group>"; };
 		C05BD1861E6083B8001F54D5 /* EquityStatusTests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EquityStatusTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		C05FC1151E09B5FE008EA907 /* ChartStringFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartStringFormatter.swift; sourceTree = "<group>"; };
 		C05FC11B1E0A08CD008EA907 /* Secrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
@@ -93,7 +95,7 @@
 		C085E32A1E119E04008A7315 /* EvaluationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EvaluationTableViewCell.swift; sourceTree = "<group>"; };
 		C08C417823804D6D002F0543 /* CompaniesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompaniesViewController.swift; sourceTree = "<group>"; };
 		C08C417B23804E3A002F0543 /* CompaniesUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompaniesUIView.swift; sourceTree = "<group>"; };
-		C08C417D2380513D002F0543 /* CompaniesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompaniesTableViewCell.swift; sourceTree = "<group>"; };
+		C08C417D2380513D002F0543 /* tableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tableViewCell.swift; sourceTree = "<group>"; };
 		C08C418023807519002F0543 /* Company.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Company.swift; sourceTree = "<group>"; };
 		C08EC7501E3B91FA005A5A5E /* MeasurePageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeasurePageViewController.swift; sourceTree = "<group>"; };
 		C08EC7521E3B9369005A5A5E /* CalcMeasureViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalcMeasureViewController.swift; sourceTree = "<group>"; };
@@ -255,6 +257,7 @@
 				C069F5631E082FF500913486 /* APIClient.swift */,
 				C069F5671E0830EC00913486 /* DataStore.swift */,
 				C08C418023807519002F0543 /* Company.swift */,
+				C04ECC9B23837E8500187790 /* Measure.swift */,
 				C05FC11B1E0A08CD008EA907 /* Secrets.swift */,
 				C02D50A01E154F020000330F /* Equity.swift */,
 			);
@@ -285,7 +288,7 @@
 			isa = PBXGroup;
 			children = (
 				C08C417B23804E3A002F0543 /* CompaniesUIView.swift */,
-				C08C417D2380513D002F0543 /* CompaniesTableViewCell.swift */,
+				C08C417D2380513D002F0543 /* tableViewCell.swift */,
 			);
 			name = Admin;
 			sourceTree = "<group>";
@@ -506,9 +509,10 @@
 				C0BF222C1E08686A005B7E55 /* EvaluationViewController.swift in Sources */,
 				C02D509D1E12AB8D0000330F /* EquityStatus.xcdatamodeld in Sources */,
 				C0BF222E1E086885005B7E55 /* EvaluationView.swift in Sources */,
+				C04ECC9C23837E8500187790 /* Measure.swift in Sources */,
 				C0BF222A1E0861B6005B7E55 /* BuyView.swift in Sources */,
 				C08EC7531E3B9369005A5A5E /* CalcMeasureViewController.swift in Sources */,
-				C08C417E2380513D002F0543 /* CompaniesTableViewCell.swift in Sources */,
+				C08C417E2380513D002F0543 /* tableViewCell.swift in Sources */,
 				C0BF22341E086AA1005B7E55 /* TabsViewController.swift in Sources */,
 				C08C417C23804E3A002F0543 /* CompaniesUIView.swift in Sources */,
 				C0C87C4B1E11838000759947 /* PercentValueFormatter.swift in Sources */,
@@ -613,7 +617,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -667,7 +671,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -689,7 +693,7 @@
 					"$(PROJECT_DIR)/build/Debug-iphoneos/KIF",
 				);
 				INFOPLIST_FILE = EquityStatus/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ptangen.equityStatus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -713,7 +717,7 @@
 					"$(PROJECT_DIR)/build/Debug-iphoneos/KIF",
 				);
 				INFOPLIST_FILE = EquityStatus/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ptangen.equityStatus;
 				PRODUCT_NAME = "$(TARGET_NAME)";

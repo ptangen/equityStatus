@@ -8,28 +8,32 @@
 
 import UIKit
 import SQLite
-import CoreData
 
 class CompaniesView: UIView, UITableViewDataSource, UITableViewDelegate {
 
     let companiesTableViewInst = UITableView()
+    let dateFormatterGet = DateFormatter()
     
     // define companies table for use in table editing
     var companiesArr: [Company] = []
-    let companies = Table("companies")
-    let ticker = Expression<String>("ticker")
-    let name = Expression<String>("name")
-    let fyEndMonth = Expression<Int>("fyEndMonth")
+    // table
+    let companiesTable = Table("companiesTable")
+    let tickerCol = Expression<String>("tickerCol")
+    let nameCol = Expression<String>("nameCol")
+    let epsiCol = Expression<Int?>("epsiCol")
+    let epsvCol = Expression<Double?>("epsvCol")
+    let roeiCol = Expression<Int?>("roeiCol")
     
     override init(frame:CGRect){
         super.init(frame: frame)
-        self.accessibilityLabel = "evaluationViewInst"
         self.companiesTableViewInst.delegate = self
         self.companiesTableViewInst.dataSource = self
-        self.companiesTableViewInst.register(CompaniesTableViewCell.self, forCellReuseIdentifier: "prototype")
+        self.companiesTableViewInst.register(tableViewCell.self, forCellReuseIdentifier: "prototype")
         self.companiesTableViewInst.separatorColor = UIColor.clear
         self.companiesTableViewInst.accessibilityLabel = "companiesTableViewInst"
         self.companiesTableViewInst.accessibilityIdentifier = "companiesTableViewInst"
+        
+        dateFormatterGet.dateFormat = "yyyy-MM-dd"
         
         //self.dropTables()
         //self.createTables()
@@ -71,11 +75,19 @@ class CompaniesView: UIView, UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = CompaniesTableViewCell(style: .default, reuseIdentifier: "prototype")
+        let cell = tableViewCell(style: .default, reuseIdentifier: "prototype")
         cell.selectionStyle = .none
+        
         cell.textLabel?.text = self.companiesArr[indexPath.row].ticker
-        cell.nameLabel.text = self.companiesArr[indexPath.row].name
-        cell.monthLabel.text = String(self.companiesArr[indexPath.row].fyEndMonth)
+        cell.col2Label.text = self.companiesArr[indexPath.row].name
+        if let epsi = self.companiesArr[indexPath.row].epsi {
+            cell.col3Label.text = epsi.description
+        }
+        if let roei = self.companiesArr[indexPath.row].roei {
+            cell.col4Label.text = roei.description
+        }
+        //cell.col3Label.text = String(self.companiesArr[indexPath.row].epsi)
+        //cell.col4Label.text = String(self.companiesArr[indexPath.row].epsv)
         return cell
     }
     
@@ -93,29 +105,33 @@ class CompaniesView: UIView, UITableViewDataSource, UITableViewDelegate {
         return database
     }
     
-    func addTables(completion: @escaping (Bool) -> Void){
+    func addCompanyTable(completion: @escaping (Bool) -> Void){
         print("addTables")
         let database = getDBConnection()
         
         // define table
-        let addCompaniesTable = companies.create{ (table) in
-            table.column(ticker, primaryKey: true)
-            table.column(name)
-            table.column(fyEndMonth)
+        let addCompaniesTable = companiesTable.create{ (table) in
+            table.column(tickerCol, primaryKey: true)
+            table.column(nameCol)
+            table.column(epsiCol)
+            table.column(epsvCol)
+            table.column(roeiCol)
         }
         
         do {
             try database.run(addCompaniesTable)
-            // populate the companies table
+            // populate the companies table with ticker and name
             APIClient.requestCompanies(completion: { response in
                 if let responseUnwrapped = response["message"]{
                     print("Message 3: \(responseUnwrapped)")
                 }
+                
+                //let yearsAgo = Date().advanced(by: -1000000000)
                
                 for companyFound in response["results"] as! [Any] {
                     let companyFoundDict = companyFound as! [String: String]
                     if let nameUnwrapped = companyFoundDict["name"], let tickerUnwrapped = companyFoundDict["ticker"] {
-                        self.insertRows(tickerVal: tickerUnwrapped, nameVal: nameUnwrapped, fyEndMonthVal: 00)
+                        self.insertRows(ticker: tickerUnwrapped, name: nameUnwrapped, epsi: nil, epsv: nil, roei: nil)
                     }
                 }
                 completion(true)
@@ -126,12 +142,12 @@ class CompaniesView: UIView, UITableViewDataSource, UITableViewDelegate {
         }
     }
     
-    func insertRows(tickerVal: String, nameVal: String, fyEndMonthVal: Int){
-        //print("insert completed")
+    func insertRows(ticker: String, name: String, epsi: Int?, epsv: Double?, roei: Int?){
+        //print("insertRows")
         let database = getDBConnection()
         
         // insert a row
-        let sqlStatement = companies.insert(ticker <- tickerVal, name <- nameVal, fyEndMonth <- fyEndMonthVal)
+        let sqlStatement = companiesTable.insert(tickerCol <- ticker, nameCol <- name)
         do {
             try database.run(sqlStatement)
         } catch {
@@ -139,12 +155,51 @@ class CompaniesView: UIView, UITableViewDataSource, UITableViewDelegate {
         }
     }
     
-    func dropTables(completion: @escaping (Bool) -> Void){
+    func updateMeasures(measure: String, completion: @escaping (Bool) -> Void){
+
+        let myGroup = DispatchGroup() // used to determine for loop is complete
+
+        for company in companiesArr {
+            myGroup.enter()
+            APIClient.requestEPS(ticker: company.ticker, measure: measure, completion: { response in
+                if let epsArr = response["results"] as! [Double]? {
+                    //print(epsArr)
+//                    if (results as! String).isEqual("error") || (results as! String).isEqual("no data found") {
+//                        print(results)
+//                    } else {
+                    //print("update rows")
+                    let database = self.getDBConnection()
+                    
+                    let measureValue = self.getInterestRate(valuesArr: epsArr)
+                    print("measure: \(measure), measureValue: \(measureValue)")
+
+                    // where clause
+                    let selectedTicker = self.companiesTable.filter(self.tickerCol == company.ticker)
+                    do {
+                        if measure == "epsi" {
+                            try database.run(selectedTicker.update(self.epsiCol <- measureValue))
+                        } else if measure == "roei" {
+                            try database.run(selectedTicker.update(self.roeiCol <- measureValue))
+                        }
+                    } catch {
+                        print(error)
+                    }
+                }
+                myGroup.leave()
+            })
+        }
+
+        myGroup.notify(queue: DispatchQueue.main, execute: {
+            completion(true) // do select and update tableview
+        })
+    }
+
+    func dropCompanyTable(completion: @escaping (Bool) -> Void){
         print("drop tables")
         let database = getDBConnection()
         
         do {
-            try database.run(companies.drop())
+            try database.run(companiesTable.drop())
             self.companiesArr = []
             completion(true)
         } catch {
@@ -153,17 +208,54 @@ class CompaniesView: UIView, UITableViewDataSource, UITableViewDelegate {
         }
     }
     
-    func updateRows(){
+    func updateRows(ticker: String, measure: String, value: Int){
         print("update rows")
         let database = getDBConnection()
         
         // where clause
-        let updateName = companies.filter(name == "B_Name")
+        let updateName = companiesTable.filter(tickerCol == ticker)
         do {
-            try database.run(updateName.update(ticker <- "BB"))
+            try database.run(updateName.update(epsiCol <- value))
         } catch {
             print(error)
         }
+    }
+    
+    func getInterestRate(valuesArr: [Double]) -> Int {
+        // formula: https://www.thecalculatorsite.com/articles/finance/compound-interest-formula.php
+        // assumes 1 compounding period per year
+        //var lastValue: Double
+        var firstValueAdjusted: Double
+        var lastValueAdjusted: Double
+        var interestRatePercent: Int = 0
+        
+        // the last value is the initial value in the interest rate calculation, this value cannot be
+        // negative. As a result, any negative value is converted into 0.1 here
+        // the first value also has to be positive and greater than or equal to the last value
+        if let firstValue = valuesArr.first, let lastValue = valuesArr.last {
+            
+            if lastValue.isNaN || lastValue < 0{
+                lastValueAdjusted = 0.1
+            } else {
+                lastValueAdjusted = lastValue
+            }
+            
+            if firstValue.isNaN {
+                firstValueAdjusted = 0.2
+            } else if firstValue < lastValueAdjusted {
+                return -1
+            } else {
+                firstValueAdjusted = firstValue
+            }
+            
+            //print("firstValueAdjusted: \(firstValueAdjusted), lastValueAdjusted: \(lastValueAdjusted)")
+            
+            let interestRateInner = firstValueAdjusted/lastValueAdjusted
+            let interestRateExponent = 1 / Double(valuesArr.count/4) // data comes by quarter so divide by for to get annual rate
+            let interestRate = (pow(interestRateInner, interestRateExponent)) - 1
+            interestRatePercent = Int((interestRate * 100))
+        }
+        return interestRatePercent
     }
     
     func selectRows(completion: @escaping (Bool) -> Void) {
@@ -171,14 +263,30 @@ class CompaniesView: UIView, UITableViewDataSource, UITableViewDelegate {
         let database = getDBConnection()
 
         do {
-            let companyRows = try database.prepare(companies.order(ticker.asc))
+            let companyRows = try database.prepare(companiesTable.order(tickerCol.asc))
             self.companiesArr.removeAll()
-            for company in companyRows {
-                //print("ticker: \(company[ticker]), name: \(company[name]), fyEndMonth: \(String(describing: company[fyEndMonth]))")
+            for companyRow in companyRows {
+                //print("ticker: \(companyRow[tickerCol]), name: \(companyRow[nameCol]), collectionDay: \(companyRow[collectionDayCol]) lastCollection: \(String(describing: companyRow[lastCollectionCol]))")
                 
-                let companyInst = Company(ticker: company[ticker], name: company[name], fyEndMonth: Int(company[fyEndMonth]))
-                self.companiesArr.append(companyInst)
+
+                let company = Company(ticker: companyRow[tickerCol], name: companyRow[nameCol])
+                
+                // set values for optional properties
+                if let epsi = companyRow[epsiCol] {
+                    company.epsi = epsi
+                }
+                
+                if let epsv = companyRow[epsvCol] {
+                    company.epsv = epsv
+                }
+                
+                if let roei = companyRow[roeiCol] {
+                    company.roei = roei
+                }
+                
+                self.companiesArr.append(company)
             }
+  
             completion(true)
         } catch {
             print(error)
