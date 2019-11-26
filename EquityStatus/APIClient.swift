@@ -11,7 +11,7 @@ import UIKit
 
 class APIClient {
     
-    class func requestHistoricalData(measure: String, ticker: String, completion: @escaping ([String: Any]) -> Void) {
+    class func requestHistoricalDataOLD(measure: String, ticker: String, completion: @escaping ([String: Any]) -> Void) {
         // get values for some measure from the API
         let urlString = "https://api-v2.intrinio.com/historical_data/\(ticker)/\(measure)"
         let url = URL(string: urlString)
@@ -103,48 +103,18 @@ class APIClient {
         }
     }
     
-    class func requestLastFilingDate(tickerParameter: String, year: String, completion: @escaping ([String: Any]) -> Void) {
-        // get the last filing date for the FY given a ticker and year
-        
-        let urlString = "https://api-v2.intrinio.com/companies/\(tickerParameter)/fundamentals/lookup/income_statement/\(year)/FY?api_key=\(Secrets.intrinioKey)"
-        let url = URL(string: urlString)
-        if let url = url {
-            var request = URLRequest(url: url)
-            
-            request.httpMethod = "GET"
-            request.setValue("application/json", forHTTPHeaderField: "Accept")
-            request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-       
-            URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
-                if let data = data {
-                    DispatchQueue.main.async {
-                        do {
-                            let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-                            if (json?["message"]) != nil {
-                                completion(["results": "error" as String])
-                            } else if let dateUnwrapped = json?["end_date"] {
-                                completion(["results": dateUnwrapped as! String])
-                            } else {
-                                completion(["results": "no data found" as String])
-                            }
-                        } catch {
-                            print("server not found")
-                            completion(["results": "server not found"])
-                        }
-                    }
-                }
-                if let error = error {
-                    completion(["message": error])
-                }
-            }).resume()
-        } else {
-            print("error: unable to unwrap url")
-        }
-    }
+   
     
-    class func requestEPS(ticker: String, measure: String, completion: @escaping ([String: Any]) -> Void) {
-        let apiTags:[String: String] = ["epsi": "basiceps", "roei": "roe"]
-        let urlString = "https://api-v2.intrinio.com/historical_data/\(ticker)/\(apiTags[measure]!)" //roe" //basiceps"
+    class func requestHistoricalData(ticker: String, measure: String, completion: @escaping ([String: Any]) -> Void) {
+        let apiTags:[String: String] = [
+            "eps_i": "basiceps",
+            "roe_avg": "roe",
+            "bv_i": "bookvaluepershare",
+            "dr_avg": "debttoequity",
+            "so_reduced": "weightedavebasicsharesos",
+            "pe_avg": "pricetoearnings"
+        ]
+        let urlString = "https://api-v2.intrinio.com/historical_data/\(ticker)/\(apiTags[measure]!)"
         let url = URL(string: urlString)
         if let url = url {
             var request = URLRequest(url: url)
@@ -153,7 +123,7 @@ class APIClient {
             request.setValue("application/json", forHTTPHeaderField: "Accept")
             request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
             
-            let parameterString = "sort_order=desc&api_key=\(Secrets.intrinioKey)"
+            let parameterString = "sort_order=desc&frequency=quarterly&api_key=\(Secrets.intrinioKey)"
             request.httpBody = parameterString.data(using: .utf8)
 
             URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
@@ -559,21 +529,21 @@ class APIClient {
         }
     }
     
-    class func fetchValues() {
-        print("fetchValues")
-        APIClient.requestHistoricalData(measure: "basiceps", ticker: "AAPL", completion: { response in
-            if let responseUnwrapped = response["message"]{
-                print(responseUnwrapped)
-            }
-            if let responseUnwrapped = response["extractedValues"]{
-                print(responseUnwrapped)
-                // calc EPSi
-                // calc EPSv
-            }
-                
-        }) // end apiClient.requestAuth
-        
-    }
+//    class func fetchValues() {
+//        print("fetchValues")
+//        APIClient.requestHistoricalData(measure: "basiceps", ticker: "AAPL", completion: { response in
+//            if let responseUnwrapped = response["message"]{
+//                print(responseUnwrapped)
+//            }
+//            if let responseUnwrapped = response["extractedValues"]{
+//                print(responseUnwrapped)
+//                // calc EPSi
+//                // calc EPSv
+//            }
+//
+//        }) // end apiClient.requestAuth
+//
+//    }
 }
 
 enum apiResponse {

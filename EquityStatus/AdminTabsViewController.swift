@@ -85,22 +85,8 @@ class AdminTabsViewController: UITabBarController, UITabBarControllerDelegate {
                 }
         })
         
-        let updateMeasureROEi = UIAlertAction(title: "Update ROEi", style: .default, handler: { (alert: UIAlertAction!) -> Void in
-                let measure = "roei"
-                self.companiesViewControllerInst.companiesViewInst.updateMeasures(measure: measure) {isSuccessful in
-                        if isSuccessful {
-                            self.companiesViewControllerInst.companiesViewInst.selectRows() {isSuccessful in
-                                if isSuccessful {
-                                    self.companiesViewControllerInst.companiesViewInst.companiesTableViewInst.reloadData()
-                                }
-                            }
-                        }
-                   }
-            }
-        )
-        
-        let updateMeasureEPSi = UIAlertAction(title: "Update EPSi", style: .default, handler: { (alert: UIAlertAction!) -> Void in
-                let measure = "epsi"
+        let updateMeasureEPSi = UIAlertAction(title: "Update EPS", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+                let measure = "eps_i"
                 self.companiesViewControllerInst.companiesViewInst.updateMeasures(measure: measure) {isSuccessful in
                     if isSuccessful {
                         self.companiesViewControllerInst.companiesViewInst.selectRows() {isSuccessful in
@@ -113,11 +99,85 @@ class AdminTabsViewController: UITabBarController, UITabBarControllerDelegate {
             }
         )
         
+        let updateMeasureROEAvg = UIAlertAction(title: "Update ROE Avg", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+                let measure = "roe_avg"
+                self.companiesViewControllerInst.companiesViewInst.updateMeasures(measure: measure) {isSuccessful in
+                        if isSuccessful {
+                            self.companiesViewControllerInst.companiesViewInst.selectRows() {isSuccessful in
+                                if isSuccessful {
+                                    self.companiesViewControllerInst.companiesViewInst.companiesTableViewInst.reloadData()
+                                }
+                            }
+                        }
+                   }
+            }
+        )
+        
+        let updateMeasureBVi = UIAlertAction(title: "Update BV i", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+                let measure = "bv_i"
+                self.companiesViewControllerInst.companiesViewInst.updateMeasures(measure: measure) {isSuccessful in
+                        if isSuccessful {
+                            self.companiesViewControllerInst.companiesViewInst.selectRows() {isSuccessful in
+                                if isSuccessful {
+                                    self.companiesViewControllerInst.companiesViewInst.companiesTableViewInst.reloadData()
+                                }
+                            }
+                        }
+                   }
+            }
+        )
+        
+        let updateMeasureSOreduced = UIAlertAction(title: "Update SO Reduced", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+                let measure = "so_reduced"
+                self.companiesViewControllerInst.companiesViewInst.updateMeasures(measure: measure) {isSuccessful in
+                        if isSuccessful {
+                            self.companiesViewControllerInst.companiesViewInst.selectRows() {isSuccessful in
+                                if isSuccessful {
+                                    self.companiesViewControllerInst.companiesViewInst.companiesTableViewInst.reloadData()
+                                }
+                            }
+                        }
+                   }
+            }
+        )
+        
+        let updateMeasureDRAvg = UIAlertAction(title: "Update DR Avg", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+                let measure = "dr_avg"
+                self.companiesViewControllerInst.companiesViewInst.updateMeasures(measure: measure) {isSuccessful in
+                        if isSuccessful {
+                            self.companiesViewControllerInst.companiesViewInst.selectRows() {isSuccessful in
+                                if isSuccessful {
+                                    self.companiesViewControllerInst.companiesViewInst.companiesTableViewInst.reloadData()
+                                }
+                            }
+                        }
+                   }
+            }
+        )
+        
+        let updateMeasurePEAvg = UIAlertAction(title: "Update PE Avg for ROI", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+                let measure = "pe_avg"
+                self.companiesViewControllerInst.companiesViewInst.updateMeasures(measure: measure) {isSuccessful in
+                        if isSuccessful {
+                            self.companiesViewControllerInst.companiesViewInst.selectRows() {isSuccessful in
+                                if isSuccessful {
+                                    self.companiesViewControllerInst.companiesViewInst.companiesTableViewInst.reloadData()
+                                }
+                            }
+                        }
+                   }
+            }
+        )
+        
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: { (alert: UIAlertAction!) -> Void in })
         
         // Add actions to menu and display
         optionMenu.addAction(updateMeasureEPSi)
-        optionMenu.addAction(updateMeasureROEi)
+        optionMenu.addAction(updateMeasureROEAvg)
+        optionMenu.addAction(updateMeasureBVi)
+        optionMenu.addAction(updateMeasureSOreduced)
+        optionMenu.addAction(updateMeasureDRAvg)
+        optionMenu.addAction(updateMeasurePEAvg)
         
         optionMenu.addAction(addCompanyTable)
         optionMenu.addAction(reloadCompaniesTable)
