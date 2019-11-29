@@ -37,6 +37,19 @@ struct Constants{
         case large = 72
     }
     
+    enum thresholdValues: Int {
+        case eps_i = 15
+        case eps_sd = 2
+        case roe_avg = 12
+        case bv_i = 5
+        case so_reduced = 0
+        
+        // items with duplicate values
+        static let dr_avg = bv_i.rawValue
+        static let previous_roi = eps_i.rawValue
+        static let expected_roi = eps_i.rawValue
+    }
+    
     enum iconFont: String {
         case material = "MaterialIcons-Regular"
         case fontAwesome = "FontAwesome"

@@ -24,7 +24,7 @@ class AdminTabsViewController: UITabBarController, UITabBarControllerDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.isNavigationBarHidden = false
-        self.title = "Administration"
+        self.title = "Data Collection"
         self.navigationItem.hidesBackButton = true
         UITabBar.appearance().tintColor = UIColor(named: .statusBarBlue)
         
@@ -85,7 +85,7 @@ class AdminTabsViewController: UITabBarController, UITabBarControllerDelegate {
                 }
         })
         
-        let updateMeasureEPSi = UIAlertAction(title: "Update EPS", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+        let updateMeasureEPSi = UIAlertAction(title: "Update EPS (1)", style: .default, handler: { (alert: UIAlertAction!) -> Void in
                 let measure = "eps_i"
                 self.companiesViewControllerInst.companiesViewInst.updateMeasures(measure: measure) {isSuccessful in
                     if isSuccessful {
@@ -99,7 +99,7 @@ class AdminTabsViewController: UITabBarController, UITabBarControllerDelegate {
             }
         )
         
-        let updateMeasureROEAvg = UIAlertAction(title: "Update ROE Avg", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+        let updateMeasureROEAvg = UIAlertAction(title: "Update ROE Avg (2)", style: .default, handler: { (alert: UIAlertAction!) -> Void in
                 let measure = "roe_avg"
                 self.companiesViewControllerInst.companiesViewInst.updateMeasures(measure: measure) {isSuccessful in
                         if isSuccessful {
@@ -113,7 +113,7 @@ class AdminTabsViewController: UITabBarController, UITabBarControllerDelegate {
             }
         )
         
-        let updateMeasureBVi = UIAlertAction(title: "Update BV i", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+        let updateMeasureBVi = UIAlertAction(title: "Update BV i (2)", style: .default, handler: { (alert: UIAlertAction!) -> Void in
                 let measure = "bv_i"
                 self.companiesViewControllerInst.companiesViewInst.updateMeasures(measure: measure) {isSuccessful in
                         if isSuccessful {
@@ -127,7 +127,7 @@ class AdminTabsViewController: UITabBarController, UITabBarControllerDelegate {
             }
         )
         
-        let updateMeasureSOreduced = UIAlertAction(title: "Update SO Reduced", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+        let updateMeasureSOreduced = UIAlertAction(title: "Update SO Reduced (2)", style: .default, handler: { (alert: UIAlertAction!) -> Void in
                 let measure = "so_reduced"
                 self.companiesViewControllerInst.companiesViewInst.updateMeasures(measure: measure) {isSuccessful in
                         if isSuccessful {
@@ -141,7 +141,7 @@ class AdminTabsViewController: UITabBarController, UITabBarControllerDelegate {
             }
         )
         
-        let updateMeasureDRAvg = UIAlertAction(title: "Update DR Avg", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+        let updateMeasureDRAvg = UIAlertAction(title: "Update DR Avg (2)", style: .default, handler: { (alert: UIAlertAction!) -> Void in
                 let measure = "dr_avg"
                 self.companiesViewControllerInst.companiesViewInst.updateMeasures(measure: measure) {isSuccessful in
                         if isSuccessful {
@@ -155,7 +155,7 @@ class AdminTabsViewController: UITabBarController, UITabBarControllerDelegate {
             }
         )
         
-        let updateMeasurePEAvg = UIAlertAction(title: "Update PE Avg for ROI", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+        let updateMeasurePEAvg = UIAlertAction(title: "Update PE Avg for ROI (2)", style: .default, handler: { (alert: UIAlertAction!) -> Void in
                 let measure = "pe_avg"
                 self.companiesViewControllerInst.companiesViewInst.updateMeasures(measure: measure) {isSuccessful in
                         if isSuccessful {
@@ -169,6 +169,32 @@ class AdminTabsViewController: UITabBarController, UITabBarControllerDelegate {
             }
         )
         
+        let updateExpectedROI = UIAlertAction(title: "Update Expected ROI (3)", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+            self.companiesViewControllerInst.companiesViewInst.updateROI(measure: "expected_roi"){ isSuccessful in
+                    if isSuccessful {
+                        self.companiesViewControllerInst.companiesViewInst.selectRows() {isSuccessful in
+                            if isSuccessful {
+                                self.companiesViewControllerInst.companiesViewInst.companiesTableViewInst.reloadData()
+                            }
+                        }
+                    }
+                }
+            }
+        )
+        
+        let updatePreviousROI = UIAlertAction(title: "Update Previous ROI (4)", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+            self.companiesViewControllerInst.companiesViewInst.updateROI(measure: "previous_roi"){ isSuccessful in
+                    if isSuccessful {
+                        self.companiesViewControllerInst.companiesViewInst.selectRows() {isSuccessful in
+                            if isSuccessful {
+                                self.companiesViewControllerInst.companiesViewInst.companiesTableViewInst.reloadData()
+                            }
+                        }
+                    }
+                }
+            }
+        )
+        
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: { (alert: UIAlertAction!) -> Void in })
         
         // Add actions to menu and display
@@ -178,6 +204,8 @@ class AdminTabsViewController: UITabBarController, UITabBarControllerDelegate {
         optionMenu.addAction(updateMeasureSOreduced)
         optionMenu.addAction(updateMeasureDRAvg)
         optionMenu.addAction(updateMeasurePEAvg)
+        optionMenu.addAction(updateExpectedROI)
+        optionMenu.addAction(updatePreviousROI)
         
         optionMenu.addAction(addCompanyTable)
         optionMenu.addAction(reloadCompaniesTable)

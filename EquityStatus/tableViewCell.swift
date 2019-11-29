@@ -81,7 +81,7 @@ class tableViewCell: UITableViewCell {
         roe_avgLabel.translatesAutoresizingMaskIntoConstraints = false
         roe_avgLabel.font = UIFont(name: Constants.appFont.regular.rawValue, size: CGFloat(Constants.fontSize.xxsmall.rawValue))
         roe_avgLabel.textColor = UIColor.systemGray
-        roe_avgLabel.leftAnchor.constraint(equalTo: self.textLabel!.leftAnchor, constant: 160).isActive = true
+        roe_avgLabel.leftAnchor.constraint(equalTo: self.textLabel!.leftAnchor, constant: 150).isActive = true
         roe_avgLabel.topAnchor.constraint(equalTo: self.eps_iLabel.topAnchor).isActive = true
         
         // dr_avgLabel
@@ -97,7 +97,7 @@ class tableViewCell: UITableViewCell {
         bv_iLabel.translatesAutoresizingMaskIntoConstraints = false
         bv_iLabel.font = UIFont(name: Constants.appFont.regular.rawValue, size: CGFloat(Constants.fontSize.xxsmall.rawValue))
         bv_iLabel.textColor = UIColor.systemGray
-        bv_iLabel.leftAnchor.constraint(equalTo: self.textLabel!.leftAnchor, constant: 260).isActive = true
+        bv_iLabel.leftAnchor.constraint(equalTo: self.textLabel!.leftAnchor, constant: 240).isActive = true
         bv_iLabel.topAnchor.constraint(equalTo: self.eps_iLabel.topAnchor).isActive = true
         
         // so_reducedLabel

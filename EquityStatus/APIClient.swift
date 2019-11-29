@@ -11,51 +11,6 @@ import UIKit
 
 class APIClient {
     
-    class func requestHistoricalDataOLD(measure: String, ticker: String, completion: @escaping ([String: Any]) -> Void) {
-        // get values for some measure from the API
-        let urlString = "https://api-v2.intrinio.com/historical_data/\(ticker)/\(measure)"
-        let url = URL(string: urlString)
-        if let url = url {
-            var request = URLRequest(url: url)
-
-            request.httpMethod = "POST"
-            request.setValue("application/json", forHTTPHeaderField: "Accept")
-            request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-        
-            let parameterString = "api_key=\(Secrets.intrinioKey)&type=FY&sort_order=desc"
-            request.httpBody = parameterString.data(using: .utf8)
-       
-            URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
-                if let data = data {
-                    DispatchQueue.main.async {
-                        do {
-                            let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-                            
-                            //print(json)
-                            if let results = json?["message"] {
-                                //print(results)
-                                completion(["message": results])
-                            } else if let results = json?["historical_data"] as? [Any] {
-                                let extractedValues = self.extractValuesFromJSON(results: results)
-                                completion(["extractedValues": extractedValues])
-                            } else {
-                                completion(["message": "no data found"])
-                            }
-                        } catch {
-                            print("server not found")
-                            completion(["message": "server not found"])
-                        }
-                    }
-                }
-                if let error = error {
-                    completion(["message": error])
-                }
-            }).resume()
-        } else {
-            print("error: unable to unwrap url")
-        }
-    }
-    
     class func requestCompanies(completion: @escaping ([String: Any]) -> Void) {
         // get values for some measure from the API
         let urlString = "https://api-v2.intrinio.com/securities"
@@ -158,6 +113,69 @@ class APIClient {
                         } catch {
                             print("server not found")
                             completion(["results": "server not found"])
+                        }
+                    }
+                }
+                if let error = error {
+                    completion(["message": error])
+                }
+            }).resume()
+        } else {
+            print("error: unable to unwrap url")
+        }
+    }
+    
+    class func getStockPrices(tickers: [String], tenYrsAgo: Bool, completion: @escaping ([String: Any]) -> Void) {
+        
+        let stringOfTickers = tickers.joined(separator: ",")
+        
+        var endDate = Date()
+        if tenYrsAgo {
+            endDate = endDate.advanced(by: -60*60*24*365*10) // move end date back 10 yrs
+        }
+        let endDateLessSevenDays = endDate.advanced(by: -60*60*24*7) // get the date 7 days earlier to make sure we get a day with a ticker price
+        let endDateString = endDate.description.prefix(10) // get day 10 yrs ago as string
+        let endDateLessSevenDaysString = endDateLessSevenDays.description.prefix(10) // get day 10 yrs ago as string
+        
+        let urlString = "https://api.unibit.ai/v2/stock/historical/?"
+        let urlParametersTickers = "tickers=\(stringOfTickers)"
+        let urlParametersDate = "&startDate=\(endDateLessSevenDaysString)&endDate=\(endDateString)"
+        let urlParamtersKey = "&interval=1&dataType=json&accessKey=\(Secrets.unibitKey)"
+        let url = URL(string: urlString + urlParametersTickers + urlParametersDate + urlParamtersKey)
+        //print(url)
+        if let url = url {
+            var request = URLRequest(url: url)
+            
+            request.httpMethod = "GET"
+            request.setValue("application/json", forHTTPHeaderField: "Accept")
+            request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+
+            URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
+                if let data = data {
+                    
+                    var tickersPricesDict:[String: Double] = [:]
+                    
+                    DispatchQueue.main.async {
+                        do {
+                            let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: [String: Any]]
+                            if let resultsDict = json?["result_data"] as [String: Any]? {
+                                // resultsDict has tickers for keys and lots of data as value
+                                for ticker in tickers {
+                                    if let tickerDict = resultsDict[ticker] {
+                                        let tickerDictArr = tickerDict as! [Any]
+                                        let priceDict = tickerDictArr.last as! [String: Any]
+                                        if let adj_close = priceDict["adj_close"] as! Double? {
+                                            tickersPricesDict[ticker] = adj_close
+                                        }
+                                    }
+                                }
+                                completion(["results": tickersPricesDict])
+                            } else {
+                                completion(["error": ["error" : "no response"]])
+                            }
+                        } catch {
+                            print("server not found")
+                            completion(["error": ["server not found"]])
                         }
                     }
                 }
