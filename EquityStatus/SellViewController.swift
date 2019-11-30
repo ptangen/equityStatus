@@ -13,7 +13,6 @@ class SellViewController: UIViewController, SellViewDelegate {
     var sellViewInst = SellView()
     let store = DataStore.sharedInstance
     
-
     override func viewDidLoad() {
         super.viewDidLoad()
         self.sellViewInst.delegate = self

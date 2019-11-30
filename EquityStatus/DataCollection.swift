@@ -1,5 +1,5 @@
 //
-//  CompaniesUIView.swift
+//  DataCollection.swift
 //  EquityStatus
 //
 //  Created by Paul Tangen on 11/16/19.
@@ -9,14 +9,20 @@
 import UIKit
 import SQLite
 
-class CompaniesView: UIView, UITableViewDataSource, UITableViewDelegate {
+protocol DataCollectionViewDelegate: class {
+    func showAlertMessage(_: String)
+}
 
+class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
+
+    weak var delegate: DataCollectionViewDelegate?
     let companiesTableViewInst = UITableView()
-    let dateFormatterGet = DateFormatter()
+    let activityIndicator = UIView()
+    var errorMessage = String()
     
     // define companies table for use in table editing
     var companiesArr: [Company] = []
-    // table
+    // db table
     let companiesTable =    Table("companiesTable")
     let tickerCol =         Expression<String>("tickerCol")
     let nameCol =           Expression<String>("nameCol")
@@ -36,20 +42,8 @@ class CompaniesView: UIView, UITableViewDataSource, UITableViewDelegate {
         super.init(frame: frame)
         self.companiesTableViewInst.delegate = self
         self.companiesTableViewInst.dataSource = self
-        self.companiesTableViewInst.register(tableViewCell.self, forCellReuseIdentifier: "prototype")
+        self.companiesTableViewInst.register(DataCollectionTableViewCell.self, forCellReuseIdentifier: "prototype")
         self.companiesTableViewInst.separatorColor = UIColor.clear
-        self.companiesTableViewInst.accessibilityLabel = "companiesTableViewInst"
-        self.companiesTableViewInst.accessibilityIdentifier = "companiesTableViewInst"
-        
-        dateFormatterGet.dateFormat = "yyyy-MM-dd"
-        
-        //self.dropTables()
-        //self.createTables()
-        //self.insertCompanies()
-        //self.insertRows(tickerVal: "AA", nameVal: "A_Name", fyEndMonthVal: 05)
-        //self.runCommand()
-        //self.renameColumn()
-        //self.updateRows()
         
         // select the rows and update the table
         self.selectRows() {isSuccessful in
@@ -72,6 +66,14 @@ class CompaniesView: UIView, UITableViewDataSource, UITableViewDelegate {
         self.companiesTableViewInst.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -50).isActive = true
         self.companiesTableViewInst.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0).isActive = true
         self.companiesTableViewInst.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -10).isActive = true
+        
+        // activityIndicator
+        self.addSubview(self.activityIndicator)
+        self.activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        self.activityIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        self.activityIndicator.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        self.activityIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        self.activityIndicator.widthAnchor.constraint(equalToConstant: 80).isActive = true
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -83,7 +85,7 @@ class CompaniesView: UIView, UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableViewCell(style: .default, reuseIdentifier: "prototype")
+        let cell = DataCollectionTableViewCell(style: .default, reuseIdentifier: "prototype")
         cell.selectionStyle = .none
         
         cell.textLabel?.text = self.companiesArr[indexPath.row].ticker
@@ -132,81 +134,8 @@ class CompaniesView: UIView, UITableViewDataSource, UITableViewDelegate {
         return cell
     }
     
-    // doc: https://github.com/stephencelis/SQLite.swift/blob/master/Documentation/Index.md#updating-rows
-    func getDBConnection() -> Connection {
-        var database: Connection!
-        // runs db connection, if file for DB does not exist, a file is created for the DB
-        do {
-            let doctumentDirectory = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
-            let fileurl = doctumentDirectory.appendingPathComponent("equityStatus").appendingPathExtension("sqlite3")
-            // get size of DB
-            //let fileSizeKB = (try! FileManager.default.attributesOfItem(atPath: fileurl.path)[FileAttributeKey.size] as! NSNumber).uint64Value/1024
-            //print("file: \(fileSizeKB) KB")
-            database = try Connection(fileurl.path)
-        } catch {
-            print(error)
-        }
-        return database
-    }
-    
-    func addCompanyTable(completion: @escaping (Bool) -> Void){
-        print("addTables")
-        let database = getDBConnection()
-        
-        // define table
-        let addCompaniesTable = companiesTable.create{ (table) in
-            table.column(tickerCol, primaryKey: true)
-            table.column(nameCol)
-            table.column(eps_iCol)
-            table.column(eps_sdCol)
-            table.column(eps_lastCol)
-            table.column(roe_avgCol)
-            table.column(bv_iCol)
-            table.column(so_reducedCol)
-            table.column(dr_avgCol)
-            table.column(pe_avgCol)
-            table.column(price_lastCol)
-            table.column(previous_roiCol)
-            table.column(expected_roiCol)
-        }
-        
-        do {
-            try database.run(addCompaniesTable)
-            // populate the companies table with ticker and name
-            APIClient.requestCompanies(completion: { response in
-                if let responseUnwrapped = response["message"]{
-                    print("Message 3: \(responseUnwrapped)")
-                }
-                
-                for companyFound in response["results"] as! [Any] {
-                    let companyFoundDict = companyFound as! [String: String]
-                    if let nameUnwrapped = companyFoundDict["name"], let tickerUnwrapped = companyFoundDict["ticker"] {
-                        self.insertRows(ticker: tickerUnwrapped, name: nameUnwrapped, epsi: nil, epsv: nil, roei: nil)
-                    }
-                }
-                completion(true)
-            })
-        } catch {
-            print(error)
-            completion(false)
-        }
-    }
-    
-    func insertRows(ticker: String, name: String, epsi: Int?, epsv: Double?, roei: Int?){
-        //print("insertRows")
-        let database = getDBConnection()
-        
-        // insert a row
-        let sqlStatement = companiesTable.insert(tickerCol <- ticker, nameCol <- name)
-        do {
-            try database.run(sqlStatement)
-        } catch {
-            print(error)
-        }
-    }
-    
     func updateMeasures(measure: String, completion: @escaping (Bool) -> Void){
-
+        let database = DBUtilities.getDBConnection()
         let myGroup = DispatchGroup() // used to determine for loop is complete
         
         var tickersToGetMeasureValue = [String]()
@@ -235,55 +164,69 @@ class CompaniesView: UIView, UITableViewDataSource, UITableViewDelegate {
         }
         //print("tickersToGetMeasureValue: \(tickersToGetMeasureValue)")
         //print("tickersToRemoveMeasureValue: \(tickersToRemoveMeasureValue)")
+        
+        let timeToDelayForAPI: Double = 0.06
+        var currentDelayForAPI: Double = 0
 
         for ticker in tickersToGetMeasureValue {
             myGroup.enter()
-            APIClient.requestHistoricalData(ticker: ticker, measure: measure, completion: { response in
-                if let measureValueArr = response["results"] as! [Double]? {
-
-                    let database = self.getDBConnection()
-                    
-                    // where clause
-                    let selectedTicker = self.companiesTable.filter(self.tickerCol == ticker)
-                    do {
-                        switch measure {
-                           case "eps_i":
-                                let measureValuei = self.getInterestRate(valuesArr: measureValueArr)
-                                let measureValueSD = self.getSD(valuesArr: measureValueArr)
-                                //print("measureValuei: \(measure), measureValuei: \(measureValuei)")
-                                try database.run(selectedTicker.update(self.eps_iCol <- measureValuei))
-                                try database.run(selectedTicker.update(self.eps_sdCol <- measureValueSD))
-                                try database.run(selectedTicker.update(self.eps_lastCol <- measureValueArr.first))
-                           case "roe_avg":
-                                let measureValue = self.getAverage(valuesArr: measureValueArr, multiplier: 100)
-                                //print("ticker: \(ticker), roe_avg: \(measureValue)")
-                                try database.run(selectedTicker.update(self.roe_avgCol <- Int(measureValue)))
-                           case "bv_i":
-                                let measureValuei = self.getInterestRate(valuesArr: measureValueArr)
-                                try database.run(selectedTicker.update(self.bv_iCol <- measureValuei))
-                            case "so_reduced":
-                                let measureValue = self.getAmountReduced(valuesArr: measureValueArr)
-                                try database.run(selectedTicker.update(self.so_reducedCol <- measureValue))
-                            case "dr_avg":
-                                let measureValue = self.getAverage(valuesArr: measureValueArr, multiplier: 1)
-                                try database.run(selectedTicker.update(self.dr_avgCol <- Int(measureValue)))
-                            case "pe_avg":
-                                let measureValue = self.getAverage(valuesArr: measureValueArr, multiplier: 1)
-                                try database.run(selectedTicker.update(self.pe_avgCol <- measureValue))
-                            default :
-                              print("measure invalid")
+            currentDelayForAPI += timeToDelayForAPI
+            queueRequestWithDelay(seconds: currentDelayForAPI) {
+                APIClient.requestHistoricalData(ticker: ticker, measure: measure, completion: { response in
+                    //print("response:  \(response)")
+                    if let errorMessage = response["error"] as! String? {
+                        if errorMessage != "An error occured. Please contact success@intrinio.com with the details."{ // this occurs when ticker not found, happens often with sandbox key
+                            self.errorMessage += "\(errorMessage)\r\n" // show after collecting data
                         }
-                    } catch {
-                        print(error)
+                    } else if let measureValueArr = response["results"] as! [Double]? {
+                        // where clause
+                        let selectedTicker = self.companiesTable.filter(self.tickerCol == ticker)
+                        do {
+                            switch measure {
+                                
+                                case "eps_i":
+                                    let measureValuei = self.getInterestRate(valuesArr: measureValueArr)
+                                    let measureValueSD = self.getSD(valuesArr: measureValueArr)
+                                    //print("ticker: \(ticker), measureValuei: \(measure), measureValuei: \(measureValuei)")
+                                    try database.run(selectedTicker.update(self.eps_iCol <- measureValuei))
+                                    try database.run(selectedTicker.update(self.eps_sdCol <- measureValueSD))
+                                    try database.run(selectedTicker.update(self.eps_lastCol <- measureValueArr.first))
+                                case "roe_avg":
+                                    let measureValue = self.getAverage(valuesArr: measureValueArr, multiplier: 100)
+                                    //print("ticker: \(ticker), roe_avg: \(measureValue)")
+                                    try database.run(selectedTicker.update(self.roe_avgCol <- Int(measureValue)))
+                                case "bv_i":
+                                    let measureValuei = self.getInterestRate(valuesArr: measureValueArr)
+                                    try database.run(selectedTicker.update(self.bv_iCol <- measureValuei))
+                                case "so_reduced":
+                                    let measureValue = self.getAmountReduced(valuesArr: measureValueArr)
+                                    try database.run(selectedTicker.update(self.so_reducedCol <- measureValue))
+                                case "dr_avg":
+                                    let measureValue = self.getAverage(valuesArr: measureValueArr, multiplier: 1)
+                                    try database.run(selectedTicker.update(self.dr_avgCol <- Int(measureValue)))
+                                case "pe_avg":
+                                    let measureValue = self.getAverage(valuesArr: measureValueArr, multiplier: 1)
+                                    try database.run(selectedTicker.update(self.pe_avgCol <- measureValue))
+                                default :
+                                  print("measure invalid")
+                            }
+                        } catch {
+                            print(error)
+                        }
                     }
-                    let valuesRemovedCompleted = self.removeValuesForMeasure(tickersToRemoveMeasureValue: tickersToRemoveMeasureValue, measure: measure)
-                    //print("valuesRemovedCompleted: \(valuesRemovedCompleted)")
-                }
-                myGroup.leave()
-            })
+                    myGroup.leave()
+                })
+            }
         }
+        
+        let valuesRemovedCompleted = self.removeValuesForMeasure(tickersToRemoveMeasureValue: tickersToRemoveMeasureValue, measure: measure)
+        //print("valuesRemovedCompleted: \(valuesRemovedCompleted)")
 
         myGroup.notify(queue: DispatchQueue.main, execute: {
+            if(self.errorMessage.count > 0){
+                self.delegate?.showAlertMessage(self.errorMessage)
+                self.errorMessage = ""
+            }
             completion(true) // do select and update tableview
         })
     }
@@ -291,7 +234,7 @@ class CompaniesView: UIView, UITableViewDataSource, UITableViewDelegate {
     func updateROI(measure: String, completion: @escaping (Bool) -> Void){
         // type is expected_roi or previous_roi
 
-        let database = self.getDBConnection()
+        let database = DBUtilities.getDBConnection()
         
         // create arrays of tickers, one array to collect data for and one array where thresholds are not met and remove data for the measure
         var tickersToGetMeasureValue = [String]()
@@ -336,7 +279,7 @@ class CompaniesView: UIView, UITableViewDataSource, UITableViewDelegate {
                 if let responseUnwrapped = response["error"]{
                    print("Message: \(responseUnwrapped)")
                 } else if let pricesDict = response["results"] as! [String: Double]?{
-                    print(pricesDict)
+                    //print(pricesDict)
                     for ticker in tickersToGetMeasureValue {
                         
                         // where clause
@@ -424,7 +367,7 @@ class CompaniesView: UIView, UITableViewDataSource, UITableViewDelegate {
     func removeValuesForMeasure(tickersToRemoveMeasureValue: [String], measure: String) -> Bool{
         // when a ticker is filtered out for a calculation due to not meeting the threshold value for one measure, remove the value for the current measure
 
-        let database = self.getDBConnection()
+        let database = DBUtilities.getDBConnection()
         for ticker in tickersToRemoveMeasureValue {
             // where clause
             let selectedTicker = self.companiesTable.filter(self.tickerCol == ticker)
@@ -463,33 +406,6 @@ class CompaniesView: UIView, UITableViewDataSource, UITableViewDelegate {
         return true
      }
 
-    func dropCompanyTable(completion: @escaping (Bool) -> Void){
-        print("drop tables")
-        let database = getDBConnection()
-        
-        do {
-            try database.run(companiesTable.drop())
-            self.companiesArr = []
-            completion(true)
-        } catch {
-            print(error)
-            completion(false)
-        }
-    }
-    
-//    func updateRows(ticker: String, measure: String, value: Int){
-//        print("update rows")
-//        let database = getDBConnection()
-//
-//        // where clause
-//        let updateName = companiesTable.filter(tickerCol == ticker)
-//        do {
-//            try database.run(updateName.update(eps_iCol <- value))
-//        } catch {
-//            print(error)
-//        }
-//    }
-    
     func getAverage(valuesArr: [Double], multiplier: Int) -> Double {
         var sum: Double = 0
         for value in valuesArr {
@@ -553,7 +469,7 @@ class CompaniesView: UIView, UITableViewDataSource, UITableViewDelegate {
     
     func selectRows(completion: @escaping (Bool) -> Void) {
         print("selectRows")
-        let database = getDBConnection()
+        let database = DBUtilities.getDBConnection()
 
         do {
             let companyRows = try database.prepare(companiesTable.order(tickerCol.asc))
@@ -581,10 +497,93 @@ class CompaniesView: UIView, UITableViewDataSource, UITableViewDelegate {
   
             completion(true)
         } catch {
+            // no database found
             print(error)
             self.companiesArr.removeAll()
             completion(true)
         }
+    }
+    
+    func insertRows(database: Connection, ticker: String, name: String, epsi: Int?, epsv: Double?, roei: Int?){
+        //print("insertRows")
+        let sqlStatement = companiesTable.insert(tickerCol <- ticker, nameCol <- name)
+        do {
+            try database.run(sqlStatement)
+        } catch {
+            print(error)
+        }
+    }
+    
+    func addCompanyTable(completion: @escaping (Bool) -> Void){
+       print("addTables")
+       let database = DBUtilities.getDBConnection()
+       
+       // define table
+       let addCompaniesTable = companiesTable.create{ (table) in
+           table.column(tickerCol, primaryKey: true)
+           table.column(nameCol)
+           table.column(eps_iCol)
+           table.column(eps_sdCol)
+           table.column(eps_lastCol)
+           table.column(roe_avgCol)
+           table.column(bv_iCol)
+           table.column(so_reducedCol)
+           table.column(dr_avgCol)
+           table.column(pe_avgCol)
+           table.column(price_lastCol)
+           table.column(previous_roiCol)
+           table.column(expected_roiCol)
+       }
+       
+       do {
+           try database.run(addCompaniesTable)
+           let database = DBUtilities.getDBConnection()
+           let companyList = CompanyList()
+           for companyTickerAndName in companyList.companyTickersAndNames {
+               // the ticker is the key, name is the valueni
+               self.insertRows(database: database, ticker: companyTickerAndName.key, name: companyTickerAndName.value, epsi: nil, epsv: nil, roei: nil)
+           }
+           completion(true)
+           
+       } catch {
+           print(error)
+           completion(false)
+       }
+   }
+      
+    func dropCompanyTable(completion: @escaping (Bool) -> Void){
+        print("drop table")
+        let database = DBUtilities.getDBConnection()
+        
+        do {
+            try database.run(companiesTable.drop())
+            DBUtilities.removeDBFile() // only one table, so remove the db file
+            self.companiesArr = []
+            completion(true)
+        } catch {
+            print(error)
+            completion(false)
+        }
+    }
+    
+    func queueRequestWithDelay(seconds: Double, completion: @escaping () -> ()) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
+            completion()
+        }
+    }
+    
+    func showActivityIndicator(uiView: UIView) {
+        self.activityIndicator.backgroundColor = UIColor(named: .blue)
+        self.activityIndicator.layer.cornerRadius = 10
+        self.activityIndicator.clipsToBounds = true
+        
+        let actInd: UIActivityIndicatorView = UIActivityIndicatorView()
+        actInd.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+        actInd.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.large
+        actInd.center = CGPoint(x: 40, y: 40)
+        
+        self.activityIndicator.addSubview(actInd)
+        actInd.startAnimating()
     }
 }
 

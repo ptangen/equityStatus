@@ -1,5 +1,5 @@
 //
-//  tableViewCell.swift
+//  DataCollectionTableViewCell.swift
 //  EquityStatus
 //
 //  Created by Paul Tangen on 11/16/19.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class tableViewCell: UITableViewCell {
+class DataCollectionTableViewCell: UITableViewCell {
     
     let nameLabel = UILabel()
     let eps_iLabel = UILabel()

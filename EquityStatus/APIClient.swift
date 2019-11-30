@@ -11,55 +11,6 @@ import UIKit
 
 class APIClient {
     
-    class func requestCompanies(completion: @escaping ([String: Any]) -> Void) {
-        // get values for some measure from the API
-        let urlString = "https://api-v2.intrinio.com/securities"
-        let url = URL(string: urlString)
-        if let url = url {
-            var request = URLRequest(url: url)
-            
-            print("requestCompanies")
-
-            request.httpMethod = "POST"
-            request.setValue("application/json", forHTTPHeaderField: "Accept")
-            request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-        
-            let parameterString = "api_key=\(Secrets.intrinioKey)&currency=USD&code=EQS&composite_mic=USCOMP"
-            request.httpBody = parameterString.data(using: .utf8)
-       
-            URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
-                if let data = data {
-                    DispatchQueue.main.async {
-                        do {
-                            let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-                            
-                            //print(json)
-                            if let results = json?["message"] {
-                                //print(results)
-                                completion(["message": results])
-                            } else if let results = json?["securities"] as? [Any] {
-                                //print(results)
-                                completion(["results": results])
-                            } else {
-                                completion(["message": "no data found"])
-                            }
-                        } catch {
-                            print("server not found")
-                            completion(["message": "server not found"])
-                        }
-                    }
-                }
-                if let error = error {
-                    completion(["message": error])
-                }
-            }).resume()
-        } else {
-            print("error: unable to unwrap url")
-        }
-    }
-    
-   
-    
     class func requestHistoricalData(ticker: String, measure: String, completion: @escaping ([String: Any]) -> Void) {
         let apiTags:[String: String] = [
             "eps_i": "basiceps",
@@ -111,13 +62,12 @@ class APIClient {
                                 completion(["error": "no data found" as String])
                             }
                         } catch {
-                            print("server not found")
-                            completion(["results": "server not found"])
+                            completion(["error": "The request for \(ticker) failed."])
                         }
                     }
                 }
                 if let error = error {
-                    completion(["message": error])
+                    completion(["error": error])
                 }
             }).resume()
         } else {
@@ -546,22 +496,6 @@ class APIClient {
             print("error: unable to unwrap url")
         }
     }
-    
-//    class func fetchValues() {
-//        print("fetchValues")
-//        APIClient.requestHistoricalData(measure: "basiceps", ticker: "AAPL", completion: { response in
-//            if let responseUnwrapped = response["message"]{
-//                print(responseUnwrapped)
-//            }
-//            if let responseUnwrapped = response["extractedValues"]{
-//                print(responseUnwrapped)
-//                // calc EPSi
-//                // calc EPSv
-//            }
-//
-//        }) // end apiClient.requestAuth
-//
-//    }
 }
 
 enum apiResponse {

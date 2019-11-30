@@ -29,9 +29,9 @@
 		C069F5681E0830EC00913486 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C069F5671E0830EC00913486 /* DataStore.swift */; };
 		C07E6F6F1E11BCD1009AF89A /* FontAwesome.otf in Resources */ = {isa = PBXBuildFile; fileRef = C07E6F6E1E11BCD1009AF89A /* FontAwesome.otf */; };
 		C085E32B1E119E04008A7315 /* EvaluationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C085E32A1E119E04008A7315 /* EvaluationTableViewCell.swift */; };
-		C08C417923804D6D002F0543 /* CompaniesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08C417823804D6D002F0543 /* CompaniesViewController.swift */; };
-		C08C417C23804E3A002F0543 /* CompaniesUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08C417B23804E3A002F0543 /* CompaniesUIView.swift */; };
-		C08C417E2380513D002F0543 /* tableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08C417D2380513D002F0543 /* tableViewCell.swift */; };
+		C08C417923804D6D002F0543 /* DataCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08C417823804D6D002F0543 /* DataCollectionViewController.swift */; };
+		C08C417C23804E3A002F0543 /* DataCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08C417B23804E3A002F0543 /* DataCollection.swift */; };
+		C08C417E2380513D002F0543 /* DataCollectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08C417D2380513D002F0543 /* DataCollectionTableViewCell.swift */; };
 		C08C418123807519002F0543 /* Company.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08C418023807519002F0543 /* Company.swift */; };
 		C08EC7511E3B91FA005A5A5E /* MeasurePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08EC7501E3B91FA005A5A5E /* MeasurePageViewController.swift */; };
 		C08EC7531E3B9369005A5A5E /* CalcMeasureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08EC7521E3B9369005A5A5E /* CalcMeasureViewController.swift */; };
@@ -40,7 +40,6 @@
 		C08EC7681E3BDAEA005A5A5E /* QuestionMeasureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08EC7671E3BDAEA005A5A5E /* QuestionMeasureViewController.swift */; };
 		C0979C4F1E6073110023B5C4 /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0979C4C1E6073110023B5C4 /* Charts.framework */; };
 		C0A0D4631E6061500076C84F /* UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A0D4621E6061500076C84F /* UITests.swift */; };
-		C0A9153123804A4E00FDE1B7 /* AdminTabsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A9153023804A4E00FDE1B7 /* AdminTabsViewController.swift */; };
 		C0BF22261E085351005B7E55 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF22251E085351005B7E55 /* Utilities.swift */; };
 		C0BF22281E086191005B7E55 /* BuyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF22271E086191005B7E55 /* BuyViewController.swift */; };
 		C0BF222A1E0861B6005B7E55 /* BuyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF22291E0861B6005B7E55 /* BuyView.swift */; };
@@ -52,6 +51,7 @@
 		C0C06526237C2E7E007799B9 /* DBUtilitites.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C06525237C2E7E007799B9 /* DBUtilitites.swift */; };
 		C0C87C4B1E11838000759947 /* PercentValueFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C87C4A1E11838000759947 /* PercentValueFormatter.swift */; };
 		C0D2FF7A1E0C8E4400871EA3 /* KeychainWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = C0D2FF791E0C8E4400871EA3 /* KeychainWrapper.m */; };
+		C0E7D7B32392AACD00950E77 /* CompanyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E7D7B22392AACD00950E77 /* CompanyList.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,9 +93,9 @@
 		C069F5671E0830EC00913486 /* DataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
 		C07E6F6E1E11BCD1009AF89A /* FontAwesome.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome.otf; sourceTree = "<group>"; };
 		C085E32A1E119E04008A7315 /* EvaluationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EvaluationTableViewCell.swift; sourceTree = "<group>"; };
-		C08C417823804D6D002F0543 /* CompaniesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompaniesViewController.swift; sourceTree = "<group>"; };
-		C08C417B23804E3A002F0543 /* CompaniesUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompaniesUIView.swift; sourceTree = "<group>"; };
-		C08C417D2380513D002F0543 /* tableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tableViewCell.swift; sourceTree = "<group>"; };
+		C08C417823804D6D002F0543 /* DataCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCollectionViewController.swift; sourceTree = "<group>"; };
+		C08C417B23804E3A002F0543 /* DataCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCollection.swift; sourceTree = "<group>"; };
+		C08C417D2380513D002F0543 /* DataCollectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCollectionTableViewCell.swift; sourceTree = "<group>"; };
 		C08C418023807519002F0543 /* Company.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Company.swift; sourceTree = "<group>"; };
 		C08EC7501E3B91FA005A5A5E /* MeasurePageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeasurePageViewController.swift; sourceTree = "<group>"; };
 		C08EC7521E3B9369005A5A5E /* CalcMeasureViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalcMeasureViewController.swift; sourceTree = "<group>"; };
@@ -104,7 +104,6 @@
 		C08EC7671E3BDAEA005A5A5E /* QuestionMeasureViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionMeasureViewController.swift; sourceTree = "<group>"; };
 		C0979C4C1E6073110023B5C4 /* Charts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Charts.framework; path = "../../Library/Developer/Xcode/DerivedData/EquityStatus-gqdhunwwfjscevammixdczwbqums/Build/Products/Debug-iphonesimulator/Charts/Charts.framework"; sourceTree = "<group>"; };
 		C0A0D4621E6061500076C84F /* UITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITests.swift; sourceTree = "<group>"; };
-		C0A9153023804A4E00FDE1B7 /* AdminTabsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminTabsViewController.swift; sourceTree = "<group>"; };
 		C0BF22251E085351005B7E55 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		C0BF22271E086191005B7E55 /* BuyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuyViewController.swift; sourceTree = "<group>"; };
 		C0BF22291E0861B6005B7E55 /* BuyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuyView.swift; sourceTree = "<group>"; };
@@ -118,6 +117,7 @@
 		C0D2FF771E0C8E3200871EA3 /* KeychainWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainWrapper.h; sourceTree = "<group>"; };
 		C0D2FF781E0C8E4400871EA3 /* EquityStatus-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EquityStatus-Bridging-Header.h"; sourceTree = "<group>"; };
 		C0D2FF791E0C8E4400871EA3 /* KeychainWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainWrapper.m; sourceTree = "<group>"; };
+		C0E7D7B22392AACD00950E77 /* CompanyList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyList.swift; sourceTree = "<group>"; };
 		EF9A649E0CE4A3E47348CC81 /* Pods_EquityStatus.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EquityStatus.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7634242488552BDFF1E4A74 /* Pods-EquityStatusTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EquityStatusTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-EquityStatusTests/Pods-EquityStatusTests.release.xcconfig"; sourceTree = "<group>"; };
 		FB4FA8DCB5D67B3568B4E1A3 /* Pods-EquityStatus.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EquityStatus.release.xcconfig"; path = "Pods/Target Support Files/Pods-EquityStatus/Pods-EquityStatus.release.xcconfig"; sourceTree = "<group>"; };
@@ -197,6 +197,7 @@
 				C0409F8E1E0743CD00BEC5DD /* LaunchScreen.storyboard */,
 				C0409F911E0743CD00BEC5DD /* Info.plist */,
 				C061ED0B1E0784B000081030 /* Constants.swift */,
+				C0E7D7B22392AACD00950E77 /* CompanyList.swift */,
 				C0D2FF791E0C8E4400871EA3 /* KeychainWrapper.m */,
 				C0D2FF771E0C8E3200871EA3 /* KeychainWrapper.h */,
 				C0BF22251E085351005B7E55 /* Utilities.swift */,
@@ -222,11 +223,11 @@
 		C0409FA51E07459600BEC5DD /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				C08C417A23804D76002F0543 /* Admin */,
+				C0BF22331E086AA1005B7E55 /* TabsViewController.swift */,
 				C0BF22271E086191005B7E55 /* BuyViewController.swift */,
 				C0BF222B1E08686A005B7E55 /* EvaluationViewController.swift */,
 				C0BF222F1E0869B8005B7E55 /* SellViewController.swift */,
-				C0BF22331E086AA1005B7E55 /* TabsViewController.swift */,
+				C08C417823804D6D002F0543 /* DataCollectionViewController.swift */,
 				C02D50A21E159BCD0000330F /* EquityDetailViewController.swift */,
 				C08EC7501E3B91FA005A5A5E /* MeasurePageViewController.swift */,
 				C08EC7521E3B9369005A5A5E /* CalcMeasureViewController.swift */,
@@ -238,12 +239,13 @@
 		C0409FA81E0745DE00BEC5DD /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				C08C417F23805144002F0543 /* Admin */,
 				C0BF22291E0861B6005B7E55 /* BuyView.swift */,
 				C0BF222D1E086885005B7E55 /* EvaluationView.swift */,
 				C085E32A1E119E04008A7315 /* EvaluationTableViewCell.swift */,
 				C0BF22311E086A03005B7E55 /* SellView.swift */,
 				C02D509E1E12F2BE0000330F /* SellTableViewCell.swift */,
+				C08C417B23804E3A002F0543 /* DataCollection.swift */,
+				C08C417D2380513D002F0543 /* DataCollectionTableViewCell.swift */,
 				C02D50A41E159C2D0000330F /* EquityDetailView.swift */,
 				C08EC7541E3B9536005A5A5E /* CalcMeasureView.swift */,
 				C08EC7651E3BD92F005A5A5E /* QuestionMeasureView.swift */,
@@ -273,24 +275,6 @@
 				C012D0E81E0DD77700AA8C4C /* MaterialIcons-Regular.otf */,
 			);
 			name = Media;
-			sourceTree = "<group>";
-		};
-		C08C417A23804D76002F0543 /* Admin */ = {
-			isa = PBXGroup;
-			children = (
-				C0A9153023804A4E00FDE1B7 /* AdminTabsViewController.swift */,
-				C08C417823804D6D002F0543 /* CompaniesViewController.swift */,
-			);
-			name = Admin;
-			sourceTree = "<group>";
-		};
-		C08C417F23805144002F0543 /* Admin */ = {
-			isa = PBXGroup;
-			children = (
-				C08C417B23804E3A002F0543 /* CompaniesUIView.swift */,
-				C08C417D2380513D002F0543 /* tableViewCell.swift */,
-			);
-			name = Admin;
 			sourceTree = "<group>";
 		};
 		C0C87C4D1E118E9700759947 /* chart formatters */ = {
@@ -500,28 +484,28 @@
 				C02D50A51E159C2D0000330F /* EquityDetailView.swift in Sources */,
 				C08EC7681E3BDAEA005A5A5E /* QuestionMeasureViewController.swift in Sources */,
 				C02D50A31E159BCD0000330F /* EquityDetailViewController.swift in Sources */,
-				C0A9153123804A4E00FDE1B7 /* AdminTabsViewController.swift in Sources */,
 				C05FC11C1E0A08CD008EA907 /* Secrets.swift in Sources */,
 				C08EC7661E3BD92F005A5A5E /* QuestionMeasureView.swift in Sources */,
 				C0BF22301E0869B8005B7E55 /* SellViewController.swift in Sources */,
 				C069F5681E0830EC00913486 /* DataStore.swift in Sources */,
 				C0D2FF7A1E0C8E4400871EA3 /* KeychainWrapper.m in Sources */,
+				C0E7D7B32392AACD00950E77 /* CompanyList.swift in Sources */,
 				C0BF222C1E08686A005B7E55 /* EvaluationViewController.swift in Sources */,
 				C02D509D1E12AB8D0000330F /* EquityStatus.xcdatamodeld in Sources */,
 				C0BF222E1E086885005B7E55 /* EvaluationView.swift in Sources */,
 				C04ECC9C23837E8500187790 /* Measure.swift in Sources */,
 				C0BF222A1E0861B6005B7E55 /* BuyView.swift in Sources */,
 				C08EC7531E3B9369005A5A5E /* CalcMeasureViewController.swift in Sources */,
-				C08C417E2380513D002F0543 /* tableViewCell.swift in Sources */,
+				C08C417E2380513D002F0543 /* DataCollectionTableViewCell.swift in Sources */,
 				C0BF22341E086AA1005B7E55 /* TabsViewController.swift in Sources */,
-				C08C417C23804E3A002F0543 /* CompaniesUIView.swift in Sources */,
+				C08C417C23804E3A002F0543 /* DataCollection.swift in Sources */,
 				C0C87C4B1E11838000759947 /* PercentValueFormatter.swift in Sources */,
 				C0C06526237C2E7E007799B9 /* DBUtilitites.swift in Sources */,
 				C0409F861E0743CD00BEC5DD /* AppDelegate.swift in Sources */,
 				C0BF22281E086191005B7E55 /* BuyViewController.swift in Sources */,
 				C0BF22321E086A03005B7E55 /* SellView.swift in Sources */,
 				C08C418123807519002F0543 /* Company.swift in Sources */,
-				C08C417923804D6D002F0543 /* CompaniesViewController.swift in Sources */,
+				C08C417923804D6D002F0543 /* DataCollectionViewController.swift in Sources */,
 				C08EC7511E3B91FA005A5A5E /* MeasurePageViewController.swift in Sources */,
 				C069F5641E082FF500913486 /* APIClient.swift in Sources */,
 				C02D509F1E12F2BE0000330F /* SellTableViewCell.swift in Sources */,
