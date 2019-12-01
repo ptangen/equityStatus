@@ -418,7 +418,7 @@ class APIClient {
                                     // add the new tickers to the datastore and set the tab value
                                     if store.getEquityByTickerFromStore(ticker: equityInst.ticker) == nil {
                                         store.equities.append(equityInst)
-                                        store.resetTabValue(equity: equityInst)
+                                        //store.resetTabValue(equity: equityInst)
                                     }
                                 }
                             }

@@ -16,12 +16,13 @@ protocol DataCollectionViewDelegate: class {
 class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
 
     weak var delegate: DataCollectionViewDelegate?
+    let store = DataStore.sharedInstance
     let companiesTableViewInst = UITableView()
     let activityIndicator = UIView()
     var errorMessage = String()
     
     // define companies table for use in table editing
-    var companiesArr: [Company] = []
+    //var companiesArr: [Company] = []
     // db table
     let companiesTable =    Table("companiesTable")
     let tickerCol =         Expression<String>("tickerCol")
@@ -77,7 +78,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.companiesArr.count
+        return self.store.companies.count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
@@ -88,46 +89,46 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
         let cell = DataCollectionTableViewCell(style: .default, reuseIdentifier: "prototype")
         cell.selectionStyle = .none
         
-        cell.textLabel?.text = self.companiesArr[indexPath.row].ticker
-        cell.nameLabel.text = self.companiesArr[indexPath.row].name
+        cell.textLabel?.text = self.store.companies[indexPath.row].ticker
+        cell.nameLabel.text = self.store.companies[indexPath.row].name
         
         // previous_roiLabel
-        if let previous_roi = self.companiesArr[indexPath.row].previous_roi {
+        if let previous_roi = self.store.companies[indexPath.row].previous_roi {
             cell.previous_roiLabel.text = previous_roi.description
         }
         
         // expected_roiLabel
-        if let expected_roi = self.companiesArr[indexPath.row].expected_roi {
+        if let expected_roi = self.store.companies[indexPath.row].expected_roi {
             cell.expected_roiLabel.text = expected_roi.description
         }
         
         // eps_iLabel
-        if let eps_i = self.companiesArr[indexPath.row].eps_i {
+        if let eps_i = self.store.companies[indexPath.row].eps_i {
             cell.eps_iLabel.text = "eps_i: \(eps_i.description)"
         }
         
         // eps_sdLabel
-        if let eps_sd = self.companiesArr[indexPath.row].eps_sd {
+        if let eps_sd = self.store.companies[indexPath.row].eps_sd {
             cell.eps_sdLabel.text = "eps_sd: \(String(format:"%.1f", eps_sd))"
         }
         
         // roe_avgLabel
-        if let roe_avg = self.companiesArr[indexPath.row].roe_avg {
+        if let roe_avg = self.store.companies[indexPath.row].roe_avg {
             cell.roe_avgLabel.text = "roe_avg: \(roe_avg.description)"
         }
         
         // bv_iLabel
-        if let bv_i = self.companiesArr[indexPath.row].bv_i {
+        if let bv_i = self.store.companies[indexPath.row].bv_i {
             cell.bv_iLabel.text = "bv_i: \(bv_i.description)"
         }
         
         // dr_avgLabel
-        if let dr_avg = self.companiesArr[indexPath.row].dr_avg {
+        if let dr_avg = self.store.companies[indexPath.row].dr_avg {
             cell.dr_avgLabel.text = "dr_avg: \(dr_avg.description)"
         }
         
         // so_reducedLabel
-        if let so_reduced = self.companiesArr[indexPath.row].so_reduced {
+        if let so_reduced = self.store.companies[indexPath.row].so_reduced {
             cell.so_reducedLabel.text = "so_reduced: \(so_reduced.description)"
         }
         
@@ -140,32 +141,23 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
         
         var tickersToGetMeasureValue = [String]()
         var tickersToRemoveMeasureValue = [String]()
-        for company in companiesArr{
+        for company in self.store.companies {
             if measure == "eps_i" {
                 tickersToGetMeasureValue.append(company.ticker) // get eps for calculation of eps_i and eps_sd from all tickers
             } else {
-                if let eps_i = company.eps_i,
-                    let eps_sd = company.eps_sd as Double? {
-                    
-                    // determine if measure values have met thresholds
-                    // if measure == roe_avg, bv_i, so_reduced, dr_avg, pe_avg then collect values when eps_i and eps_ds pass threshhold
-                    // if these eps_i or eps_sd do nnot meet the thresholds, then clear the value in the DB for the selected measure
-                    if eps_i >= Constants.thresholdValues.eps_i.rawValue &&
-                        eps_sd <= Double(Constants.thresholdValues.eps_sd.rawValue)
-                    {
-                        tickersToGetMeasureValue.append(company.ticker) // all measure values met threshold
-                    } else {
-                        tickersToRemoveMeasureValue.append(company.ticker) // measure value did not met threshold
-                    }
+                // if measure == roe_avg, bv_i, so_reduced, dr_avg, pe_avg then collect values when eps_i and eps_ds pass threshhold
+                // if these eps_i or eps_sd do nnot meet the thresholds, then clear the value in the DB for the selected measure
+                if company.eps_i_passed && company.eps_sd_passed {
+                    tickersToGetMeasureValue.append(company.ticker) // all measure values met threshold
                 } else {
-                    tickersToRemoveMeasureValue.append(company.ticker) // measure value not found
+                    tickersToRemoveMeasureValue.append(company.ticker) // measure value did not met threshold
                 }
             }
         }
         //print("tickersToGetMeasureValue: \(tickersToGetMeasureValue)")
         //print("tickersToRemoveMeasureValue: \(tickersToRemoveMeasureValue)")
         
-        let timeToDelayForAPI: Double = 0.06
+        let timeToDelayForAPI: Double = 0.015
         var currentDelayForAPI: Double = 0
 
         for ticker in tickersToGetMeasureValue {
@@ -240,28 +232,12 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
         var tickersToGetMeasureValue = [String]()
         var tickersToRemoveMeasureValue = [String]()
         
-        for company in companiesArr{
-            if let eps_i = company.eps_i,
-                let eps_sd = company.eps_sd as Double?,
-                let roe_avg = company.roe_avg,
-                let so_reduced = company.so_reduced,
-                let dr_avg = company.dr_avg,
-                let bv_i = company.bv_i {
-                
-                // determine if measure values have met thresholds
-                if eps_i >= Constants.thresholdValues.eps_i.rawValue &&
-                    eps_sd <= Double(Constants.thresholdValues.eps_sd.rawValue) &&
-                    roe_avg >= Constants.thresholdValues.roe_avg.rawValue &&
-                    bv_i >= Constants.thresholdValues.bv_i.rawValue &&
-                    dr_avg <= Constants.thresholdValues.dr_avg &&
-                    so_reduced >= Constants.thresholdValues.so_reduced.rawValue
-                {
-                    tickersToGetMeasureValue.append(company.ticker) // all measure values met threshold
-                } else {
-                    tickersToRemoveMeasureValue.append(company.ticker) // measure value did not met threshold
-                }
+        for company in self.store.companies{
+            // filter out tickers with measures that did not pass
+            if company.eps_i_passed && company.eps_i_passed && company.roe_avg_passed && company.bv_i_passed && company.dr_avg_passed && company.so_reduced_passed {
+                tickersToGetMeasureValue.append(company.ticker) // all measure values met threshold
             } else {
-                tickersToRemoveMeasureValue.append(company.ticker) // measure value not found
+                tickersToRemoveMeasureValue.append(company.ticker) // measure value did not met threshold
             }
         }
         //print("tickersToGetMeasureValue: \(tickersToGetMeasureValue)")
@@ -287,7 +263,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
                         do {
                             if tenYrsAgo { // calc previous_roi
                                 
-                                if let company = self.companiesArr.first(where: {$0.ticker == ticker}){
+                                if let company = self.store.companies.first(where: {$0.ticker == ticker}){
                                     // get previous roi from them the current price and price 10 yrs ago
                                     // if the current price doesnt exist, send the price from 10 yrs ago which will result in an roi of 0
                                     
@@ -315,7 +291,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
                                 
                                 var price_in10yrs: Double
                                 var measureValue: Int
-                                if let company = self.companiesArr.first(where: {$0.ticker == ticker}){
+                                if let company = self.store.companies.first(where: {$0.ticker == ticker}){
                                     
                                     var eps_in10yrs: Double
                                     if let eps_last = company.eps_last, let eps_i = company.eps_i{
@@ -354,17 +330,17 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
                     }
                 }
                 // set expected_roi/previous_roi value to empty if the company if filtered out for not meeting a threshold
-                let valuesRemoved = self.removeValuesForMeasure(tickersToRemoveMeasureValue: tickersToRemoveMeasureValue, measure: measure)
-                completion(valuesRemoved)
+                self.removeValuesForMeasure(tickersToRemoveMeasureValue: tickersToRemoveMeasureValue, measure: measure)
+                completion(true)
             })
         } else {
             // set expected_roi/previous_roi value to empty if the company if filtered out for not meeting a threshold
-            let valuesRemovedCompleted = self.removeValuesForMeasure(tickersToRemoveMeasureValue: tickersToRemoveMeasureValue, measure: measure)
-            completion(valuesRemovedCompleted)
+            self.removeValuesForMeasure(tickersToRemoveMeasureValue: tickersToRemoveMeasureValue, measure: measure)
+            completion(true)
         }
     }
     
-    func removeValuesForMeasure(tickersToRemoveMeasureValue: [String], measure: String) -> Bool{
+    func removeValuesForMeasure(tickersToRemoveMeasureValue: [String], measure: String) {
         // when a ticker is filtered out for a calculation due to not meeting the threshold value for one measure, remove the value for the current measure
 
         let database = DBUtilities.getDBConnection()
@@ -403,7 +379,6 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
                 print(error)
             }
         }
-        return true
      }
 
     func getAverage(valuesArr: [Double], multiplier: Int) -> Double {
@@ -473,7 +448,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
 
         do {
             let companyRows = try database.prepare(companiesTable.order(tickerCol.asc))
-            self.companiesArr.removeAll()
+            self.store.companies.removeAll()
             for companyRow in companyRows {
                 //print("ticker: \(companyRow[tickerCol]), name: \(companyRow[nameCol]), collectionDay: \(companyRow[collectionDayCol]) lastCollection: \(String(describing: companyRow[lastCollectionCol]))")
                 
@@ -487,19 +462,27 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
                 if let bv_i = companyRow[bv_iCol]                   { company.bv_i = bv_i }
                 if let so_reduced = companyRow[so_reducedCol]       { company.so_reduced = so_reduced }
                 if let dr_avg = companyRow[dr_avgCol]               { company.dr_avg = dr_avg }
-                if let pe_avg = companyRow[pe_avgCol]           { company.pe_avg = pe_avg }
-                if let price_last = companyRow[price_lastCol]           { company.price_last = price_last }
+                if let pe_avg = companyRow[pe_avgCol]               { company.pe_avg = pe_avg }
+                if let price_last = companyRow[price_lastCol]       { company.price_last = price_last }
                 if let previous_roi = companyRow[previous_roiCol]   { company.previous_roi = previous_roi }
                 if let expected_roi = companyRow[expected_roiCol]   { company.expected_roi = expected_roi }
                 
-                self.companiesArr.append(company)
+                self.store.companies.append(company)
+                
+//                print("tab: \(company.eps_i_passed), \(company.eps_sd_passed), \(company.roe_avg_passed), \(company.bv_i_passed), \(company.so_reduced_passed), \(company.dr_avg_passed), \(company.previous_roi_passed), \(company.expected_roi_passed), \(company.tab) ")
+                
+            }
+            
+            let companiesEvaluate = self.store.companies.filter({$0.tab == .evaluate})
+            for companyEvaluate in companiesEvaluate {
+            print("companyEvaluate: \(companyEvaluate.eps_i_passed), \(companyEvaluate.eps_sd_passed), \(companyEvaluate.roe_avg_passed), \(companyEvaluate.bv_i_passed), \(companyEvaluate.so_reduced_passed), \(companyEvaluate.dr_avg_passed), \(companyEvaluate.previous_roi_passed), \(companyEvaluate.expected_roi_passed), \(companyEvaluate.tab) ")
             }
   
             completion(true)
         } catch {
             // no database found
             print(error)
-            self.companiesArr.removeAll()
+            self.store.companies.removeAll()
             completion(true)
         }
     }
@@ -558,7 +541,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
         do {
             try database.run(companiesTable.drop())
             DBUtilities.removeDBFile() // only one table, so remove the db file
-            self.companiesArr = []
+            self.store.companies = []
             completion(true)
         } catch {
             print(error)

@@ -93,7 +93,7 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
             default:
                 break;
             }
-            self.store.resetTabValue(equity: self.equity)
+            //self.store.resetTabValue(equity: self.equity)
         })
     }
     
