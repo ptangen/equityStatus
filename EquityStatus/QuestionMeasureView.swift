@@ -13,7 +13,8 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
     weak var delegate: MeasureDetailViewDelegate?
     let store = DataStore.sharedInstance
     var measureTicker = String()
-    var equity: Equity!
+    //var equity: Equity!
+    var company: Company!
     var measureShortName = String()
     var measureLongNameLabel = UILabel()
     var statusLabel = UILabel()
@@ -51,37 +52,37 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
         
         switch sender.selectedSegmentIndex {
         case 1:
-            self.updateQStatus(status: "pass")
+            self.updateQStatus(passed: true)
         case 2:
-            self.updateQStatus(status: "fail")
+            self.updateQStatus(passed: false)
         default:
-            self.updateQStatus(status: "undefined")  // user can only set values for subjective measures so undefined is valid response
+            self.updateQStatus(passed: false) // TODO handle nil  // user can only set values for subjective measures so undefined is valid response
         }
     }
     
-    func updateQStatus(status: String) {
+    func updateQStatus(passed: Bool) {
         
-        APIClient.setSubjectiveStatus(question: self.measureShortName, status: status, equity: self.equity, completion: { response in
+        APIClient.setSubjectiveStatus(question: self.measureShortName, status: passed, company: self.company, completion: { response in
             
             switch response {
             case .ok:
-                Utilities.setStatusIcon(status: status, uiLabel: self.statusIcon)
-                self.statusValueDesc.text = "(" + self.getStatusDesc(status) + ")"
+                Utilities.getStatusIcon(status: passed, uiLabel: self.statusIcon)
+                self.statusValueDesc.text = "(" + self.getStatusDesc(passed: passed) + ")"
                 
                 // udpate the status in the equity
                 switch self.measureShortName {
                 case "q1":
-                    self.equity.q1Status = status
+                    self.company.q1_passed = false // status
                 case "q2":
-                    self.equity.q2Status = status
+                    self.company.q2_passed = false // status
                 case "q3":
-                    self.equity.q3Status = status
+                    self.company.q3_passed = false // status
                 case "q4":
-                    self.equity.q4Status = status
+                    self.company.q4_passed = false // status
                 case "q5":
-                    self.equity.q5Status = status
+                    self.company.q5_passed = false // status
                 case "q6":
-                    self.equity.q6Status = status
+                    self.company.q6_passed = false // status
                 default:
                     break
                 }
@@ -99,7 +100,7 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
     
     func updateQAnswer(answer: String) {
         
-        APIClient.setSubjectiveAnswer(question: self.measureShortName, answer: answer, equity: self.equity, completion: { response in
+        APIClient.setSubjectiveAnswer(question: self.measureShortName, answer: answer, company: self.company, completion: { response in
             
             switch response {
             case .ok:
@@ -119,24 +120,24 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
         super.init(coder: aDecoder)
     }
     
-    func getStatusDesc(_ statusDesc: String) -> String {
-        if statusDesc == "noData" {
-            return "no data"
+    func getStatusDesc(passed: Bool?) -> String {
+        if let passedUnwrapped = passed {
+            return passedUnwrapped.description
         } else {
-            return statusDesc;
+            return "no data"
         }
     }
     
-    func showSubjectiveMeasureControls(qStatus: String) {
+    func showSubjectiveMeasureControls(qStatus: Bool) {
         // show
         self.qStatusPicker.isHidden = false
         self.qAnswerView.isHidden = false
         
         // set status on button bar
         switch qStatus {
-        case "pass":
+        case true:
             self.qStatusPicker.selectedSegmentIndex = 1
-        case "fail":
+        case false:
             self.qStatusPicker.selectedSegmentIndex = 2
         default:
             self.qStatusPicker.selectedSegmentIndex = 0
@@ -224,12 +225,14 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
         self.qAnswerView.layer.borderWidth = 1.0
     }
     
-    func getMeasureResultsAndSetLabelText(status: String, longName: String, answer: String) {
-        self.showSubjectiveMeasureControls(qStatus: status)
+    func getMeasureResultsAndSetLabelText(passed: Bool, longName: String, answer: String?) {
+        self.showSubjectiveMeasureControls(qStatus: passed)
         self.measureLongNameLabel.text = longName
-        Utilities.setStatusIcon(status: status, uiLabel: self.statusIcon)
-        self.statusValueDesc.text = "(" + getStatusDesc(status) + ")"
-        self.setTextInQAnswerView(textToDisplay: answer)
+        Utilities.getStatusIcon(status: passed, uiLabel: self.statusIcon)
+        self.statusValueDesc.text = "(" + getStatusDesc(passed: passed) + ")"
+        if let answerUnwrapped = answer {
+            self.setTextInQAnswerView(textToDisplay: answerUnwrapped)
+        }
     }
     
     func setResultsLabelsForMeasure(fullString: String) {
@@ -243,25 +246,39 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
             // 4.2 error: self.measureShortName = fullString[chars.startIndex...indexBeforeLeftParen]
             self.measureShortName = fullString
         }
+        print("self.measureShortName: \(self.measureShortName)")
+        let measureInfo = self.store.measureInfo[fullString]!
         
         // get the measure results and set the label text
         if self.measureShortName == "q1" {
-            self.getMeasureResultsAndSetLabelText(status: self.equity.q1Status, longName: Constants.measureMetadata.longName(.q1)(), answer: self.equity.q1Answer)
+            if let q1_passed = self.company.q1_passed {
+                self.getMeasureResultsAndSetLabelText(passed: q1_passed, longName: measureInfo["longName"]!, answer: self.company.q1_answer)
+            }
             
         } else if self.measureShortName == "q2" {
-            self.getMeasureResultsAndSetLabelText(status: self.equity.q2Status, longName: Constants.measureMetadata.longName(.q2)(), answer: self.equity.q2Answer)
+            if let q2_passed = self.company.q2_passed {
+                self.getMeasureResultsAndSetLabelText(passed: q2_passed, longName: measureInfo["longName"]!, answer: self.company.q2_answer)
+            }
             
         } else if self.measureShortName == "q3" {
-            self.getMeasureResultsAndSetLabelText(status: self.equity.q3Status, longName: Constants.measureMetadata.longName(.q3)(), answer: self.equity.q3Answer)
+            if let q3_passed = self.company.q3_passed {
+            self.getMeasureResultsAndSetLabelText(passed: q3_passed, longName: measureInfo["longName"]!, answer: self.company.q3_answer)
+            }
             
         } else if self.measureShortName == "q4" {
-            self.getMeasureResultsAndSetLabelText(status: self.equity.q4Status, longName: Constants.measureMetadata.longName(.q4)(), answer: self.equity.q4Answer)
+            if let q4_passed = self.company.q4_passed {
+                self.getMeasureResultsAndSetLabelText(passed: q4_passed, longName: measureInfo["longName"]!, answer: self.company.q4_answer)
+            }
             
         } else if self.measureShortName == "q5" {
-            self.getMeasureResultsAndSetLabelText(status: self.equity.q5Status, longName: Constants.measureMetadata.longName(.q5)(), answer: self.equity.q5Answer)
+            if let q5_passed = self.company.q5_passed {
+                self.getMeasureResultsAndSetLabelText(passed: q5_passed, longName: measureInfo["longName"]! + "XX", answer: self.company.q5_answer)
+            }
             
-        } else {
-            self.getMeasureResultsAndSetLabelText(status: self.equity.q6Status, longName: Constants.measureMetadata.longName(.q6)(), answer: self.equity.q6Answer)
+        } else if self.measureShortName == "q6" {
+            if let q6_passed = self.company.q6_passed {
+                self.getMeasureResultsAndSetLabelText(passed: q6_passed, longName: measureInfo["longName"]!, answer: self.company.q6_answer)
+            }
         }
     }
 }

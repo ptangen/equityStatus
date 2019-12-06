@@ -10,7 +10,7 @@ import UIKit
 import Charts
 
 protocol BuyViewDelegate: class {
-    func openEquityDetail(_: Equity)
+    func openCompanyDetail(company: Company)
 }
 
 class BuyView: UIView, ChartViewDelegate {
@@ -21,8 +21,14 @@ class BuyView: UIView, ChartViewDelegate {
     let countLabel = UILabel()
     let companiesLabel = UILabel()
     let pageDescLabel = UILabel()
-    var equitiesForBuyExpectedROI = [Double]()
+    //var equitiesForBuyExpectedROI = [Double]()
+    
     var equitiesForBuyTickers = [String]()
+    
+    var companiesToBuyExpectedROI = [Double]()
+    var companiesToBuyTickers = [String]()
+    var companiesToBuyNames = [String]()
+    
     let activityIndicator = UIView()
     var chartHeight = CGFloat()
     let barHeight:Int = 60
@@ -33,19 +39,19 @@ class BuyView: UIView, ChartViewDelegate {
         self.accessibilityLabel = "buyView"
         self.barChartView.accessibilityLabel = "barChartView"
         self.pageLayoutLabels()
-        self.store.equities.count > 0 ? self.createEquitiesForBuy() : ()
+        self.store.companies.count > 0 ? self.createCompaniesToBuy() : ()
         
         // if data is available, update the display
-        if self.store.equities.count > 0 {
+        if self.store.companies.count > 0 {
             self.setHeadingLabels()
             self.pageLayoutWithData()
         }
     }
     
     func setHeadingLabels() {
-        self.equitiesForBuyExpectedROI.count == 1 ? (self.pageDescLabel.text = "This company has passed all 14 assessments and therefore, it's stock is considered a buy. The expected return for the equity is displayed below.") : (self.pageDescLabel.text = "These companies have passed all 14 assessments and therefore, their stock are considered buys. The expected returns for the equities are displayed below.")
-        self.countLabel.text = "\(self.store.equitiesForBuyNames.count)"
-        self.equitiesForBuyExpectedROI.count == 1 ? (self.companiesLabel.text = "company") : (self.companiesLabel.text = "companies")
+        self.companiesToBuyExpectedROI.count == 1 ? (self.pageDescLabel.text = "This company has passed all 14 assessments and therefore, it's stock is considered a buy. The expected return for the equity is displayed below.") : (self.pageDescLabel.text = "These companies have passed all 14 assessments and therefore, their stock are considered buys. The expected returns for the equities are displayed below.")
+        self.countLabel.text = "\(self.companiesToBuyExpectedROI.count)"
+        self.companiesToBuyExpectedROI.count == 1 ? (self.companiesLabel.text = "company") : (self.companiesLabel.text = "companies")
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -97,30 +103,70 @@ class BuyView: UIView, ChartViewDelegate {
         self.updateChartWithData()
     }
     
+    // TODO
     func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
-        if let equityClicked = store.getEquityByTickerFromStore(ticker: self.equitiesForBuyTickers[Int(entry.x)]) {
-            self.delegate?.openEquityDetail(equityClicked)
+//        if let equityClicked = store.getEquityByTickerFromStore(ticker: self.equitiesForBuyTickers[Int(entry.x)]) {
+//            self.delegate?.openEquityDetail(equityClicked)
+//        }
+        
+        let companyClickedArr = self.store.companies.filter({$0.ticker == self.companiesToBuyTickers[Int(entry.x)]})
+        if let companyClicked = companyClickedArr.first {
+            self.delegate?.openCompanyDetail(company: companyClicked)
         }
+//        if let companyClicked = store.getEquityByTickerFromStore(ticker: self.companiesToBuyTickers[Int(entry.x)]) {
+//            self.delegate?.openEquityDetail(equityClicked)
+//        }
     }
     
+//    // create array for buy view
+//    func createEquitiesForBuy() {
+//        self.equitiesForBuyExpectedROI.removeAll()
+//        self.store.equitiesForBuyNames.removeAll()
+//        self.equitiesForBuyTickers.removeAll()
+//
+//        for equity in self.store.equities {
+//            if equity.tab == .buy {
+//                self.equitiesForBuyExpectedROI.append(equity.expectedROIResult)
+//                self.store.equitiesForBuyNames.append(equity.name.capitalized)
+//                self.equitiesForBuyTickers.append(equity.ticker)
+//            }
+//        }
+//        self.equitiesForBuyExpectedROI.reverse()
+//        self.store.equitiesForBuyNames.reverse()
+//        self.equitiesForBuyTickers.reverse()
+//
+//        self.chartHeight = CGFloat(self.store.equitiesForBuyNames.count * self.barHeight)
+//        let maxChartHeight: CGFloat = UIScreen.main.bounds.height - 260 // subtract for heading and tabs at bottom
+//
+//        if self.chartHeight > maxChartHeight {
+//            self.chartHeight = maxChartHeight
+//        }
+//    }
+    
     // create array for buy view
-    func createEquitiesForBuy() {
-        self.equitiesForBuyExpectedROI.removeAll()
-        self.store.equitiesForBuyNames.removeAll()
-        self.equitiesForBuyTickers.removeAll()
+    func createCompaniesToBuy() {
+        self.companiesToBuyExpectedROI.removeAll()
+        self.companiesToBuyNames.removeAll()
+        self.companiesToBuyTickers.removeAll()
         
-        for equity in self.store.equities {
-            if equity.tab == .buy {
-                self.equitiesForBuyExpectedROI.append(equity.expectedROIResult)
-                self.store.equitiesForBuyNames.append(equity.name.capitalized)
-                self.equitiesForBuyTickers.append(equity.ticker)
-            }
+        let companiesToBuy = self.store.companies.filter({$0.tab == .buy})
+        
+        for company in companiesToBuy {
+            //if equity.tab == .buy {
+                if let expected_roi = company.expected_roi {
+                    self.companiesToBuyExpectedROI.append(Double(expected_roi))
+                } else {
+                    self.companiesToBuyExpectedROI.append(0.0)
+                }
+                self.companiesToBuyNames.append(company.name.capitalized)
+                self.companiesToBuyTickers.append(company.ticker)
+            //}
         }
-        self.equitiesForBuyExpectedROI.reverse()
-        self.store.equitiesForBuyNames.reverse()
-        self.equitiesForBuyTickers.reverse()
+        self.companiesToBuyExpectedROI.reverse()
+        self.companiesToBuyNames.reverse()
+        self.companiesToBuyTickers.reverse()
         
-        self.chartHeight = CGFloat(self.store.equitiesForBuyNames.count * self.barHeight)
+        self.chartHeight = CGFloat(self.companiesToBuyNames.count * self.barHeight)
         let maxChartHeight: CGFloat = UIScreen.main.bounds.height - 260 // subtract for heading and tabs at bottom
         
         if self.chartHeight > maxChartHeight {
@@ -134,8 +180,8 @@ class BuyView: UIView, ChartViewDelegate {
         var dataEntries: [BarChartDataEntry] = []
         
         // data and names of the bars
-        let dataPoints: [Double] = self.equitiesForBuyExpectedROI   // values for the bars
-        stringFormatter.nameValues = self.store.equitiesForBuyNames      // labels for the y axis
+        let dataPoints: [Double] = self.companiesToBuyExpectedROI   // values for the bars
+        stringFormatter.nameValues = self.companiesToBuyNames      // labels for the y axis
         
         // formatting, the horizontal bar chart is rotated so the axis labels are odd
         barChartView.xAxis.valueFormatter = stringFormatter // allow labels to be shown for bars
@@ -157,7 +203,7 @@ class BuyView: UIView, ChartViewDelegate {
         barChartView.drawValueAboveBarEnabled = false       // places values inside the bars
 
         barChartView.leftAxis.axisMinimum = 0.0             // required to show values on the horz bars, its a bug
-        if let maxBarValue = self.equitiesForBuyExpectedROI.max() {
+        if let maxBarValue = self.companiesToBuyExpectedROI.max() {
             barChartView.leftAxis.axisMaximum = maxBarValue + 2
         }
         
@@ -183,7 +229,7 @@ class BuyView: UIView, ChartViewDelegate {
         
         let actInd: UIActivityIndicatorView = UIActivityIndicatorView()
         actInd.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
-        actInd.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.whiteLarge
+        actInd.style = UIActivityIndicatorView.Style.whiteLarge
         actInd.center = CGPoint(x: 40, y: 40)
         
         self.activityIndicator.addSubview(actInd)

@@ -63,128 +63,22 @@ struct Constants{
     enum measureMetadata: String {
         
         // measure ids
-        case ROEa, EPSi, EPSv, BVi, DRa, SOr, previousROI, expectedROI, q1, q2, q3, q4, q5, q6
-        
-        // long names for the measures
-        func longName() -> String {
-            switch self {
-            case .ROEa:
-                return "Avg Return on Equity"
-            case .EPSi:
-                return "Earnings Per Share Growth Rate"
-            case .EPSv:
-                return "Earnings Per Share Volatility"
-            case .BVi:
-                return "Book Value Growth Rate"
-            case .DRa:
-                return "Avg Debt Ratio"
-            case .SOr:
-                return "Shares Outstanding Reduced"
-            case .previousROI:
-                return "Previous Return on Investment"
-            case .expectedROI:
-                return "Expected Return on Investment"
-            case .q1:
-                return "Is there a strong upward trend in the EPS?"
-            case .q2:
-                return "Do you understand the product/service?"
-            case .q3:
-                return "Has the product/service been consistent for 10 years?"
-            case .q4:
-                return "Does the company invest in it's area of expertise?"
-            case .q5:
-                return "Are few expenditures required to maintain operations?"
-            case .q6:
-                return "Is the company free to adjust prices with inflation?"
-            }
-        }
-        
-        // use these labels to gether historical data for the charts on the measures listed below
-        func historicalDataLabel() -> String {
-            switch self {
-            case .ROEa:
-                return "ReturnOnEquity"
-            case .EPSi, .EPSv:
-                return "EarningsPerShare"
-            case .BVi:
-                return "BookValuePerShare"
-            case .DRa:
-                return "DebtEquity"
-            case .SOr:
-                return "Shares"
-            case .q1:
-                return "EarningsPerShare"
-            default:
-                return ""
-            }
-        }
-        
-        // use these labels to gether historical data for the charts on the measures listed below
-        func chartLabel() -> String {
-            switch self {
-            case .ROEa:
-                return "  Return On Equity (%)"
-            case .EPSi, .EPSv, .q1:
-                return "  Earnings Per Share ($)"
-            case .BVi:
-                return "  Book Value Per Share ($)"
-            case .DRa:
-                return "  Debt Equity Ratio"
-            case .SOr:
-                return "  Shares Outstanding"
-            default:
-                return ""
-            }
-        }
-        
-        // long names for the measures
-        func index() -> Int {
-            switch self {
-            case .ROEa:
-                return 0
-            case .EPSi:
-                return 1
-            case .EPSv:
-                return 2
-            case .BVi:
-                return 3
-            case .DRa:
-                return 4
-            case .SOr:
-                return 5
-            case .previousROI:
-                return 6
-            case .expectedROI:
-                return 7
-            case .q1:
-                return 8
-            case .q2:
-                return 9
-            case .q3:
-                return 10
-            case .q4:
-                return 11
-            case .q5:
-                return 12
-            case .q6:
-                return 13
-            }
-        }
-        
+        case roe_avg, eps_i, eps_sd, bv_i, dr_avg, so_reduced, previous_roi, expected_roi, q1, q2, q3, q4, q5, q6
+             
         // thresholds for each measure
         func threshold() -> String {
             switch self {
-            case .ROEa:
+            case .roe_avg:
                 return "Threshold: Greater than or equal to 12%"
-            case .EPSi, .previousROI, .expectedROI:
+            case .eps_i, .previous_roi, .expected_roi:
                 return "Threshold: Greater than or equal to 15%"
-            case .EPSv:
+            case .eps_sd:
                 return "Threshold: Less than or equal to 1.5"
-            case .BVi:
+            case .bv_i:
                 return "Threshold: Greater than or equal to 5%"
-            case .DRa:
+            case .dr_avg:
                 return "Threshold: Less than or equal to 5"
-            case .SOr:
+            case .so_reduced:
                 return "Threshold: More than or equal to 0 shares"
             default:
                 return ""
@@ -194,21 +88,21 @@ struct Constants{
         // description of how each measure is calculated
         func calcDesc() -> String {
             switch self {
-            case .ROEa:
+            case .roe_avg:
                 return "Calculation: The annual return on equity is collected and then the mean is found."
-            case .EPSi:
+            case .eps_i:
                 return "Calculation: The annual earnings per share (EPS) is collected and then the future value formula is applied to determine the growth rate of the EPS."
-            case .EPSv:
+            case .eps_sd:
                 return "Calculation: First, the standard deviation of the EPS values from the last ten years is calculated. Then the difference of the first and last values is compared to three times the standard deviation and a ratio is established. The lower the ratio, the less volatile the the EPS."
-            case .BVi:
+            case .bv_i:
                 return "Calculation: The annual book value is collected and then the future value formula is applied to determine the growth rate of the BV."
-            case .DRa:
+            case .dr_avg:
                 return "Calculation: The annual total debt ratio is collected and then the mean is calculated."
-            case .SOr:
+            case .so_reduced:
                 return "Calculation: The value is found by subtracting the number of shares outstanding in the current year, from the number of shares outstanding ten years earlier."
-            case .previousROI:
+            case .previous_roi:
                 return "Calculation: This value is found by obtaining the stock price 5 years ago, the current price and calculating the growth rate."
-            case .expectedROI:
+            case .expected_roi:
                 return "Calculation: To calculate the Expected ROI, the future value of the EPS in ten years is calculated from the current EPS value and the EPS growth rate. The mean value for the P/E ratio is also calculated. Next, the future stock price is found by multiplying the future value EPS by the mean P/E ratio. Finally, the expected ROI is found by using the future value function. The current stock price is the present value and the future value is the future stock price."
             default:
                 return ""

@@ -80,11 +80,20 @@ class APIClient {
         let stringOfTickers = tickers.joined(separator: ",")
         
         var endDate = Date()
+        // had to comment out for iOS 12, remove when back to iOS 13
         if tenYrsAgo {
-            endDate = endDate.advanced(by: -60*60*24*365*10) // move end date back 10 yrs
+//          endDate = endDate.advanced(by: -60*60*24*365*10) // move end date back 10 yrs
+            endDate = Calendar.current.date(byAdding: .month, value: -120, to: Date())!
         }
-        let endDateLessSevenDays = endDate.advanced(by: -60*60*24*7) // get the date 7 days earlier to make sure we get a day with a ticker price
+        
+        // had to comment out for iOS 12 TODO: remove setting endDateLessSevenDays below
+        //let endDateLessSevenDays = endDate.advanced(by: -60*60*24*7) // get the date 7 days earlier to make sure we get a day with a ticker price
+        var endDateLessSevenDays = Date()
+        endDateLessSevenDays = Calendar.current.date(byAdding: .month, value: -121, to: Date())!
+        
+        
         let endDateString = endDate.description.prefix(10) // get day 10 yrs ago as string
+        print(endDateString)
         let endDateLessSevenDaysString = endDateLessSevenDays.description.prefix(10) // get day 10 yrs ago as string
         
         let urlString = "https://api.unibit.ai/v2/stock/historical/?"
@@ -151,7 +160,7 @@ class APIClient {
         return valuesFound
     }
     
-    class func setSubjectiveStatus(question: String, status: String, equity: Equity, completion: @escaping (apiResponse) -> Void) {
+    class func setSubjectiveStatus(question: String, status: Bool, company: Company, completion: @escaping (apiResponse) -> Void) {
         let urlString = "\(Secrets.apiURL)setSubjectiveStatus.php"
         let url = URL(string: urlString)
         if let url = url {
@@ -161,7 +170,7 @@ class APIClient {
             request.setValue("application/json", forHTTPHeaderField: "Accept")
             request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         
-            let parameterString = "ticker=\(equity.ticker)&question=\(question)&status=\(status)&key=\(Secrets.apiKey)"
+            let parameterString = "ticker=\(company.ticker)&question=\(question)&status=\(status)&key=\(Secrets.apiKey)"
             request.httpBody = parameterString.data(using: .utf8)
 
             URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
@@ -173,12 +182,12 @@ class APIClient {
                                 if results == 1 {
                                     // update the equity
                                     switch question {
-                                    case "q1": equity.q1Status = status
-                                    case "q2": equity.q2Status = status
-                                    case "q3": equity.q3Status = status
-                                    case "q4": equity.q4Status = status
-                                    case "q5": equity.q5Status = status
-                                    case "q6": equity.q6Status = status
+                                    case "q1": company.q1_passed = true //status
+                                    case "q2": company.q2_passed = true //status
+                                    case "q3": company.q3_passed = true //status
+                                    case "q4": company.q4_passed = true //status
+                                    case "q5": company.q5_passed = true //status
+                                    case "q6": company.q6_passed = true //status
                                     default: print("error 121")
                                     }
                                     completion(.ok)
@@ -200,7 +209,7 @@ class APIClient {
         }
     }
     
-    class func setSubjectiveAnswer(question: String, answer: String, equity: Equity, completion: @escaping (apiResponse) -> Void) {
+    class func setSubjectiveAnswer(question: String, answer: String, company: Company, completion: @escaping (apiResponse) -> Void) {
         let urlString = "\(Secrets.apiURL)setSubjectiveAnswer.php"
         let url = URL(string: urlString)
         if let url = url {
@@ -212,7 +221,7 @@ class APIClient {
             
             var parameterString = String()
             if let answerUnwrapped = answer.addingPercentEncoding(withAllowedCharacters: .urlUserAllowed) {
-                parameterString = "ticker=\(equity.ticker)&question=\(question)&answer=\(answerUnwrapped)&key=\(Secrets.apiKey)"
+                parameterString = "ticker=\(company.ticker)&question=\(question)&answer=\(answerUnwrapped)&key=\(Secrets.apiKey)"
             }
             request.httpBody = parameterString.data(using: .utf8)
             
@@ -225,12 +234,12 @@ class APIClient {
                                 if results == 1 {
                                     // update the equity
                                     switch question {
-                                    case "q1": equity.q1Answer = answer
-                                    case "q2": equity.q2Answer = answer
-                                    case "q3": equity.q3Answer = answer
-                                    case "q4": equity.q4Answer = answer
-                                    case "q5": equity.q5Answer = answer
-                                    case "q6": equity.q6Answer = answer
+//                                    case "q1": equity.q1Answer = answer
+//                                    case "q2": equity.q2Answer = answer
+//                                    case "q3": equity.q3Answer = answer
+//                                    case "q4": equity.q4Answer = answer
+//                                    case "q5": equity.q5Answer = answer
+//                                    case "q6": equity.q6Answer = answer
                                     default: print("error 122")
                                     }
                                     completion(.ok)

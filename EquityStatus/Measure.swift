@@ -9,15 +9,11 @@
 import Foundation
 
 class Measure {
-    var ticker: String
     var name: String
-    var value: Int
-    var passed: Bool
+    var longName: String
     
-    init(ticker: String, name:String, value: Int, passed:Bool) {
-        self.ticker = ticker
+    init(name:String, longName: String) {
         self.name = name
-        self.value = value
-        self.passed = passed
+        self.longName = longName
     }
 }

@@ -11,92 +11,63 @@ import UIKit
 class MeasurePageViewController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     
     let store = DataStore.sharedInstance
-    var equity: Equity!
-    var measureTicker = String()
+    var company: Company!
+    var measure = String()
     
     var pages = [UIViewController](repeating: UIViewController(), count: 14)
     let pageControl = UIPageControl()
     
+    // create an instance of the VC for each measure
+    let ROEaViewControllerInst = CalcMeasureViewController()
+    let EPSiViewControllerInst = CalcMeasureViewController()
+    let EPSvViewControllerInst = CalcMeasureViewController()
+    let BViViewControllerInst = CalcMeasureViewController()
+    let DRaViewControllerInst = CalcMeasureViewController()
+    let SOrViewControllerInst = CalcMeasureViewController()
+    let previousROIViewControllerInst = CalcMeasureViewController()
+    let expectedROIViewControllerInst = CalcMeasureViewController()
+    let q1ViewControllerInst = QuestionMeasureViewController()
+    let q2ViewControllerInst = QuestionMeasureViewController()
+    let q3ViewControllerInst = QuestionMeasureViewController()
+    let q4ViewControllerInst = QuestionMeasureViewController()
+    let q5ViewControllerInst = QuestionMeasureViewController()
+    let q6ViewControllerInst = QuestionMeasureViewController()
+    
+    var calcMeasureVCInstances: [(instance: CalcMeasureViewController, measure: String)] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let ticker = Utilities.getTickerFromLabel(fullString: measureTicker)
-        self.equity = self.store.getEquityByTickerFromStore(ticker: ticker)
 
         self.dataSource = self
         self.delegate = self
-        let measureShortName = Utilities.getMeasureName(fullString: measureTicker)
-        let initialPage = getMeasureIndex(measureShortName: measureShortName)
+        let measureInfoEPS_I = self.store.measureInfo["eps_i"]!
+        let initialPage = Int(measureInfoEPS_I["pageIndex"]!)!
         
         self.edgesForExtendedLayout = []   // prevents view from siding under nav bar
         
-        // create an instance of the VC for each measure
-        let ROEaViewControllerInst = CalcMeasureViewController()
-        let EPSiViewControllerInst = CalcMeasureViewController()
-        let EPSvViewControllerInst = CalcMeasureViewController()
-        let BViViewControllerInst = CalcMeasureViewController()
-        let DRaViewControllerInst = CalcMeasureViewController()
-        let SOrViewControllerInst = CalcMeasureViewController()
-        let previousROIViewControllerInst = CalcMeasureViewController()
-        let expectedROIViewControllerInst = CalcMeasureViewController()
-        let q1ViewControllerInst = QuestionMeasureViewController()
-        let q2ViewControllerInst = QuestionMeasureViewController()
-        let q3ViewControllerInst = QuestionMeasureViewController()
-        let q4ViewControllerInst = QuestionMeasureViewController()
-        let q5ViewControllerInst = QuestionMeasureViewController()
-        let q6ViewControllerInst = QuestionMeasureViewController()
+        calcMeasureVCInstances.append((self.ROEaViewControllerInst, "roe_avg"))
+        calcMeasureVCInstances.append((self.EPSiViewControllerInst, "eps_i"))
+        calcMeasureVCInstances.append((self.EPSvViewControllerInst, "eps_sd"))
+        calcMeasureVCInstances.append((self.BViViewControllerInst, "bv_i"))
+        calcMeasureVCInstances.append((self.DRaViewControllerInst, "dr_avg"))
+        calcMeasureVCInstances.append((self.SOrViewControllerInst, "so_reduced"))
+        calcMeasureVCInstances.append((self.previousROIViewControllerInst, "previous_roi"))
+        calcMeasureVCInstances.append((self.expectedROIViewControllerInst, "expected_roi"))
         
-        // set measureTicker on each VC
-        ROEaViewControllerInst.measureTicker = "ROEa(\(ticker))"
-        EPSiViewControllerInst.measureTicker = "EPSi(\(ticker))"
-        EPSvViewControllerInst.measureTicker = "EPSv(\(ticker))"
-        BViViewControllerInst.measureTicker = "BVi(\(ticker))"
-        DRaViewControllerInst.measureTicker = "DRa(\(ticker))"
-        SOrViewControllerInst.measureTicker = "SOr(\(ticker))"
-        previousROIViewControllerInst.measureTicker = "previousROI(\(ticker))"
-        expectedROIViewControllerInst.measureTicker = "expectedROI(\(ticker))"
-        q1ViewControllerInst.measureTicker = "q1(\(ticker))"
-        q2ViewControllerInst.measureTicker = "q2(\(ticker))"
-        q3ViewControllerInst.measureTicker = "q3(\(ticker))"
-        q4ViewControllerInst.measureTicker = "q4(\(ticker))"
-        q5ViewControllerInst.measureTicker = "q5(\(ticker))"
-        q6ViewControllerInst.measureTicker = "q6(\(ticker))"
+        for calcMeasureVCInstance in calcMeasureVCInstances {
+            calcMeasureVCInstance.instance.company = company
+            calcMeasureVCInstance.instance.accessibilityLabel = calcMeasureVCInstance.measure
+            let pageIndexString = store.measureInfo[calcMeasureVCInstance.measure]!["pageIndex"]!
+            self.pages[Int(pageIndexString)!] = calcMeasureVCInstance.instance
+        }
         
-        // accessibility labels
-        expectedROIViewControllerInst.view.accessibilityLabel = "expectedROIViewControllerInst"
-        q1ViewControllerInst.view.accessibilityLabel = "q1ViewControllerInst"
-        
-        // set historicalDataLabel on VC with views that render a chart
-        ROEaViewControllerInst.historicalDataLabel = Constants.measureMetadata.historicalDataLabel(.ROEa)()
-        EPSiViewControllerInst.historicalDataLabel = Constants.measureMetadata.historicalDataLabel(.EPSi)()
-        EPSvViewControllerInst.historicalDataLabel = Constants.measureMetadata.historicalDataLabel(.EPSv)()
-        BViViewControllerInst.historicalDataLabel = Constants.measureMetadata.historicalDataLabel(.BVi)()
-        DRaViewControllerInst.historicalDataLabel = Constants.measureMetadata.historicalDataLabel(.DRa)()
-        SOrViewControllerInst.historicalDataLabel = Constants.measureMetadata.historicalDataLabel(.SOr)()
-        
-        // set chartLabel on VC with views that render a chart
-        ROEaViewControllerInst.chartLabel = Constants.measureMetadata.chartLabel(.ROEa)()
-        EPSiViewControllerInst.chartLabel = Constants.measureMetadata.chartLabel(.EPSi)()
-        EPSvViewControllerInst.chartLabel = Constants.measureMetadata.chartLabel(.EPSv)()
-        BViViewControllerInst.chartLabel = Constants.measureMetadata.chartLabel(.BVi)()
-        DRaViewControllerInst.chartLabel = Constants.measureMetadata.chartLabel(.DRa)()
-        SOrViewControllerInst.chartLabel = Constants.measureMetadata.chartLabel(.SOr)()
-        
-        // place the individual viewControllers in the pageViewController
-        self.pages[getMeasureIndex(measureShortName: "ROEa")] = ROEaViewControllerInst
-        self.pages[getMeasureIndex(measureShortName: "EPSi")] = EPSiViewControllerInst
-        self.pages[getMeasureIndex(measureShortName: "EPSv")] = EPSvViewControllerInst
-        self.pages[getMeasureIndex(measureShortName: "BVi")] = BViViewControllerInst
-        self.pages[getMeasureIndex(measureShortName: "DRa")] = DRaViewControllerInst
-        self.pages[getMeasureIndex(measureShortName: "SOr")] = SOrViewControllerInst
-        self.pages[getMeasureIndex(measureShortName: "previousROI")] = previousROIViewControllerInst
-        self.pages[getMeasureIndex(measureShortName: "expectedROI")] = expectedROIViewControllerInst
-        self.pages[getMeasureIndex(measureShortName: "q1")] = q1ViewControllerInst
-        self.pages[getMeasureIndex(measureShortName: "q2")] = q2ViewControllerInst
-        self.pages[getMeasureIndex(measureShortName: "q3")] = q3ViewControllerInst
-        self.pages[getMeasureIndex(measureShortName: "q4")] = q4ViewControllerInst
-        self.pages[getMeasureIndex(measureShortName: "q5")] = q5ViewControllerInst
-        self.pages[getMeasureIndex(measureShortName: "q6")] = q6ViewControllerInst
+        // insert page index from measureInfo
+        self.pages[getPageIndex(measure: "q1")] = q1ViewControllerInst
+        self.pages[getPageIndex(measure: "q2")] = q2ViewControllerInst
+        self.pages[getPageIndex(measure: "q3")] = q3ViewControllerInst
+        self.pages[getPageIndex(measure: "q4")] = q4ViewControllerInst
+        self.pages[getPageIndex(measure: "q5")] = q5ViewControllerInst
+        self.pages[getPageIndex(measure: "q6")] = q6ViewControllerInst
         
         setViewControllers([pages[initialPage]], direction: .forward, animated: true, completion: nil)
         
@@ -117,7 +88,8 @@ class MeasurePageViewController: UIPageViewController, UIPageViewControllerDataS
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.title = "\(self.equity.name.capitalized) (\(self.equity.ticker))"
+        self.title = "\(company.name.capitalized) (\(company.ticker))"
+        print("measure2: \(self.measure)")
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
@@ -159,36 +131,37 @@ class MeasurePageViewController: UIPageViewController, UIPageViewControllerDataS
         // Dispose of any resources that can be recreated.
     }
     
-    func getMeasureIndex(measureShortName: String) -> Int {
-        switch measureShortName {
-        case "ROEa":
-            return Constants.measureMetadata.ROEa.index()
-        case "EPSi":
-            return Constants.measureMetadata.EPSi.index()
-        case "EPSv":
-            return Constants.measureMetadata.EPSv.index()
-        case "BVi":
-            return Constants.measureMetadata.BVi.index()
-        case "DRa":
-            return Constants.measureMetadata.DRa.index()
-        case "SOr":
-            return Constants.measureMetadata.SOr.index()
-        case "previousROI":
-            return Constants.measureMetadata.previousROI.index()
-        case "expectedROI":
-            return Constants.measureMetadata.expectedROI.index()
+    // delete after subjective measure get pageIndex from dataStore
+    func getPageIndex(measure: String) -> Int { // long names for the measures
+        switch measure {
+        case "roe_avg":
+            return 0
+        case "eps_i":
+            return 1
+        case "eps_sd":
+            return 2
+        case "bv_i":
+            return 3
+        case "dr_avg":
+            return 4
+        case "so_reduced":
+            return 5
+        case "previous_roi":
+            return 6
+        case "expected_roi":
+            return 7
         case "q1":
-            return Constants.measureMetadata.q1.index()
+            return 8
         case "q2":
-            return Constants.measureMetadata.q2.index()
+            return 9
         case "q3":
-            return Constants.measureMetadata.q3.index()
+            return 10
         case "q4":
-            return Constants.measureMetadata.q4.index()
+            return 11
         case "q5":
-            return Constants.measureMetadata.q5.index()
+            return 12
         case "q6":
-            return Constants.measureMetadata.q6.index()
+            return 13
         default:
             return 0
         }

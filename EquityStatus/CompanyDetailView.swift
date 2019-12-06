@@ -1,5 +1,5 @@
 //
-//  EquityDetailView.swift
+//  CompanyDetailView.swift
 //  EquityStatus
 //
 //  Created by Paul Tangen on 12/29/16.
@@ -8,16 +8,17 @@
 
 import UIKit
 
-protocol EquityDetailViewDelegate: class {
-    func openMeasureDetail(_: String)
+protocol CompanyDetailViewDelegate: class {
+    func openMeasureDetail(measure: String)
 }
 
-class EquityDetailView: UIView {
+class CompanyDetailView: UIView {
 
-    weak var delegate: EquityDetailViewDelegate?
-    var equity: Equity!
+    weak var delegate: CompanyDetailViewDelegate?
+    var company: Company!
     let scrollView = UIScrollView()
     var heightOfScrolledContent = CGFloat()
+    var measure = String()
     
     let lineSpacing:CGFloat = 18
     
@@ -383,8 +384,9 @@ class EquityDetailView: UIView {
     }
     
     @objc func onClickLineItem(sender: UILabel){
-        if let measureTicker = sender.accessibilityLabel {
-            self.delegate?.openMeasureDetail(measureTicker)
+        print("sender: \(String(describing: sender.accessibilityLabel))")
+        if let measure = sender.accessibilityLabel {
+            self.delegate?.openMeasureDetail(measure: measure)
         }
     }
 }

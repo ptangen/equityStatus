@@ -9,7 +9,7 @@
 import UIKit
 
 protocol SellViewDelegate: class {
-    func openDetail(_: String)
+    func openDetail(company: Company)
     func showAlertMessage(_: String)
 }
 
@@ -17,7 +17,8 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate {
     
     weak var delegate: SellViewDelegate?
     let store = DataStore.sharedInstance
-    var filteredEquitiesMetadata = [EquityMetadata]()
+    var companiesToSell = [Company]()
+    var filteredCompaniesToSell = [Company]()
     let sellTableViewInst = UITableView()
     let activityIndicator = UIView()
     let countLabel = UILabel()
@@ -25,14 +26,14 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate {
     let pageDescLabel = UILabel()
     var sellTableViewInstYConstraintWithHeading = NSLayoutConstraint()
     var sellTableViewInstYConstraintWithoutHeading = NSLayoutConstraint()
-    var sellViewItemCount = Int()
     
     let searchController = UISearchController(searchResultsController: nil)
         
     override init(frame:CGRect){
         super.init(frame: frame)
         self.accessibilityLabel = "sellViewInst"
-        self.store.getEquitiesMetadataFromCoreData()
+        companiesToSell = self.store.companies.filter({$0.tab == .sell})
+        self.sellTableViewInst.reloadData()
         self.sellTableViewInst.delegate = self
         self.sellTableViewInst.dataSource = self
         self.sellTableViewInst.register(SellTableViewCell.self, forCellReuseIdentifier: "prototype")
@@ -45,37 +46,7 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate {
         self.sellTableViewInst.tableHeaderView = self.searchController.searchBar
         self.searchController.searchBar.accessibilityLabel = "searchBar"
         
-    }
-    
-    func getEquityMetadata () {
-        // If we dont have the metadata for the equities, fetch it else use the metadata stored in coredata.
-        if self.store.equitiesMetadata.count == 0 {
-            
-            self.showActivityIndicator(uiView: self)
-            self.sellTableViewInst.isHidden = true
-            self.pageDescLabel.text = "Searching for companies that have failed an evaluation."
-            
-            APIClient.getEquitiesMetadataFromDB() {isSuccessful in
-                if isSuccessful {
-                    OperationQueue.main.addOperation {
-                        self.activityIndicator.isHidden = true
-                        self.sellTableViewInst.isHidden = false
-                        self.sellViewItemCount = Utilities.getSellTabCount()
-                        self.countLabel.text = String(self.sellViewItemCount)
-                        self.sellTableViewInst.reloadData()
-                        self.pageDescLabel.text = "These companies have failed one or more evalutions. As a result, these company's stock is rated a sell per this methodology."
-                    }
-                } else {
-                    OperationQueue.main.addOperation {
-                        self.activityIndicator.isHidden = true
-                    }
-                    self.delegate?.showAlertMessage("Unable to retrieve data from the server.")
-                }
-            }
-        } else {
-            // set header label
-            self.pageDescLabel.text = "These companies have failed one or more evalutions. As a result, the stock from these companies is considered a sell per this methodology."
-        }
+        self.pageDescLabel.text = "These companies have failed one or more evalutions. As a result, these company's stock is rated a sell per this methodology."
     }
     
     func showActivityIndicator(uiView: UIView) {
@@ -85,7 +56,7 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate {
         
         let actInd: UIActivityIndicatorView = UIActivityIndicatorView()
         actInd.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
-        actInd.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.whiteLarge
+        actInd.style = UIActivityIndicatorView.Style.whiteLarge
         actInd.center = CGPoint(x: 40, y: 40)
 
         self.activityIndicator.addSubview(actInd)
@@ -100,9 +71,9 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if searchController.isActive && searchController.searchBar.text != "" {
-            return filteredEquitiesMetadata.count
+            return filteredCompaniesToSell.count
         }
-        return self.sellViewItemCount
+        return self.companiesToSell.count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
@@ -111,29 +82,22 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = SellTableViewCell(style: .default, reuseIdentifier: "prototype")
-        let equityMetadata: EquityMetadata
+        let company: Company
         if searchController.isActive && searchController.searchBar.text != "" {
-            equityMetadata = self.filteredEquitiesMetadata[indexPath.row]
+            company = self.filteredCompaniesToSell[indexPath.row]
         } else {
-            equityMetadata = self.store.equitiesMetadata[indexPath.row]
+            company = self.companiesToSell[indexPath.row]
         }
-        if equityMetadata.showInSellTab {
-            if let name = equityMetadata.name?.capitalized, let ticker = equityMetadata.ticker {
-                cell.textLabel?.text = name +  " (" + ticker + ")"
-            }
-        }
+
+        cell.textLabel?.text = company.name +  " (" + company.ticker + ")"
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if searchController.isActive && searchController.searchBar.text != "" {
-            if let ticker = self.filteredEquitiesMetadata[indexPath.row].ticker {
-                self.delegate?.openDetail(ticker)
-            }
+            self.delegate?.openDetail(company: self.filteredCompaniesToSell[indexPath.row])
         } else {
-            if let ticker = self.store.equitiesMetadata[indexPath.row].ticker {
-                self.delegate?.openDetail(ticker)
-            }
+            self.delegate?.openDetail(company: self.companiesToSell[indexPath.row])
         }
     }
     
@@ -150,11 +114,8 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate {
             self.pageDescLabel.isHidden = false
         }
         
-        self.filteredEquitiesMetadata = self.store.equitiesMetadata.filter { equityMetadata in
-            var nameAndTicker = String()
-            if let name = equityMetadata.name, let ticker = equityMetadata.ticker {
-                nameAndTicker = name + ticker
-            }
+        self.filteredCompaniesToSell = self.companiesToSell.filter { company in
+            let nameAndTicker = company.name + company.ticker
             return nameAndTicker.lowercased().contains(searchText.lowercased())
         }
         self.sellTableViewInst.reloadData()
@@ -208,6 +169,10 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate {
         self.activityIndicator.heightAnchor.constraint(equalToConstant: 80).isActive = true
         self.activityIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         self.activityIndicator.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        
+        // update the tableview
+        self.countLabel.text = String(self.companiesToSell.count)
+        self.sellTableViewInst.reloadData()
     }
     
     required init?(coder aDecoder: NSCoder) {

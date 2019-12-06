@@ -64,7 +64,7 @@ class DataCollectionTableViewCell: UITableViewCell {
         contentView.addSubview(eps_iLabel)
         eps_iLabel.translatesAutoresizingMaskIntoConstraints = false
         eps_iLabel.font = UIFont(name: Constants.appFont.regular.rawValue, size: CGFloat(Constants.fontSize.xxsmall.rawValue))
-        eps_iLabel.textColor = UIColor.systemGray
+        eps_iLabel.textColor = UIColor.gray
         eps_iLabel.leftAnchor.constraint(equalTo: self.nameLabel.leftAnchor, constant: 0).isActive = true
         eps_iLabel.topAnchor.constraint(equalTo: self.textLabel!.bottomAnchor, constant: 2).isActive = true
 
@@ -72,7 +72,7 @@ class DataCollectionTableViewCell: UITableViewCell {
         contentView.addSubview(eps_sdLabel)
         eps_sdLabel.translatesAutoresizingMaskIntoConstraints = false
         eps_sdLabel.font = UIFont(name: Constants.appFont.regular.rawValue, size: CGFloat(Constants.fontSize.xxsmall.rawValue))
-        eps_sdLabel.textColor = UIColor.systemGray
+        eps_sdLabel.textColor = UIColor.gray
         eps_sdLabel.leftAnchor.constraint(equalTo: self.eps_iLabel.leftAnchor, constant: 0).isActive = true
         eps_sdLabel.topAnchor.constraint(equalTo: self.eps_iLabel.bottomAnchor, constant: 2).isActive = true
 
@@ -80,7 +80,7 @@ class DataCollectionTableViewCell: UITableViewCell {
         contentView.addSubview(roe_avgLabel)
         roe_avgLabel.translatesAutoresizingMaskIntoConstraints = false
         roe_avgLabel.font = UIFont(name: Constants.appFont.regular.rawValue, size: CGFloat(Constants.fontSize.xxsmall.rawValue))
-        roe_avgLabel.textColor = UIColor.systemGray
+        roe_avgLabel.textColor = UIColor.gray
         roe_avgLabel.leftAnchor.constraint(equalTo: self.textLabel!.leftAnchor, constant: 150).isActive = true
         roe_avgLabel.topAnchor.constraint(equalTo: self.eps_iLabel.topAnchor).isActive = true
         
@@ -88,7 +88,7 @@ class DataCollectionTableViewCell: UITableViewCell {
         contentView.addSubview(dr_avgLabel)
         dr_avgLabel.translatesAutoresizingMaskIntoConstraints = false
         dr_avgLabel.font = UIFont(name: Constants.appFont.regular.rawValue, size: CGFloat(Constants.fontSize.xxsmall.rawValue))
-        dr_avgLabel.textColor = UIColor.systemGray
+        dr_avgLabel.textColor = UIColor.gray
         dr_avgLabel.leftAnchor.constraint(equalTo: self.roe_avgLabel.leftAnchor, constant: 0).isActive = true
         dr_avgLabel.topAnchor.constraint(equalTo: self.eps_sdLabel.topAnchor).isActive = true
         
@@ -96,7 +96,7 @@ class DataCollectionTableViewCell: UITableViewCell {
         contentView.addSubview(bv_iLabel)
         bv_iLabel.translatesAutoresizingMaskIntoConstraints = false
         bv_iLabel.font = UIFont(name: Constants.appFont.regular.rawValue, size: CGFloat(Constants.fontSize.xxsmall.rawValue))
-        bv_iLabel.textColor = UIColor.systemGray
+        bv_iLabel.textColor = UIColor.gray
         bv_iLabel.leftAnchor.constraint(equalTo: self.textLabel!.leftAnchor, constant: 240).isActive = true
         bv_iLabel.topAnchor.constraint(equalTo: self.eps_iLabel.topAnchor).isActive = true
         
@@ -104,7 +104,7 @@ class DataCollectionTableViewCell: UITableViewCell {
         contentView.addSubview(so_reducedLabel)
         so_reducedLabel.translatesAutoresizingMaskIntoConstraints = false
         so_reducedLabel.font = UIFont(name: Constants.appFont.regular.rawValue, size: CGFloat(Constants.fontSize.xxsmall.rawValue))
-        so_reducedLabel.textColor = UIColor.systemGray
+        so_reducedLabel.textColor = UIColor.gray
         so_reducedLabel.leftAnchor.constraint(equalTo: self.bv_iLabel.leftAnchor, constant: 0).isActive = true
         so_reducedLabel.topAnchor.constraint(equalTo: self.dr_avgLabel.topAnchor).isActive = true
 

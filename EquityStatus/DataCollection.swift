@@ -22,7 +22,6 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
     var errorMessage = String()
     
     // define companies table for use in table editing
-    //var companiesArr: [Company] = []
     // db table
     let companiesTable =    Table("companiesTable")
     let tickerCol =         Expression<String>("tickerCol")
@@ -147,17 +146,19 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
             } else {
                 // if measure == roe_avg, bv_i, so_reduced, dr_avg, pe_avg then collect values when eps_i and eps_ds pass threshhold
                 // if these eps_i or eps_sd do nnot meet the thresholds, then clear the value in the DB for the selected measure
-                if company.eps_i_passed && company.eps_sd_passed {
-                    tickersToGetMeasureValue.append(company.ticker) // all measure values met threshold
-                } else {
-                    tickersToRemoveMeasureValue.append(company.ticker) // measure value did not met threshold
+                if let eps_i_passed_unwrapped = company.eps_i_passed, let eps_sd_passed_unwrapped = company.eps_sd_passed {
+                    if eps_i_passed_unwrapped && eps_sd_passed_unwrapped {
+                        tickersToGetMeasureValue.append(company.ticker) // all measure values met threshold
+                    } else {
+                        tickersToRemoveMeasureValue.append(company.ticker) // measure value did not met threshold
+                    }
                 }
             }
         }
         //print("tickersToGetMeasureValue: \(tickersToGetMeasureValue)")
         //print("tickersToRemoveMeasureValue: \(tickersToRemoveMeasureValue)")
         
-        let timeToDelayForAPI: Double = 0.015
+        let timeToDelayForAPI: Double = 0.02
         var currentDelayForAPI: Double = 0
 
         for ticker in tickersToGetMeasureValue {
@@ -234,10 +235,19 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
         
         for company in self.store.companies{
             // filter out tickers with measures that did not pass
-            if company.eps_i_passed && company.eps_i_passed && company.roe_avg_passed && company.bv_i_passed && company.dr_avg_passed && company.so_reduced_passed {
-                tickersToGetMeasureValue.append(company.ticker) // all measure values met threshold
+            if let eps_i_passed_unwrapped = company.eps_i_passed,
+                let eps_sd_passed_unwrapped = company.eps_sd_passed,
+                let roe_avg_passed_unwrapped = company.roe_avg_passed,
+                let bv_i_passed_unwrapped = company.bv_i_passed,
+                let dr_avg_passed_unwrapped = company.dr_avg_passed,
+                let so_reduced_passed_unwrapped = company.so_reduced_passed {
+                if eps_i_passed_unwrapped && eps_sd_passed_unwrapped && roe_avg_passed_unwrapped && bv_i_passed_unwrapped && dr_avg_passed_unwrapped && so_reduced_passed_unwrapped {
+                    tickersToGetMeasureValue.append(company.ticker) // all measure values met threshold
+                } else {
+                    tickersToRemoveMeasureValue.append(company.ticker) // measure value did not met threshold
+                }
             } else {
-                tickersToRemoveMeasureValue.append(company.ticker) // measure value did not met threshold
+                tickersToRemoveMeasureValue.append(company.ticker) // one measure value was missing
             }
         }
         //print("tickersToGetMeasureValue: \(tickersToGetMeasureValue)")
@@ -473,10 +483,10 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
                 
             }
             
-            let companiesEvaluate = self.store.companies.filter({$0.tab == .evaluate})
-            for companyEvaluate in companiesEvaluate {
-            print("companyEvaluate: \(companyEvaluate.eps_i_passed), \(companyEvaluate.eps_sd_passed), \(companyEvaluate.roe_avg_passed), \(companyEvaluate.bv_i_passed), \(companyEvaluate.so_reduced_passed), \(companyEvaluate.dr_avg_passed), \(companyEvaluate.previous_roi_passed), \(companyEvaluate.expected_roi_passed), \(companyEvaluate.tab) ")
-            }
+//            let companiesEvaluate = self.store.companies.filter({$0.tab == .sell})
+//            for companyEvaluate in companiesEvaluate {
+//            print("companyEvaluate: \(companyEvaluate.eps_i_passed), \(companyEvaluate.eps_sd_passed), \(companyEvaluate.roe_avg_passed), \(companyEvaluate.bv_i_passed), \(companyEvaluate.so_reduced_passed), \(companyEvaluate.dr_avg_passed), \(companyEvaluate.previous_roi_passed), \(companyEvaluate.expected_roi_passed), \(companyEvaluate.tab) ")
+//            }
   
             completion(true)
         } catch {
@@ -562,7 +572,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
         
         let actInd: UIActivityIndicatorView = UIActivityIndicatorView()
         actInd.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
-        actInd.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.large
+        actInd.style = UIActivityIndicatorView.Style.whiteLarge
         actInd.center = CGPoint(x: 40, y: 40)
         
         self.activityIndicator.addSubview(actInd)

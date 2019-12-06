@@ -26,10 +26,10 @@ class EvaluationViewController: UIViewController, EvaluationViewDelegate {
         self.view = self.evaluationViewInst
     }
     
-    func openEquityDetail(_ equity: Equity) {
-        let equityDetailViewControllerInst = EquityDetailViewController()
-        equityDetailViewControllerInst.equity = equity
+    func openCompanyDetail(company: Company) {
+        let companyDetailViewControllerInst = CompanyDetailViewController()
+        companyDetailViewControllerInst.company = company
         self.title = "" // this value is passed to the back button label in the destination VC
-        navigationController?.pushViewController(equityDetailViewControllerInst, animated: false) // show destination with nav bar
+        navigationController?.pushViewController(companyDetailViewControllerInst, animated: false) // show destination with nav bar
     }
 }

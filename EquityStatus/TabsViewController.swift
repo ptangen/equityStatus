@@ -19,9 +19,7 @@ class TabsViewController: UITabBarController, UITabBarControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.delegate = self
-        
-        // fetch the equities if needed
-        self.store.equities.isEmpty ? self.fetchBuyEvalData() : ()
+        //Utilities.populateMeasureInfo()
     }
 
     override func didReceiveMemoryWarning() {
@@ -89,15 +87,15 @@ class TabsViewController: UITabBarController, UITabBarControllerDelegate {
             if isSuccessful {
                 OperationQueue.main.addOperation {
                     // update the buy View
-                    self.buyViewControllerInst.buyViewInst.createEquitiesForBuy()
+                    self.buyViewControllerInst.buyViewInst.createCompaniesToBuy()
                     self.buyViewControllerInst.buyViewInst.setHeadingLabels()
                     self.buyViewControllerInst.buyViewInst.pageLayoutWithData()
                     self.buyViewControllerInst.buyViewInst.barChartView.isHidden = false
                     self.buyViewControllerInst.buyViewInst.activityIndicator.isHidden = true
                     
                     // update the evaluation tab
-                    self.evaluationViewControllerInst.evaluationViewInst.createEquitiesForEvaluation()
-                    self.evaluationViewControllerInst.evaluationViewInst.evaluationTableViewInst.reloadData()
+                    //self.evaluationViewControllerInst.evaluationViewInst.createEquitiesForEvaluation()
+                    //self.evaluationViewControllerInst.evaluationViewInst.evaluationTableViewInst.reloadData()
                     self.evaluationViewControllerInst.evaluationViewInst.setHeadingLabels()
                     self.evaluationViewControllerInst.evaluationViewInst.evaluationTableViewInst.isHidden = false
                     self.evaluationViewControllerInst.evaluationViewInst.activityIndicator.isHidden = true

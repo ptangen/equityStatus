@@ -17,12 +17,9 @@ class SellViewController: UIViewController, SellViewDelegate {
         super.viewDidLoad()
         self.sellViewInst.delegate = self
         definesPresentationContext = true  // for searchbar
-        self.sellViewInst.getEquityMetadata()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        self.sellViewInst.sellViewItemCount = Utilities.getSellTabCount()
-        self.sellViewInst.sellViewItemCount == 0 ? (sellViewInst.countLabel.text = "?") : (sellViewInst.countLabel.text = String(self.sellViewInst.sellViewItemCount))
     }
 
     override func didReceiveMemoryWarning() {
@@ -34,30 +31,10 @@ class SellViewController: UIViewController, SellViewDelegate {
         self.view = self.sellViewInst
     }
     
-    func openDetail(_ ticker: String) {
-        // try to get the equity from the dataStore, if it is not there fetch it from the API
-        if let equity = store.getEquityByTickerFromStore(ticker: ticker) {
-            // open the detail view for the selected equity
-            let equityDetailViewControllerInst = EquityDetailViewController()
-            equityDetailViewControllerInst.equity = equity
-            navigationController?.pushViewController(equityDetailViewControllerInst, animated: false)
-        } else {
-            // fetch the equity from the api and display the details
-            APIClient.getEquitiesFromDB(mode: "t:\(ticker)"){isSuccessful in
-                if isSuccessful {
-                    OperationQueue.main.addOperation {
-                        if let equity = self.store.getEquityByTickerFromStore(ticker: ticker) {
-                            // open the detail view for the selected equity
-                            let equityDetailViewControllerInst = EquityDetailViewController()
-                            equityDetailViewControllerInst.equity = equity
-                            self.navigationController?.pushViewController(equityDetailViewControllerInst, animated: false)
-                        }
-                    }
-                } else {
-                    Utilities.showAlertMessage("Error retriving data from the server.", viewControllerInst: self)
-                }
-            }
-        }
+    func openDetail(company: Company) {
+        let companyDetailViewControllerInst = CompanyDetailViewController()
+        companyDetailViewControllerInst.company = company
+        navigationController?.pushViewController(companyDetailViewControllerInst, animated: false)
     }
     
     func showAlertMessage(_ message: String) {

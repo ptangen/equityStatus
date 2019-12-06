@@ -14,8 +14,8 @@
 		C02D509D1E12AB8D0000330F /* EquityStatus.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C02D509B1E12AB8D0000330F /* EquityStatus.xcdatamodeld */; };
 		C02D509F1E12F2BE0000330F /* SellTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02D509E1E12F2BE0000330F /* SellTableViewCell.swift */; };
 		C02D50A11E154F020000330F /* Equity.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02D50A01E154F020000330F /* Equity.swift */; };
-		C02D50A31E159BCD0000330F /* EquityDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02D50A21E159BCD0000330F /* EquityDetailViewController.swift */; };
-		C02D50A51E159C2D0000330F /* EquityDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02D50A41E159C2D0000330F /* EquityDetailView.swift */; };
+		C02D50A31E159BCD0000330F /* CompanyDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02D50A21E159BCD0000330F /* CompanyDetailViewController.swift */; };
+		C02D50A51E159C2D0000330F /* CompanyDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02D50A41E159C2D0000330F /* CompanyDetailView.swift */; };
 		C02DA6491E606B9700663820 /* KIF+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02DA6481E606B9700663820 /* KIF+Extensions.swift */; };
 		C0409F861E0743CD00BEC5DD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0409F851E0743CD00BEC5DD /* AppDelegate.swift */; };
 		C0409F8D1E0743CD00BEC5DD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0409F8C1E0743CD00BEC5DD /* Assets.xcassets */; };
@@ -23,7 +23,6 @@
 		C0409F9B1E0743CD00BEC5DD /* APITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0409F9A1E0743CD00BEC5DD /* APITests.swift */; };
 		C04ECC9C23837E8500187790 /* Measure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04ECC9B23837E8500187790 /* Measure.swift */; };
 		C05FC1161E09B5FE008EA907 /* ChartStringFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05FC1151E09B5FE008EA907 /* ChartStringFormatter.swift */; };
-		C05FC11C1E0A08CD008EA907 /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05FC11B1E0A08CD008EA907 /* Secrets.swift */; };
 		C061ED0C1E0784B000081030 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C061ED0B1E0784B000081030 /* Constants.swift */; };
 		C069F5641E082FF500913486 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C069F5631E082FF500913486 /* APIClient.swift */; };
 		C069F5681E0830EC00913486 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C069F5671E0830EC00913486 /* DataStore.swift */; };
@@ -52,6 +51,7 @@
 		C0C87C4B1E11838000759947 /* PercentValueFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C87C4A1E11838000759947 /* PercentValueFormatter.swift */; };
 		C0D2FF7A1E0C8E4400871EA3 /* KeychainWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = C0D2FF791E0C8E4400871EA3 /* KeychainWrapper.m */; };
 		C0E7D7B32392AACD00950E77 /* CompanyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E7D7B22392AACD00950E77 /* CompanyList.swift */; };
+		D71CC08223943F7B0090FEBF /* Secrets.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71CC08123943F7B0090FEBF /* Secrets.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,8 +73,8 @@
 		C02D509C1E12AB8D0000330F /* EquityStatus.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = EquityStatus.xcdatamodel; sourceTree = "<group>"; };
 		C02D509E1E12F2BE0000330F /* SellTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SellTableViewCell.swift; sourceTree = "<group>"; };
 		C02D50A01E154F020000330F /* Equity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Equity.swift; sourceTree = "<group>"; };
-		C02D50A21E159BCD0000330F /* EquityDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EquityDetailViewController.swift; sourceTree = "<group>"; };
-		C02D50A41E159C2D0000330F /* EquityDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EquityDetailView.swift; sourceTree = "<group>"; };
+		C02D50A21E159BCD0000330F /* CompanyDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompanyDetailViewController.swift; sourceTree = "<group>"; };
+		C02D50A41E159C2D0000330F /* CompanyDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompanyDetailView.swift; sourceTree = "<group>"; };
 		C02DA6481E606B9700663820 /* KIF+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KIF+Extensions.swift"; sourceTree = "<group>"; };
 		C0409F821E0743CD00BEC5DD /* EquityStatus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EquityStatus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0409F851E0743CD00BEC5DD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -87,7 +87,6 @@
 		C04ECC9B23837E8500187790 /* Measure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Measure.swift; sourceTree = "<group>"; };
 		C05BD1861E6083B8001F54D5 /* EquityStatusTests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EquityStatusTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		C05FC1151E09B5FE008EA907 /* ChartStringFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartStringFormatter.swift; sourceTree = "<group>"; };
-		C05FC11B1E0A08CD008EA907 /* Secrets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
 		C061ED0B1E0784B000081030 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		C069F5631E082FF500913486 /* APIClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 		C069F5671E0830EC00913486 /* DataStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
@@ -118,6 +117,7 @@
 		C0D2FF781E0C8E4400871EA3 /* EquityStatus-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EquityStatus-Bridging-Header.h"; sourceTree = "<group>"; };
 		C0D2FF791E0C8E4400871EA3 /* KeychainWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainWrapper.m; sourceTree = "<group>"; };
 		C0E7D7B22392AACD00950E77 /* CompanyList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompanyList.swift; sourceTree = "<group>"; };
+		D71CC08123943F7B0090FEBF /* Secrets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Secrets.swift; sourceTree = "<group>"; };
 		EF9A649E0CE4A3E47348CC81 /* Pods_EquityStatus.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_EquityStatus.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7634242488552BDFF1E4A74 /* Pods-EquityStatusTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EquityStatusTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-EquityStatusTests/Pods-EquityStatusTests.release.xcconfig"; sourceTree = "<group>"; };
 		FB4FA8DCB5D67B3568B4E1A3 /* Pods-EquityStatus.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EquityStatus.release.xcconfig"; path = "Pods/Target Support Files/Pods-EquityStatus/Pods-EquityStatus.release.xcconfig"; sourceTree = "<group>"; };
@@ -228,7 +228,7 @@
 				C0BF222B1E08686A005B7E55 /* EvaluationViewController.swift */,
 				C0BF222F1E0869B8005B7E55 /* SellViewController.swift */,
 				C08C417823804D6D002F0543 /* DataCollectionViewController.swift */,
-				C02D50A21E159BCD0000330F /* EquityDetailViewController.swift */,
+				C02D50A21E159BCD0000330F /* CompanyDetailViewController.swift */,
 				C08EC7501E3B91FA005A5A5E /* MeasurePageViewController.swift */,
 				C08EC7521E3B9369005A5A5E /* CalcMeasureViewController.swift */,
 				C08EC7671E3BDAEA005A5A5E /* QuestionMeasureViewController.swift */,
@@ -246,7 +246,7 @@
 				C02D509E1E12F2BE0000330F /* SellTableViewCell.swift */,
 				C08C417B23804E3A002F0543 /* DataCollection.swift */,
 				C08C417D2380513D002F0543 /* DataCollectionTableViewCell.swift */,
-				C02D50A41E159C2D0000330F /* EquityDetailView.swift */,
+				C02D50A41E159C2D0000330F /* CompanyDetailView.swift */,
 				C08EC7541E3B9536005A5A5E /* CalcMeasureView.swift */,
 				C08EC7651E3BD92F005A5A5E /* QuestionMeasureView.swift */,
 			);
@@ -257,10 +257,10 @@
 			isa = PBXGroup;
 			children = (
 				C069F5631E082FF500913486 /* APIClient.swift */,
+				D71CC08123943F7B0090FEBF /* Secrets.swift */,
 				C069F5671E0830EC00913486 /* DataStore.swift */,
 				C08C418023807519002F0543 /* Company.swift */,
 				C04ECC9B23837E8500187790 /* Measure.swift */,
-				C05FC11B1E0A08CD008EA907 /* Secrets.swift */,
 				C02D50A01E154F020000330F /* Equity.swift */,
 			);
 			name = Models;
@@ -481,10 +481,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C02D50A51E159C2D0000330F /* EquityDetailView.swift in Sources */,
+				C02D50A51E159C2D0000330F /* CompanyDetailView.swift in Sources */,
 				C08EC7681E3BDAEA005A5A5E /* QuestionMeasureViewController.swift in Sources */,
-				C02D50A31E159BCD0000330F /* EquityDetailViewController.swift in Sources */,
-				C05FC11C1E0A08CD008EA907 /* Secrets.swift in Sources */,
+				C02D50A31E159BCD0000330F /* CompanyDetailViewController.swift in Sources */,
 				C08EC7661E3BD92F005A5A5E /* QuestionMeasureView.swift in Sources */,
 				C0BF22301E0869B8005B7E55 /* SellViewController.swift in Sources */,
 				C069F5681E0830EC00913486 /* DataStore.swift in Sources */,
@@ -497,6 +496,7 @@
 				C0BF222A1E0861B6005B7E55 /* BuyView.swift in Sources */,
 				C08EC7531E3B9369005A5A5E /* CalcMeasureViewController.swift in Sources */,
 				C08C417E2380513D002F0543 /* DataCollectionTableViewCell.swift in Sources */,
+				D71CC08223943F7B0090FEBF /* Secrets.swift in Sources */,
 				C0BF22341E086AA1005B7E55 /* TabsViewController.swift in Sources */,
 				C08C417C23804E3A002F0543 /* DataCollection.swift in Sources */,
 				C0C87C4B1E11838000759947 /* PercentValueFormatter.swift in Sources */,
@@ -677,14 +677,14 @@
 					"$(PROJECT_DIR)/build/Debug-iphoneos/KIF",
 				);
 				INFOPLIST_FILE = EquityStatus/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ptangen.equityStatus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "EquityStatus/EquityStatus-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -701,13 +701,13 @@
 					"$(PROJECT_DIR)/build/Debug-iphoneos/KIF",
 				);
 				INFOPLIST_FILE = EquityStatus/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ptangen.equityStatus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "EquityStatus/EquityStatus-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};
@@ -719,6 +719,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = EquityStatusTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ptangen.EquityStatusTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -737,6 +738,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = EquityStatusTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ptangen.EquityStatusTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";

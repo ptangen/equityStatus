@@ -17,24 +17,19 @@ class CalcMeasureView: UIView, ChartViewDelegate {
 
     weak var delegate: MeasureDetailViewDelegate?
     let store = DataStore.sharedInstance
-    var measureTicker = String()
-    var equity: Equity!
+    var company: Company!
+    var measure = String()
     var measureShortName = String()
     var measureLongNameLabel = UILabel()
     var statusLabel = UILabel()
     var statusIcon = UILabel()
-    var statusValueDesc = UILabel()
     var resultsLabel = UILabel()
     var targetLabel = UILabel()
     var measureCalcDescLabel = UILabel()
-    var chartLabel = UILabel()
-    
-    let barChartView = BarChartView()
     
     override init(frame:CGRect){
         super.init(frame: frame)
         self.pageLayout()
-        self.barChartView.delegate = self
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -42,110 +37,18 @@ class CalcMeasureView: UIView, ChartViewDelegate {
     }
     
     func getResultString(resultDouble: Double, percentage: Bool) -> String {
-        if resultDouble == -1000 {
-            return "no data"
+        if percentage == true {
+            return String(resultDouble) + "%"
         } else {
-            if percentage == true {
-                return String(resultDouble) + "%"
-            } else {
-                return String(resultDouble)
-            }
+            return String(resultDouble)
         }
     }
     
-    func getStatusDesc(_ statusDesc: String) -> String {
-        if statusDesc == "noData" {
-            return "no data"
-        } else {
-            return statusDesc;
+    func getStatusDesc(passed: Bool?) -> String {
+        if let passedUnwrapped = passed {
+            return String(passedUnwrapped)
         }
-    }
-    
-    func fetchChartDataFromDataStore(historicalDataLabel: String) -> ([String],[Double]) {
-        switch historicalDataLabel {
-        case "ReturnOnEquity":
-            return self.equity.ROEHistory
-        case "EarningsPerShare":
-            return equity.EPSHistory
-        case "BookValuePerShare":
-            return equity.BVHistory
-        case "DebtEquity":
-            return equity.DRHistory
-        case "Shares":
-            return equity.SOHistory
-        default:
-            break
-            
-        }
-        return ([],[])
-    }
-    
-    func fetchChartData(historicalDataLabel: String){
-        // try to get the historicalData from the dataStore
-        let chartDataFromStore = fetchChartDataFromDataStore(historicalDataLabel: historicalDataLabel)
-        
-        if chartDataFromStore.1.isEmpty {
-            // here we fetch the historical data that was used to calculate the value for the measure
-            let ticker = Utilities.getTickerFromLabel(fullString: self.measureTicker)
-            APIClient.getMeasureValuesFromDB(ticker: ticker, measure: historicalDataLabel, completion: { chartDataFromAPI in
-                if chartDataFromAPI.1.isEmpty {
-                    // print("No data for this measure/company.")
-                    // the chart displays a nice message when no data exists
-                } else if chartDataFromAPI.0[0] == "error" {
-                    print("error fetching data")
-                    if let delegate = self.delegate {
-                        delegate.showAlertMessage("Unable to fetch chart data. Please contact ptangen@ptangen.com about this situation.")
-                    }
-                } else {
-                    self.drawChart(chartData: chartDataFromAPI)
-                }
-            }) // end apiClient.getMeasureValues
-        } else {
-            self.drawChart(chartData: chartDataFromStore)
-        }
-    }
-    
-    func drawChart(chartData: (annualLabels: [String], annualValues: [Double])){
-        
-        let stringFormatter = ChartStringFormatter()            // allow labels to be shown for bars
-        //let percentFormatter = PercentValueFormatter()        // allow labels to be shown for bars
-        var dataEntries: [BarChartDataEntry] = []
-        
-        // data and names of the bars
-        let dataPoints: [Double] = chartData.annualValues       // values for the bars
-        stringFormatter.nameValues = chartData.annualLabels     // labels for the x axis
-        
-        // formatting
-        barChartView.xAxis.valueFormatter = stringFormatter     // allow labels to be shown for bars
-        barChartView.xAxis.drawGridLinesEnabled = false         // hide horizontal grid lines
-        barChartView.xAxis.drawAxisLineEnabled = false          // hide right axis
-        barChartView.xAxis.labelFont = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.xsmall.rawValue)!
-        barChartView.xAxis.setLabelCount(stringFormatter.nameValues.count, force: false)
-        barChartView.xAxis.granularityEnabled = true
-        barChartView.xAxis.granularity = 1.0
-        barChartView.xAxis.labelPosition = .bottom
-        
-        barChartView.rightAxis.enabled = false                  // hide values
-        barChartView.leftAxis.enabled = false                   // hide values
-        barChartView.animate(xAxisDuration: 0.0, yAxisDuration: 0.6)
-        barChartView.legend.enabled = false
-        if let chartDescription = barChartView.chartDescription {
-            chartDescription.enabled = false
-        }
-
-        for (index, dataPoint) in dataPoints.enumerated() {
-            let dataEntry = BarChartDataEntry(x: Double(index), y: dataPoint)
-            dataEntries.append(dataEntry)
-        }
-        
-        let chartDataSet = BarChartDataSet(values: dataEntries, label: "")
-        chartDataSet.colors = [UIColor(named: .statusGreen)]
-        chartDataSet.valueFont = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.xsmall.rawValue)!
-        chartDataSet.valueTextColor = UIColor.black
-        //chartDataSet.valueFormatter = percentFormatter      // formats the values into a %
-        let chartData = BarChartData(dataSet: chartDataSet)
-        
-        self.barChartView.data = chartData
+        return ""
     }
     
     func pageLayout() {
@@ -172,13 +75,6 @@ class CalcMeasureView: UIView, ChartViewDelegate {
         self.statusIcon.leftAnchor.constraint(equalTo: self.statusLabel.rightAnchor, constant: 8).isActive = true
         self.statusIcon.font = UIFont(name: Constants.iconFont.fontAwesome.rawValue, size: Constants.iconSize.xsmall.rawValue)
         
-        // statusValueDesc
-        self.addSubview(self.statusValueDesc)
-        self.statusValueDesc.translatesAutoresizingMaskIntoConstraints = false
-        self.statusValueDesc.topAnchor.constraint(equalTo: self.statusIcon.topAnchor, constant: 0).isActive = true
-        self.statusValueDesc.leftAnchor.constraint(equalTo: self.statusIcon.rightAnchor, constant: 8).isActive = true
-        self.statusValueDesc.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.small.rawValue)
-        
         // resultsLabel
         self.addSubview(self.resultsLabel)
         self.resultsLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -204,82 +100,84 @@ class CalcMeasureView: UIView, ChartViewDelegate {
         self.measureCalcDescLabel.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.small.rawValue)
         self.measureCalcDescLabel.preferredMaxLayoutWidth = UIScreen.main.bounds.width - 20
         self.measureCalcDescLabel.numberOfLines = 0
-        
-        // chartLabel
-        self.addSubview(self.chartLabel)
-        self.chartLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.chartLabel.topAnchor.constraint(equalTo: self.measureCalcDescLabel.bottomAnchor, constant: 30).isActive = true
-        self.chartLabel.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
-        self.chartLabel.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
-        self.chartLabel.heightAnchor.constraint(equalToConstant: 24).isActive = true
-        self.chartLabel.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.small.rawValue)
-        self.chartLabel.numberOfLines = 0
-        self.chartLabel.backgroundColor = UIColor(named: .beige)
-        
-        // chart label
-        self.addSubview(self.barChartView)
-        self.barChartView.translatesAutoresizingMaskIntoConstraints = false
-        self.barChartView.topAnchor.constraint(equalTo: self.chartLabel.bottomAnchor, constant: 0).isActive = true
-        self.barChartView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0).isActive = true
-        self.barChartView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
-        self.barChartView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -30).isActive = true
-        self.barChartView.backgroundColor = UIColor(named: .beige)
     }
     
-    func getMeasureResultsAndSetLabelText(status: String, result: Double, percentage: Bool, longName: String, targetLabel: String, measureCalcDescLabel: String) {
+    func getMeasureResultsAndSetLabelText(passed: Bool, value: Double, percentage: Bool, longName: String, targetLabel: String, measureCalcDescLabel: String) {
         self.measureLongNameLabel.text = longName
-        Utilities.setStatusIcon(status: status, uiLabel: self.statusIcon)
-        self.statusValueDesc.text = "(" + getStatusDesc(status) + ")"
-        self.resultsLabel.text = "Result: " + getResultString(resultDouble: result, percentage: percentage)
+        Utilities.getStatusIcon(status: passed, uiLabel: self.statusIcon)
+        self.resultsLabel.text = "Result: " + getResultString(resultDouble: value, percentage: percentage)
         self.targetLabel.text = targetLabel
         self.measureCalcDescLabel.text = measureCalcDescLabel
     }
     
-    func setResultsLabelsForMeasure(fullString: String) {
+    func setResultsLabelsForMeasure(measure: String) {
         
         self.statusLabel.text = "Status:"
-        self.measureShortName = Utilities.getMeasureName(fullString: fullString)
-
-        // get the measure results and set the label text
-        if self.measureShortName == "ROEa" {
-            self.getMeasureResultsAndSetLabelText(status: self.equity.ROEaStatus, result: self.equity.ROEaResult, percentage: true,
-                longName: Constants.measureMetadata.longName(.ROEa)(), targetLabel: Constants.measureMetadata.threshold(.ROEa)(),
-                measureCalcDescLabel: Constants.measureMetadata.calcDesc(.ROEa)())
+        let measureInfo = self.store.measureInfo[measure]!
+    
+        switch measure {
+            case "roe_avg":
+                if let roe_avg_passed = self.company.roe_avg_passed, let roe_avg = self.company.roe_avg {
+                    self.getMeasureResultsAndSetLabelText(passed: roe_avg_passed, value: Double(roe_avg), percentage: true,
+                        longName: measureInfo["longName"]!,
+                        targetLabel: measureInfo["thresholdDesc"]!,
+                        measureCalcDescLabel: measureInfo["calcDesc"]!)
+            }
             
-        } else if self.measureShortName == "EPSi" {
-            self.getMeasureResultsAndSetLabelText(status: self.equity.EPSiStatus, result: self.equity.EPSiResult, percentage: true,
-                longName: Constants.measureMetadata.longName(.EPSi)(), targetLabel: Constants.measureMetadata.threshold(.EPSi)(),
-                measureCalcDescLabel: Constants.measureMetadata.calcDesc(.EPSi)())
+        case "eps_i":
+            if let eps_i_passed = self.company.eps_i_passed, let eps_i = self.company.eps_i {
+                self.getMeasureResultsAndSetLabelText(passed: eps_i_passed, value: Double(eps_i), percentage: true,
+                    longName: measureInfo["longName"]!,
+                    targetLabel: measureInfo["thresholdDesc"]!,
+                    measureCalcDescLabel: measureInfo["calcDesc"]!)
+            }
             
-        } else if self.measureShortName == "EPSv" {
-            self.getMeasureResultsAndSetLabelText(status: self.equity.EPSvStatus, result: self.equity.EPSvResult, percentage: false,
-                longName: Constants.measureMetadata.longName(.EPSv)(), targetLabel: Constants.measureMetadata.threshold(.EPSv)(),
-                measureCalcDescLabel: Constants.measureMetadata.calcDesc(.EPSv)())
+        case "eps_sd":
+            if let eps_sd_passed = self.company.eps_sd_passed, let eps_sd = self.company.eps_sd {
+                self.getMeasureResultsAndSetLabelText(passed: eps_sd_passed, value: eps_sd, percentage: false,
+                    longName: measureInfo["longName"]!,
+                    targetLabel: measureInfo["thresholdDesc"]!,
+                    measureCalcDescLabel: measureInfo["calcDesc"]!)
+            }
             
-        } else if self.measureShortName == "BVi" {
-            self.getMeasureResultsAndSetLabelText(status: self.equity.BViStatus, result: self.equity.BViResult, percentage: true,
-                longName: Constants.measureMetadata.longName(.BVi)(), targetLabel: Constants.measureMetadata.threshold(.BVi)(),
-                measureCalcDescLabel: Constants.measureMetadata.calcDesc(.BVi)())
+        case "bv_i":
+            if let bv_i_passed = self.company.bv_i_passed, let bv_i = self.company.bv_i {
+                self.getMeasureResultsAndSetLabelText(passed: bv_i_passed, value: Double(bv_i), percentage: true,
+                    longName: measureInfo["longName"]!,
+                    targetLabel: measureInfo["thresholdDesc"]!,
+                    measureCalcDescLabel: measureInfo["calcDesc"]!)
+            }
             
-        } else if self.measureShortName == "DRa" {
-            self.getMeasureResultsAndSetLabelText(status: self.equity.DRaStatus, result: self.equity.DRaResult, percentage: false,
-                longName: Constants.measureMetadata.longName(.DRa)(), targetLabel: Constants.measureMetadata.threshold(.DRa)(),
-                measureCalcDescLabel: Constants.measureMetadata.calcDesc(.DRa)())
+        case "dr_avg":
+            if let dr_avg_passed = self.company.dr_avg_passed, let dr_avg = self.company.dr_avg {
+                self.getMeasureResultsAndSetLabelText(passed: dr_avg_passed, value: Double(dr_avg), percentage: false,
+                    longName: measureInfo["longName"]!,
+                    targetLabel: measureInfo["thresholdDesc"]!,
+                    measureCalcDescLabel: measureInfo["calcDesc"]!)
+            }
             
-        } else if self.measureShortName == "SOr" {
-            self.getMeasureResultsAndSetLabelText(status: self.equity.SOrStatus, result: self.equity.SOrResult, percentage: false,
-                longName: Constants.measureMetadata.longName(.SOr)(), targetLabel: Constants.measureMetadata.threshold(.SOr)(),
-                measureCalcDescLabel: Constants.measureMetadata.calcDesc(.SOr)())
+        case "so_reduced":
+            if let so_reduced_passed = self.company.so_reduced_passed, let so_reduced = self.company.so_reduced {
+                self.getMeasureResultsAndSetLabelText(passed: so_reduced_passed, value: Double(so_reduced), percentage: false, longName: measureInfo["longName"]!,
+                    targetLabel: measureInfo["thresholdDesc"]!,
+                    measureCalcDescLabel: measureInfo["calcDesc"]!)
+            }
             
-        } else if self.measureShortName == "previousROI" {
-            self.getMeasureResultsAndSetLabelText(status: self.equity.previousROIStatus, result: self.equity.previousROIResult, percentage: true,
-                longName: Constants.measureMetadata.longName(.previousROI)(), targetLabel: Constants.measureMetadata.threshold(.previousROI)(),
-                measureCalcDescLabel: Constants.measureMetadata.calcDesc(.previousROI)())
+        case "previous_roi":
+            if let previous_roi_passed = self.company.previous_roi_passed, let previous_roi = self.company.previous_roi {
+                self.getMeasureResultsAndSetLabelText(passed: previous_roi_passed, value: Double(previous_roi), percentage: true, longName: measureInfo["longName"]!,
+                    targetLabel: measureInfo["thresholdDesc"]!,
+                    measureCalcDescLabel: measureInfo["calcDesc"]!)
+            }
             
-        } else if self.measureShortName == "expectedROI" {
-            self.getMeasureResultsAndSetLabelText(status: self.equity.expectedROIStatus, result: self.equity.expectedROIResult, percentage: true,
-                longName: Constants.measureMetadata.longName(.expectedROI)(), targetLabel: Constants.measureMetadata.threshold(.expectedROI)(),
-                measureCalcDescLabel: Constants.measureMetadata.calcDesc(.expectedROI)())
+        case "expected_roi":
+            if let expected_roi_passed = self.company.expected_roi_passed, let expected_roi = self.company.expected_roi {
+                self.getMeasureResultsAndSetLabelText(passed: expected_roi_passed, value: Double(expected_roi), percentage: true, longName: measureInfo["longName"]!,
+                    targetLabel: measureInfo["thresholdDesc"]!,
+                    measureCalcDescLabel: measureInfo["calcDesc"]!)
+            }
+            
+        default: break
         }
     }
 }

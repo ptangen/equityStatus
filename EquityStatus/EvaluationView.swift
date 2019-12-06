@@ -9,7 +9,7 @@
 import UIKit
 
 protocol EvaluationViewDelegate: class {
-    func openEquityDetail(_: Equity)
+    func openCompanyDetail(company: Company)
 }
 
 class EvaluationView: UIView, UITableViewDataSource, UITableViewDelegate {
@@ -21,6 +21,7 @@ class EvaluationView: UIView, UITableViewDataSource, UITableViewDelegate {
     let companiesLabel = UILabel()
     let pageDescLabel = UILabel()
     let activityIndicator = UIView()
+    var companiesToEvaluate = [Company]()
     
     override init(frame:CGRect){
         super.init(frame: frame)
@@ -32,13 +33,17 @@ class EvaluationView: UIView, UITableViewDataSource, UITableViewDelegate {
         self.evaluationTableViewInst.accessibilityLabel = "evaluationTableViewInst"
         self.evaluationTableViewInst.accessibilityIdentifier = "evaluationTableViewInst"
 
-        self.store.equities.count > 0 ? self.createEquitiesForEvaluation() : ()
+        companiesToEvaluate = self.store.companies.filter({$0.tab == .evaluate})
+        self.evaluationTableViewInst.reloadData()
+        self.setHeadingLabels()
+        self.evaluationTableViewInst.isHidden = false
+        self.activityIndicator.isHidden = true
+        
         self.pageLayout()
         
-        // if data is available, update the display
-        if self.store.equities.count > 0 {
+        //if self.store.companies.count > 0 {
             self.setHeadingLabels()
-        }
+        //}
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -47,16 +52,8 @@ class EvaluationView: UIView, UITableViewDataSource, UITableViewDelegate {
     
     func setHeadingLabels() {
         // set the labels in the heading
-        self.store.equitiesForEvaluation.count == 1 ? (self.pageDescLabel.text = "This company has passed several assessments and failed none. Tap to evaluate the remaining measures and determine if the company's stock is a buy or sell.") : (self.pageDescLabel.text = "These companies have passed several assessments and failed none. Tap to evaluate the remaining measures and determine if the companies' stock is a buy or a sell.")
-        self.countLabel.text = "\(self.store.equitiesForEvaluation.count)"
-    }
-    
-    // create array for analysis view
-    func createEquitiesForEvaluation() {
-        self.store.equitiesForEvaluation.removeAll()
-        for equity in self.store.equities {
-            equity.tab == .evaluate ? self.store.equitiesForEvaluation.append(equity) : ()
-        }
+        self.companiesToEvaluate.count == 1 ? (self.pageDescLabel.text = "This company has passed several assessments and failed none. Tap to evaluate the remaining measures and determine if the company's stock is a buy or sell.") : (self.pageDescLabel.text = "These companies have passed several assessments and failed none. Tap to evaluate the remaining measures and determine if the companies' stock is a buy or a sell.")
+        self.countLabel.text = "\(self.companiesToEvaluate.count)"
     }
     
     func pageLayout() {
@@ -106,7 +103,7 @@ class EvaluationView: UIView, UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.store.equitiesForEvaluation.count
+        return self.companiesToEvaluate.count
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
@@ -116,30 +113,31 @@ class EvaluationView: UIView, UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = EvaluationTableViewCell(style: .default, reuseIdentifier: "prototype")
         cell.selectionStyle = .none
-        let textLabel = self.store.equitiesForEvaluation[indexPath.row].name
+        let textLabel = self.companiesToEvaluate[indexPath.row].name
+        print(self.companiesToEvaluate[indexPath.row].name)
         cell.textLabel?.text = textLabel.capitalized
         
         // set the status icons and color for each of the equity's measures
-        Utilities.setStatusIcon(status: self.store.equitiesForEvaluation[indexPath.row].ROEaStatus, uiLabel: cell.statusIcons[0])
-        Utilities.setStatusIcon(status: self.store.equitiesForEvaluation[indexPath.row].EPSiStatus, uiLabel: cell.statusIcons[1])
-        Utilities.setStatusIcon(status: self.store.equitiesForEvaluation[indexPath.row].EPSvStatus, uiLabel: cell.statusIcons[2])
-        Utilities.setStatusIcon(status: self.store.equitiesForEvaluation[indexPath.row].BViStatus, uiLabel: cell.statusIcons[3])
-        Utilities.setStatusIcon(status: self.store.equitiesForEvaluation[indexPath.row].DRaStatus, uiLabel: cell.statusIcons[4])
-        Utilities.setStatusIcon(status: self.store.equitiesForEvaluation[indexPath.row].SOrStatus, uiLabel: cell.statusIcons[5])
-        Utilities.setStatusIcon(status: self.store.equitiesForEvaluation[indexPath.row].previousROIStatus, uiLabel: cell.statusIcons[6])
-        Utilities.setStatusIcon(status: self.store.equitiesForEvaluation[indexPath.row].expectedROIStatus, uiLabel: cell.statusIcons[7])
-        Utilities.setStatusIcon(status: self.store.equitiesForEvaluation[indexPath.row].q1Status, uiLabel: cell.statusIcons[8])
-        Utilities.setStatusIcon(status: self.store.equitiesForEvaluation[indexPath.row].q2Status, uiLabel: cell.statusIcons[9])
-        Utilities.setStatusIcon(status: self.store.equitiesForEvaluation[indexPath.row].q3Status, uiLabel: cell.statusIcons[10])
-        Utilities.setStatusIcon(status: self.store.equitiesForEvaluation[indexPath.row].q4Status, uiLabel: cell.statusIcons[11])
-        Utilities.setStatusIcon(status: self.store.equitiesForEvaluation[indexPath.row].q5Status, uiLabel: cell.statusIcons[12])
-        Utilities.setStatusIcon(status: self.store.equitiesForEvaluation[indexPath.row].q6Status, uiLabel: cell.statusIcons[13])
+        Utilities.getStatusIcon(status: self.companiesToEvaluate[indexPath.row].roe_avg_passed, uiLabel: cell.statusIcons[0])
+        Utilities.getStatusIcon(status: self.companiesToEvaluate[indexPath.row].eps_i_passed, uiLabel: cell.statusIcons[1])
+        Utilities.getStatusIcon(status: self.companiesToEvaluate[indexPath.row].eps_sd_passed, uiLabel: cell.statusIcons[2])
+        Utilities.getStatusIcon(status: self.companiesToEvaluate[indexPath.row].bv_i_passed, uiLabel: cell.statusIcons[3])
+        Utilities.getStatusIcon(status: self.companiesToEvaluate[indexPath.row].dr_avg_passed, uiLabel: cell.statusIcons[4])
+        Utilities.getStatusIcon(status: self.companiesToEvaluate[indexPath.row].so_reduced_passed, uiLabel: cell.statusIcons[5])
+        Utilities.getStatusIcon(status: self.companiesToEvaluate[indexPath.row].previous_roi_passed, uiLabel: cell.statusIcons[6])
+        Utilities.getStatusIcon(status: self.companiesToEvaluate[indexPath.row].expected_roi_passed, uiLabel: cell.statusIcons[7])
+        Utilities.getStatusIcon(status: self.companiesToEvaluate[indexPath.row].q1_passed, uiLabel: cell.statusIcons[8])
+        Utilities.getStatusIcon(status: self.companiesToEvaluate[indexPath.row].q2_passed, uiLabel: cell.statusIcons[9])
+        Utilities.getStatusIcon(status: self.companiesToEvaluate[indexPath.row].q3_passed, uiLabel: cell.statusIcons[10])
+        Utilities.getStatusIcon(status: self.companiesToEvaluate[indexPath.row].q4_passed, uiLabel: cell.statusIcons[11])
+        Utilities.getStatusIcon(status: self.companiesToEvaluate[indexPath.row].q5_passed, uiLabel: cell.statusIcons[12])
+        Utilities.getStatusIcon(status: self.companiesToEvaluate[indexPath.row].q6_passed, uiLabel: cell.statusIcons[13])
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.delegate?.openEquityDetail(self.store.equitiesForEvaluation[indexPath.row])
+        self.delegate?.openCompanyDetail(company: self.companiesToEvaluate[indexPath.row])
     }
 
     func showActivityIndicator(uiView: UIView) {
@@ -149,7 +147,7 @@ class EvaluationView: UIView, UITableViewDataSource, UITableViewDelegate {
         
         let actInd: UIActivityIndicatorView = UIActivityIndicatorView()
         actInd.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
-        actInd.activityIndicatorViewStyle = UIActivityIndicatorViewStyle.whiteLarge
+        actInd.style = UIActivityIndicatorView.Style.whiteLarge
         actInd.center = CGPoint(x: 40, y: 40)
         
         self.activityIndicator.addSubview(actInd)

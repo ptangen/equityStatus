@@ -13,7 +13,8 @@ class QuestionMeasureViewController: UIViewController, MeasureDetailViewDelegate
     var questionMeasureViewInst = QuestionMeasureView()
     let store = DataStore.sharedInstance
     var measureTicker = String()
-    var equity: Equity!
+    //var equity: Equity!
+    var company: Company!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,16 +31,16 @@ class QuestionMeasureViewController: UIViewController, MeasureDetailViewDelegate
     
     override func loadView(){
         
-        let ticker = Utilities.getTickerFromLabel(fullString: measureTicker)
-        self.equity = self.store.getEquityByTickerFromStore(ticker: ticker)
+        //let ticker = self.company.ticker
+        //self.equity = self.store.getEquityByTickerFromStore(ticker: ticker)
         
         // load the ui view into the view controller
         self.questionMeasureViewInst.frame = CGRect.zero
         self.view = self.questionMeasureViewInst
         
         // setup ui view
-        self.questionMeasureViewInst.equity = self.equity
-        self.questionMeasureViewInst.setResultsLabelsForMeasure(fullString: measureTicker)
+        self.questionMeasureViewInst.company = self.company
+        self.questionMeasureViewInst.setResultsLabelsForMeasure(fullString: "q1") // fix this
     }
     
     override func didReceiveMemoryWarning() {

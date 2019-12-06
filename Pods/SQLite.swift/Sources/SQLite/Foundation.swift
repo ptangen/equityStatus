@@ -35,8 +35,12 @@ extension Data : Value {
     }
 
     public var datatypeValue: Blob {
-        return withUnsafeBytes { (pointer: UnsafeRawBufferPointer) -> Blob in
-            return Blob(bytes: pointer.baseAddress!, length: count)
+        // Paul replaced the lines below with these lines for swift 4.2 TODO
+        return withUnsafeBytes { (pointer: UnsafePointer<UInt8>) -> Blob in
+            return Blob(bytes: pointer, length: count)
+        
+//        return withUnsafeBytes { (pointer: UnsafeRawBufferPointer) -> Blob in
+//            return Blob(bytes: pointer.baseAddress!, length: count)
         }
     }
 
