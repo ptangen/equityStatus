@@ -66,51 +66,6 @@ class TabsViewController: UITabBarController, UITabBarControllerDelegate {
         self.navigationItem.setHidesBackButton(true, animated:false);
     }
     
-    func fetchBuyEvalData() {
-
-        // display buy tab with no data
-        OperationQueue.main.addOperation {
-            self.buyViewControllerInst.buyViewInst.pageLayoutNoData()
-            self.buyViewControllerInst.buyViewInst.pageDescLabel.text = "Searching for companies that have passed all 14 measures."
-            self.buyViewControllerInst.buyViewInst.countLabel.text = "?"
-            self.buyViewControllerInst.buyViewInst.showActivityIndicator(uiView: self.buyViewControllerInst.buyViewInst)
-            self.buyViewControllerInst.buyViewInst.barChartView.isHidden = true
-        
-            // display eval tab with no data
-            self.evaluationViewControllerInst.evaluationViewInst.pageDescLabel.text = "Searching for equities to evaluate..."
-            self.evaluationViewControllerInst.evaluationViewInst.countLabel.text = "?"
-            self.evaluationViewControllerInst.evaluationViewInst.showActivityIndicator(uiView: self.evaluationViewControllerInst.evaluationViewInst)
-            self.evaluationViewControllerInst.evaluationViewInst.evaluationTableViewInst.isHidden = true
-        }
-        
-        APIClient.getEquitiesFromDB(mode: "pass,passOrNoData"){isSuccessful in
-            if isSuccessful {
-                OperationQueue.main.addOperation {
-                    // update the buy View
-                    self.buyViewControllerInst.buyViewInst.createCompaniesToBuy()
-                    self.buyViewControllerInst.buyViewInst.setHeadingLabels()
-                    self.buyViewControllerInst.buyViewInst.pageLayoutWithData()
-                    self.buyViewControllerInst.buyViewInst.barChartView.isHidden = false
-                    self.buyViewControllerInst.buyViewInst.activityIndicator.isHidden = true
-                    
-                    // update the evaluation tab
-                    //self.evaluationViewControllerInst.evaluationViewInst.createEquitiesForEvaluation()
-                    //self.evaluationViewControllerInst.evaluationViewInst.evaluationTableViewInst.reloadData()
-                    self.evaluationViewControllerInst.evaluationViewInst.setHeadingLabels()
-                    self.evaluationViewControllerInst.evaluationViewInst.evaluationTableViewInst.isHidden = false
-                    self.evaluationViewControllerInst.evaluationViewInst.activityIndicator.isHidden = true
-                }
-            } else {
-                OperationQueue.main.addOperation {
-                    self.buyViewControllerInst.buyViewInst.activityIndicator.isHidden = true
-                    self.evaluationViewControllerInst.evaluationViewInst.activityIndicator.isHidden = true
-                }
-                // show error message
-                Utilities.showAlertMessage("Unable to retrieve data from the server. Please notify ptangen@ptangen.com of situation.", viewControllerInst: self)
-            }
-        }
-    }
-    
     @objc func menuButtonClicked(sender: UIBarButtonItem) {
            
            let optionMenu = UIAlertController(title: nil, message: "Menu", preferredStyle: .actionSheet)

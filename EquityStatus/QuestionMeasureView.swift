@@ -12,9 +12,8 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
 
     weak var delegate: MeasureDetailViewDelegate?
     let store = DataStore.sharedInstance
-    var measureTicker = String()
-    //var equity: Equity!
     var company: Company!
+    var measure = String()
     var measureShortName = String()
     var measureLongNameLabel = UILabel()
     var statusLabel = UILabel()
@@ -62,58 +61,66 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
     
     func updateQStatus(passed: Bool) {
         
-        APIClient.setSubjectiveStatus(question: self.measureShortName, status: passed, company: self.company, completion: { response in
-            
-            switch response {
-            case .ok:
-                Utilities.getStatusIcon(status: passed, uiLabel: self.statusIcon)
-                self.statusValueDesc.text = "(" + self.getStatusDesc(passed: passed) + ")"
-                
-                // udpate the status in the equity
-                switch self.measureShortName {
-                case "q1":
-                    self.company.q1_passed = false // status
-                case "q2":
-                    self.company.q2_passed = false // status
-                case "q3":
-                    self.company.q3_passed = false // status
-                case "q4":
-                    self.company.q4_passed = false // status
-                case "q5":
-                    self.company.q5_passed = false // status
-                case "q6":
-                    self.company.q6_passed = false // status
-                default:
-                    break
-                }
-                
-            case.failed, .noReply:
-                self.delegate?.showAlertMessage("The server was unable to save this status change. Please forward this message to ptangen@ptangen.com")
-                break;
-                
-            default:
-                break;
-            }
+        // where clause
+//        let selectedTickerQuestion = self.companiesTable.filter(self.tickerCol == ticker)
+//        do {
+//          try database.run(sselectedTickerQuestion.update(self.previous_roiCol <- Int(measureValue)))
+//        } catch {
+//            print(error)
+//        }
+        
+//        APIClient.setSubjectiveStatus(question: self.measureShortName, status: passed, company: self.company, completion: { response in
+//
+//            switch response {
+//            case .ok:
+//                Utilities.getStatusIcon(status: passed, uiLabel: self.statusIcon)
+//                self.statusValueDesc.text = "(" + self.getStatusDesc(passed: passed) + ")"
+//
+//                // udpate the status in the equity
+//                switch self.measureShortName {
+//                case "q1":
+//                    self.company.q1_passed = false // status
+//                case "q2":
+//                    self.company.q2_passed = false // status
+//                case "q3":
+//                    self.company.q3_passed = false // status
+//                case "q4":
+//                    self.company.q4_passed = false // status
+//                case "q5":
+//                    self.company.q5_passed = false // status
+//                case "q6":
+//                    self.company.q6_passed = false // status
+//                default:
+//                    break
+//                }
+//
+//            case.failed, .noReply:
+//                self.delegate?.showAlertMessage("The server was unable to save this status change. Please forward this message to ptangen@ptangen.com")
+//                break;
+//
+//            default:
+//                break;
+//            }
             //self.store.resetTabValue(equity: self.equity)
-        })
+ //       })
     }
     
     func updateQAnswer(answer: String) {
         
-        APIClient.setSubjectiveAnswer(question: self.measureShortName, answer: answer, company: self.company, completion: { response in
-            
-            switch response {
-            case .ok:
-                break;
-                
-            case.failed, .noReply:
-                self.delegate?.showAlertMessage("The server was unable to save this status change. Please forward this message to ptangen@ptangen.com")
-                break;
-                
-            default:
-                break;
-            }
-        })
+//        APIClient.setSubjectiveAnswer(question: self.measureShortName, answer: answer, company: self.company, completion: { response in
+//            
+//            switch response {
+//            case .ok:
+//                break;
+//                
+//            case.failed, .noReply:
+//                self.delegate?.showAlertMessage("The server was unable to save this status change. Please forward this message to ptangen@ptangen.com")
+//                break;
+//                
+//            default:
+//                break;
+//            }
+//        })
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -125,22 +132,6 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
             return passedUnwrapped.description
         } else {
             return "no data"
-        }
-    }
-    
-    func showSubjectiveMeasureControls(qStatus: Bool) {
-        // show
-        self.qStatusPicker.isHidden = false
-        self.qAnswerView.isHidden = false
-        
-        // set status on button bar
-        switch qStatus {
-        case true:
-            self.qStatusPicker.selectedSegmentIndex = 1
-        case false:
-            self.qStatusPicker.selectedSegmentIndex = 2
-        default:
-            self.qStatusPicker.selectedSegmentIndex = 0
         }
     }
     
@@ -225,60 +216,50 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
         self.qAnswerView.layer.borderWidth = 1.0
     }
     
-    func getMeasureResultsAndSetLabelText(passed: Bool, longName: String, answer: String?) {
-        self.showSubjectiveMeasureControls(qStatus: passed)
+    func getMeasureResultsAndSetLabelText(passed: Bool?, longName: String, answer: String?) {
+        
+        if let passedUnwrapped = passed {
+            if passedUnwrapped {
+                self.qStatusPicker.selectedSegmentIndex = 1
+            } else {
+                self.qStatusPicker.selectedSegmentIndex = 2
+            }
+        } else {
+            self.qStatusPicker.selectedSegmentIndex = 0
+        }
+        
         self.measureLongNameLabel.text = longName
         Utilities.getStatusIcon(status: passed, uiLabel: self.statusIcon)
-        self.statusValueDesc.text = "(" + getStatusDesc(passed: passed) + ")"
         if let answerUnwrapped = answer {
             self.setTextInQAnswerView(textToDisplay: answerUnwrapped)
         }
     }
     
-    func setResultsLabelsForMeasure(fullString: String) {
+    func setResultsLabelsForMeasure(measure: String) {
         
         self.statusLabel.text = "Status:"
+        let measureInfo = self.store.measureInfo[measure]!
         
-        // extract the measure name
-        let chars = fullString;
-        if let indexLeftParen = chars.firstIndex(of: "(") {
-            _ = chars.index(before: indexLeftParen)
-            // 4.2 error: self.measureShortName = fullString[chars.startIndex...indexBeforeLeftParen]
-            self.measureShortName = fullString
-        }
-        print("self.measureShortName: \(self.measureShortName)")
-        let measureInfo = self.store.measureInfo[fullString]!
+        let questions_passed:[String: Bool?] = [
+            "q1" : self.company.q1_passed,
+            "q2" : self.company.q2_passed,
+            "q3" : self.company.q3_passed,
+            "q4" : self.company.q4_passed,
+            "q5" : self.company.q5_passed,
+            "q6" : self.company.q6_passed
+        ]
         
-        // get the measure results and set the label text
-        if self.measureShortName == "q1" {
-            if let q1_passed = self.company.q1_passed {
-                self.getMeasureResultsAndSetLabelText(passed: q1_passed, longName: measureInfo["longName"]!, answer: self.company.q1_answer)
-            }
-            
-        } else if self.measureShortName == "q2" {
-            if let q2_passed = self.company.q2_passed {
-                self.getMeasureResultsAndSetLabelText(passed: q2_passed, longName: measureInfo["longName"]!, answer: self.company.q2_answer)
-            }
-            
-        } else if self.measureShortName == "q3" {
-            if let q3_passed = self.company.q3_passed {
-            self.getMeasureResultsAndSetLabelText(passed: q3_passed, longName: measureInfo["longName"]!, answer: self.company.q3_answer)
-            }
-            
-        } else if self.measureShortName == "q4" {
-            if let q4_passed = self.company.q4_passed {
-                self.getMeasureResultsAndSetLabelText(passed: q4_passed, longName: measureInfo["longName"]!, answer: self.company.q4_answer)
-            }
-            
-        } else if self.measureShortName == "q5" {
-            if let q5_passed = self.company.q5_passed {
-                self.getMeasureResultsAndSetLabelText(passed: q5_passed, longName: measureInfo["longName"]! + "XX", answer: self.company.q5_answer)
-            }
-            
-        } else if self.measureShortName == "q6" {
-            if let q6_passed = self.company.q6_passed {
-                self.getMeasureResultsAndSetLabelText(passed: q6_passed, longName: measureInfo["longName"]!, answer: self.company.q6_answer)
-            }
-        }
+        let questions_answer:[String: String?] = [
+            "q1" : self.company.q1_answer,
+            "q2" : self.company.q2_answer,
+            "q3" : self.company.q3_answer,
+            "q4" : self.company.q4_answer,
+            "q5" : self.company.q5_answer,
+            "q6" : self.company.q6_answer
+        ]
+        
+        self.getMeasureResultsAndSetLabelText(
+            passed: questions_passed[measure]!, longName: measureInfo["longName"]!, answer: questions_answer[measure]!
+        )
     }
 }

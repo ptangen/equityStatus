@@ -15,6 +15,7 @@ class Utilities {
     
     class func getStatusIcon(status: Bool?, uiLabel: UILabel) {
         if let statusUnwrapped = status {
+
             if statusUnwrapped {
                 uiLabel.text = Constants.iconLibrary.faCheckCircle.rawValue // passed
                 uiLabel.textColor = UIColor(named: .statusGreen)

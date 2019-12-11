@@ -24,10 +24,6 @@ class CompanyDetailView: UIView {
     
     let subTitle = UILabel()
     
-    let ROEaResultDesc = UILabel()
-    let ROEaResultDescTap = UITapGestureRecognizer()
-    let ROEaStatusDesc = UILabel()
-    
     let EPSiResultDesc = UILabel()
     let EPSiResultDescTap = UITapGestureRecognizer()
     let EPSiStatusDesc = UILabel()
@@ -35,6 +31,10 @@ class CompanyDetailView: UIView {
     let EPSvResultDesc = UILabel()
     let EPSvResultDescTap = UITapGestureRecognizer()
     let EPSvStatusDesc = UILabel()
+    
+    let ROEaResultDesc = UILabel()
+    let ROEaResultDescTap = UITapGestureRecognizer()
+    let ROEaStatusDesc = UILabel()
     
     let BViResultDesc = UILabel()
     let BViResultDescTap = UITapGestureRecognizer()
@@ -115,31 +115,12 @@ class CompanyDetailView: UIView {
         self.subTitle.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.small.rawValue)
         self.subTitle.numberOfLines = 0
         
-        // ROEaResultsDesc
-        self.scrollView.addSubview(self.ROEaResultDesc)
-        self.ROEaResultDesc.translatesAutoresizingMaskIntoConstraints = false
-        self.ROEaResultDesc.topAnchor.constraint(equalTo: self.subTitle.bottomAnchor, constant: 36).isActive = true
-        self.ROEaResultDesc.leftAnchor.constraint(equalTo: self.subTitle.leftAnchor, constant: 30).isActive = true
-        self.ROEaResultDesc.rightAnchor.constraint(equalTo: self.subTitle.rightAnchor, constant: -6).isActive = true
-        self.ROEaResultDesc.numberOfLines = 0
-        self.ROEaResultDesc.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.small.rawValue)
-        self.ROEaResultDescTap.addTarget(self, action: #selector(self.onClickLineItem))
-        self.ROEaResultDesc.isUserInteractionEnabled = true
-        self.ROEaResultDesc.addGestureRecognizer(ROEaResultDescTap)
-        
-        // ROEaStatusDesc
-        self.scrollView.addSubview(self.ROEaStatusDesc)
-        self.ROEaStatusDesc.translatesAutoresizingMaskIntoConstraints = false
-        self.ROEaStatusDesc.topAnchor.constraint(equalTo: self.ROEaResultDesc.topAnchor, constant: 0).isActive = true
-        self.ROEaStatusDesc.rightAnchor.constraint(equalTo: self.ROEaResultDesc.leftAnchor, constant: -10).isActive = true
-        self.ROEaStatusDesc.font = UIFont(name: Constants.iconFont.fontAwesome.rawValue, size: Constants.iconSize.xsmall.rawValue)
-        
         // EPSiResultsDesc
         self.scrollView.addSubview(self.EPSiResultDesc)
         self.EPSiResultDesc.translatesAutoresizingMaskIntoConstraints = false
-        self.EPSiResultDesc.topAnchor.constraint(equalTo: self.ROEaResultDesc.bottomAnchor, constant: self.lineSpacing).isActive = true
-        self.EPSiResultDesc.leftAnchor.constraint(equalTo: self.ROEaResultDesc.leftAnchor).isActive = true
-        self.EPSiResultDesc.rightAnchor.constraint(equalTo: self.ROEaResultDesc.rightAnchor).isActive = true
+        self.EPSiResultDesc.topAnchor.constraint(equalTo: self.subTitle.bottomAnchor, constant: 36).isActive = true
+        self.EPSiResultDesc.leftAnchor.constraint(equalTo: self.subTitle.leftAnchor, constant: 30).isActive = true
+        self.EPSiResultDesc.rightAnchor.constraint(equalTo: self.subTitle.rightAnchor).isActive = true
         self.EPSiResultDesc.numberOfLines = 0
         self.EPSiResultDesc.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.small.rawValue)
         self.EPSiResultDescTap.addTarget(self, action: #selector(self.onClickLineItem))
@@ -172,10 +153,29 @@ class CompanyDetailView: UIView {
         self.EPSvStatusDesc.rightAnchor.constraint(equalTo: self.EPSvResultDesc.leftAnchor, constant: -10).isActive = true
         self.EPSvStatusDesc.font = UIFont(name: Constants.iconFont.fontAwesome.rawValue, size: Constants.iconSize.xsmall.rawValue)
         
+        // ROEaResultsDesc
+        self.scrollView.addSubview(self.ROEaResultDesc)
+        self.ROEaResultDesc.translatesAutoresizingMaskIntoConstraints = false
+        self.ROEaResultDesc.topAnchor.constraint(equalTo: self.EPSvResultDesc.bottomAnchor, constant: self.lineSpacing).isActive = true
+        self.ROEaResultDesc.leftAnchor.constraint(equalTo: self.EPSvResultDesc.leftAnchor).isActive = true
+        self.ROEaResultDesc.rightAnchor.constraint(equalTo: self.EPSvResultDesc.rightAnchor, constant: -6).isActive = true
+        self.ROEaResultDesc.numberOfLines = 0
+        self.ROEaResultDesc.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.small.rawValue)
+        self.ROEaResultDescTap.addTarget(self, action: #selector(self.onClickLineItem))
+        self.ROEaResultDesc.isUserInteractionEnabled = true
+        self.ROEaResultDesc.addGestureRecognizer(ROEaResultDescTap)
+        
+        // ROEaStatusDesc
+        self.scrollView.addSubview(self.ROEaStatusDesc)
+        self.ROEaStatusDesc.translatesAutoresizingMaskIntoConstraints = false
+        self.ROEaStatusDesc.topAnchor.constraint(equalTo: self.ROEaResultDesc.topAnchor, constant: 0).isActive = true
+        self.ROEaStatusDesc.rightAnchor.constraint(equalTo: self.ROEaResultDesc.leftAnchor, constant: -10).isActive = true
+        self.ROEaStatusDesc.font = UIFont(name: Constants.iconFont.fontAwesome.rawValue, size: Constants.iconSize.xsmall.rawValue)
+        
         // BViResultDesc
         self.scrollView.addSubview(self.BViResultDesc)
         self.BViResultDesc.translatesAutoresizingMaskIntoConstraints = false
-        self.BViResultDesc.topAnchor.constraint(equalTo: self.EPSvResultDesc.bottomAnchor, constant: self.lineSpacing).isActive = true
+        self.BViResultDesc.topAnchor.constraint(equalTo: self.ROEaResultDesc.bottomAnchor, constant: self.lineSpacing).isActive = true
         self.BViResultDesc.leftAnchor.constraint(equalTo: self.EPSvResultDesc.leftAnchor).isActive = true
         self.BViResultDesc.rightAnchor.constraint(equalTo: self.EPSvResultDesc.rightAnchor).isActive = true
         self.BViResultDesc.numberOfLines = 0
@@ -259,7 +259,7 @@ class CompanyDetailView: UIView {
         self.expectedROIResultDescTap.addTarget(self, action: #selector(self.onClickLineItem))
         self.expectedROIResultDesc.isUserInteractionEnabled = true
         self.expectedROIResultDesc.addGestureRecognizer(expectedROIResultDescTap)
-        self.expectedROIResultDesc.accessibilityLabel = "expectedROIResultDesc"
+        //self.expectedROIResultDesc.accessibilityLabel = "expectedROIResultDesc"
         
         // expectedROIStatusDesc
         self.scrollView.addSubview(self.expectedROIStatusDesc)
@@ -384,7 +384,6 @@ class CompanyDetailView: UIView {
     }
     
     @objc func onClickLineItem(sender: UILabel){
-        print("sender: \(String(describing: sender.accessibilityLabel))")
         if let measure = sender.accessibilityLabel {
             self.delegate?.openMeasureDetail(measure: measure)
         }

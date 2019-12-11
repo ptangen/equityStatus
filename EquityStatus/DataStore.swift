@@ -25,6 +25,7 @@ class DataStore {
             "thresholdDesc":"Threshold: Greater than or equal to 15%",
             "calcDesc": "Calculation: The annual earnings per share (EPS) is collected and then the future value formula is applied to determine the growth rate of the EPS.",
             "pageIndex": "0",
+            "units": "%"
         ],
         "eps_sd": [
             "name": "eps_sd",
@@ -32,6 +33,7 @@ class DataStore {
             "thresholdDesc":"Threshold: Less than or equal to 2.0",
             "calcDesc": "Calculation: First, the standard deviation of the EPS values from the last ten years is calculated. Then the difference of the first and last values is compared to three times the standard deviation and a ratio is established. The lower the ratio, the less volatile the the EPS.",
             "pageIndex": "1",
+            "units": ""
         ],
         "roe_avg": [
             "name": "roe_avg",
@@ -39,6 +41,7 @@ class DataStore {
             "thresholdDesc": "Threshold: Greater than or equal to 12%",
             "calcDesc": "Calculation: The annual return on equity is collected and then the mean is found.",
             "pageIndex": "2",
+            "units": "%"
         ],
         "bv_i": [
             "name": "bv_i",
@@ -46,6 +49,7 @@ class DataStore {
             "thresholdDesc":"Threshold: Greater than or equal to 5%",
             "calcDesc": "Calculation: The annual book value is collected and then the future value formula is applied to determine the growth rate of the BV.",
             "pageIndex": "3",
+            "units": "%"
         ],
         "dr_avg": [
             "name": "dr_avg",
@@ -53,6 +57,7 @@ class DataStore {
             "thresholdDesc":"Threshold: Less than or equal to 5",
             "calcDesc": "Calculation: The annual total debt ratio is collected and then the mean is calculated.",
             "pageIndex": "4",
+            "units": ""
         ],
         "so_reduced": [
             "name": "so_reduced",
@@ -60,6 +65,7 @@ class DataStore {
             "thresholdDesc":"Threshold: More than or equal to 0 shares",
             "calcDesc": "Calculation: The value is found by subtracting the number of shares outstanding in the current year, from the number of shares outstanding ten years earlier.",
             "pageIndex": "5",
+            "units": ""
         ],
         "previous_roi": [
             "name": "previous_roi",
@@ -67,6 +73,7 @@ class DataStore {
             "thresholdDesc": "Threshold: Greater than or equal to 15%",
             "calcDesc": "Calculation: This value is found by obtaining the stock price 5 years ago, the current price and calculating the growth rate.",
             "pageIndex": "6",
+            "units": "%"
         ],
         "expected_roi": [
             "name": "expected_roi",
@@ -74,12 +81,12 @@ class DataStore {
             "thresholdDesc":"Threshold: Greater than or equal to 15%",
             "calcDesc": "Calculation: To calculate the Expected ROI, the future value of the EPS in ten years is calculated from the current EPS value and the EPS growth rate. The mean value for the P/E ratio is also calculated. Next, the future stock price is found by multiplying the future value EPS by the mean P/E ratio. Finally, the expected ROI is found by using the future value function. The current stock price is the present value and the future value is the future stock price.",
             "pageIndex": "7",
+            "units": "%"
         ],
         "q1": [
             "name": "q1",
             "longName": "Is there a strong upward trend in the EPS?",
             "pageIndex": "8",
-            
         ],
         "q2": [
             "name": "q2",

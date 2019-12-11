@@ -34,17 +34,21 @@ class MeasurePageViewController: UIPageViewController, UIPageViewControllerDataS
     let q6ViewControllerInst = QuestionMeasureViewController()
     
     var calcMeasureVCInstances: [(instance: CalcMeasureViewController, measure: String)] = []
+    var subjectiveMeasureVCInstances: [(instance: QuestionMeasureViewController, measure: String)] = []
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
 
         self.dataSource = self
         self.delegate = self
-        let measureInfoEPS_I = self.store.measureInfo["eps_i"]!
-        let initialPage = Int(measureInfoEPS_I["pageIndex"]!)!
+        print("measure 4: \(measure)")
+        let measureInfo = self.store.measureInfo[self.measure]!
+        let initialPage = Int(measureInfo["pageIndex"]!)!
         
         self.edgesForExtendedLayout = []   // prevents view from siding under nav bar
         
+        // add attribute values to measure pages
         calcMeasureVCInstances.append((self.ROEaViewControllerInst, "roe_avg"))
         calcMeasureVCInstances.append((self.EPSiViewControllerInst, "eps_i"))
         calcMeasureVCInstances.append((self.EPSvViewControllerInst, "eps_sd"))
@@ -61,13 +65,21 @@ class MeasurePageViewController: UIPageViewController, UIPageViewControllerDataS
             self.pages[Int(pageIndexString)!] = calcMeasureVCInstance.instance
         }
         
-        // insert page index from measureInfo
-        self.pages[getPageIndex(measure: "q1")] = q1ViewControllerInst
-        self.pages[getPageIndex(measure: "q2")] = q2ViewControllerInst
-        self.pages[getPageIndex(measure: "q3")] = q3ViewControllerInst
-        self.pages[getPageIndex(measure: "q4")] = q4ViewControllerInst
-        self.pages[getPageIndex(measure: "q5")] = q5ViewControllerInst
-        self.pages[getPageIndex(measure: "q6")] = q6ViewControllerInst
+        // add attribute values to subjective measure pages
+        subjectiveMeasureVCInstances.append((self.q1ViewControllerInst, "q1"))
+        subjectiveMeasureVCInstances.append((self.q2ViewControllerInst, "q2"))
+        subjectiveMeasureVCInstances.append((self.q3ViewControllerInst, "q3"))
+        subjectiveMeasureVCInstances.append((self.q4ViewControllerInst, "q4"))
+        subjectiveMeasureVCInstances.append((self.q5ViewControllerInst, "q5"))
+        subjectiveMeasureVCInstances.append((self.q6ViewControllerInst, "q6"))
+        
+        for subjectiveMeasureVCInstance in subjectiveMeasureVCInstances {
+            subjectiveMeasureVCInstance.instance.company = company
+            subjectiveMeasureVCInstance.instance.measure = subjectiveMeasureVCInstance.measure
+            subjectiveMeasureVCInstance.instance.accessibilityLabel = subjectiveMeasureVCInstance.measure
+            let pageIndexString = store.measureInfo[subjectiveMeasureVCInstance.measure]!["pageIndex"]!
+            self.pages[Int(pageIndexString)!] = subjectiveMeasureVCInstance.instance
+        }
         
         setViewControllers([pages[initialPage]], direction: .forward, animated: true, completion: nil)
         
@@ -89,12 +101,13 @@ class MeasurePageViewController: UIPageViewController, UIPageViewControllerDataS
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.title = "\(company.name.capitalized) (\(company.ticker))"
-        print("measure2: \(self.measure)")
+        print("viewWillAppear measure: \(self.measure)")
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         
         if let viewControllerIndex = self.pages.index(of: viewController) {
+            print("viewControllerIndex pre: \(viewControllerIndex)")
             if viewControllerIndex == 0 {
                 return self.pages.last // wrap to last page in array
             } else {
@@ -107,6 +120,7 @@ class MeasurePageViewController: UIPageViewController, UIPageViewControllerDataS
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         
         if let viewControllerIndex = self.pages.index(of: viewController) {
+            print("viewControllerIndex pre: \(viewControllerIndex)")
             if viewControllerIndex < self.pages.count - 1 {
                 return self.pages[viewControllerIndex + 1] // go to next page in array
             } else {
@@ -121,6 +135,7 @@ class MeasurePageViewController: UIPageViewController, UIPageViewControllerDataS
         // set the pageControl.currentPage to the index of the current viewController in pages
         if let viewControllers = pageViewController.viewControllers {
             if let viewControllerIndex = self.pages.index(of: viewControllers[0]) {
+                print("viewControllerIndex didFinishAnimating: \(viewControllerIndex)")
                 self.pageControl.currentPage = viewControllerIndex
             }
         }
@@ -129,41 +144,5 @@ class MeasurePageViewController: UIPageViewController, UIPageViewControllerDataS
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-    
-    // delete after subjective measure get pageIndex from dataStore
-    func getPageIndex(measure: String) -> Int { // long names for the measures
-        switch measure {
-        case "roe_avg":
-            return 0
-        case "eps_i":
-            return 1
-        case "eps_sd":
-            return 2
-        case "bv_i":
-            return 3
-        case "dr_avg":
-            return 4
-        case "so_reduced":
-            return 5
-        case "previous_roi":
-            return 6
-        case "expected_roi":
-            return 7
-        case "q1":
-            return 8
-        case "q2":
-            return 9
-        case "q3":
-            return 10
-        case "q4":
-            return 11
-        case "q5":
-            return 12
-        case "q6":
-            return 13
-        default:
-            return 0
-        }
     }
 }

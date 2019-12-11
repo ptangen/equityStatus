@@ -25,7 +25,7 @@ class CompanyDetailViewController: UIViewController, CompanyDetailViewDelegate {
         super.viewWillAppear(animated)
         self.navigationController?.isNavigationBarHidden = false
         self.navigationController?.navigationBar.backItem?.title = ""
-        self.popualateLabels()
+        self.getValuesAndLabels()
         self.title = "\(company.name.capitalized) (\(self.company.ticker))"
     }
 
@@ -43,105 +43,154 @@ class CompanyDetailViewController: UIViewController, CompanyDetailViewDelegate {
         let measurePageViewControllerInst = MeasurePageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         measurePageViewControllerInst.company = company
         measurePageViewControllerInst.measure = measure
+        print("openMeasureDetail measure: \(measure)")
         self.title = "" // this value is passed to the back button label in the destination VC
         navigationController?.pushViewController(measurePageViewControllerInst, animated: true) // show destination with nav bar
     }
     
-    func popualateLabels() {
+    func setLabelsInRow(measureName: String, measureValue:NSNumber?, measurePassed: Bool?, measureLabel: UILabel, measureTap: UITapGestureRecognizer, statusLabel: UILabel){
         
-        // roe_avg label
-        if let roe_avg = self.company.roe_avg, let roe_avg_passed = self.company.roe_avg_passed {
-            let measureInfo = self.store.measureInfo["roe_avg"]!
-            self.companyDetailViewInst.ROEaResultDesc.text = measureInfo["longName"]! + ": " + String(describing: roe_avg) + "%"
-            self.companyDetailViewInst.ROEaResultDescTap.accessibilityLabel = measureInfo["name"]!
-            Utilities.getStatusIcon(status: roe_avg_passed, uiLabel: self.companyDetailViewInst.ROEaStatusDesc)
+        var measureValueString = String()
+        let measureInfo = self.store.measureInfo[measureName]!
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        
+        // create the value string
+        if let measureValueUnwrapped = measureValue{
+            measureValueString = ": " + formatter.string(from: measureValueUnwrapped)! + measureInfo["units"]!
         }
         
-        // eps_i label
-        if let eps_i = self.company.eps_i, let eps_i_passed = self.company.eps_i_passed {
-            let measureInfo = self.store.measureInfo["eps_i"]!
-            self.companyDetailViewInst.EPSiResultDesc.text = measureInfo["longName"]! + ": " + String(describing: eps_i) + "%"
-            self.companyDetailViewInst.EPSiResultDescTap.accessibilityLabel = measureInfo["name"]!
-            Utilities.getStatusIcon(status: eps_i_passed, uiLabel: self.companyDetailViewInst.EPSiStatusDesc)
-        }
+        Utilities.getStatusIcon(status: measurePassed, uiLabel: statusLabel)
+        measureLabel.text = measureInfo["longName"]! + measureValueString
+        measureTap.accessibilityLabel = measureInfo["name"]!
+    }
+
+    func getValuesAndLabels() {
         
-        // eps_sd label
-        if let eps_sd = self.company.eps_sd, let eps_sd_passed = self.company.eps_sd_passed {
-            let measureInfo = self.store.measureInfo["eps_sd"]!
-            self.companyDetailViewInst.EPSvResultDesc.text = measureInfo["longName"]! + ": " + String(describing: eps_sd)
-            self.companyDetailViewInst.EPSvResultDescTap.accessibilityLabel = measureInfo["name"]!
-            Utilities.getStatusIcon(status: eps_sd_passed, uiLabel: self.companyDetailViewInst.EPSvStatusDesc)
-        }
+        setLabelsInRow(
+            measureName:    "eps_i",
+            measureValue:   self.company.eps_i as NSNumber?,
+            measurePassed:  self.company.eps_i_passed,
+            measureLabel:   self.companyDetailViewInst.EPSiResultDesc,
+            measureTap:     self.companyDetailViewInst.EPSiResultDescTap,
+            statusLabel:    self.companyDetailViewInst.EPSiStatusDesc
+        )
+
+        setLabelsInRow(
+            measureName:    "eps_sd",
+            measureValue:   self.company.eps_sd as NSNumber?,
+            measurePassed:  self.company.eps_sd_passed,
+            measureLabel:   self.companyDetailViewInst.EPSvResultDesc,
+            measureTap:     self.companyDetailViewInst.EPSvResultDescTap,
+            statusLabel:    self.companyDetailViewInst.EPSvStatusDesc
+        )
         
-        // bv_i label
-        if let bv_i = self.company.bv_i, let bv_i_passed = self.company.bv_i_passed {
-            let measureInfo = self.store.measureInfo["bv_i"]!
-            self.companyDetailViewInst.BViResultDesc.text = measureInfo["longName"]! + ": " + String(describing: bv_i) + "%"
-            self.companyDetailViewInst.BViResultDescTap.accessibilityLabel = measureInfo["name"]!
-            Utilities.getStatusIcon(status: bv_i_passed, uiLabel: self.companyDetailViewInst.BViStatusDesc)
-        }
+        setLabelsInRow(
+            measureName:    "roe_avg",
+            measureValue:   self.company.roe_avg as NSNumber?,
+            measurePassed:  self.company.roe_avg_passed,
+            measureLabel:   self.companyDetailViewInst.ROEaResultDesc,
+            measureTap:     self.companyDetailViewInst.ROEaResultDescTap,
+            statusLabel:    self.companyDetailViewInst.ROEaStatusDesc
+        )
         
-        // dr_avg label
-        if let dr_avg = self.company.dr_avg, let dr_avg_passed = self.company.dr_avg_passed {
-            let measureInfo = self.store.measureInfo["dr_avg"]!
-            self.companyDetailViewInst.DRaResultDesc.text = measureInfo["longName"]! + ": " + String(describing: dr_avg)
-            self.companyDetailViewInst.DRaResultDescTap.accessibilityLabel = measureInfo["name"]!
-            Utilities.getStatusIcon(status: dr_avg_passed, uiLabel: self.companyDetailViewInst.DRaStatusDesc)
-        }
+        setLabelsInRow(
+            measureName:    "bv_i",
+            measureValue:   self.company.bv_i as NSNumber?,
+            measurePassed:  self.company.bv_i_passed,
+            measureLabel:   self.companyDetailViewInst.BViResultDesc,
+            measureTap:     self.companyDetailViewInst.BViResultDescTap,
+            statusLabel:    self.companyDetailViewInst.BViStatusDesc
+        )
         
-        // so_reduced label
-        if let so_reduced = self.company.so_reduced, let so_reduced_passed = self.company.so_reduced_passed {
-            let measureInfo = self.store.measureInfo["so_reduced"]!
-            self.companyDetailViewInst.SOrResultDesc.text = measureInfo["longName"]! + ": " + String(describing: so_reduced)
-            self.companyDetailViewInst.SOrResultDescTap.accessibilityLabel = measureInfo["name"]!
-            Utilities.getStatusIcon(status: so_reduced_passed, uiLabel: self.companyDetailViewInst.SOrStatusDesc)
-        }
+        setLabelsInRow(
+            measureName:    "dr_avg",
+            measureValue:   self.company.dr_avg as NSNumber?,
+            measurePassed:  self.company.dr_avg_passed,
+            measureLabel:   self.companyDetailViewInst.DRaResultDesc,
+            measureTap:     self.companyDetailViewInst.DRaResultDescTap,
+            statusLabel:    self.companyDetailViewInst.DRaStatusDesc
+        )
         
+        setLabelsInRow(
+            measureName:    "so_reduced",
+            measureValue:   self.company.so_reduced as NSNumber?,
+            measurePassed:  self.company.so_reduced_passed,
+            measureLabel:   self.companyDetailViewInst.SOrResultDesc,
+            measureTap:     self.companyDetailViewInst.SOrResultDescTap,
+            statusLabel:    self.companyDetailViewInst.SOrStatusDesc
+        )
         
-        // previous_roi label
-        if let previous_roi = self.company.previous_roi, let previous_roi_passed = self.company.previous_roi_passed {
-            let measureInfo = self.store.measureInfo["previous_roi"]!
-            self.companyDetailViewInst.previousROIResultDesc.text = measureInfo["longName"]! + ": " + String(describing: previous_roi) + "%"
-            self.companyDetailViewInst.previousROIResultDescTap.accessibilityLabel = measureInfo["name"]!
-            Utilities.getStatusIcon(status: previous_roi_passed, uiLabel: self.companyDetailViewInst.previousROIStatusDesc)
-        }
+        setLabelsInRow(
+            measureName:    "previous_roi",
+            measureValue:   self.company.previous_roi as NSNumber?,
+            measurePassed:  self.company.previous_roi_passed,
+            measureLabel:   self.companyDetailViewInst.previousROIResultDesc,
+            measureTap:     self.companyDetailViewInst.previousROIResultDescTap,
+            statusLabel:    self.companyDetailViewInst.previousROIStatusDesc
+        )
         
-        // expected_roi label
-        if let expected_roi = self.company.expected_roi, let expected_roi_passed = self.company.expected_roi_passed {
-            let measureInfo = self.store.measureInfo["expected_roi"]!
-            self.companyDetailViewInst.expectedROIResultDesc.text = measureInfo["longName"]! + ": " + String(describing: expected_roi) + "%"
-            self.companyDetailViewInst.expectedROIResultDescTap.accessibilityLabel = measureInfo["name"]!
-            Utilities.getStatusIcon(status: expected_roi_passed, uiLabel: self.companyDetailViewInst.expectedROIStatusDesc)
-        }
-            
-        // q1 label
-        self.companyDetailViewInst.q1Desc.text = self.store.measureInfo["q1"]!["longName"]!
-        self.companyDetailViewInst.q1DescTap.accessibilityLabel = "q1(\(company.ticker))"
-        Utilities.getStatusIcon(status: self.company.q1_passed, uiLabel: self.companyDetailViewInst.q1StatusDesc)
+        setLabelsInRow(
+            measureName:    "expected_roi",
+            measureValue:   self.company.expected_roi as NSNumber?,
+            measurePassed:  self.company.expected_roi_passed,
+            measureLabel:   self.companyDetailViewInst.expectedROIResultDesc,
+            measureTap:     self.companyDetailViewInst.expectedROIResultDescTap,
+            statusLabel:    self.companyDetailViewInst.expectedROIStatusDesc
+        )
         
-        // q2 label
-        self.companyDetailViewInst.q2Desc.text = self.store.measureInfo["q2"]!["longName"]!
-        self.companyDetailViewInst.q2DescTap.accessibilityLabel = "q2(\(company.ticker))"
-        Utilities.getStatusIcon(status: self.company.q2_passed, uiLabel: self.companyDetailViewInst.q2StatusDesc)
+        setLabelsInRow(
+            measureName:    "q1",
+            measureValue:   nil,
+            measurePassed:  self.company.q1_passed,
+            measureLabel:   self.companyDetailViewInst.q1Desc,
+            measureTap:     self.companyDetailViewInst.q1DescTap,
+            statusLabel:    self.companyDetailViewInst.q1StatusDesc
+        )
         
-        // q3 label
-        self.companyDetailViewInst.q3Desc.text = self.store.measureInfo["q3"]!["longName"]!
-        self.companyDetailViewInst.q3DescTap.accessibilityLabel = "q3(\(company.ticker))"
-        Utilities.getStatusIcon(status: self.company.q3_passed, uiLabel: self.companyDetailViewInst.q3StatusDesc)
+        setLabelsInRow(
+            measureName:    "q2",
+            measureValue:   nil,
+            measurePassed:  self.company.q2_passed,
+            measureLabel:   self.companyDetailViewInst.q2Desc,
+            measureTap:     self.companyDetailViewInst.q2DescTap,
+            statusLabel:    self.companyDetailViewInst.q2StatusDesc
+        )
         
-        // q4 label
-        self.companyDetailViewInst.q4Desc.text = self.store.measureInfo["q4"]!["longName"]!
-        self.companyDetailViewInst.q4DescTap.accessibilityLabel = "q4(\(company.ticker))"
-        Utilities.getStatusIcon(status: self.company.q4_passed, uiLabel: self.companyDetailViewInst.q4StatusDesc)
+        setLabelsInRow(
+            measureName:    "q3",
+            measureValue:   nil,
+            measurePassed:  self.company.q3_passed,
+            measureLabel:   self.companyDetailViewInst.q3Desc,
+            measureTap:     self.companyDetailViewInst.q3DescTap,
+            statusLabel:    self.companyDetailViewInst.q3StatusDesc
+        )
         
-        // q5 label
-        self.companyDetailViewInst.q5Desc.text = self.store.measureInfo["q5"]!["longName"]!
-        self.companyDetailViewInst.q5DescTap.accessibilityLabel = "q5(\(company.ticker))"
-        Utilities.getStatusIcon(status: self.company.q5_passed, uiLabel: self.companyDetailViewInst.q5StatusDesc)
+        setLabelsInRow(
+            measureName:    "q4",
+            measureValue:   nil,
+            measurePassed:  self.company.q4_passed,
+            measureLabel:   self.companyDetailViewInst.q4Desc,
+            measureTap:     self.companyDetailViewInst.q4DescTap,
+            statusLabel:    self.companyDetailViewInst.q4StatusDesc
+        )
         
-        // q6 label
-        self.companyDetailViewInst.q6Desc.text = self.store.measureInfo["q6"]!["longName"]!
-        self.companyDetailViewInst.q6DescTap.accessibilityLabel = "q6(\(company.ticker))"
-        Utilities.getStatusIcon(status: self.company.q6_passed, uiLabel: self.companyDetailViewInst.q6StatusDesc)
+        setLabelsInRow(
+            measureName:    "q5",
+            measureValue:   nil,
+            measurePassed:  self.company.q5_passed,
+            measureLabel:   self.companyDetailViewInst.q5Desc,
+            measureTap:     self.companyDetailViewInst.q5DescTap,
+            statusLabel:    self.companyDetailViewInst.q5StatusDesc
+        )
+        
+        setLabelsInRow(
+            measureName:    "q6",
+            measureValue:   nil,
+            measurePassed:  self.company.q6_passed,
+            measureLabel:   self.companyDetailViewInst.q6Desc,
+            measureTap:     self.companyDetailViewInst.q6DescTap,
+            statusLabel:    self.companyDetailViewInst.q6StatusDesc
+        )
     }
 }

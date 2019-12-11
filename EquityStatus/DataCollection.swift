@@ -24,6 +24,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
     // define companies table for use in table editing
     // db table
     let companiesTable =    Table("companiesTable")
+    
     let tickerCol =         Expression<String>("tickerCol")
     let nameCol =           Expression<String>("nameCol")
     let eps_iCol =          Expression<Int?>("eps_iCol")
@@ -37,6 +38,20 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
     let price_lastCol =     Expression<Double?>("price_lastCol")
     let previous_roiCol =   Expression<Int?>("previous_roiCol")
     let expected_roiCol =   Expression<Int?>("expected_roiCol")
+    
+    let q1_answerCol =   Expression<String?>("q1_answerCol")
+    let q2_answerCol =   Expression<String?>("q2_answerCol")
+    let q3_answerCol =   Expression<String?>("q3_answerCol")
+    let q4_answerCol =   Expression<String?>("q4_answerCol")
+    let q5_answerCol =   Expression<String?>("q5_answerCol")
+    let q6_answerCol =   Expression<String?>("q6_answerCol")
+    
+    let q1_passedCol =   Expression<Bool?>("q1_passedCol")
+    let q2_passedCol =   Expression<Bool?>("q2_passedCol")
+    let q3_passedCol =   Expression<Bool?>("q3_passedCol")
+    let q4_passedCol =   Expression<Bool?>("q4_passedCol")
+    let q5_passedCol =   Expression<Bool?>("q5_passedCol")
+    let q6_passedCol =   Expression<Bool?>("q6_passedCol")
     
     override init(frame:CGRect){
         super.init(frame: frame)
@@ -158,7 +173,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
         //print("tickersToGetMeasureValue: \(tickersToGetMeasureValue)")
         //print("tickersToRemoveMeasureValue: \(tickersToRemoveMeasureValue)")
         
-        let timeToDelayForAPI: Double = 0.02
+        let timeToDelayForAPI: Double = 0.03
         var currentDelayForAPI: Double = 0
 
         for ticker in tickersToGetMeasureValue {
@@ -263,7 +278,22 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
         if(tickersToGetMeasureValue.count > 0) {
             APIClient.getStockPrices(tickers: tickersToGetMeasureValue, tenYrsAgo: tenYrsAgo, completion: { response in
                 if let responseUnwrapped = response["error"]{
-                   print("Message: \(responseUnwrapped)")
+                    let message = responseUnwrapped as! [String:String]
+                    if let errorMessage = message["error"] {
+                        print("Message : \(errorMessage), this happens when quota exceeded.")
+                        self.delegate?.showAlertMessage(errorMessage + ", this happens when quota exceeded.")
+                    }
+                    
+                    // insert some values for roi when quota exceeded
+                    let selectedTicker = self.companiesTable.filter(self.tickerCol == "AXP")
+                    do {
+                        try database.run(selectedTicker.update(self.previous_roiCol <- 100))
+                        try database.run(selectedTicker.update(self.expected_roiCol <- 100))
+                        try database.run(selectedTicker.update(self.q1_answerCol <- "hello"))
+                        try database.run(selectedTicker.update(self.q1_passedCol <- true))
+                    } catch {
+                        print(error)
+                    }
                 } else if let pricesDict = response["results"] as! [String: Double]?{
                     //print(pricesDict)
                     for ticker in tickersToGetMeasureValue {
@@ -281,12 +311,13 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
                                     if let price_last = company.price_last {
                                         // interest rate function expects 10 yrs of values by quarter so create an array that looks like that
                                         var valuesArr = [Double](repeating: 0, count: 40)
+                                        print("ticker: \(ticker), price_last: \(price_last)")
                                         valuesArr[0] = price_last
                                         valuesArr[39] = pricesDict[ticker]!
                                         measureValue = self.getInterestRate(valuesArr: valuesArr)
                                         
                                     } else {
-                                        measureValue = 0 // we dont have current stock price so set measureValue to 0
+                                        measureValue = 1 // should be 0  // we dont have current stock price so set measureValue to 0
                                     }
                                     try database.run(selectedTicker.update(self.previous_roiCol <- Int(measureValue)))
                                 }
@@ -309,14 +340,14 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
                                     } else {
                                         eps_in10yrs = 0
                                     }
-                                    //print("ticker: \(ticker), eps_in10yrs: \(eps_in10yrs)")
+                                    print("ticker: \(ticker), eps_in10yrs: \(eps_in10yrs)")
                                     
                                     if let pe_avg = company.pe_avg {
                                         price_in10yrs = eps_in10yrs * pe_avg
                                     } else {
                                         price_in10yrs = 0
                                     }
-                                    //print("ticker: \(ticker), price_in10yrs: \(price_in10yrs)")
+                                    print("ticker: \(ticker), price_in10yrs: \(price_in10yrs)")
                                     
                                     // calc expected_roi
                                     var valuesArr = [Double](repeating: 0, count: 40)
@@ -326,7 +357,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
                                     //print("ticker: \(ticker), expected_roi: \(measureValue)")
                                     
                                     // update DB
-                                    try database.run(selectedTicker.update(self.expected_roiCol <- measureValue)) // int rate is positive
+                                    try database.run(selectedTicker.update(self.expected_roiCol <- measureValue)) //  // int rate is positive
                                     try database.run(selectedTicker.update(self.price_lastCol <- pricesDict[ticker]))
                                 } else {
                                     // company not found, update DB
@@ -460,7 +491,6 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
             let companyRows = try database.prepare(companiesTable.order(tickerCol.asc))
             self.store.companies.removeAll()
             for companyRow in companyRows {
-                //print("ticker: \(companyRow[tickerCol]), name: \(companyRow[nameCol]), collectionDay: \(companyRow[collectionDayCol]) lastCollection: \(String(describing: companyRow[lastCollectionCol]))")
                 
                 let company = Company(ticker: companyRow[tickerCol], name: companyRow[nameCol])
                 
@@ -476,6 +506,20 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
                 if let price_last = companyRow[price_lastCol]       { company.price_last = price_last }
                 if let previous_roi = companyRow[previous_roiCol]   { company.previous_roi = previous_roi }
                 if let expected_roi = companyRow[expected_roiCol]   { company.expected_roi = expected_roi }
+                
+                if let q1_answer = companyRow[q1_answerCol]   { company.q1_answer = q1_answer }
+                if let q2_answer = companyRow[q2_answerCol]   { company.q2_answer = q2_answer }
+                if let q3_answer = companyRow[q3_answerCol]   { company.q3_answer = q3_answer }
+                if let q4_answer = companyRow[q4_answerCol]   { company.q4_answer = q4_answer }
+                if let q5_answer = companyRow[q5_answerCol]   { company.q5_answer = q5_answer }
+                if let q6_answer = companyRow[q6_answerCol]   { company.q6_answer = q6_answer }
+                
+                if let q1_passed = companyRow[q1_passedCol]   { company.q1_passed = q1_passed }
+                if let q2_passed = companyRow[q2_passedCol]   { company.q2_passed = q2_passed }
+                if let q3_passed = companyRow[q3_passedCol]   { company.q3_passed = q3_passed }
+                if let q4_passed = companyRow[q4_passedCol]   { company.q4_passed = q4_passed }
+                if let q5_passed = companyRow[q5_passedCol]   { company.q5_passed = q5_passed }
+                if let q6_passed = companyRow[q6_passedCol]   { company.q6_passed = q6_passed }
                 
                 self.store.companies.append(company)
                 
@@ -513,19 +557,33 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
        
        // define table
        let addCompaniesTable = companiesTable.create{ (table) in
-           table.column(tickerCol, primaryKey: true)
-           table.column(nameCol)
-           table.column(eps_iCol)
-           table.column(eps_sdCol)
-           table.column(eps_lastCol)
-           table.column(roe_avgCol)
-           table.column(bv_iCol)
-           table.column(so_reducedCol)
-           table.column(dr_avgCol)
-           table.column(pe_avgCol)
-           table.column(price_lastCol)
-           table.column(previous_roiCol)
-           table.column(expected_roiCol)
+            table.column(tickerCol, primaryKey: true)
+            table.column(nameCol)
+            table.column(eps_iCol)
+            table.column(eps_sdCol)
+            table.column(eps_lastCol)
+            table.column(roe_avgCol)
+            table.column(bv_iCol)
+            table.column(so_reducedCol)
+            table.column(dr_avgCol)
+            table.column(pe_avgCol)
+            table.column(price_lastCol)
+            table.column(previous_roiCol)
+            table.column(expected_roiCol)
+        
+            table.column(q1_answerCol)
+            table.column(q2_answerCol)
+            table.column(q3_answerCol)
+            table.column(q4_answerCol)
+            table.column(q5_answerCol)
+            table.column(q6_answerCol)
+        
+            table.column(q1_passedCol)
+            table.column(q2_passedCol)
+            table.column(q3_passedCol)
+            table.column(q4_passedCol)
+            table.column(q5_passedCol)
+            table.column(q6_passedCol)
        }
        
        do {

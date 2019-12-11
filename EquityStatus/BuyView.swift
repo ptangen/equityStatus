@@ -21,7 +21,6 @@ class BuyView: UIView, ChartViewDelegate {
     let countLabel = UILabel()
     let companiesLabel = UILabel()
     let pageDescLabel = UILabel()
-    //var equitiesForBuyExpectedROI = [Double]()
     
     var equitiesForBuyTickers = [String]()
     

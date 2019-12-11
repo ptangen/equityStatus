@@ -38,7 +38,7 @@ struct Constants{
     }
     
     enum thresholdValues: Int {
-        case eps_i = 1 //15
+        case eps_i = 3 //15
         case eps_sd = 2
         case roe_avg = 12
         case bv_i = 5
@@ -58,56 +58,6 @@ struct Constants{
     enum appFont: String {
         case regular =  "HelveticaNeue"
         case bold =     "HelveticaNeue-Bold"
-    }
-    
-    enum measureMetadata: String {
-        
-        // measure ids
-        case roe_avg, eps_i, eps_sd, bv_i, dr_avg, so_reduced, previous_roi, expected_roi, q1, q2, q3, q4, q5, q6
-             
-        // thresholds for each measure
-        func threshold() -> String {
-            switch self {
-            case .roe_avg:
-                return "Threshold: Greater than or equal to 12%"
-            case .eps_i, .previous_roi, .expected_roi:
-                return "Threshold: Greater than or equal to 15%"
-            case .eps_sd:
-                return "Threshold: Less than or equal to 1.5"
-            case .bv_i:
-                return "Threshold: Greater than or equal to 5%"
-            case .dr_avg:
-                return "Threshold: Less than or equal to 5"
-            case .so_reduced:
-                return "Threshold: More than or equal to 0 shares"
-            default:
-                return ""
-            }
-        }
-    
-        // description of how each measure is calculated
-        func calcDesc() -> String {
-            switch self {
-            case .roe_avg:
-                return "Calculation: The annual return on equity is collected and then the mean is found."
-            case .eps_i:
-                return "Calculation: The annual earnings per share (EPS) is collected and then the future value formula is applied to determine the growth rate of the EPS."
-            case .eps_sd:
-                return "Calculation: First, the standard deviation of the EPS values from the last ten years is calculated. Then the difference of the first and last values is compared to three times the standard deviation and a ratio is established. The lower the ratio, the less volatile the the EPS."
-            case .bv_i:
-                return "Calculation: The annual book value is collected and then the future value formula is applied to determine the growth rate of the BV."
-            case .dr_avg:
-                return "Calculation: The annual total debt ratio is collected and then the mean is calculated."
-            case .so_reduced:
-                return "Calculation: The value is found by subtracting the number of shares outstanding in the current year, from the number of shares outstanding ten years earlier."
-            case .previous_roi:
-                return "Calculation: This value is found by obtaining the stock price 5 years ago, the current price and calculating the growth rate."
-            case .expected_roi:
-                return "Calculation: To calculate the Expected ROI, the future value of the EPS in ten years is calculated from the current EPS value and the EPS growth rate. The mean value for the P/E ratio is also calculated. Next, the future stock price is found by multiplying the future value EPS by the mean P/E ratio. Finally, the expected ROI is found by using the future value function. The current stock price is the present value and the future value is the future stock price."
-            default:
-                return ""
-            }
-        }
     }
 }
 

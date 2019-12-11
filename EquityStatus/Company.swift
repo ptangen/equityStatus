@@ -137,18 +137,19 @@ class Company {
                        } else {
                            return .sell // property is false
                        }
+                    } else {
+                        return .evaluate // one of the subjective measures is nil
                     }
                 }
                 
                 // now we can assign buy or evaluate
                 if might_be_buy {
                     return .buy
-                } else {
-                    return .evaluate // the company is niether buy or sell so it is evaluate
                 }
             } else {
                 return .sell // one of the financial measures was nil
             }
+            return .sell
         }
     }
 }

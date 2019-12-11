@@ -36,11 +36,63 @@ class CalcMeasureView: UIView, ChartViewDelegate {
         super.init(coder: aDecoder)
     }
     
-    func getResultString(resultDouble: Double, percentage: Bool) -> String {
-        if percentage == true {
-            return String(resultDouble) + "%"
-        } else {
-            return String(resultDouble)
+    func getMeasureResultsAndSetLabelText(passed: Bool?, result: NSNumber?, units: String?, longName: String, targetLabel: String, measureCalcDescLabel: String) {
+        
+        var resultString = String()
+        
+        if let resultUnwrapped = result {
+            resultString = "Result: \(resultUnwrapped.description)"
+        }
+        
+        if let unitsUnwrapped = units {
+            if resultString.count > 0 {
+                resultString += unitsUnwrapped
+            }
+        }
+        
+        self.measureLongNameLabel.text = longName
+        Utilities.getStatusIcon(status: passed, uiLabel: self.statusIcon)
+        self.resultsLabel.text = resultString
+        self.targetLabel.text = targetLabel
+        self.measureCalcDescLabel.text = measureCalcDescLabel
+    }
+    
+    func setResultsLabelsForMeasure(measure: String) {
+        
+        self.statusLabel.text = "Status:"
+        let measureInfo = self.store.measureInfo[measure]!
+        
+        let measure_passed:[String: Bool?] = [
+            "roe_avg" :         self.company.roe_avg_passed,
+            "eps_i" :           self.company.eps_i_passed,
+            "eps_sd" :          self.company.eps_sd_passed,
+            "bv_i" :            self.company.bv_i_passed,
+            "dr_avg" :          self.company.dr_avg_passed,
+            "so_reduced" :      self.company.so_reduced_passed,
+            "previous_roi" :    self.company.previous_roi_passed,
+            "expected_roi" :    self.company.expected_roi_passed
+        ]
+        
+        let measure_value:[String: NSNumber?] = [
+            "roe_avg" :         self.company.roe_avg as NSNumber?,
+            "eps_i" :           self.company.eps_i as NSNumber?,
+            "eps_sd" :          self.company.eps_sd as NSNumber?,
+            "bv_i" :            self.company.bv_i as NSNumber?,
+            "dr_avg" :          self.company.dr_avg as NSNumber?,
+            "so_reduced" :      self.company.so_reduced as NSNumber?,
+            "previous_roi" :    self.company.previous_roi as NSNumber?,
+            "expected_roi" :    self.company.expected_roi as NSNumber?
+        ]
+        
+        if let valueUnwrapped = measure_value[measure] {
+            self.getMeasureResultsAndSetLabelText(
+                passed: measure_passed[measure]!,
+                result: valueUnwrapped,
+                units: measureInfo["units"],
+                longName: measureInfo["longName"]!,
+                targetLabel: measureInfo["thresholdDesc"]!,
+                measureCalcDescLabel: measureInfo["calcDesc"]!
+            )
         }
     }
     
@@ -100,84 +152,5 @@ class CalcMeasureView: UIView, ChartViewDelegate {
         self.measureCalcDescLabel.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.small.rawValue)
         self.measureCalcDescLabel.preferredMaxLayoutWidth = UIScreen.main.bounds.width - 20
         self.measureCalcDescLabel.numberOfLines = 0
-    }
-    
-    func getMeasureResultsAndSetLabelText(passed: Bool, value: Double, percentage: Bool, longName: String, targetLabel: String, measureCalcDescLabel: String) {
-        self.measureLongNameLabel.text = longName
-        Utilities.getStatusIcon(status: passed, uiLabel: self.statusIcon)
-        self.resultsLabel.text = "Result: " + getResultString(resultDouble: value, percentage: percentage)
-        self.targetLabel.text = targetLabel
-        self.measureCalcDescLabel.text = measureCalcDescLabel
-    }
-    
-    func setResultsLabelsForMeasure(measure: String) {
-        
-        self.statusLabel.text = "Status:"
-        let measureInfo = self.store.measureInfo[measure]!
-    
-        switch measure {
-            case "roe_avg":
-                if let roe_avg_passed = self.company.roe_avg_passed, let roe_avg = self.company.roe_avg {
-                    self.getMeasureResultsAndSetLabelText(passed: roe_avg_passed, value: Double(roe_avg), percentage: true,
-                        longName: measureInfo["longName"]!,
-                        targetLabel: measureInfo["thresholdDesc"]!,
-                        measureCalcDescLabel: measureInfo["calcDesc"]!)
-            }
-            
-        case "eps_i":
-            if let eps_i_passed = self.company.eps_i_passed, let eps_i = self.company.eps_i {
-                self.getMeasureResultsAndSetLabelText(passed: eps_i_passed, value: Double(eps_i), percentage: true,
-                    longName: measureInfo["longName"]!,
-                    targetLabel: measureInfo["thresholdDesc"]!,
-                    measureCalcDescLabel: measureInfo["calcDesc"]!)
-            }
-            
-        case "eps_sd":
-            if let eps_sd_passed = self.company.eps_sd_passed, let eps_sd = self.company.eps_sd {
-                self.getMeasureResultsAndSetLabelText(passed: eps_sd_passed, value: eps_sd, percentage: false,
-                    longName: measureInfo["longName"]!,
-                    targetLabel: measureInfo["thresholdDesc"]!,
-                    measureCalcDescLabel: measureInfo["calcDesc"]!)
-            }
-            
-        case "bv_i":
-            if let bv_i_passed = self.company.bv_i_passed, let bv_i = self.company.bv_i {
-                self.getMeasureResultsAndSetLabelText(passed: bv_i_passed, value: Double(bv_i), percentage: true,
-                    longName: measureInfo["longName"]!,
-                    targetLabel: measureInfo["thresholdDesc"]!,
-                    measureCalcDescLabel: measureInfo["calcDesc"]!)
-            }
-            
-        case "dr_avg":
-            if let dr_avg_passed = self.company.dr_avg_passed, let dr_avg = self.company.dr_avg {
-                self.getMeasureResultsAndSetLabelText(passed: dr_avg_passed, value: Double(dr_avg), percentage: false,
-                    longName: measureInfo["longName"]!,
-                    targetLabel: measureInfo["thresholdDesc"]!,
-                    measureCalcDescLabel: measureInfo["calcDesc"]!)
-            }
-            
-        case "so_reduced":
-            if let so_reduced_passed = self.company.so_reduced_passed, let so_reduced = self.company.so_reduced {
-                self.getMeasureResultsAndSetLabelText(passed: so_reduced_passed, value: Double(so_reduced), percentage: false, longName: measureInfo["longName"]!,
-                    targetLabel: measureInfo["thresholdDesc"]!,
-                    measureCalcDescLabel: measureInfo["calcDesc"]!)
-            }
-            
-        case "previous_roi":
-            if let previous_roi_passed = self.company.previous_roi_passed, let previous_roi = self.company.previous_roi {
-                self.getMeasureResultsAndSetLabelText(passed: previous_roi_passed, value: Double(previous_roi), percentage: true, longName: measureInfo["longName"]!,
-                    targetLabel: measureInfo["thresholdDesc"]!,
-                    measureCalcDescLabel: measureInfo["calcDesc"]!)
-            }
-            
-        case "expected_roi":
-            if let expected_roi_passed = self.company.expected_roi_passed, let expected_roi = self.company.expected_roi {
-                self.getMeasureResultsAndSetLabelText(passed: expected_roi_passed, value: Double(expected_roi), percentage: true, longName: measureInfo["longName"]!,
-                    targetLabel: measureInfo["thresholdDesc"]!,
-                    measureCalcDescLabel: measureInfo["calcDesc"]!)
-            }
-            
-        default: break
-        }
     }
 }
