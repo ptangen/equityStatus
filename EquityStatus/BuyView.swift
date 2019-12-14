@@ -102,45 +102,12 @@ class BuyView: UIView, ChartViewDelegate {
         self.updateChartWithData()
     }
     
-    // TODO
     func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
-//        if let equityClicked = store.getEquityByTickerFromStore(ticker: self.equitiesForBuyTickers[Int(entry.x)]) {
-//            self.delegate?.openEquityDetail(equityClicked)
-//        }
-        
         let companyClickedArr = self.store.companies.filter({$0.ticker == self.companiesToBuyTickers[Int(entry.x)]})
         if let companyClicked = companyClickedArr.first {
             self.delegate?.openCompanyDetail(company: companyClicked)
         }
-//        if let companyClicked = store.getEquityByTickerFromStore(ticker: self.companiesToBuyTickers[Int(entry.x)]) {
-//            self.delegate?.openEquityDetail(equityClicked)
-//        }
     }
-    
-//    // create array for buy view
-//    func createEquitiesForBuy() {
-//        self.equitiesForBuyExpectedROI.removeAll()
-//        self.store.equitiesForBuyNames.removeAll()
-//        self.equitiesForBuyTickers.removeAll()
-//
-//        for equity in self.store.equities {
-//            if equity.tab == .buy {
-//                self.equitiesForBuyExpectedROI.append(equity.expectedROIResult)
-//                self.store.equitiesForBuyNames.append(equity.name.capitalized)
-//                self.equitiesForBuyTickers.append(equity.ticker)
-//            }
-//        }
-//        self.equitiesForBuyExpectedROI.reverse()
-//        self.store.equitiesForBuyNames.reverse()
-//        self.equitiesForBuyTickers.reverse()
-//
-//        self.chartHeight = CGFloat(self.store.equitiesForBuyNames.count * self.barHeight)
-//        let maxChartHeight: CGFloat = UIScreen.main.bounds.height - 260 // subtract for heading and tabs at bottom
-//
-//        if self.chartHeight > maxChartHeight {
-//            self.chartHeight = maxChartHeight
-//        }
-//    }
     
     // create array for buy view
     func createCompaniesToBuy() {

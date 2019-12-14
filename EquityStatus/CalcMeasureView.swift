@@ -39,9 +39,14 @@ class CalcMeasureView: UIView, ChartViewDelegate {
     func getMeasureResultsAndSetLabelText(passed: Bool?, result: NSNumber?, units: String?, longName: String, targetLabel: String, measureCalcDescLabel: String) {
         
         var resultString = String()
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
         
+        // format the result value
         if let resultUnwrapped = result {
-            resultString = "Result: \(resultUnwrapped.description)"
+            if let resultFormatted = formatter.string(from: resultUnwrapped) {
+                resultString = "Result: \(resultFormatted)"
+            }
         }
         
         if let unitsUnwrapped = units {

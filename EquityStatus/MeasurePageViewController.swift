@@ -18,20 +18,20 @@ class MeasurePageViewController: UIPageViewController, UIPageViewControllerDataS
     let pageControl = UIPageControl()
     
     // create an instance of the VC for each measure
-    let ROEaViewControllerInst = CalcMeasureViewController()
-    let EPSiViewControllerInst = CalcMeasureViewController()
-    let EPSvViewControllerInst = CalcMeasureViewController()
-    let BViViewControllerInst = CalcMeasureViewController()
-    let DRaViewControllerInst = CalcMeasureViewController()
-    let SOrViewControllerInst = CalcMeasureViewController()
-    let previousROIViewControllerInst = CalcMeasureViewController()
-    let expectedROIViewControllerInst = CalcMeasureViewController()
-    let q1ViewControllerInst = QuestionMeasureViewController()
-    let q2ViewControllerInst = QuestionMeasureViewController()
-    let q3ViewControllerInst = QuestionMeasureViewController()
-    let q4ViewControllerInst = QuestionMeasureViewController()
-    let q5ViewControllerInst = QuestionMeasureViewController()
-    let q6ViewControllerInst = QuestionMeasureViewController()
+    let eps_i_ViewControllerInst = CalcMeasureViewController()
+    let eps_sd_ViewControllerInst = CalcMeasureViewController()
+    let roe_avg_ViewControllerInst = CalcMeasureViewController()
+    let bv_i_ViewControllerInst = CalcMeasureViewController()
+    let dr_avg_ViewControllerInst = CalcMeasureViewController()
+    let so_reduced_ViewControllerInst = CalcMeasureViewController()
+    let previous_roi_ViewControllerInst = CalcMeasureViewController()
+    let expected_roi_ViewControllerInst = CalcMeasureViewController()
+    let q1_ViewControllerInst = QuestionMeasureViewController()
+    let q2_ViewControllerInst = QuestionMeasureViewController()
+    let q3_ViewControllerInst = QuestionMeasureViewController()
+    let q4_ViewControllerInst = QuestionMeasureViewController()
+    let q5_ViewControllerInst = QuestionMeasureViewController()
+    let q6_ViewControllerInst = QuestionMeasureViewController()
     
     var calcMeasureVCInstances: [(instance: CalcMeasureViewController, measure: String)] = []
     var subjectiveMeasureVCInstances: [(instance: QuestionMeasureViewController, measure: String)] = []
@@ -42,21 +42,20 @@ class MeasurePageViewController: UIPageViewController, UIPageViewControllerDataS
 
         self.dataSource = self
         self.delegate = self
-        print("measure 4: \(measure)")
         let measureInfo = self.store.measureInfo[self.measure]!
         let initialPage = Int(measureInfo["pageIndex"]!)!
         
         self.edgesForExtendedLayout = []   // prevents view from siding under nav bar
         
         // add attribute values to measure pages
-        calcMeasureVCInstances.append((self.ROEaViewControllerInst, "roe_avg"))
-        calcMeasureVCInstances.append((self.EPSiViewControllerInst, "eps_i"))
-        calcMeasureVCInstances.append((self.EPSvViewControllerInst, "eps_sd"))
-        calcMeasureVCInstances.append((self.BViViewControllerInst, "bv_i"))
-        calcMeasureVCInstances.append((self.DRaViewControllerInst, "dr_avg"))
-        calcMeasureVCInstances.append((self.SOrViewControllerInst, "so_reduced"))
-        calcMeasureVCInstances.append((self.previousROIViewControllerInst, "previous_roi"))
-        calcMeasureVCInstances.append((self.expectedROIViewControllerInst, "expected_roi"))
+        calcMeasureVCInstances.append((self.roe_avg_ViewControllerInst, "roe_avg"))
+        calcMeasureVCInstances.append((self.eps_i_ViewControllerInst, "eps_i"))
+        calcMeasureVCInstances.append((self.eps_sd_ViewControllerInst, "eps_sd"))
+        calcMeasureVCInstances.append((self.bv_i_ViewControllerInst, "bv_i"))
+        calcMeasureVCInstances.append((self.dr_avg_ViewControllerInst, "dr_avg"))
+        calcMeasureVCInstances.append((self.so_reduced_ViewControllerInst, "so_reduced"))
+        calcMeasureVCInstances.append((self.previous_roi_ViewControllerInst, "previous_roi"))
+        calcMeasureVCInstances.append((self.expected_roi_ViewControllerInst, "expected_roi"))
         
         for calcMeasureVCInstance in calcMeasureVCInstances {
             calcMeasureVCInstance.instance.company = company
@@ -66,12 +65,12 @@ class MeasurePageViewController: UIPageViewController, UIPageViewControllerDataS
         }
         
         // add attribute values to subjective measure pages
-        subjectiveMeasureVCInstances.append((self.q1ViewControllerInst, "q1"))
-        subjectiveMeasureVCInstances.append((self.q2ViewControllerInst, "q2"))
-        subjectiveMeasureVCInstances.append((self.q3ViewControllerInst, "q3"))
-        subjectiveMeasureVCInstances.append((self.q4ViewControllerInst, "q4"))
-        subjectiveMeasureVCInstances.append((self.q5ViewControllerInst, "q5"))
-        subjectiveMeasureVCInstances.append((self.q6ViewControllerInst, "q6"))
+        subjectiveMeasureVCInstances.append((self.q1_ViewControllerInst, "q1"))
+        subjectiveMeasureVCInstances.append((self.q2_ViewControllerInst, "q2"))
+        subjectiveMeasureVCInstances.append((self.q3_ViewControllerInst, "q3"))
+        subjectiveMeasureVCInstances.append((self.q4_ViewControllerInst, "q4"))
+        subjectiveMeasureVCInstances.append((self.q5_ViewControllerInst, "q5"))
+        subjectiveMeasureVCInstances.append((self.q6_ViewControllerInst, "q6"))
         
         for subjectiveMeasureVCInstance in subjectiveMeasureVCInstances {
             subjectiveMeasureVCInstance.instance.company = company
@@ -101,7 +100,6 @@ class MeasurePageViewController: UIPageViewController, UIPageViewControllerDataS
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.title = "\(company.name.capitalized) (\(company.ticker))"
-        print("viewWillAppear measure: \(self.measure)")
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {

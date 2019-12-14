@@ -289,8 +289,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
                     do {
                         try database.run(selectedTicker.update(self.previous_roiCol <- 100))
                         try database.run(selectedTicker.update(self.expected_roiCol <- 100))
-                        try database.run(selectedTicker.update(self.q1_answerCol <- "hello"))
-                        try database.run(selectedTicker.update(self.q1_passedCol <- true))
+                        try database.run(selectedTicker.update(self.eps_iCol <- 100))
                     } catch {
                         print(error)
                     }
@@ -484,7 +483,6 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
     }
     
     func selectRows(completion: @escaping (Bool) -> Void) {
-        print("selectRows")
         let database = DBUtilities.getDBConnection()
 
         do {
@@ -523,13 +521,11 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
                 
                 self.store.companies.append(company)
                 
-//                print("tab: \(company.eps_i_passed), \(company.eps_sd_passed), \(company.roe_avg_passed), \(company.bv_i_passed), \(company.so_reduced_passed), \(company.dr_avg_passed), \(company.previous_roi_passed), \(company.expected_roi_passed), \(company.tab) ")
-                
             }
             
-//            let companiesEvaluate = self.store.companies.filter({$0.tab == .sell})
+//            let companiesEvaluate = self.store.companies.filter({$0.ticker == "AA"})
 //            for companyEvaluate in companiesEvaluate {
-//            print("companyEvaluate: \(companyEvaluate.eps_i_passed), \(companyEvaluate.eps_sd_passed), \(companyEvaluate.roe_avg_passed), \(companyEvaluate.bv_i_passed), \(companyEvaluate.so_reduced_passed), \(companyEvaluate.dr_avg_passed), \(companyEvaluate.previous_roi_passed), \(companyEvaluate.expected_roi_passed), \(companyEvaluate.tab) ")
+//                print("companyEvaluate: q1: \(companyEvaluate.q1_passed), q2: \(companyEvaluate.q2_passed), q3: \(companyEvaluate.q3_passed), q4: \(companyEvaluate.q4_passed), q5: \(companyEvaluate.q5_passed), q6: \(companyEvaluate.q6_passed), \(companyEvaluate.previous_roi_passed), \(companyEvaluate.expected_roi_passed), \(companyEvaluate.tab) ")
 //            }
   
             completion(true)

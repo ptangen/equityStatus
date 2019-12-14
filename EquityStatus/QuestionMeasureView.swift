@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SQLite
 
 class QuestionMeasureView: UIView, UITextViewDelegate {
 
@@ -14,7 +15,7 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
     let store = DataStore.sharedInstance
     var company: Company!
     var measure = String()
-    var measureShortName = String()
+    //var measureShortName = String()
     var measureLongNameLabel = UILabel()
     var statusLabel = UILabel()
     var statusIcon = UILabel()
@@ -22,6 +23,23 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
     var qStatusPicker = UISegmentedControl()
     var qAnswerView = UITextView()
     var qAnswerViewDidChange = false
+    
+    let companiesTable =    Table("companiesTable")
+    let tickerCol =         Expression<String>("tickerCol")
+    
+    let q1_answerCol =   Expression<String?>("q1_answerCol")
+    let q2_answerCol =   Expression<String?>("q2_answerCol")
+    let q3_answerCol =   Expression<String?>("q3_answerCol")
+    let q4_answerCol =   Expression<String?>("q4_answerCol")
+    let q5_answerCol =   Expression<String?>("q5_answerCol")
+    let q6_answerCol =   Expression<String?>("q6_answerCol")
+    
+    let q1_passedCol =   Expression<Bool?>("q1_passedCol")
+    let q2_passedCol =   Expression<Bool?>("q2_passedCol")
+    let q3_passedCol =   Expression<Bool?>("q3_passedCol")
+    let q4_passedCol =   Expression<Bool?>("q4_passedCol")
+    let q5_passedCol =   Expression<Bool?>("q5_passedCol")
+    let q6_passedCol =   Expression<Bool?>("q6_passedCol")
     
     override init(frame:CGRect){
         
@@ -51,76 +69,43 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
         
         switch sender.selectedSegmentIndex {
         case 1:
-            self.updateQStatus(passed: true)
+            self.updateQStatus(passedOptional: true)
         case 2:
-            self.updateQStatus(passed: false)
+            self.updateQStatus(passedOptional: false)
         default:
-            self.updateQStatus(passed: false) // TODO handle nil  // user can only set values for subjective measures so undefined is valid response
+            self.updateQStatus(passedOptional: nil)
         }
     }
     
-    func updateQStatus(passed: Bool) {
+    func updateQStatus(passedOptional: Bool?) {
         
-        // where clause
-//        let selectedTickerQuestion = self.companiesTable.filter(self.tickerCol == ticker)
-//        do {
-//          try database.run(sselectedTickerQuestion.update(self.previous_roiCol <- Int(measureValue)))
-//        } catch {
-//            print(error)
-//        }
-        
-//        APIClient.setSubjectiveStatus(question: self.measureShortName, status: passed, company: self.company, completion: { response in
-//
-//            switch response {
-//            case .ok:
-//                Utilities.getStatusIcon(status: passed, uiLabel: self.statusIcon)
-//                self.statusValueDesc.text = "(" + self.getStatusDesc(passed: passed) + ")"
-//
-//                // udpate the status in the equity
-//                switch self.measureShortName {
-//                case "q1":
-//                    self.company.q1_passed = false // status
-//                case "q2":
-//                    self.company.q2_passed = false // status
-//                case "q3":
-//                    self.company.q3_passed = false // status
-//                case "q4":
-//                    self.company.q4_passed = false // status
-//                case "q5":
-//                    self.company.q5_passed = false // status
-//                case "q6":
-//                    self.company.q6_passed = false // status
-//                default:
-//                    break
-//                }
-//
-//            case.failed, .noReply:
-//                self.delegate?.showAlertMessage("The server was unable to save this status change. Please forward this message to ptangen@ptangen.com")
-//                break;
-//
-//            default:
-//                break;
-//            }
-            //self.store.resetTabValue(equity: self.equity)
- //       })
+        let database = DBUtilities.getDBConnection()
+        let selectedTickerQuestion = self.companiesTable.filter(self.tickerCol == self.company.ticker)
+    
+        do {
+            //get the column to update and submit the query
+            try database.run(selectedTickerQuestion.update(getMeasurePassedColumn(measure: measure) <- passedOptional))
+            // update the object property TODO: use setter
+            self.setMeasurePassedObjectProperty(measure: measure, passed: passedOptional)
+            Utilities.getStatusIcon(status: passedOptional, uiLabel: self.statusIcon)
+        } catch {
+            print(error)
+        }
     }
     
     func updateQAnswer(answer: String) {
         
-//        APIClient.setSubjectiveAnswer(question: self.measureShortName, answer: answer, company: self.company, completion: { response in
-//            
-//            switch response {
-//            case .ok:
-//                break;
-//                
-//            case.failed, .noReply:
-//                self.delegate?.showAlertMessage("The server was unable to save this status change. Please forward this message to ptangen@ptangen.com")
-//                break;
-//                
-//            default:
-//                break;
-//            }
-//        })
+        let database = DBUtilities.getDBConnection()
+        let selectedTickerQuestion = self.companiesTable.filter(self.tickerCol == self.company.ticker)
+        
+        do {
+            //get the column to update and submit the query
+            try database.run(selectedTickerQuestion.update(getMeasureAnswerColumn(measure: measure) <- answer))
+            // update the object property TODO: use setter
+            self.setMeasureAnswerObjectProperty(measure: measure, answer: answer)
+        } catch {
+            print(error)
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -261,5 +246,85 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
         self.getMeasureResultsAndSetLabelText(
             passed: questions_passed[measure]!, longName: measureInfo["longName"]!, answer: questions_answer[measure]!
         )
+    }
+    
+    func getMeasurePassedColumn(measure: String) -> Expression<Bool?> {
+        // get column to update
+        switch measure {
+        case "q1":
+            return self.q1_passedCol
+        case "q2":
+            return self.q2_passedCol
+        case "q3":
+            return self.q3_passedCol
+        case "q4":
+            return self.q4_passedCol
+        case "q5":
+            return self.q5_passedCol
+        case "q6":
+            return self.q6_passedCol
+        default:
+            return Expression<Bool?>("")
+        }
+    }
+    
+    func getMeasureAnswerColumn(measure: String) -> Expression<String?> {
+        // get column to update
+        switch measure {
+        case "q1":
+            return self.q1_answerCol
+        case "q2":
+            return self.q2_answerCol
+        case "q3":
+            return self.q3_answerCol
+        case "q4":
+            return self.q4_answerCol
+        case "q5":
+            return self.q5_answerCol
+        case "q6":
+            return self.q6_answerCol
+        default:
+            return Expression<String?>("")
+        }
+    }
+    
+    func setMeasurePassedObjectProperty(measure: String, passed: Bool?) {
+        // get column to update
+        switch measure {
+        case "q1":
+            self.company.q1_passed = passed
+        case "q2":
+            self.company.q2_passed = passed
+        case "q3":
+            self.company.q3_passed = passed
+        case "q4":
+            self.company.q4_passed = passed
+        case "q5":
+            self.company.q5_passed = passed
+        case "q6":
+            self.company.q6_passed = passed
+        default:
+            break
+        }
+    }
+    
+    func setMeasureAnswerObjectProperty(measure: String, answer: String?) {
+        // get column to update
+        switch measure {
+        case "q1":
+            self.company.q1_answer = answer
+        case "q2":
+            self.company.q2_answer = answer
+        case "q3":
+            self.company.q3_answer = answer
+        case "q4":
+            self.company.q4_answer = answer
+        case "q5":
+            self.company.q5_answer = answer
+        case "q6":
+            self.company.q6_answer = answer
+        default:
+            break
+        }
     }
 }

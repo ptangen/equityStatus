@@ -36,7 +36,6 @@ class QuestionMeasureViewController: UIViewController, MeasureDetailViewDelegate
         // setup ui view
         self.questionMeasureViewInst.company = self.company
         if let measure = self.accessibilityLabel {
-            print("measure from self.accessibilityLabel: \(measure)")
             self.questionMeasureViewInst.setResultsLabelsForMeasure(measure: measure)
         }
     }

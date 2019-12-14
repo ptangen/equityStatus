@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import CoreData
+//import CoreData
 
 class DataStore {
     static let sharedInstance = DataStore()
@@ -29,9 +29,9 @@ class DataStore {
         ],
         "eps_sd": [
             "name": "eps_sd",
-            "longName": "Earnings Per Share Volatility",
+            "longName": "Earnings Per Share Standard Deviation",
             "thresholdDesc":"Threshold: Less than or equal to 2.0",
-            "calcDesc": "Calculation: First, the standard deviation of the EPS values from the last ten years is calculated. Then the difference of the first and last values is compared to three times the standard deviation and a ratio is established. The lower the ratio, the less volatile the the EPS.",
+            "calcDesc": "Calculation: The standard deviation of the EPS values from the last ten years is calculated. The lower the STD, the less volatile the the EPS.",
             "pageIndex": "1",
             "units": ""
         ],
@@ -115,85 +115,4 @@ class DataStore {
         ]
         
     ]
-    
-    func getTickersInEvalAndBuy() -> [String] {
-        var tickersInEvalAndBuy: [String] = []
-        for equity in self.equities {
-            tickersInEvalAndBuy.append(equity.ticker)
-        }
-        return tickersInEvalAndBuy
-    }
-    
-    class func createEquityMetadata(name: String, nameFirst: String, ticker: String, tickerFirst: String) {
-        
-        let store = DataStore.sharedInstance
-        let tickersInEvalAndBuy = store.getTickersInEvalAndBuy()
-        
-        // create the core data object
-        let context = store.persistentContainer.viewContext
-        let equityMetadataInst = NSEntityDescription.insertNewObject(forEntityName: "EquityMetadata", into: context) as? EquityMetadata
-        
-        // set the properties
-        if let equityMetadataInst = equityMetadataInst {
-            equityMetadataInst.name = name
-            equityMetadataInst.nameFirst = nameFirst
-            equityMetadataInst.ticker = ticker
-            equityMetadataInst.tickerFirst = tickerFirst
-        
-            if tickersInEvalAndBuy.contains(ticker) {
-                equityMetadataInst.showInSellTab = false
-            } else {
-                equityMetadataInst.showInSellTab = true
-            }
-        
-            // add new equity to dataStore/coredata
-            store.equitiesMetadata.append(equityMetadataInst)
-            store.saveEquitiesMetadataContext()
-            store.getEquitiesMetadataFromCoreData()
-        }
-    }
-    
-    func getEquityByTickerFromStore(ticker: String) -> Equity? {
-        for equity in self.equities {
-            if equity.ticker == ticker  {
-                return equity
-            }
-        }
-        return nil
-    }
-    
-    lazy var persistentContainer: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "EquityStatus") // name must match model file
-        container.loadPersistentStores(completionHandler: { (storeDescription, error) in
-            if let error = error as NSError? {
-                fatalError("Unresolved error \(error), \(error.userInfo)")
-            }
-        })
-        return container
-    }()
-    
-    func saveEquitiesMetadataContext () {
-        let context = persistentContainer.viewContext
-        if context.hasChanges {
-            do {
-                try context.save()
-            } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
-                let nserror = error as NSError
-                fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-            }
-        }
-    }
-    
-    func getEquitiesMetadataFromCoreData() {
-        let context = persistentContainer.viewContext
-        let equitiesMetadataRequest: NSFetchRequest<EquityMetadata> = EquityMetadata.fetchRequest()
-        
-        do {
-            self.equitiesMetadata = try context.fetch(equitiesMetadataRequest)
-        } catch let error {
-            print("Error fetching data: \(error)")
-        }
-    }
 }

@@ -43,7 +43,6 @@ class CompanyDetailViewController: UIViewController, CompanyDetailViewDelegate {
         let measurePageViewControllerInst = MeasurePageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         measurePageViewControllerInst.company = company
         measurePageViewControllerInst.measure = measure
-        print("openMeasureDetail measure: \(measure)")
         self.title = "" // this value is passed to the back button label in the destination VC
         navigationController?.pushViewController(measurePageViewControllerInst, animated: true) // show destination with nav bar
     }
@@ -66,131 +65,135 @@ class CompanyDetailViewController: UIViewController, CompanyDetailViewDelegate {
     }
 
     func getValuesAndLabels() {
+        if let company = self.company {
         
-        setLabelsInRow(
-            measureName:    "eps_i",
-            measureValue:   self.company.eps_i as NSNumber?,
-            measurePassed:  self.company.eps_i_passed,
-            measureLabel:   self.companyDetailViewInst.EPSiResultDesc,
-            measureTap:     self.companyDetailViewInst.EPSiResultDescTap,
-            statusLabel:    self.companyDetailViewInst.EPSiStatusDesc
-        )
+                 // if you add some getters to the company object, you may be able to get the value of these properties
+            setLabelsInRow(
+                
+                measureName:    "eps_i",
+                measureValue:   company.eps_i as NSNumber?,
+                measurePassed:  company.eps_i_passed,
+                measureLabel:   companyDetailViewInst.eps_i_ResultDesc,
+                measureTap:     companyDetailViewInst.eps_i_ResultDescTap,
+                statusLabel:    companyDetailViewInst.eps_i_StatusDesc
+            )
 
-        setLabelsInRow(
-            measureName:    "eps_sd",
-            measureValue:   self.company.eps_sd as NSNumber?,
-            measurePassed:  self.company.eps_sd_passed,
-            measureLabel:   self.companyDetailViewInst.EPSvResultDesc,
-            measureTap:     self.companyDetailViewInst.EPSvResultDescTap,
-            statusLabel:    self.companyDetailViewInst.EPSvStatusDesc
-        )
-        
-        setLabelsInRow(
-            measureName:    "roe_avg",
-            measureValue:   self.company.roe_avg as NSNumber?,
-            measurePassed:  self.company.roe_avg_passed,
-            measureLabel:   self.companyDetailViewInst.ROEaResultDesc,
-            measureTap:     self.companyDetailViewInst.ROEaResultDescTap,
-            statusLabel:    self.companyDetailViewInst.ROEaStatusDesc
-        )
-        
-        setLabelsInRow(
-            measureName:    "bv_i",
-            measureValue:   self.company.bv_i as NSNumber?,
-            measurePassed:  self.company.bv_i_passed,
-            measureLabel:   self.companyDetailViewInst.BViResultDesc,
-            measureTap:     self.companyDetailViewInst.BViResultDescTap,
-            statusLabel:    self.companyDetailViewInst.BViStatusDesc
-        )
-        
-        setLabelsInRow(
-            measureName:    "dr_avg",
-            measureValue:   self.company.dr_avg as NSNumber?,
-            measurePassed:  self.company.dr_avg_passed,
-            measureLabel:   self.companyDetailViewInst.DRaResultDesc,
-            measureTap:     self.companyDetailViewInst.DRaResultDescTap,
-            statusLabel:    self.companyDetailViewInst.DRaStatusDesc
-        )
-        
-        setLabelsInRow(
-            measureName:    "so_reduced",
-            measureValue:   self.company.so_reduced as NSNumber?,
-            measurePassed:  self.company.so_reduced_passed,
-            measureLabel:   self.companyDetailViewInst.SOrResultDesc,
-            measureTap:     self.companyDetailViewInst.SOrResultDescTap,
-            statusLabel:    self.companyDetailViewInst.SOrStatusDesc
-        )
-        
-        setLabelsInRow(
-            measureName:    "previous_roi",
-            measureValue:   self.company.previous_roi as NSNumber?,
-            measurePassed:  self.company.previous_roi_passed,
-            measureLabel:   self.companyDetailViewInst.previousROIResultDesc,
-            measureTap:     self.companyDetailViewInst.previousROIResultDescTap,
-            statusLabel:    self.companyDetailViewInst.previousROIStatusDesc
-        )
-        
-        setLabelsInRow(
-            measureName:    "expected_roi",
-            measureValue:   self.company.expected_roi as NSNumber?,
-            measurePassed:  self.company.expected_roi_passed,
-            measureLabel:   self.companyDetailViewInst.expectedROIResultDesc,
-            measureTap:     self.companyDetailViewInst.expectedROIResultDescTap,
-            statusLabel:    self.companyDetailViewInst.expectedROIStatusDesc
-        )
-        
-        setLabelsInRow(
-            measureName:    "q1",
-            measureValue:   nil,
-            measurePassed:  self.company.q1_passed,
-            measureLabel:   self.companyDetailViewInst.q1Desc,
-            measureTap:     self.companyDetailViewInst.q1DescTap,
-            statusLabel:    self.companyDetailViewInst.q1StatusDesc
-        )
-        
-        setLabelsInRow(
-            measureName:    "q2",
-            measureValue:   nil,
-            measurePassed:  self.company.q2_passed,
-            measureLabel:   self.companyDetailViewInst.q2Desc,
-            measureTap:     self.companyDetailViewInst.q2DescTap,
-            statusLabel:    self.companyDetailViewInst.q2StatusDesc
-        )
-        
-        setLabelsInRow(
-            measureName:    "q3",
-            measureValue:   nil,
-            measurePassed:  self.company.q3_passed,
-            measureLabel:   self.companyDetailViewInst.q3Desc,
-            measureTap:     self.companyDetailViewInst.q3DescTap,
-            statusLabel:    self.companyDetailViewInst.q3StatusDesc
-        )
-        
-        setLabelsInRow(
-            measureName:    "q4",
-            measureValue:   nil,
-            measurePassed:  self.company.q4_passed,
-            measureLabel:   self.companyDetailViewInst.q4Desc,
-            measureTap:     self.companyDetailViewInst.q4DescTap,
-            statusLabel:    self.companyDetailViewInst.q4StatusDesc
-        )
-        
-        setLabelsInRow(
-            measureName:    "q5",
-            measureValue:   nil,
-            measurePassed:  self.company.q5_passed,
-            measureLabel:   self.companyDetailViewInst.q5Desc,
-            measureTap:     self.companyDetailViewInst.q5DescTap,
-            statusLabel:    self.companyDetailViewInst.q5StatusDesc
-        )
-        
-        setLabelsInRow(
-            measureName:    "q6",
-            measureValue:   nil,
-            measurePassed:  self.company.q6_passed,
-            measureLabel:   self.companyDetailViewInst.q6Desc,
-            measureTap:     self.companyDetailViewInst.q6DescTap,
-            statusLabel:    self.companyDetailViewInst.q6StatusDesc
-        )
+            setLabelsInRow(
+                measureName:    "eps_sd",
+                measureValue:   self.company.eps_sd as NSNumber?,
+                measurePassed:  self.company.eps_sd_passed,
+                measureLabel:   self.companyDetailViewInst.eps_sd_ResultDesc,
+                measureTap:     self.companyDetailViewInst.eps_sd_ResultDescTap,
+                statusLabel:    self.companyDetailViewInst.eps_sd_StatusDesc
+            )
+            
+            setLabelsInRow(
+                measureName:    "roe_avg",
+                measureValue:   self.company.roe_avg as NSNumber?,
+                measurePassed:  self.company.roe_avg_passed,
+                measureLabel:   self.companyDetailViewInst.roe_avg_ResultDesc,
+                measureTap:     self.companyDetailViewInst.roe_avg_ResultDescTap,
+                statusLabel:    self.companyDetailViewInst.roe_avg_StatusDesc
+            )
+            
+            setLabelsInRow(
+                measureName:    "bv_i",
+                measureValue:   self.company.bv_i as NSNumber?,
+                measurePassed:  self.company.bv_i_passed,
+                measureLabel:   self.companyDetailViewInst.bv_i_ResultDesc,
+                measureTap:     self.companyDetailViewInst.bv_i_ResultDescTap,
+                statusLabel:    self.companyDetailViewInst.bv_i_StatusDesc
+            )
+            
+            setLabelsInRow(
+                measureName:    "dr_avg",
+                measureValue:   self.company.dr_avg as NSNumber?,
+                measurePassed:  self.company.dr_avg_passed,
+                measureLabel:   self.companyDetailViewInst.dr_avg_ResultDesc,
+                measureTap:     self.companyDetailViewInst.dr_avg_ResultDescTap,
+                statusLabel:    self.companyDetailViewInst.dr_avg_StatusDesc
+            )
+            
+            setLabelsInRow(
+                measureName:    "so_reduced",
+                measureValue:   self.company.so_reduced as NSNumber?,
+                measurePassed:  self.company.so_reduced_passed,
+                measureLabel:   self.companyDetailViewInst.so_reduced_ResultDesc,
+                measureTap:     self.companyDetailViewInst.so_reduced_ResultDescTap,
+                statusLabel:    self.companyDetailViewInst.so_reduced_StatusDesc
+            )
+            
+            setLabelsInRow(
+                measureName:    "previous_roi",
+                measureValue:   self.company.previous_roi as NSNumber?,
+                measurePassed:  self.company.previous_roi_passed,
+                measureLabel:   self.companyDetailViewInst.previous_roi_ResultDesc,
+                measureTap:     self.companyDetailViewInst.previous_roi_ResultDescTap,
+                statusLabel:    self.companyDetailViewInst.previous_roi_StatusDesc
+            )
+            
+            setLabelsInRow(
+                measureName:    "expected_roi",
+                measureValue:   self.company.expected_roi as NSNumber?,
+                measurePassed:  self.company.expected_roi_passed,
+                measureLabel:   self.companyDetailViewInst.expected_roi_ResultDesc,
+                measureTap:     self.companyDetailViewInst.expected_roi_ResultDescTap,
+                statusLabel:    self.companyDetailViewInst.expected_roi_StatusDesc
+            )
+            
+            setLabelsInRow(
+                measureName:    "q1",
+                measureValue:   nil,
+                measurePassed:  self.company.q1_passed,
+                measureLabel:   self.companyDetailViewInst.q1_Desc,
+                measureTap:     self.companyDetailViewInst.q1_DescTap,
+                statusLabel:    self.companyDetailViewInst.q1_StatusDesc
+            )
+            
+            setLabelsInRow(
+                measureName:    "q2",
+                measureValue:   nil,
+                measurePassed:  self.company.q2_passed,
+                measureLabel:   self.companyDetailViewInst.q2_Desc,
+                measureTap:     self.companyDetailViewInst.q2_DescTap,
+                statusLabel:    self.companyDetailViewInst.q2_StatusDesc
+            )
+            
+            setLabelsInRow(
+                measureName:    "q3",
+                measureValue:   nil,
+                measurePassed:  self.company.q3_passed,
+                measureLabel:   self.companyDetailViewInst.q3_Desc,
+                measureTap:     self.companyDetailViewInst.q3_DescTap,
+                statusLabel:    self.companyDetailViewInst.q3_StatusDesc
+            )
+            
+            setLabelsInRow(
+                measureName:    "q4",
+                measureValue:   nil,
+                measurePassed:  self.company.q4_passed,
+                measureLabel:   self.companyDetailViewInst.q4_Desc,
+                measureTap:     self.companyDetailViewInst.q4_DescTap,
+                statusLabel:    self.companyDetailViewInst.q4_StatusDesc
+            )
+            
+            setLabelsInRow(
+                measureName:    "q5",
+                measureValue:   nil,
+                measurePassed:  self.company.q5_passed,
+                measureLabel:   self.companyDetailViewInst.q5_Desc,
+                measureTap:     self.companyDetailViewInst.q5_DescTap,
+                statusLabel:    self.companyDetailViewInst.q5_StatusDesc
+            )
+            
+            setLabelsInRow(
+                measureName:    "q6",
+                measureValue:   nil,
+                measurePassed:  self.company.q6_passed,
+                measureLabel:   self.companyDetailViewInst.q6_Desc,
+                measureTap:     self.companyDetailViewInst.q6_DescTap,
+                statusLabel:    self.companyDetailViewInst.q6_StatusDesc
+            )
+        }
     }
 }

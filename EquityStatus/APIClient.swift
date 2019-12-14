@@ -146,15 +146,4 @@ class APIClient {
             print("error: unable to unwrap url")
         }
     }
-    
- 
-}
-
-enum apiResponse {
-    case authenticated
-    case userNameInvalid
-    case passwordInvalid
-    case noReply
-    case ok
-    case failed
 }
