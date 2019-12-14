@@ -173,7 +173,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
         //print("tickersToGetMeasureValue: \(tickersToGetMeasureValue)")
         //print("tickersToRemoveMeasureValue: \(tickersToRemoveMeasureValue)")
         
-        let timeToDelayForAPI: Double = 0.03
+        let timeToDelayForAPI: Double = 0.02
         var currentDelayForAPI: Double = 0
 
         for ticker in tickersToGetMeasureValue {
@@ -285,14 +285,14 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
                     }
                     
                     // insert some values for roi when quota exceeded
-                    let selectedTicker = self.companiesTable.filter(self.tickerCol == "AXP")
-                    do {
-                        try database.run(selectedTicker.update(self.previous_roiCol <- 100))
-                        try database.run(selectedTicker.update(self.expected_roiCol <- 100))
-                        try database.run(selectedTicker.update(self.eps_iCol <- 100))
-                    } catch {
-                        print(error)
-                    }
+//                    let selectedTicker = self.companiesTable.filter(self.tickerCol == "AXP")
+//                    do {
+//                        try database.run(selectedTicker.update(self.previous_roiCol <- 100))
+//                        try database.run(selectedTicker.update(self.expected_roiCol <- 100))
+//                        // try database.run(selectedTicker.update(self.eps_iCol <- 100))
+//                    } catch {
+//                        print(error)
+//                    }
                 } else if let pricesDict = response["results"] as! [String: Double]?{
                     //print(pricesDict)
                     for ticker in tickersToGetMeasureValue {

@@ -677,7 +677,7 @@
 					"$(PROJECT_DIR)/build/Debug-iphoneos/KIF",
 				);
 				INFOPLIST_FILE = EquityStatus/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ptangen.equityStatus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -701,7 +701,7 @@
 					"$(PROJECT_DIR)/build/Debug-iphoneos/KIF",
 				);
 				INFOPLIST_FILE = EquityStatus/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ptangen.equityStatus;
 				PRODUCT_NAME = "$(TARGET_NAME)";

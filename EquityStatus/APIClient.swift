@@ -80,16 +80,15 @@ class APIClient {
         let stringOfTickers = tickers.joined(separator: ",")
         
         var endDate = Date()
-        // had to comment out for iOS 12, remove when back to iOS 13
         if tenYrsAgo {
-//          endDate = endDate.advanced(by: -60*60*24*365*10) // move end date back 10 yrs
-            endDate = Calendar.current.date(byAdding: .month, value: -120, to: Date())!
+          endDate = endDate.advanced(by: -60*60*24*365*10) // move end date back 10 yrs
+            // for 12.1 iOS: endDate = Calendar.current.date(byAdding: .month, value: -120, to: Date())!
         }
         
         // had to comment out for iOS 12 TODO: remove setting endDateLessSevenDays below
-        //let endDateLessSevenDays = endDate.advanced(by: -60*60*24*7) // get the date 7 days earlier to make sure we get a day with a ticker price
-        var endDateLessSevenDays = Date()
-        endDateLessSevenDays = Calendar.current.date(byAdding: .month, value: -121, to: Date())!
+        let endDateLessSevenDays = endDate.advanced(by: -60*60*24*7) // get the date 7 days earlier to make sure we get a day with a ticker price
+        // for 12.1 iOS: var endDateLessSevenDays = Date()
+        // for 12.1 iOS: endDateLessSevenDays = Calendar.current.date(byAdding: .month, value: -121, to: Date())!
         
         
         let endDateString = endDate.description.prefix(10) // get day 10 yrs ago as string
