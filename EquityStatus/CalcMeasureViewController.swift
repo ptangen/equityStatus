@@ -35,7 +35,6 @@ class CalcMeasureViewController: UIViewController, MeasureDetailViewDelegate {
         
         // setup ui view
         self.calcMeasureViewInst.company = self.company
-        print("accessibilityLabel: \(String(describing: self.accessibilityLabel))")
         if let measure = self.accessibilityLabel {
             self.calcMeasureViewInst.setResultsLabelsForMeasure(measure: measure)
         }

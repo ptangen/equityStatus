@@ -15,7 +15,6 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
     let store = DataStore.sharedInstance
     var company: Company!
     var measure = String()
-    //var measureShortName = String()
     var measureLongNameLabel = UILabel()
     var statusLabel = UILabel()
     var statusIcon = UILabel()
@@ -289,7 +288,7 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
     }
     
     func setMeasurePassedObjectProperty(measure: String, passed: Bool?) {
-        // get column to update
+        // update object value
         switch measure {
         case "q1":
             self.company.q1_passed = passed
@@ -309,7 +308,7 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
     }
     
     func setMeasureAnswerObjectProperty(measure: String, answer: String?) {
-        // get column to update
+        // update object value
         switch measure {
         case "q1":
             self.company.q1_answer = answer

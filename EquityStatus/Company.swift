@@ -41,6 +41,14 @@ class Company {
         self.ticker = ticker
         self.name = name
     }
+    
+    subscript(key: String) -> Any? {
+        switch key {
+            case "name" : return name
+            case "q1_passed" : return q1_passed
+            default : return nil
+        }
+    }
         
     var eps_i_passed: Bool? {
         get {

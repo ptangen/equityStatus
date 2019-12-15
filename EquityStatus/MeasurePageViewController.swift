@@ -18,20 +18,20 @@ class MeasurePageViewController: UIPageViewController, UIPageViewControllerDataS
     let pageControl = UIPageControl()
     
     // create an instance of the VC for each measure
-    let eps_i_ViewControllerInst = CalcMeasureViewController()
-    let eps_sd_ViewControllerInst = CalcMeasureViewController()
-    let roe_avg_ViewControllerInst = CalcMeasureViewController()
-    let bv_i_ViewControllerInst = CalcMeasureViewController()
-    let dr_avg_ViewControllerInst = CalcMeasureViewController()
-    let so_reduced_ViewControllerInst = CalcMeasureViewController()
-    let previous_roi_ViewControllerInst = CalcMeasureViewController()
-    let expected_roi_ViewControllerInst = CalcMeasureViewController()
-    let q1_ViewControllerInst = QuestionMeasureViewController()
-    let q2_ViewControllerInst = QuestionMeasureViewController()
-    let q3_ViewControllerInst = QuestionMeasureViewController()
-    let q4_ViewControllerInst = QuestionMeasureViewController()
-    let q5_ViewControllerInst = QuestionMeasureViewController()
-    let q6_ViewControllerInst = QuestionMeasureViewController()
+    let eps_i_ViewControllerInst = CalcMeasureViewController(),
+        eps_sd_ViewControllerInst = CalcMeasureViewController(),
+        roe_avg_ViewControllerInst = CalcMeasureViewController(),
+        bv_i_ViewControllerInst = CalcMeasureViewController(),
+        dr_avg_ViewControllerInst = CalcMeasureViewController(),
+        so_reduced_ViewControllerInst = CalcMeasureViewController(),
+        previous_roi_ViewControllerInst = CalcMeasureViewController(),
+        expected_roi_ViewControllerInst = CalcMeasureViewController(),
+        q1_ViewControllerInst = QuestionMeasureViewController(),
+        q2_ViewControllerInst = QuestionMeasureViewController(),
+        q3_ViewControllerInst = QuestionMeasureViewController(),
+        q4_ViewControllerInst = QuestionMeasureViewController(),
+        q5_ViewControllerInst = QuestionMeasureViewController(),
+        q6_ViewControllerInst = QuestionMeasureViewController()
     
     var calcMeasureVCInstances: [(instance: CalcMeasureViewController, measure: String)] = []
     var subjectiveMeasureVCInstances: [(instance: QuestionMeasureViewController, measure: String)] = []
@@ -105,7 +105,6 @@ class MeasurePageViewController: UIPageViewController, UIPageViewControllerDataS
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         
         if let viewControllerIndex = self.pages.index(of: viewController) {
-            print("viewControllerIndex pre: \(viewControllerIndex)")
             if viewControllerIndex == 0 {
                 return self.pages.last // wrap to last page in array
             } else {
@@ -118,7 +117,6 @@ class MeasurePageViewController: UIPageViewController, UIPageViewControllerDataS
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         
         if let viewControllerIndex = self.pages.index(of: viewController) {
-            print("viewControllerIndex pre: \(viewControllerIndex)")
             if viewControllerIndex < self.pages.count - 1 {
                 return self.pages[viewControllerIndex + 1] // go to next page in array
             } else {
@@ -133,7 +131,6 @@ class MeasurePageViewController: UIPageViewController, UIPageViewControllerDataS
         // set the pageControl.currentPage to the index of the current viewController in pages
         if let viewControllers = pageViewController.viewControllers {
             if let viewControllerIndex = self.pages.index(of: viewControllers[0]) {
-                print("viewControllerIndex didFinishAnimating: \(viewControllerIndex)")
                 self.pageControl.currentPage = viewControllerIndex
             }
         }

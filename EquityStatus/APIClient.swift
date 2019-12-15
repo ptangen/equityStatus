@@ -92,7 +92,6 @@ class APIClient {
         
         
         let endDateString = endDate.description.prefix(10) // get day 10 yrs ago as string
-        print(endDateString)
         let endDateLessSevenDaysString = endDateLessSevenDays.description.prefix(10) // get day 10 yrs ago as string
         
         let urlString = "https://api.unibit.ai/v2/stock/historical/?"

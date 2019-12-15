@@ -227,8 +227,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
             }
         }
         
-        let valuesRemovedCompleted = self.removeValuesForMeasure(tickersToRemoveMeasureValue: tickersToRemoveMeasureValue, measure: measure)
-        //print("valuesRemovedCompleted: \(valuesRemovedCompleted)")
+        _ = self.removeValuesForMeasure(tickersToRemoveMeasureValue: tickersToRemoveMeasureValue, measure: measure)
 
         myGroup.notify(queue: DispatchQueue.main, execute: {
             if(self.errorMessage.count > 0){
@@ -310,7 +309,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
                                     if let price_last = company.price_last {
                                         // interest rate function expects 10 yrs of values by quarter so create an array that looks like that
                                         var valuesArr = [Double](repeating: 0, count: 40)
-                                        print("ticker: \(ticker), price_last: \(price_last)")
+                                        //print("ticker: \(ticker), price_last: \(price_last)")
                                         valuesArr[0] = price_last
                                         valuesArr[39] = pricesDict[ticker]!
                                         measureValue = self.getInterestRate(valuesArr: valuesArr)
@@ -339,14 +338,14 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
                                     } else {
                                         eps_in10yrs = 0
                                     }
-                                    print("ticker: \(ticker), eps_in10yrs: \(eps_in10yrs)")
+                                    //print("ticker: \(ticker), eps_in10yrs: \(eps_in10yrs)")
                                     
                                     if let pe_avg = company.pe_avg {
                                         price_in10yrs = eps_in10yrs * pe_avg
                                     } else {
                                         price_in10yrs = 0
                                     }
-                                    print("ticker: \(ticker), price_in10yrs: \(price_in10yrs)")
+                                    //print("ticker: \(ticker), price_in10yrs: \(price_in10yrs)")
                                     
                                     // calc expected_roi
                                     var valuesArr = [Double](repeating: 0, count: 40)
@@ -548,7 +547,6 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
     }
     
     func addCompanyTable(completion: @escaping (Bool) -> Void){
-       print("addTables")
        let database = DBUtilities.getDBConnection()
        
        // define table
@@ -599,7 +597,6 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
    }
       
     func dropCompanyTable(completion: @escaping (Bool) -> Void){
-        print("drop table")
         let database = DBUtilities.getDBConnection()
         
         do {
@@ -626,7 +623,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
         
         let actInd: UIActivityIndicatorView = UIActivityIndicatorView()
         actInd.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
-        actInd.style = UIActivityIndicatorView.Style.whiteLarge
+        actInd.style = UIActivityIndicatorView.Style.large
         actInd.center = CGPoint(x: 40, y: 40)
         
         self.activityIndicator.addSubview(actInd)

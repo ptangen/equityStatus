@@ -114,7 +114,6 @@ class EvaluationView: UIView, UITableViewDataSource, UITableViewDelegate {
         let cell = EvaluationTableViewCell(style: .default, reuseIdentifier: "prototype")
         cell.selectionStyle = .none
         let textLabel = self.companiesToEvaluate[indexPath.row].name
-        print(self.companiesToEvaluate[indexPath.row].name)
         cell.textLabel?.text = textLabel.capitalized
         
         // set the status icons and color for each of the equity's measures
