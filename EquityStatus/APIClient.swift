@@ -39,30 +39,37 @@ class APIClient {
                             let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
                             if let message = (json?["message"]) {
                                 completion(["error": message as! String])
-                            } else if let epsArr = json?["historical_data"] {
-                                //print("historical data: \(epsArr)")
-                                var epsValues = [Double]()
-                                var nilValueFound: Bool = false
-                                for eps in epsArr as! [[String: Any?]] {
-                                    if let epsValue = (eps["value"]) {
-                                        if epsValues.count < 40 && !nilValueFound {
-                                            // collect values for the most recent 40 quarters
-                                            //print("value to append: \(String(describing: epsValue))")
-                                            if let epsValueUnwrapped = epsValue as! Double? {
-                                                epsValues.append(epsValueUnwrapped)
-                                            } else {
-                                                nilValueFound = true // after no value found dont add remaining values
+                            } else if let measureArr = json?["historical_data"] {
+                                var measureValues = [Double]()
+                                if let measureArrUnwrapped = measureArr as? [[String: Any?]] {
+                                    for eps in measureArrUnwrapped {
+                                        if let measureValue = (eps["value"]) {
+                                            if measureValues.count < 40 {
+                                                // collect values for the most recent 40 quarters
+                                                //print("\(ticker) , value to append: \(String(describing: measureValue))")
+                                                if let measureArrUnwrapped = measureValue as! Double? {
+                                                    measureValues.append(measureArrUnwrapped)
+                                                } else {
+                                                    break // a nil value was found in the dataset so exit ignoring the later values
+                                                }
                                             }
+                                        } else {
+                                            completion(["error": "No values for \(ticker)." as String])
                                         }
                                     }
+                                } else {
+                                    completion(["error": "No values for \(ticker)." as String])
                                 }
-                                //print(epsValues)
-                                completion(["results": epsValues])
+                                if measureValues.count > 20 {
+                                    completion(["results": measureValues])
+                                } else {
+                                    completion(["error": "\(ticker): > 5 yrs of data. Discarded." as String])
+                                }
                             } else {
-                                completion(["error": "no data found" as String])
+                                completion(["error": "No values for \(ticker)." as String])
                             }
                         } catch {
-                            completion(["error": "The request for \(ticker) failed."])
+                            completion(["error": "The request for \(ticker) failed. Try again."])
                         }
                     }
                 }
@@ -99,7 +106,7 @@ class APIClient {
         let urlParametersDate = "&startDate=\(endDateLessSevenDaysString)&endDate=\(endDateString)"
         let urlParamtersKey = "&interval=1&dataType=json&accessKey=\(Secrets.unibitKey)"
         let url = URL(string: urlString + urlParametersTickers + urlParametersDate + urlParamtersKey)
-        //print(url)
+        print(url)
         if let url = url {
             var request = URLRequest(url: url)
             

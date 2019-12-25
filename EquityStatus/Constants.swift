@@ -37,9 +37,9 @@ struct Constants{
         case large = 72
     }
     
-    enum thresholdValues: Int {
-        case eps_i = 10 //15
-        case eps_sd = 2
+    enum thresholdValues: Double {
+        case eps_i = 15
+        case eps_sd = 0.3
         case roe_avg = 12
         case bv_i = 5
         case so_reduced = 0

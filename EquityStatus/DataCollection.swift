@@ -27,6 +27,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
     
     let tickerCol =         Expression<String>("tickerCol")
     let nameCol =           Expression<String>("nameCol")
+    let tenYrsOldCol =      Expression<Bool>("tenYrsOldCol")
     let eps_iCol =          Expression<Int?>("eps_iCol")
     let eps_sdCol =         Expression<Double?>("eps_sdCol")
     let eps_lastCol =       Expression<Double?>("eps_lastCol")
@@ -175,6 +176,8 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
         
         let timeToDelayForAPI: Double = 0.02
         var currentDelayForAPI: Double = 0
+        
+        //tickersToGetMeasureValue = ["AAPL"]
 
         for ticker in tickersToGetMeasureValue {
             myGroup.enter()
@@ -191,17 +194,15 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
                         let selectedTicker = self.companiesTable.filter(self.tickerCol == ticker)
                         do {
                             switch measure {
-                                
                                 case "eps_i":
                                     let measureValuei = self.getInterestRate(valuesArr: measureValueArr)
                                     let measureValueSD = self.getSD(valuesArr: measureValueArr)
-                                    //print("ticker: \(ticker), measureValuei: \(measure), measureValuei: \(measureValuei)")
+                                    //print("ticker: \(ticker), measureValuei: \(measure), measureValuei: \(measureValuei), measureValueSD: \(measureValueSD), eps_lastCol: \(measureValueArr.first)")
                                     try database.run(selectedTicker.update(self.eps_iCol <- measureValuei))
                                     try database.run(selectedTicker.update(self.eps_sdCol <- measureValueSD))
                                     try database.run(selectedTicker.update(self.eps_lastCol <- measureValueArr.first))
                                 case "roe_avg":
                                     let measureValue = self.getAverage(valuesArr: measureValueArr, multiplier: 100)
-                                    //print("ticker: \(ticker), roe_avg: \(measureValue)")
                                     try database.run(selectedTicker.update(self.roe_avgCol <- Int(measureValue)))
                                 case "bv_i":
                                     let measureValuei = self.getInterestRate(valuesArr: measureValueArr)
@@ -222,8 +223,8 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
                             print(error)
                         }
                     }
-                    myGroup.leave()
                 })
+                myGroup.leave()
             }
         }
         
@@ -255,7 +256,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
                 let bv_i_passed_unwrapped = company.bv_i_passed,
                 let dr_avg_passed_unwrapped = company.dr_avg_passed,
                 let so_reduced_passed_unwrapped = company.so_reduced_passed {
-                if eps_i_passed_unwrapped && eps_sd_passed_unwrapped && roe_avg_passed_unwrapped && bv_i_passed_unwrapped && dr_avg_passed_unwrapped && so_reduced_passed_unwrapped {
+                if eps_i_passed_unwrapped && eps_sd_passed_unwrapped && roe_avg_passed_unwrapped && bv_i_passed_unwrapped && dr_avg_passed_unwrapped && so_reduced_passed_unwrapped && company.tenYrsOld {
                     tickersToGetMeasureValue.append(company.ticker) // all measure values met threshold
                 } else {
                     tickersToRemoveMeasureValue.append(company.ticker) // measure value did not met threshold
@@ -429,7 +430,16 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
     }
     
     func getSD(valuesArr: [Double]) -> Double {
-        let expression = NSExpression(forFunction: "stddev:", arguments: [NSExpression(forConstantValue: valuesArr)])
+        // determine the standard deviation of the eps growth beteen quarters
+        var growthFactors = [Double]()
+        for (index, value) in valuesArr.enumerated() {
+            if(index < (valuesArr.count - 1)) {
+                growthFactors.append(value/valuesArr[index+1])
+                //print("index: \(index), value: \(value), valueAfter: \(valuesArr[index+1]), growthFactor: \(value/valuesArr[index+1])")
+            }
+        }
+        
+        let expression = NSExpression(forFunction: "stddev:", arguments: [NSExpression(forConstantValue: growthFactors)])
         if let standardDeviation = expression.expressionValue(with: nil, context: nil){
             return standardDeviation as! Double
         }
@@ -474,7 +484,10 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
             //print("interestRateInner: \(interestRateInner)")
             let interestRateExponent = 1 / Double(valuesArr.count/4) // data comes by quarter so divide by for to get annual rate
             //print("interestRateExponent: \(interestRateExponent)")
-            let interestRate = (pow(interestRateInner, interestRateExponent)) - 1
+            var interestRate = (pow(interestRateInner, interestRateExponent)) - 1
+            if(interestRate.isInfinite || interestRate.isNaN){
+                interestRate = 1
+            }
             //print("interestRate:  \(interestRate)")
             interestRatePercent = Int((interestRate * 100))
         }
@@ -483,13 +496,13 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
     
     func selectRows(completion: @escaping (Bool) -> Void) {
         let database = DBUtilities.getDBConnection()
-
+        
         do {
             let companyRows = try database.prepare(companiesTable.order(tickerCol.asc))
             self.store.companies.removeAll()
             for companyRow in companyRows {
                 
-                let company = Company(ticker: companyRow[tickerCol], name: companyRow[nameCol])
+                let company = Company(ticker: companyRow[tickerCol], name: companyRow[nameCol], tenYrsOld: companyRow[tenYrsOldCol])
                 
                 // set values in the coompany object for optional properties
                 if let eps_i = companyRow[eps_iCol]                 { company.eps_i = eps_i }
@@ -530,15 +543,16 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
             completion(true)
         } catch {
             // no database found
-            print(error)
+            self.delegate?.showAlertMessage("Database Not Found, Create New Database.")
+            print("error 3: \(error)")
             self.store.companies.removeAll()
             completion(true)
         }
     }
     
-    func insertRows(database: Connection, ticker: String, name: String, epsi: Int?, epsv: Double?, roei: Int?){
+    func insertRows(database: Connection, ticker: String, name: String, tenYrsOld: Bool, epsi: Int?, epsv: Double?, roei: Int?){
         //print("insertRows")
-        let sqlStatement = companiesTable.insert(tickerCol <- ticker, nameCol <- name)
+        let sqlStatement = companiesTable.insert(tickerCol <- ticker, nameCol <- name, tenYrsOldCol <- tenYrsOld)
         do {
             try database.run(sqlStatement)
         } catch {
@@ -553,6 +567,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
        let addCompaniesTable = companiesTable.create{ (table) in
             table.column(tickerCol, primaryKey: true)
             table.column(nameCol)
+            table.column(tenYrsOldCol)
             table.column(eps_iCol)
             table.column(eps_sdCol)
             table.column(eps_lastCol)
@@ -579,21 +594,24 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
             table.column(q5_passedCol)
             table.column(q6_passedCol)
        }
-       
-       do {
-           try database.run(addCompaniesTable)
-           let database = DBUtilities.getDBConnection()
-           let companyList = CompanyList()
-           for companyTickerAndName in companyList.companyTickersAndNames {
-               // the ticker is the key, name is the valueni
-               self.insertRows(database: database, ticker: companyTickerAndName.key, name: companyTickerAndName.value, epsi: nil, epsv: nil, roei: nil)
-           }
-           completion(true)
+        
+        let tenYrsOldFalse = ["AMCX", "ATKR","APTV","FBHS","HGV","KNSL","NLOK","PYPL","SYF"]
+        do {
+            try database.run(addCompaniesTable)
+            let database = DBUtilities.getDBConnection()
+            let companyList = CompanyList()
+            for companyTickerAndName in companyList.companyTickersAndNames {
+                let tickerIsTenYrsOldFalse = tenYrsOldFalse.filter({ $0 == companyTickerAndName.key })
+                let tenYrsOld = tickerIsTenYrsOldFalse.count == 0 ? true : false
+                // the ticker is the key, name is the value
+                self.insertRows(database: database, ticker: companyTickerAndName.key, name: companyTickerAndName.value, tenYrsOld: tenYrsOld, epsi: nil, epsv: nil, roei: nil)
+            }
+            completion(true)
            
-       } catch {
-           print(error)
-           completion(false)
-       }
+        } catch {
+            print(error)
+            completion(false)
+        }
    }
       
     func dropCompanyTable(completion: @escaping (Bool) -> Void){

@@ -11,6 +11,7 @@ import Foundation
 class Company {
     var ticker: String
     var name: String
+    var tenYrsOld: Bool
     var eps_i: Int?
     var eps_sd: Double?
     var eps_last: Double?
@@ -37,9 +38,10 @@ class Company {
     var q5_passed: Bool?
     var q6_passed: Bool?
     
-    init(ticker: String, name:String) {
+    init(ticker: String, name:String, tenYrsOld:Bool) {
         self.ticker = ticker
         self.name = name
+        self.tenYrsOld = tenYrsOld
     }
     
     subscript(key: String) -> Any? {
@@ -53,7 +55,7 @@ class Company {
     var eps_i_passed: Bool? {
         get {
             if let eps_iUnwrapped = eps_i {
-                return eps_iUnwrapped >= Constants.thresholdValues.eps_i.rawValue
+                return Double(eps_iUnwrapped) >= Constants.thresholdValues.eps_i.rawValue
             }
             return nil
         }
@@ -71,7 +73,7 @@ class Company {
     var roe_avg_passed: Bool? {
         get {
             if let roe_avgUnwrapped = roe_avg {
-                return roe_avgUnwrapped >= Constants.thresholdValues.roe_avg.rawValue
+                return Double(roe_avgUnwrapped) >= Constants.thresholdValues.roe_avg.rawValue
             }
             return nil
         }
@@ -80,7 +82,7 @@ class Company {
     var bv_i_passed: Bool? {
         get {
             if let bv_iUnwrapped = bv_i {
-                return bv_iUnwrapped >= Constants.thresholdValues.bv_i.rawValue
+                return Double(bv_iUnwrapped) >= Constants.thresholdValues.bv_i.rawValue
             }
             return nil
         }
@@ -89,7 +91,7 @@ class Company {
     var dr_avg_passed: Bool? {
         get {
             if let dr_avgUnwrapped = dr_avg {
-                return dr_avgUnwrapped <= Constants.thresholdValues.dr_avg
+                return Double(dr_avgUnwrapped) <= Constants.thresholdValues.dr_avg
             }
             return nil
         }
@@ -98,7 +100,7 @@ class Company {
     var so_reduced_passed: Bool? {
         get {
             if let so_reducedUnwrapped = so_reduced {
-                return so_reducedUnwrapped >= Constants.thresholdValues.so_reduced.rawValue
+                return Double(so_reducedUnwrapped) >= Constants.thresholdValues.so_reduced.rawValue
             }
             return nil
         }
@@ -107,7 +109,7 @@ class Company {
     var expected_roi_passed: Bool? {
         get {
             if let expected_roiUnwrapped = expected_roi {
-                return expected_roiUnwrapped >= Constants.thresholdValues.expected_roi
+                return Double(expected_roiUnwrapped) >= Constants.thresholdValues.expected_roi
             }
             return nil
         }
@@ -116,7 +118,7 @@ class Company {
     var previous_roi_passed: Bool? {
         get {
             if let previous_roiUnwrapped = previous_roi {
-                return previous_roiUnwrapped >= Constants.thresholdValues.previous_roi
+                return Double(previous_roiUnwrapped) >= Constants.thresholdValues.previous_roi
             }
             return nil
         }

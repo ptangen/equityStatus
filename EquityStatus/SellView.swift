@@ -42,7 +42,7 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate {
         self.pageLayout()
         
         self.searchController.searchResultsUpdater = self
-        // deprecated in 4.2: self.searchController.dimsBackgroundDuringPresentation = false
+        self.searchController.obscuresBackgroundDuringPresentation = false
         self.sellTableViewInst.tableHeaderView = self.searchController.searchBar
         self.searchController.searchBar.accessibilityLabel = "searchBar"
         
@@ -56,7 +56,7 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate {
         
         let actInd: UIActivityIndicatorView = UIActivityIndicatorView()
         actInd.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
-        actInd.style = UIActivityIndicatorView.Style.whiteLarge
+        actInd.style = UIActivityIndicatorView.Style.large
         actInd.center = CGPoint(x: 40, y: 40)
 
         self.activityIndicator.addSubview(actInd)
@@ -89,7 +89,7 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate {
             company = self.companiesToSell[indexPath.row]
         }
 
-        cell.textLabel?.text = company.name +  " (" + company.ticker + ")"
+        cell.textLabel?.text = company.ticker + " - " + company.name
         return cell
     }
     
@@ -102,9 +102,8 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate {
     }
     
     func filterContentForSearchText(searchText: String, scope: String = "All") {
-
         // hide/show labels about company count above the tableview when search is being used
-        if self.sellTableViewInstYConstraintWithHeading.isActive {
+        if self.searchController.isActive {
             self.sellTableViewInstYConstraintWithHeading.isActive = false
             self.sellTableViewInstYConstraintWithoutHeading.isActive = true
             self.pageDescLabel.isHidden = true
@@ -115,7 +114,7 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate {
         }
         
         self.filteredCompaniesToSell = self.companiesToSell.filter { company in
-            let nameAndTicker = company.name + company.ticker
+            let nameAndTicker = company.ticker + " - " + company.name
             return nameAndTicker.lowercased().contains(searchText.lowercased())
         }
         self.sellTableViewInst.reloadData()
