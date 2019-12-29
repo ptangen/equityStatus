@@ -80,10 +80,14 @@ class CompanyDetailView: UIView {
     let q6_DescTap = UITapGestureRecognizer()
     let q6_StatusDesc = UILabel()
     
+    let own_Desc = UILabel()
+    let own_DescTap = UITapGestureRecognizer()
+    let own_StatusDesc = UILabel()
+    
     override init(frame:CGRect){
         super.init(frame: frame)
         // the 5 and SE devices (width=320) need more vertical space
-        UIScreen.main.bounds.width == 320 ? (self.heightOfScrolledContent = 800) : (self.heightOfScrolledContent = 700)
+        UIScreen.main.bounds.width == 320 ? (self.heightOfScrolledContent = 840) : (self.heightOfScrolledContent = 760)
         self.pageLayout()
         self.accessibilityLabel = "equityDetailViewInst"
     }
@@ -238,6 +242,14 @@ class CompanyDetailView: UIView {
             previousResultDesc: self.q5_Desc,
             resultDescTap:      self.q6_DescTap,
             statusDesc:         self.q6_StatusDesc
+        )
+        
+        // own
+        self.addRowForMeasure(
+            resultDesc:         self.own_Desc,
+            previousResultDesc: self.q6_Desc,
+            resultDescTap:      self.own_DescTap,
+            statusDesc:         self.own_StatusDesc
         )
     }
     

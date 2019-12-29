@@ -14,7 +14,7 @@ class MeasurePageViewController: UIPageViewController, UIPageViewControllerDataS
     var company: Company!
     var measure = String()
     
-    var pages = [UIViewController](repeating: UIViewController(), count: 14)
+    var pages = [UIViewController](repeating: UIViewController(), count: 15)
     let pageControl = UIPageControl()
     
     // create an instance of the VC for each measure
@@ -31,7 +31,8 @@ class MeasurePageViewController: UIPageViewController, UIPageViewControllerDataS
         q3_ViewControllerInst = QuestionMeasureViewController(),
         q4_ViewControllerInst = QuestionMeasureViewController(),
         q5_ViewControllerInst = QuestionMeasureViewController(),
-        q6_ViewControllerInst = QuestionMeasureViewController()
+        q6_ViewControllerInst = QuestionMeasureViewController(),
+        own_ViewControllerInst = QuestionMeasureViewController()
     
     var calcMeasureVCInstances: [(instance: CalcMeasureViewController, measure: String)] = []
     var subjectiveMeasureVCInstances: [(instance: QuestionMeasureViewController, measure: String)] = []
@@ -71,6 +72,7 @@ class MeasurePageViewController: UIPageViewController, UIPageViewControllerDataS
         subjectiveMeasureVCInstances.append((self.q4_ViewControllerInst, "q4"))
         subjectiveMeasureVCInstances.append((self.q5_ViewControllerInst, "q5"))
         subjectiveMeasureVCInstances.append((self.q6_ViewControllerInst, "q6"))
+        subjectiveMeasureVCInstances.append((self.own_ViewControllerInst, "own"))
         
         for subjectiveMeasureVCInstance in subjectiveMeasureVCInstances {
             subjectiveMeasureVCInstance.instance.company = company

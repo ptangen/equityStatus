@@ -12,12 +12,15 @@ import Foundation
 class DataStore {
     static let sharedInstance = DataStore()
     fileprivate init() {}
-    var equitiesMetadata:[EquityMetadata] = []
-    var equities:[Equity] = []
-    var equitiesForBuyNames = [String]()
-    var equitiesForEvaluation = [Equity]()
+    //var equitiesMetadata:[EquityMetadata] = []
+    //var equities:[Equity] = []
+    //var equitiesForBuyNames = [String]()
+    //var equitiesForEvaluation = [Equity]()
     
     var companies:[Company] = []
+    var companiesToEvaluate:[Company] = []
+    var companiesToSell:[Company] = []
+    
     var measureInfo:[String: [String: String]] = [
         "eps_i": [
             "name": "eps_i",
@@ -112,6 +115,11 @@ class DataStore {
             "name": "q6",
             "longName": "Is the company free to adjust prices with inflation?",
             "pageIndex": "13",
+        ],
+        "own": [
+            "name": "own",
+            "longName": "Do we own stock in this company?",
+            "pageIndex": "14",
         ]
         
     ]

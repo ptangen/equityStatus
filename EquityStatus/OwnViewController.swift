@@ -1,21 +1,20 @@
 //
-//  EvaluationViewController.swift
+//  OwnViewController.swift
 //  EquityStatus
 //
-//  Created by Paul Tangen on 12/19/16.
-//  Copyright © 2016 Paul Tangen. All rights reserved.
+//  Created by Paul Tangen on 12/28/19.
+//  Copyright © 2019 Paul Tangen. All rights reserved.
 //
 
 import UIKit
 
-class EvaluationViewController: UIViewController, EvaluationViewDelegate {
+class OwnViewController: UIViewController, OwnViewDelegate  {
     
-    var evaluationViewInst = EvaluationView()
+    var ownViewInst = OwnView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.evaluationViewInst.delegate = self
-        print("eval tab loadView")
+        self.ownViewInst.delegate = self
     }
 
     override func didReceiveMemoryWarning() {
@@ -23,9 +22,8 @@ class EvaluationViewController: UIViewController, EvaluationViewDelegate {
     }
     
     override func loadView(){
-        self.evaluationViewInst.frame = CGRect.zero
-        self.view = self.evaluationViewInst
-        
+        self.ownViewInst.frame = CGRect.zero
+        self.view = self.ownViewInst
     }
     
     func openCompanyDetail(company: Company) {
@@ -33,5 +31,11 @@ class EvaluationViewController: UIViewController, EvaluationViewDelegate {
         companyDetailViewControllerInst.company = company
         self.title = "" // this value is passed to the back button label in the destination VC
         navigationController?.pushViewController(companyDetailViewControllerInst, animated: false) // show destination with nav bar
+        navigationController?.navigationBar.backItem?.accessibilityLabel = "backButton"
+    }
+    
+    func showAlertMessage(_ message: String) {
+        Utilities.showAlertMessage(message, viewControllerInst: self)
     }
 }
+

@@ -194,6 +194,15 @@ class CompanyDetailViewController: UIViewController, CompanyDetailViewDelegate {
                 measureTap:     self.companyDetailViewInst.q6_DescTap,
                 statusLabel:    self.companyDetailViewInst.q6_StatusDesc
             )
+            
+            setLabelsInRow(
+                measureName:    "own",
+                measureValue:   nil,
+                measurePassed:  self.company.own_passed,
+                measureLabel:   self.companyDetailViewInst.own_Desc,
+                measureTap:     self.companyDetailViewInst.own_DescTap,
+                statusLabel:    self.companyDetailViewInst.own_StatusDesc
+            )
         }
     }
 }

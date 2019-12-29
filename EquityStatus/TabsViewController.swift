@@ -10,6 +10,7 @@ import UIKit
 
 class TabsViewController: UITabBarController, UITabBarControllerDelegate {
     
+    var ownViewControllerInst = OwnViewController()
     var buyViewControllerInst = BuyViewController()
     var evaluationViewControllerInst = EvaluationViewController()
     var sellViewControllerInst = SellViewController()
@@ -34,8 +35,15 @@ class TabsViewController: UITabBarController, UITabBarControllerDelegate {
         UITabBar.appearance().tintColor = UIColor(named: .statusBarBlue)
         
         // Create Tab Buy
+        self.ownViewControllerInst = OwnViewController()
+        let tabOwnBarItem = UITabBarItem(title: "Own", image: UIImage(named: "seedling"), selectedImage: UIImage(named: "seedling"))
+        self.ownViewControllerInst.tabBarItem = tabOwnBarItem
+        self.ownViewControllerInst.ownViewInst.setHeadingLabels()
+        self.ownViewControllerInst.tabBarItem.accessibilityLabel = "ownTab"
+        
+        // Create Tab Buy
         self.buyViewControllerInst = BuyViewController()
-        let tabBuyBarItem = UITabBarItem(title: "Buy", image: UIImage(named: "sentiment_satisfied"), selectedImage: UIImage(named: "sentiment_satisfied"))
+        let tabBuyBarItem = UITabBarItem(title: "Buy", image: UIImage(named: "shopping-cart"), selectedImage: UIImage(named: "shopping-cart"))
         self.buyViewControllerInst.tabBarItem = tabBuyBarItem
         self.buyViewControllerInst.buyViewInst.setHeadingLabels()
         self.buyViewControllerInst.tabBarItem.accessibilityLabel = "buyTab"
@@ -57,13 +65,32 @@ class TabsViewController: UITabBarController, UITabBarControllerDelegate {
         self.dataCollectionViewControllerInst.tabBarItem = dataCollectionTabBarItem
         
         
-        self.viewControllers = [buyViewControllerInst, evaluationViewControllerInst, sellViewControllerInst, dataCollectionViewControllerInst]
+        self.viewControllers = [ownViewControllerInst, buyViewControllerInst, evaluationViewControllerInst, sellViewControllerInst, dataCollectionViewControllerInst]
         
         // add the menu button to the nav bar
         let menuButton = UIBarButtonItem(image: #imageLiteral(resourceName: "menu"), style: .plain, target: self, action: #selector(menuButtonClicked))
         menuButton.accessibilityLabel = "menuButton"
         self.navigationItem.rightBarButtonItems = [menuButton]
         self.navigationItem.setHidesBackButton(true, animated:false);
+    }
+    
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+
+        let selectedTabVC = viewController
+        if let selectedTab = selectedTabVC.tabBarItem.accessibilityLabel {
+            switch selectedTab {
+                case "ownTab":
+                    self.ownViewControllerInst.ownViewInst.updateCompaniesOwned()
+                case "buyTab":
+                    self.buyViewControllerInst.buyViewInst.updateCompaniesToBuy()
+                case "evalTab":
+                    self.evaluationViewControllerInst.evaluationViewInst.updateCompaniesToEvaluate()
+                case "sellTab":
+                    self.sellViewControllerInst.sellViewInst.updateCompaniesToSell()
+                default:
+                    print("another tab selected")
+            }
+        }
     }
     
     @objc func menuButtonClicked(sender: UIBarButtonItem) {
@@ -87,22 +114,25 @@ class TabsViewController: UITabBarController, UITabBarControllerDelegate {
            })
            
            let addCompanyTable = UIAlertAction(title: "Add Company Table", style: .default, handler: { (alert: UIAlertAction!) -> Void in
-               self.dataCollectionViewControllerInst.dataCollectionViewInst.addCompanyTable(){isSuccessful in
-                   if isSuccessful {
-                       // select the rows and update the table
-                       self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = false
-                       self.dataCollectionViewControllerInst.dataCollectionViewInst.selectRows() {isSuccessful in
-                           if isSuccessful {
-                               self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = true
-                               self.dataCollectionViewControllerInst.dataCollectionViewInst.companiesTableViewInst.reloadData()
-                           }
-                       }
-                   }
-               }
+            
+                self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = false
+            
+                DispatchQueue.main.async {
+                     self.dataCollectionViewControllerInst.dataCollectionViewInst.addCompanyTable(){isSuccessful in
+                        if isSuccessful {
+                            // select the rows and update the table
+                            self.dataCollectionViewControllerInst.dataCollectionViewInst.selectRows() {isSuccessful in
+                                if isSuccessful {
+                                    self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = true
+                                    self.dataCollectionViewControllerInst.dataCollectionViewInst.companiesTableViewInst.reloadData()
+                                }
+                            }
+                        }
+                    }
+                }
            })
            
            let reloadCompaniesTable = UIAlertAction(title: "Reload Company View", style: .default, handler: { (alert: UIAlertAction!) -> Void in
-       
                self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = false
                self.dataCollectionViewControllerInst.dataCollectionViewInst.selectRows() {isSuccessful in
                    if isSuccessful {
@@ -174,6 +204,7 @@ class TabsViewController: UITabBarController, UITabBarControllerDelegate {
            
            let updateMeasureDRAvg = UIAlertAction(title: "Update DR Avg (2)", style: .default, handler: { (alert: UIAlertAction!) -> Void in
                let measure = "dr_avg"
+                self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = false
                self.dataCollectionViewControllerInst.dataCollectionViewInst.updateMeasures(measure: measure) {isSuccessful in
                    if isSuccessful {
                        self.dataCollectionViewControllerInst.dataCollectionViewInst.selectRows() {isSuccessful in

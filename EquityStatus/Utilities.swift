@@ -15,7 +15,6 @@ class Utilities {
     
     class func getStatusIcon(status: Bool?, uiLabel: UILabel) {
         if let statusUnwrapped = status {
-
             if statusUnwrapped {
                 uiLabel.text = Constants.iconLibrary.faCheckCircle.rawValue // passed
                 uiLabel.textColor = UIColor(named: .statusGreen)
@@ -28,11 +27,6 @@ class Utilities {
             uiLabel.textColor = UIColor(named: .disabledText)
         }
     }
-    
-//    class func populateMeasureInfo(){
-//        let store = DataStore.sharedInstance
-//        store.measureInfoArr.append(Measure(name: "eps_i", longName: "Earnings Per Share Growth Rate"))
-//    }
     
     class func getMeasureLongName(measure: String) -> String {
             switch measure {

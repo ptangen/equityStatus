@@ -17,6 +17,10 @@ class DataCollectionTableViewCell: UITableViewCell {
     let bv_iLabel = UILabel()
     let dr_avgLabel = UILabel()
     let so_reducedLabel = UILabel()
+    var pe_avgLabel = UILabel()
+    var price_LastLabel = UILabel()
+    var own_passedLabel = UILabel()
+    
     var previous_roiLabel = UILabel()
     var expected_roiLabel = UILabel()
 
@@ -81,7 +85,7 @@ class DataCollectionTableViewCell: UITableViewCell {
         roe_avgLabel.translatesAutoresizingMaskIntoConstraints = false
         roe_avgLabel.font = UIFont(name: Constants.appFont.regular.rawValue, size: CGFloat(Constants.fontSize.xxsmall.rawValue))
         roe_avgLabel.textColor = UIColor.gray
-        roe_avgLabel.leftAnchor.constraint(equalTo: self.textLabel!.leftAnchor, constant: 150).isActive = true
+        roe_avgLabel.leftAnchor.constraint(equalTo: self.textLabel!.leftAnchor, constant: 160).isActive = true
         roe_avgLabel.topAnchor.constraint(equalTo: self.eps_iLabel.topAnchor).isActive = true
         
         // dr_avgLabel
@@ -107,6 +111,30 @@ class DataCollectionTableViewCell: UITableViewCell {
         so_reducedLabel.textColor = UIColor.gray
         so_reducedLabel.leftAnchor.constraint(equalTo: self.bv_iLabel.leftAnchor, constant: 0).isActive = true
         so_reducedLabel.topAnchor.constraint(equalTo: self.dr_avgLabel.topAnchor).isActive = true
+        
+        // pe_avgLabel
+        contentView.addSubview(pe_avgLabel)
+        pe_avgLabel.translatesAutoresizingMaskIntoConstraints = false
+        pe_avgLabel.font = UIFont(name: Constants.appFont.regular.rawValue, size: CGFloat(Constants.fontSize.xxsmall.rawValue))
+        pe_avgLabel.textColor = UIColor.gray
+        pe_avgLabel.leftAnchor.constraint(equalTo: self.eps_sdLabel.leftAnchor, constant: 0).isActive = true
+        pe_avgLabel.topAnchor.constraint(equalTo: self.eps_sdLabel.bottomAnchor, constant: 2).isActive = true
+        
+        // ownLabel
+        contentView.addSubview(own_passedLabel)
+        own_passedLabel.translatesAutoresizingMaskIntoConstraints = false
+        own_passedLabel.font = UIFont(name: Constants.appFont.regular.rawValue, size: CGFloat(Constants.fontSize.xxsmall.rawValue))
+        own_passedLabel.textColor = UIColor.gray
+        own_passedLabel.leftAnchor.constraint(equalTo: self.dr_avgLabel.leftAnchor, constant: 0).isActive = true
+        own_passedLabel.topAnchor.constraint(equalTo: self.dr_avgLabel.bottomAnchor, constant: 2).isActive = true
+        
+        // price_LastLabel
+        contentView.addSubview(price_LastLabel)
+        price_LastLabel.translatesAutoresizingMaskIntoConstraints = false
+        price_LastLabel.font = UIFont(name: Constants.appFont.regular.rawValue, size: CGFloat(Constants.fontSize.xxsmall.rawValue))
+        price_LastLabel.textColor = UIColor.gray
+        price_LastLabel.leftAnchor.constraint(equalTo: self.so_reducedLabel.leftAnchor, constant: 0).isActive = true
+        price_LastLabel.topAnchor.constraint(equalTo: self.so_reducedLabel.bottomAnchor, constant: 2).isActive = true
 
     }
 }

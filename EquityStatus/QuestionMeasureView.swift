@@ -32,6 +32,7 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
     let q4_answerCol =   Expression<String?>("q4_answerCol")
     let q5_answerCol =   Expression<String?>("q5_answerCol")
     let q6_answerCol =   Expression<String?>("q6_answerCol")
+    let own_answerCol =   Expression<String?>("own_answerCol")
     
     let q1_passedCol =   Expression<Bool?>("q1_passedCol")
     let q2_passedCol =   Expression<Bool?>("q2_passedCol")
@@ -39,6 +40,7 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
     let q4_passedCol =   Expression<Bool?>("q4_passedCol")
     let q5_passedCol =   Expression<Bool?>("q5_passedCol")
     let q6_passedCol =   Expression<Bool?>("q6_passedCol")
+    let own_passedCol =   Expression<Bool?>("own_passedCol")
     
     override init(frame:CGRect){
         
@@ -47,7 +49,6 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
         
         // configure segmented control to pick status for the measure
         self.qStatusPicker.insertSegment(withTitle: Constants.iconLibrary.faCircleO.rawValue, at: 0, animated: true)
-
         self.qStatusPicker.insertSegment(withTitle: Constants.iconLibrary.faCheckCircle.rawValue, at: 1, animated: true)
         self.qStatusPicker.insertSegment(withTitle: Constants.iconLibrary.faTimesCircle.rawValue, at: 2, animated: true)
         self.qStatusPicker.setTitleTextAttributes([ NSAttributedString.Key.font: UIFont(name: Constants.iconFont.fontAwesome.rawValue, size: Constants.iconSize.small.rawValue)! ], for: .normal)
@@ -84,7 +85,6 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
         do {
             //get the column to update and submit the query
             try database.run(selectedTickerQuestion.update(getMeasurePassedColumn(measure: measure) <- passedOptional))
-            // update the object property TODO: use setter
             self.setMeasurePassedObjectProperty(measure: measure, passed: passedOptional)
             Utilities.getStatusIcon(status: passedOptional, uiLabel: self.statusIcon)
         } catch {
@@ -230,7 +230,8 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
             "q3" : self.company.q3_passed,
             "q4" : self.company.q4_passed,
             "q5" : self.company.q5_passed,
-            "q6" : self.company.q6_passed
+            "q6" : self.company.q6_passed,
+            "own" : self.company.own_passed
         ]
         
         let questions_answer:[String: String?] = [
@@ -239,7 +240,8 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
             "q3" : self.company.q3_answer,
             "q4" : self.company.q4_answer,
             "q5" : self.company.q5_answer,
-            "q6" : self.company.q6_answer
+            "q6" : self.company.q6_answer,
+            "own" : self.company.own_answer
         ]
         
         self.getMeasureResultsAndSetLabelText(
@@ -262,6 +264,8 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
             return self.q5_passedCol
         case "q6":
             return self.q6_passedCol
+        case "own":
+            return self.own_passedCol
         default:
             return Expression<Bool?>("")
         }
@@ -282,6 +286,8 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
             return self.q5_answerCol
         case "q6":
             return self.q6_answerCol
+        case "own":
+            return self.own_answerCol
         default:
             return Expression<String?>("")
         }
@@ -302,6 +308,8 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
             self.company.q5_passed = passed
         case "q6":
             self.company.q6_passed = passed
+        case "own":
+            self.company.own_passed = passed
         default:
             break
         }
@@ -322,6 +330,8 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
             self.company.q5_answer = answer
         case "q6":
             self.company.q6_answer = answer
+        case "own":
+            self.company.own_answer = answer
         default:
             break
         }

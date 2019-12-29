@@ -32,8 +32,6 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate {
     override init(frame:CGRect){
         super.init(frame: frame)
         self.accessibilityLabel = "sellViewInst"
-        companiesToSell = self.store.companies.filter({$0.tab == .sell})
-        self.sellTableViewInst.reloadData()
         self.sellTableViewInst.delegate = self
         self.sellTableViewInst.dataSource = self
         self.sellTableViewInst.register(SellTableViewCell.self, forCellReuseIdentifier: "prototype")
@@ -47,6 +45,15 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate {
         self.searchController.searchBar.accessibilityLabel = "searchBar"
         
         self.pageDescLabel.text = "These companies have failed one or more evalutions. As a result, these company's stock is rated a sell per this methodology."
+        
+        updateCompaniesToSell()
+    }
+    
+    func updateCompaniesToSell(){
+        self.companiesToSell = self.store.companies.filter({$0.tab == .sell})
+        self.sellTableViewInst.reloadData()
+        self.countLabel.text = String(self.companiesToSell.count)
+        print("updateCompaniesToSell")
     }
     
     func showActivityIndicator(uiView: UIView) {
@@ -138,7 +145,7 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate {
         self.companiesLabel.leftAnchor.constraint(equalTo: self.countLabel.leftAnchor, constant: 0).isActive = true
         self.companiesLabel.rightAnchor.constraint(equalTo: self.countLabel.rightAnchor, constant: 0).isActive = true
         self.companiesLabel.font = UIFont(name: Constants.appFont.bold.rawValue, size: Constants.fontSize.small.rawValue)
-        self.self.store.equitiesMetadata.count == 1 ? (self.companiesLabel.text = "company") : (self.companiesLabel.text = "companies")
+        self.companiesToSell.count == 1 ? (self.companiesLabel.text = "company") : (self.companiesLabel.text = "companies")
         self.companiesLabel.textAlignment = .right
         
         // pageDescLabel
@@ -170,8 +177,8 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate {
         self.activityIndicator.widthAnchor.constraint(equalToConstant: 80).isActive = true
         
         // update the tableview
-        self.countLabel.text = String(self.companiesToSell.count)
-        self.sellTableViewInst.reloadData()
+        
+        //self.sellTableViewInst.reloadData()
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -40,14 +40,17 @@ class EvaluationView: UIView, UITableViewDataSource, UITableViewDelegate {
         self.activityIndicator.isHidden = true
         
         self.pageLayout()
-        
-        //if self.store.companies.count > 0 {
-            self.setHeadingLabels()
-        //}
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+    }
+    
+    func updateCompaniesToEvaluate(){
+        self.companiesToEvaluate = self.store.companies.filter({$0.tab == .evaluate})
+        self.evaluationTableViewInst.reloadData()
+        self.countLabel.text = String(self.companiesToEvaluate.count)
+        print("updateCompaniesTo Evaluate")
     }
     
     func setHeadingLabels() {
@@ -73,7 +76,7 @@ class EvaluationView: UIView, UITableViewDataSource, UITableViewDelegate {
         self.companiesLabel.leftAnchor.constraint(equalTo: self.countLabel.leftAnchor, constant: 0).isActive = true
         self.companiesLabel.rightAnchor.constraint(equalTo: self.countLabel.rightAnchor, constant: 0).isActive = true
         self.companiesLabel.font = UIFont(name: Constants.appFont.bold.rawValue, size: Constants.fontSize.small.rawValue)
-        self.store.equitiesForEvaluation.count == 1 ? (self.companiesLabel.text = "company") : (self.companiesLabel.text = "companies")
+        self.companiesToEvaluate.count == 1 ? (self.companiesLabel.text = "company") : (self.companiesLabel.text = "companies")
         self.companiesLabel.textAlignment = .right
         
         // pageDescLabel

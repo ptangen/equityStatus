@@ -121,22 +121,33 @@ class APIClient {
                     
                     DispatchQueue.main.async {
                         do {
-                            let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: [String: Any]]
-                            if let resultsDict = json?["result_data"] as [String: Any]? {
-                                // resultsDict has tickers for keys and lots of data as value
-                                for ticker in tickers {
-                                    if let tickerDict = resultsDict[ticker] {
-                                        let tickerDictArr = tickerDict as! [Any]
-                                        let priceDict = tickerDictArr.last as! [String: Any]
-                                        if let adj_close = priceDict["adj_close"] as! Double? {
-                                            tickersPricesDict[ticker] = adj_close
-                                        }
+                            // on error, the data has a different structure, so must unwrap is differently
+                            let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+
+                            if let status = json?["status"] as! Int? {
+                                if status != 200 {
+                                    // error due to exceeding quota or price does not exist for at time period provided
+                                    if let message = json?["message"] as! String? {
+                                        completion(["error": message])
                                     }
                                 }
-                                completion(["results": tickersPricesDict])
                             } else {
-                                completion(["error": ["error" : "no response"]])
+                                // status is not return on successful requests
+                                if let resultsDict = json?["result_data"] as! [String: Any]? {
+                                    // resultsDict has tickers for keys and lots of data as value
+                                    for ticker in tickers {
+                                        if let tickerDict = resultsDict[ticker] {
+                                            let tickerDictArr = tickerDict as! [Any]
+                                            let priceDict = tickerDictArr.last as! [String: Any]
+                                            if let adj_close = priceDict["adj_close"] as! Double? {
+                                                tickersPricesDict[ticker] = adj_close
+                                            }
+                                        }
+                                    }
+                                    completion(["results": tickersPricesDict])
+                                }
                             }
+                            
                         } catch {
                             print("server not found")
                             completion(["error": ["server not found"]])

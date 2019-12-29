@@ -46,6 +46,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
     let q4_answerCol =   Expression<String?>("q4_answerCol")
     let q5_answerCol =   Expression<String?>("q5_answerCol")
     let q6_answerCol =   Expression<String?>("q6_answerCol")
+    let own_answerCol =  Expression<String?>("own_answerCol")
     
     let q1_passedCol =   Expression<Bool?>("q1_passedCol")
     let q2_passedCol =   Expression<Bool?>("q2_passedCol")
@@ -53,6 +54,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
     let q4_passedCol =   Expression<Bool?>("q4_passedCol")
     let q5_passedCol =   Expression<Bool?>("q5_passedCol")
     let q6_passedCol =   Expression<Bool?>("q6_passedCol")
+    let own_passedCol =  Expression<Bool?>("own_passedCol")
     
     override init(frame:CGRect){
         super.init(frame: frame)
@@ -79,9 +81,9 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
         self.addSubview(self.companiesTableViewInst)
         self.companiesTableViewInst.translatesAutoresizingMaskIntoConstraints = false
         self.companiesTableViewInst.topAnchor.constraint(equalTo: self.topAnchor, constant: 0).isActive = true
-        self.companiesTableViewInst.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -50).isActive = true
+        self.companiesTableViewInst.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0).isActive = true
         self.companiesTableViewInst.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0).isActive = true
-        self.companiesTableViewInst.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -10).isActive = true
+        self.companiesTableViewInst.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0).isActive = true
         
         // activityIndicator
         self.addSubview(self.activityIndicator)
@@ -97,7 +99,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
-        return 60
+        return 76
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -127,6 +129,11 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
             cell.eps_sdLabel.text = "eps_sd: \(String(format:"%.1f", eps_sd))"
         }
         
+        // pe_avgLabel
+        if let pe_avg = self.store.companies[indexPath.row].pe_avg {
+            cell.pe_avgLabel.text = "pe_avg: \(String(format:"%.1f", pe_avg))"
+        }
+        
         // roe_avgLabel
         if let roe_avg = self.store.companies[indexPath.row].roe_avg {
             cell.roe_avgLabel.text = "roe_avg: \(roe_avg.description)"
@@ -135,6 +142,16 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
         // bv_iLabel
         if let bv_i = self.store.companies[indexPath.row].bv_i {
             cell.bv_iLabel.text = "bv_i: \(bv_i.description)"
+        }
+        
+        // ownLabel
+        if let own_passed = self.store.companies[indexPath.row].own_passed {
+            cell.own_passedLabel.text = "own: \(own_passed)"
+        }
+        
+        // price_LastLabel
+        if let price_last = self.store.companies[indexPath.row].price_last {
+            cell.price_LastLabel.text = "price_last: \(price_last.description)"
         }
         
         // dr_avgLabel
@@ -153,16 +170,17 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
     func updateMeasures(measure: String, completion: @escaping (Bool) -> Void){
         let database = DBUtilities.getDBConnection()
         let myGroup = DispatchGroup() // used to determine for loop is complete
-        
+        var ownedCompany: Bool = false
         var tickersToGetMeasureValue = [String]()
         var tickersToRemoveMeasureValue = [String]()
         for company in self.store.companies {
-            if measure == "eps_i" {
+            if let own_passed_unwrapped = company.own_passed { ownedCompany = own_passed_unwrapped }
+            if measure == "eps_i" || ownedCompany {
                 tickersToGetMeasureValue.append(company.ticker) // get eps for calculation of eps_i and eps_sd from all tickers
             } else {
                 // if measure == roe_avg, bv_i, so_reduced, dr_avg, pe_avg then collect values when eps_i and eps_ds pass threshhold
                 // if these eps_i or eps_sd do nnot meet the thresholds, then clear the value in the DB for the selected measure
-                if let eps_i_passed_unwrapped = company.eps_i_passed, let eps_sd_passed_unwrapped = company.eps_sd_passed {
+                if let eps_i_passed_unwrapped = company.eps_i_passed, let eps_sd_passed_unwrapped = company.eps_sd_passed  {
                     if eps_i_passed_unwrapped && eps_sd_passed_unwrapped {
                         tickersToGetMeasureValue.append(company.ticker) // all measure values met threshold
                     } else {
@@ -170,6 +188,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
                     }
                 }
             }
+            ownedCompany = false
         }
         //print("tickersToGetMeasureValue: \(tickersToGetMeasureValue)")
         //print("tickersToRemoveMeasureValue: \(tickersToRemoveMeasureValue)")
@@ -247,8 +266,10 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
         // create arrays of tickers, one array to collect data for and one array where thresholds are not met and remove data for the measure
         var tickersToGetMeasureValue = [String]()
         var tickersToRemoveMeasureValue = [String]()
+        var ownedCompany: Bool = false
         
-        for company in self.store.companies{
+        for company in self.store.companies {
+            if let own_passed_unwrapped = company.own_passed { ownedCompany = own_passed_unwrapped }
             // filter out tickers with measures that did not pass
             if let eps_i_passed_unwrapped = company.eps_i_passed,
                 let eps_sd_passed_unwrapped = company.eps_sd_passed,
@@ -256,7 +277,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
                 let bv_i_passed_unwrapped = company.bv_i_passed,
                 let dr_avg_passed_unwrapped = company.dr_avg_passed,
                 let so_reduced_passed_unwrapped = company.so_reduced_passed {
-                if eps_i_passed_unwrapped && eps_sd_passed_unwrapped && roe_avg_passed_unwrapped && bv_i_passed_unwrapped && dr_avg_passed_unwrapped && so_reduced_passed_unwrapped && company.tenYrsOld {
+                if (eps_i_passed_unwrapped && eps_sd_passed_unwrapped && roe_avg_passed_unwrapped && bv_i_passed_unwrapped && dr_avg_passed_unwrapped && so_reduced_passed_unwrapped && company.tenYrsOld) || ownedCompany {
                     tickersToGetMeasureValue.append(company.ticker) // all measure values met threshold
                 } else {
                     tickersToRemoveMeasureValue.append(company.ticker) // measure value did not met threshold
@@ -264,6 +285,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
             } else {
                 tickersToRemoveMeasureValue.append(company.ticker) // one measure value was missing
             }
+            ownedCompany = false
         }
         //print("tickersToGetMeasureValue: \(tickersToGetMeasureValue)")
         //print("tickersToRemoveMeasureValue: \(tickersToRemoveMeasureValue)")
@@ -277,22 +299,9 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
         // fetch stock prices for the set of tickers - limit of 50 tickers
         if(tickersToGetMeasureValue.count > 0) {
             APIClient.getStockPrices(tickers: tickersToGetMeasureValue, tenYrsAgo: tenYrsAgo, completion: { response in
-                if let responseUnwrapped = response["error"]{
-                    let message = responseUnwrapped as! [String:String]
-                    if let errorMessage = message["error"] {
-                        print("Message : \(errorMessage), this happens when quota exceeded.")
-                        self.delegate?.showAlertMessage(errorMessage + ", this happens when quota exceeded.")
-                    }
-                    
-                    // insert some values for roi when quota exceeded
-//                    let selectedTicker = self.companiesTable.filter(self.tickerCol == "AXP")
-//                    do {
-//                        try database.run(selectedTicker.update(self.previous_roiCol <- 100))
-//                        try database.run(selectedTicker.update(self.expected_roiCol <- 100))
-//                        // try database.run(selectedTicker.update(self.eps_iCol <- 100))
-//                    } catch {
-//                        print(error)
-//                    }
+                if let responseUnwrapped = response["error"] as! String? {
+                    print("Message : \(responseUnwrapped)")
+                    self.delegate?.showAlertMessage(responseUnwrapped)
                 } else if let pricesDict = response["results"] as! [String: Double]?{
                     //print(pricesDict)
                     for ticker in tickersToGetMeasureValue {
@@ -503,7 +512,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
             for companyRow in companyRows {
                 
                 let company = Company(ticker: companyRow[tickerCol], name: companyRow[nameCol], tenYrsOld: companyRow[tenYrsOldCol])
-                
+               
                 // set values in the coompany object for optional properties
                 if let eps_i = companyRow[eps_iCol]                 { company.eps_i = eps_i }
                 if let eps_sd = companyRow[eps_sdCol]               { company.eps_sd = eps_sd }
@@ -523,6 +532,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
                 if let q4_answer = companyRow[q4_answerCol]   { company.q4_answer = q4_answer }
                 if let q5_answer = companyRow[q5_answerCol]   { company.q5_answer = q5_answer }
                 if let q6_answer = companyRow[q6_answerCol]   { company.q6_answer = q6_answer }
+                if let own_answer = companyRow[own_answerCol] { company.own_answer = own_answer }
                 
                 if let q1_passed = companyRow[q1_passedCol]   { company.q1_passed = q1_passed }
                 if let q2_passed = companyRow[q2_passedCol]   { company.q2_passed = q2_passed }
@@ -530,16 +540,15 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
                 if let q4_passed = companyRow[q4_passedCol]   { company.q4_passed = q4_passed }
                 if let q5_passed = companyRow[q5_passedCol]   { company.q5_passed = q5_passed }
                 if let q6_passed = companyRow[q6_passedCol]   { company.q6_passed = q6_passed }
+                if let own_passed = companyRow[own_passedCol] { company.own_passed = own_passed }
                 
                 self.store.companies.append(company)
-                
             }
             
 //            let companiesEvaluate = self.store.companies.filter({$0.ticker == "AA"})
 //            for companyEvaluate in companiesEvaluate {
 //                print("companyEvaluate: q1: \(companyEvaluate.q1_passed), q2: \(companyEvaluate.q2_passed), q3: \(companyEvaluate.q3_passed), q4: \(companyEvaluate.q4_passed), q5: \(companyEvaluate.q5_passed), q6: \(companyEvaluate.q6_passed), \(companyEvaluate.previous_roi_passed), \(companyEvaluate.expected_roi_passed), \(companyEvaluate.tab) ")
 //            }
-  
             completion(true)
         } catch {
             // no database found
@@ -586,6 +595,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
             table.column(q4_answerCol)
             table.column(q5_answerCol)
             table.column(q6_answerCol)
+            table.column(own_answerCol)
         
             table.column(q1_passedCol)
             table.column(q2_passedCol)
@@ -593,18 +603,25 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
             table.column(q4_passedCol)
             table.column(q5_passedCol)
             table.column(q6_passedCol)
+            table.column(own_passedCol)
        }
         
-        let tenYrsOldFalse = ["AMCX", "ATKR","APTV","FBHS","HGV","KNSL","NLOK","PYPL","SYF"]
+        let tenYrsOldFalse = ["AMCX", "ATKR","APTV","FBHS","HGV","KNSL","NLOK","PYPL","SYF"] // these companies do not have stock prices from 10 yrs ago, an error occurs when requesting stock prices for these companies in Dec 2019
         do {
             try database.run(addCompaniesTable)
             let database = DBUtilities.getDBConnection()
             let companyList = CompanyList()
+            var previousTicker = ""
             for companyTickerAndName in companyList.companyTickersAndNames {
-                let tickerIsTenYrsOldFalse = tenYrsOldFalse.filter({ $0 == companyTickerAndName.key })
-                let tenYrsOld = tickerIsTenYrsOldFalse.count == 0 ? true : false
-                // the ticker is the key, name is the value
-                self.insertRows(database: database, ticker: companyTickerAndName.key, name: companyTickerAndName.value, tenYrsOld: tenYrsOld, epsi: nil, epsv: nil, roei: nil)
+                if(companyTickerAndName.ticker == previousTicker){
+                    print("duplicate company found: \(companyTickerAndName.ticker)")
+                } else {
+                    let tickerIsTenYrsOldFalse = tenYrsOldFalse.filter({ $0 == companyTickerAndName.ticker })
+                    let tenYrsOld = tickerIsTenYrsOldFalse.count == 0 ? true : false
+                    // the ticker is the key, name is the value
+                    self.insertRows(database: database, ticker: companyTickerAndName.ticker, name: companyTickerAndName.name, tenYrsOld: tenYrsOld, epsi: nil, epsv: nil, roei: nil)
+                }
+                previousTicker = companyTickerAndName.ticker
             }
             completion(true)
            
@@ -621,6 +638,8 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
             try database.run(companiesTable.drop())
             DBUtilities.removeDBFile() // only one table, so remove the db file
             self.store.companies = []
+            self.companiesTableViewInst.reloadData()
+            print("tableview rows: \(self.companiesTableViewInst.numberOfRows(inSection: 0))")
             completion(true)
         } catch {
             print(error)

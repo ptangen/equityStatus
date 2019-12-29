@@ -30,6 +30,7 @@ class Company {
     var q4_answer: String?
     var q5_answer: String?
     var q6_answer: String?
+    var own_answer: String?
     
     var q1_passed: Bool?
     var q2_passed: Bool?
@@ -37,6 +38,7 @@ class Company {
     var q4_passed: Bool?
     var q5_passed: Bool?
     var q6_passed: Bool?
+    var own_passed: Bool?
     
     init(ticker: String, name:String, tenYrsOld:Bool) {
         self.ticker = ticker
@@ -128,6 +130,12 @@ class Company {
         get {
             var might_be_buy: Bool = false
             
+            if let own_passedUnwrapped = own_passed {
+                if own_passedUnwrapped {
+                    return .own
+                }
+            }
+            
             if let eps_i_passed_unwrapped = eps_i_passed, let eps_sd_passed_unwrapped = eps_sd_passed, let roe_avg_passed_unwrapped = roe_avg_passed, let dr_avg_passed_unwrapped = dr_avg_passed, let so_reduced_passed_unwrapped = so_reduced_passed, let expected_roi_passed_unwrapped = expected_roi_passed, let previous_roi_passed_unwrapped = previous_roi_passed   {
                 
                 // if any of the calculated measures failed set to .sell
@@ -161,6 +169,14 @@ class Company {
             }
             return .sell
         }
+    }
+    
+    enum EquityTabValue {
+        case own
+        case buy
+        case evaluate
+        case sell
+        case notSet
     }
 }
 

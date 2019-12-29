@@ -1,26 +1,28 @@
 //
-//  BuyView.swift
+//  OwnView.swift
 //  EquityStatus
 //
-//  Created by Paul Tangen on 12/19/16.
-//  Copyright © 2016 Paul Tangen. All rights reserved.
+//  Created by Paul Tangen on 12/28/19.
+//  Copyright © 2019 Paul Tangen. All rights reserved.
 //
 
 import UIKit
 import Charts
 
-protocol BuyViewDelegate: class {
+protocol OwnViewDelegate: class {
     func openCompanyDetail(company: Company)
 }
 
-class BuyView: UIView, ChartViewDelegate {
+class OwnView: UIView, ChartViewDelegate {
     
     let store = DataStore.sharedInstance
-    weak var delegate: BuyViewDelegate?
+    weak var delegate: OwnViewDelegate?
     let barChartView = HorizontalBarChartView()
     let countLabel = UILabel()
     let companiesLabel = UILabel()
     let pageDescLabel = UILabel()
+    
+    //var equitiesForBuyTickers = [String]()
     
     var companiesToBuyExpectedROI = [Double]()
     var companiesToBuyTickers = [String]()
@@ -36,7 +38,7 @@ class BuyView: UIView, ChartViewDelegate {
         self.accessibilityLabel = "buyView"
         self.barChartView.accessibilityLabel = "barChartView"
         self.pageLayoutLabels()
-        self.updateCompaniesToBuy()
+        self.updateCompaniesOwned()
         
         // if data is available, update the display
         if self.store.companies.count > 0 {
@@ -46,7 +48,7 @@ class BuyView: UIView, ChartViewDelegate {
     }
     
     func setHeadingLabels() {
-        self.companiesToBuyExpectedROI.count == 1 ? (self.pageDescLabel.text = "This company has passed all 14 assessments and therefore, it's stock is considered a buy. The expected return for the equity is displayed below.") : (self.pageDescLabel.text = "These companies have passed all 14 assessments and therefore, their stock are considered buys. The expected returns for the equities are displayed below.")
+        self.companiesToBuyExpectedROI.count > 0 ? (self.pageDescLabel.text = "These are the companies with stock we have purchased.") : (self.pageDescLabel.text = "Mark the companies with stock that has been pu")
         self.countLabel.text = "\(self.companiesToBuyExpectedROI.count)"
         self.companiesToBuyExpectedROI.count == 1 ? (self.companiesLabel.text = "company") : (self.companiesLabel.text = "companies")
     }
@@ -108,23 +110,21 @@ class BuyView: UIView, ChartViewDelegate {
     }
     
     // create array for buy view
-    func updateCompaniesToBuy() {
+    func updateCompaniesOwned() {
         self.companiesToBuyExpectedROI.removeAll()
         self.companiesToBuyNames.removeAll()
         self.companiesToBuyTickers.removeAll()
         
-        let companiesToBuy = self.store.companies.filter({$0.tab == .buy})
+        let companiesOwned = self.store.companies.filter({$0.tab == .own})
         
-        for company in companiesToBuy {
-            //if equity.tab == .buy {
-                if let expected_roi = company.expected_roi {
-                    self.companiesToBuyExpectedROI.append(Double(expected_roi))
-                } else {
-                    self.companiesToBuyExpectedROI.append(0.0)
-                }
-                self.companiesToBuyNames.append(company.name.capitalized)
-                self.companiesToBuyTickers.append(company.ticker)
-            //}
+        for company in companiesOwned {
+            if let expected_roi = company.expected_roi {
+                self.companiesToBuyExpectedROI.append(Double(expected_roi))
+            } else {
+                self.companiesToBuyExpectedROI.append(0.0)
+            }
+            self.companiesToBuyNames.append(String(company.name.prefix(18)))
+            self.companiesToBuyTickers.append(company.ticker)
         }
         self.companiesToBuyExpectedROI.reverse()
         self.companiesToBuyNames.reverse()
@@ -136,6 +136,8 @@ class BuyView: UIView, ChartViewDelegate {
         if self.chartHeight > maxChartHeight {
             self.chartHeight = maxChartHeight
         }
+        
+        self.updateChartWithData()
     }
     
     func updateChartWithData() {
@@ -200,3 +202,4 @@ class BuyView: UIView, ChartViewDelegate {
         actInd.startAnimating()
     }
 }
+
