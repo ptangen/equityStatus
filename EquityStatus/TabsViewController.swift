@@ -98,7 +98,7 @@ class TabsViewController: UITabBarController, UITabBarControllerDelegate {
            let optionMenu = UIAlertController(title: nil, message: "Menu", preferredStyle: .actionSheet)
            self.dataCollectionViewControllerInst.dataCollectionViewInst.showActivityIndicator(uiView: self.dataCollectionViewControllerInst.dataCollectionViewInst)
            
-           let dropCompanyTable = UIAlertAction(title: "Drop Company Table", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+           let dropCompanyTable = UIAlertAction(title: "Drop Database", style: .default, handler: { (alert: UIAlertAction!) -> Void in
                self.dataCollectionViewControllerInst.dataCollectionViewInst.dropCompanyTable(){isSuccessful in
                    if isSuccessful {
                        // select the rows and update the table
@@ -113,7 +113,7 @@ class TabsViewController: UITabBarController, UITabBarControllerDelegate {
                }
            })
            
-           let addCompanyTable = UIAlertAction(title: "Add Company Table", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+           let addCompanyTable = UIAlertAction(title: "Add Database", style: .default, handler: { (alert: UIAlertAction!) -> Void in
             
                 self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = false
             
@@ -132,7 +132,7 @@ class TabsViewController: UITabBarController, UITabBarControllerDelegate {
                 }
            })
            
-           let reloadCompaniesTable = UIAlertAction(title: "Reload Company View", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+           let reloadCompaniesTable = UIAlertAction(title: "Select Companies from DB", style: .default, handler: { (alert: UIAlertAction!) -> Void in
                self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = false
                self.dataCollectionViewControllerInst.dataCollectionViewInst.selectRows() {isSuccessful in
                    if isSuccessful {
@@ -217,7 +217,7 @@ class TabsViewController: UITabBarController, UITabBarControllerDelegate {
                }
            })
            
-           let updateMeasurePEAvg = UIAlertAction(title: "Update PE Avg for ROI (2)", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+           let updateMeasurePEAvg = UIAlertAction(title: "Update PE Avg / PE Change (2)", style: .default, handler: { (alert: UIAlertAction!) -> Void in
                let measure = "pe_avg"
                self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = false
                self.dataCollectionViewControllerInst.dataCollectionViewInst.updateMeasures(measure: measure) {isSuccessful in

@@ -70,12 +70,20 @@ class DataStore {
             "pageIndex": "5",
             "units": ""
         ],
+        "pe_change": [
+            "name": "pe_change",
+            "longName": "P/E Change vs Avg",
+            "thresholdDesc":"Threshold: 50% over avg",
+            "calcDesc": "Calculation: The value is found by comparing the most recent P/E value and comparing it to the avg.",
+            "pageIndex": "6",
+            "units": "%"
+        ],
         "previous_roi": [
             "name": "previous_roi",
             "longName": "Previous Return on Investment",
             "thresholdDesc": "Threshold: Greater than or equal to 15%",
             "calcDesc": "Calculation: This value is found by obtaining the stock price 5 years ago, the current price and calculating the growth rate.",
-            "pageIndex": "6",
+            "pageIndex": "7",
             "units": "%"
         ],
         "expected_roi": [
@@ -83,43 +91,43 @@ class DataStore {
             "longName": "Expected Return on Investment",
             "thresholdDesc":"Threshold: Greater than or equal to 15%",
             "calcDesc": "Calculation: To calculate the Expected ROI, the future value of the EPS in ten years is calculated from the current EPS value and the EPS growth rate. The mean value for the P/E ratio is also calculated. Next, the future stock price is found by multiplying the future value EPS by the mean P/E ratio. Finally, the expected ROI is found by using the future value function. The current stock price is the present value and the future value is the future stock price.",
-            "pageIndex": "7",
+            "pageIndex": "8",
             "units": "%"
         ],
         "q1": [
             "name": "q1",
             "longName": "Is there a strong upward trend in the EPS?",
-            "pageIndex": "8",
+            "pageIndex": "9",
         ],
         "q2": [
             "name": "q2",
             "longName": "Do you understand the product/service?",
-            "pageIndex": "9",
+            "pageIndex": "10",
         ],
         "q3": [
             "name": "q3",
             "longName": "Has the product/service been consistent for 10 years?",
-            "pageIndex": "10",
+            "pageIndex": "11",
         ],
         "q4": [
             "name": "q4",
             "longName": "Does the company invest in it's area of expertise?",
-            "pageIndex": "11",
+            "pageIndex": "12",
         ],
         "q5": [
             "name": "q5",
             "longName": "Are few expenditures required to maintain operations?",
-            "pageIndex": "12",
+            "pageIndex": "13",
         ],
         "q6": [
             "name": "q6",
             "longName": "Is the company free to adjust prices with inflation?",
-            "pageIndex": "13",
+            "pageIndex": "14",
         ],
         "own": [
             "name": "own",
             "longName": "Do we own stock in this company?",
-            "pageIndex": "14",
+            "pageIndex": "15",
         ]
         
     ]

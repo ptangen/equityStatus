@@ -124,6 +124,15 @@ class CompanyDetailViewController: UIViewController, CompanyDetailViewDelegate {
             )
             
             setLabelsInRow(
+                measureName:    "pe_change",
+                measureValue:   self.company.pe_change as NSNumber?,
+                measurePassed:  self.company.pe_change_passed,
+                measureLabel:   self.companyDetailViewInst.pe_change_ResultDesc,
+                measureTap:     self.companyDetailViewInst.pe_change_ResultDescTap,
+                statusLabel:    self.companyDetailViewInst.pe_change_StatusDesc
+            )
+            
+            setLabelsInRow(
                 measureName:    "previous_roi",
                 measureValue:   self.company.previous_roi as NSNumber?,
                 measurePassed:  self.company.previous_roi_passed,

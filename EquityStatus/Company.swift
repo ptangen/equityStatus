@@ -20,6 +20,7 @@ class Company {
     var dr_avg: Int?
     var so_reduced: Int?
     var pe_avg: Double?
+    var pe_change: Double?
     var price_last: Double?
     var previous_roi: Int?
     var expected_roi: Int?
@@ -108,6 +109,15 @@ class Company {
         }
     }
     
+    var pe_change_passed: Bool? {
+        get {
+            if let pe_changeUnwrapped = pe_change {
+                return Double(pe_changeUnwrapped) <= Constants.thresholdValues.pe_change.rawValue
+            }
+            return nil
+        }
+    }
+    
     var expected_roi_passed: Bool? {
         get {
             if let expected_roiUnwrapped = expected_roi {
@@ -136,10 +146,10 @@ class Company {
                 }
             }
             
-            if let eps_i_passed_unwrapped = eps_i_passed, let eps_sd_passed_unwrapped = eps_sd_passed, let roe_avg_passed_unwrapped = roe_avg_passed, let dr_avg_passed_unwrapped = dr_avg_passed, let so_reduced_passed_unwrapped = so_reduced_passed, let expected_roi_passed_unwrapped = expected_roi_passed, let previous_roi_passed_unwrapped = previous_roi_passed   {
+            if let eps_i_passed_unwrapped = eps_i_passed, let eps_sd_passed_unwrapped = eps_sd_passed, let roe_avg_passed_unwrapped = roe_avg_passed, let dr_avg_passed_unwrapped = dr_avg_passed, let so_reduced_passed_unwrapped = so_reduced_passed, let pe_change_passed_unwrapped = pe_change_passed, let expected_roi_passed_unwrapped = expected_roi_passed, let previous_roi_passed_unwrapped = previous_roi_passed   {
                 
                 // if any of the calculated measures failed set to .sell
-                if !eps_i_passed_unwrapped || !eps_sd_passed_unwrapped || !roe_avg_passed_unwrapped || !dr_avg_passed_unwrapped || !so_reduced_passed_unwrapped || !expected_roi_passed_unwrapped || !previous_roi_passed_unwrapped  {
+                if !eps_i_passed_unwrapped || !eps_sd_passed_unwrapped || !roe_avg_passed_unwrapped || !dr_avg_passed_unwrapped || !so_reduced_passed_unwrapped || !pe_change_passed_unwrapped || !expected_roi_passed_unwrapped || !previous_roi_passed_unwrapped  {
                     return .sell }
                 
                 // the remaining companies are can be:

@@ -36,6 +36,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
     let so_reducedCol =     Expression<Int?>("so_reducedCol")
     let dr_avgCol =         Expression<Int?>("dr_avgCol")
     let pe_avgCol =         Expression<Double?>("pe_avgCol")
+    let pe_changeCol =     Expression<Double?>("pe_changeCol")
     let price_lastCol =     Expression<Double?>("price_lastCol")
     let previous_roiCol =   Expression<Int?>("previous_roiCol")
     let expected_roiCol =   Expression<Int?>("expected_roiCol")
@@ -233,8 +234,13 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
                                     let measureValue = self.getAverage(valuesArr: measureValueArr, multiplier: 1)
                                     try database.run(selectedTicker.update(self.dr_avgCol <- Int(measureValue)))
                                 case "pe_avg":
-                                    let measureValue = self.getAverage(valuesArr: measureValueArr, multiplier: 1)
-                                    try database.run(selectedTicker.update(self.pe_avgCol <- measureValue))
+                                    let pe_avg = self.getAverage(valuesArr: measureValueArr, multiplier: 1)
+                                    // determine the change of the most recent p/e compared to the pe_avg
+                                    if let mostRecentPE = measureValueArr.first {
+                                        let pe_changed = ((mostRecentPE/pe_avg) - 1) * 100
+                                        try database.run(selectedTicker.update(self.pe_changeCol <- pe_changed))
+                                    }
+                                    try database.run(selectedTicker.update(self.pe_avgCol <- pe_avg))
                                 default :
                                   print("measure invalid")
                             }
@@ -413,6 +419,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
                     
                      case "pe_avg":
                          try database.run(selectedTicker.update(self.pe_avgCol <- nil))
+                         try database.run(selectedTicker.update(self.pe_changeCol <- nil))
                     
                     case "expected_roi":
                         try database.run(selectedTicker.update(self.expected_roiCol <- nil))
@@ -507,6 +514,14 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
         let database = DBUtilities.getDBConnection()
         
         do {
+            // add column
+            let newColumnName = "pe_changeCol"
+            if !self.colExists(colName: newColumnName) {
+                // column needs to be defined above
+                try database.run(companiesTable.addColumn(pe_changeCol))
+            }
+        
+            // ALTER TABLE "users" ADD COLUMN "suffix" TEXT
             let companyRows = try database.prepare(companiesTable.order(tickerCol.asc))
             self.store.companies.removeAll()
             for companyRow in companyRows {
@@ -522,6 +537,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
                 if let so_reduced = companyRow[so_reducedCol]       { company.so_reduced = so_reduced }
                 if let dr_avg = companyRow[dr_avgCol]               { company.dr_avg = dr_avg }
                 if let pe_avg = companyRow[pe_avgCol]               { company.pe_avg = pe_avg }
+                if let pe_change = companyRow[pe_changeCol]         { company.pe_change = pe_change }
                 if let price_last = companyRow[price_lastCol]       { company.price_last = price_last }
                 if let previous_roi = companyRow[previous_roiCol]   { company.previous_roi = previous_roi }
                 if let expected_roi = companyRow[expected_roiCol]   { company.expected_roi = expected_roi }
@@ -557,6 +573,22 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
             self.store.companies.removeAll()
             completion(true)
         }
+    }
+    
+    func colExists(colName: String) -> Bool {
+        
+        // determine if the column provided exists in the DB
+        
+        let database = DBUtilities.getDBConnection()
+
+        var allColumns:[String] = []
+        do {
+            let s = try database.prepare("PRAGMA table_info(companiesTable)" )
+            for row in s { allColumns.append(row[1]! as! String) }
+        }
+        catch { print("unable to get columns for table: \(error)") }
+        
+        return allColumns.contains(colName) //removeAll{ $0.contains(colName)}
     }
     
     func insertRows(database: Connection, ticker: String, name: String, tenYrsOld: Bool, epsi: Int?, epsv: Double?, roei: Int?){

@@ -48,6 +48,10 @@ class CompanyDetailView: UIView {
     let so_reduced_ResultDescTap = UITapGestureRecognizer()
     let so_reduced_StatusDesc = UILabel()
     
+    let pe_change_ResultDesc = UILabel()
+    let pe_change_ResultDescTap = UITapGestureRecognizer()
+    let pe_change_StatusDesc = UILabel()
+    
     let previous_roi_ResultDesc = UILabel()
     let previous_roi_ResultDescTap = UITapGestureRecognizer()
     let previous_roi_StatusDesc = UILabel()
@@ -87,7 +91,7 @@ class CompanyDetailView: UIView {
     override init(frame:CGRect){
         super.init(frame: frame)
         // the 5 and SE devices (width=320) need more vertical space
-        UIScreen.main.bounds.width == 320 ? (self.heightOfScrolledContent = 840) : (self.heightOfScrolledContent = 760)
+        UIScreen.main.bounds.width == 320 ? (self.heightOfScrolledContent = 840) : (self.heightOfScrolledContent = 800)
         self.pageLayout()
         self.accessibilityLabel = "equityDetailViewInst"
     }
@@ -180,10 +184,18 @@ class CompanyDetailView: UIView {
             statusDesc:         self.so_reduced_StatusDesc
         )
         
+        // pe_change
+        self.addRowForMeasure(
+            resultDesc:         self.pe_change_ResultDesc,
+            previousResultDesc: self.so_reduced_ResultDesc,
+            resultDescTap:      self.pe_change_ResultDescTap,
+            statusDesc:         self.pe_change_StatusDesc
+        )
+        
         // previous_roi
         self.addRowForMeasure(
             resultDesc:         self.previous_roi_ResultDesc,
-            previousResultDesc: self.so_reduced_ResultDesc,
+            previousResultDesc: self.pe_change_ResultDesc,
             resultDescTap:      self.previous_roi_ResultDescTap,
             statusDesc:         self.previous_roi_StatusDesc
         )

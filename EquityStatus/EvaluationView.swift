@@ -50,7 +50,6 @@ class EvaluationView: UIView, UITableViewDataSource, UITableViewDelegate {
         self.companiesToEvaluate = self.store.companies.filter({$0.tab == .evaluate})
         self.evaluationTableViewInst.reloadData()
         self.countLabel.text = String(self.companiesToEvaluate.count)
-        print("updateCompaniesTo Evaluate")
     }
     
     func setHeadingLabels() {

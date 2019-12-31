@@ -74,6 +74,7 @@ class CalcMeasureView: UIView, ChartViewDelegate {
             "bv_i" :            self.company.bv_i_passed,
             "dr_avg" :          self.company.dr_avg_passed,
             "so_reduced" :      self.company.so_reduced_passed,
+            "pe_change" :       self.company.pe_change_passed,
             "previous_roi" :    self.company.previous_roi_passed,
             "expected_roi" :    self.company.expected_roi_passed
         ]
@@ -85,6 +86,7 @@ class CalcMeasureView: UIView, ChartViewDelegate {
             "bv_i" :            self.company.bv_i as NSNumber?,
             "dr_avg" :          self.company.dr_avg as NSNumber?,
             "so_reduced" :      self.company.so_reduced as NSNumber?,
+            "pe_change" :       self.company.pe_change as NSNumber?,
             "previous_roi" :    self.company.previous_roi as NSNumber?,
             "expected_roi" :    self.company.expected_roi as NSNumber?
         ]

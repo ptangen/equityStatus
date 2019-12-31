@@ -106,7 +106,7 @@ class APIClient {
         let urlParametersDate = "&startDate=\(endDateLessSevenDaysString)&endDate=\(endDateString)"
         let urlParamtersKey = "&interval=1&dataType=json&accessKey=\(Secrets.unibitKey)"
         let url = URL(string: urlString + urlParametersTickers + urlParametersDate + urlParamtersKey)
-        print(url)
+        //print(url)
         if let url = url {
             var request = URLRequest(url: url)
             

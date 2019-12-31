@@ -53,7 +53,6 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate {
         self.companiesToSell = self.store.companies.filter({$0.tab == .sell})
         self.sellTableViewInst.reloadData()
         self.countLabel.text = String(self.companiesToSell.count)
-        print("updateCompaniesToSell")
     }
     
     func showActivityIndicator(uiView: UIView) {

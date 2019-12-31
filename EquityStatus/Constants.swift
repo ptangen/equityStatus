@@ -43,6 +43,7 @@ struct Constants{
         case roe_avg = 12
         case bv_i = 5
         case so_reduced = 0
+        case pe_change = 50
         
         // items with duplicate values
         static let dr_avg = bv_i.rawValue

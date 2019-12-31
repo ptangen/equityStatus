@@ -14,7 +14,7 @@ class MeasurePageViewController: UIPageViewController, UIPageViewControllerDataS
     var company: Company!
     var measure = String()
     
-    var pages = [UIViewController](repeating: UIViewController(), count: 15)
+    var pages = [UIViewController](repeating: UIViewController(), count: 16)
     let pageControl = UIPageControl()
     
     // create an instance of the VC for each measure
@@ -24,6 +24,7 @@ class MeasurePageViewController: UIPageViewController, UIPageViewControllerDataS
         bv_i_ViewControllerInst = CalcMeasureViewController(),
         dr_avg_ViewControllerInst = CalcMeasureViewController(),
         so_reduced_ViewControllerInst = CalcMeasureViewController(),
+        pe_change_ViewControllerInst = CalcMeasureViewController(),
         previous_roi_ViewControllerInst = CalcMeasureViewController(),
         expected_roi_ViewControllerInst = CalcMeasureViewController(),
         q1_ViewControllerInst = QuestionMeasureViewController(),
@@ -55,6 +56,7 @@ class MeasurePageViewController: UIPageViewController, UIPageViewControllerDataS
         calcMeasureVCInstances.append((self.bv_i_ViewControllerInst, "bv_i"))
         calcMeasureVCInstances.append((self.dr_avg_ViewControllerInst, "dr_avg"))
         calcMeasureVCInstances.append((self.so_reduced_ViewControllerInst, "so_reduced"))
+        calcMeasureVCInstances.append((self.pe_change_ViewControllerInst, "pe_change"))
         calcMeasureVCInstances.append((self.previous_roi_ViewControllerInst, "previous_roi"))
         calcMeasureVCInstances.append((self.expected_roi_ViewControllerInst, "expected_roi"))
         

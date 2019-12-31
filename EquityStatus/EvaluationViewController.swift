@@ -15,7 +15,6 @@ class EvaluationViewController: UIViewController, EvaluationViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.evaluationViewInst.delegate = self
-        print("eval tab loadView")
     }
 
     override func didReceiveMemoryWarning() {
