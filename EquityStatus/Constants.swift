@@ -60,6 +60,14 @@ struct Constants{
         case regular =  "HelveticaNeue"
         case bold =     "HelveticaNeue-Bold"
     }
+    
+    enum EquityTabValue {
+        case own
+        case buy
+        case evaluate
+        case sell
+        case notSet
+    }
 }
 
 extension UIColor {
@@ -71,6 +79,7 @@ extension UIColor {
         case statusGreen =      0x3DB66Fff
         case statusRed =        0xdf1a21ff
         case beige =            0xF5F5DCff
+        case lightGreen =       0x66ff66ff
     }
 }
 

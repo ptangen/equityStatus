@@ -80,9 +80,9 @@ class TabsViewController: UITabBarController, UITabBarControllerDelegate {
         if let selectedTab = selectedTabVC.tabBarItem.accessibilityLabel {
             switch selectedTab {
                 case "ownTab":
-                    self.ownViewControllerInst.ownViewInst.updateCompaniesOwned()
+                    self.ownViewControllerInst.ownViewInst.updateCompanyData(selectedTab: .own)
                 case "buyTab":
-                    self.buyViewControllerInst.buyViewInst.updateCompaniesToBuy()
+                    self.buyViewControllerInst.buyViewInst.updateCompanyData(selectedTab: .buy)
                 case "evalTab":
                     self.evaluationViewControllerInst.evaluationViewInst.updateCompaniesToEvaluate()
                 case "sellTab":

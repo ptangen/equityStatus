@@ -136,7 +136,7 @@ class Company {
         }
     }
     
-    var tab: EquityTabValue {
+    var tab: Constants.EquityTabValue {
         get {
             var might_be_buy: Bool = false
             
@@ -181,12 +181,6 @@ class Company {
         }
     }
     
-    enum EquityTabValue {
-        case own
-        case buy
-        case evaluate
-        case sell
-        case notSet
-    }
+
 }
 
