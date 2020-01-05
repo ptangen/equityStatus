@@ -17,12 +17,12 @@ class OwnView: UIView, ChartViewDelegate {
     
     let store = DataStore.sharedInstance
     weak var delegate: OwnViewDelegate?
+    let scrollView = UIScrollView()
+    var heightOfScrolledContent = CGFloat()
     let barChartView = HorizontalBarChartView()
     let countLabel = UILabel()
     let companiesLabel = UILabel()
     let pageDescLabel = UILabel()
-    
-    //var equitiesForBuyTickers = [String]()
     
     var companiesExpectedROI = [Double]()
     var companiesPreviousROI = [Double]()
@@ -30,22 +30,25 @@ class OwnView: UIView, ChartViewDelegate {
     var companiesNames = [String]()
     
     let activityIndicator = UIView()
-    var chartHeight = CGFloat()
-    let barHeight:Int = 60
+    //var chartHeight: CGFloat = 250
+    //let barHeight:Int = 20
     
     override init(frame:CGRect){
         super.init(frame: frame)
-        self.barChartView.delegate = self
         self.accessibilityLabel = "buyView"
+        // if data is available, update the display
+        
+        //if self.store.companies.count > 0 {
+            self.setHeadingLabels()
+        //}
+        
+        //UIScreen.main.bounds.width == 320 ? (self.heightOfScrolledContent = 1040) : (self.heightOfScrolledContent = 1000)
+        
+        self.barChartView.delegate = self
         self.barChartView.accessibilityLabel = "barChartView"
+        
         self.pageLayoutLabels()
         self.updateCompanyData(selectedTab: .own) // must init chart even though there is no data yet
-        
-        // if data is available, update the display
-        if self.store.companies.count > 0 {
-            self.setHeadingLabels()
-            self.pageLayoutWithData()
-        }
     }
     
     func setHeadingLabels() {
@@ -59,15 +62,24 @@ class OwnView: UIView, ChartViewDelegate {
     }
     
     func pageLayoutLabels() {
-        self.addSubview(self.countLabel)
+        self.addSubview(self.scrollView)
+        self.scrollView.translatesAutoresizingMaskIntoConstraints = false
+        self.scrollView.topAnchor.constraint(equalTo: self.topAnchor, constant: 0).isActive = true
+        self.scrollView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0).isActive = true
+        self.scrollView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0).isActive = true
+        self.scrollView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0).isActive = true
+        self.scrollView.autoresizingMask = [.flexibleRightMargin, .flexibleLeftMargin, .flexibleBottomMargin]
+        self.scrollView.contentSize = CGSize(width: self.bounds.width, height: 200) // height is reset below
+        
+        self.scrollView.addSubview(self.countLabel)
         self.countLabel.translatesAutoresizingMaskIntoConstraints = false
-        self.countLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 110).isActive = true
-        self.countLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0).isActive = true
-        self.countLabel.rightAnchor.constraint(equalTo: self.centerXAnchor, constant: -45).isActive = true
+        self.countLabel.topAnchor.constraint(equalTo: self.scrollView.topAnchor, constant: 46).isActive = true
+        self.countLabel.leftAnchor.constraint(equalTo: self.scrollView.leftAnchor, constant: 0).isActive = true
+        self.countLabel.rightAnchor.constraint(equalTo: self.scrollView.centerXAnchor, constant: -45).isActive = true
         self.countLabel.font = UIFont(name: Constants.appFont.regular.rawValue, size: Constants.fontSize.xxlarge.rawValue)
         self.countLabel.textAlignment = .right
     
-        self.addSubview(self.companiesLabel)
+        self.scrollView.addSubview(self.companiesLabel)
         self.companiesLabel.translatesAutoresizingMaskIntoConstraints = false
         self.companiesLabel.topAnchor.constraint(equalTo: self.countLabel.bottomAnchor, constant: 0).isActive = true
         self.companiesLabel.leftAnchor.constraint(equalTo: self.countLabel.leftAnchor, constant: 0).isActive = true
@@ -75,7 +87,7 @@ class OwnView: UIView, ChartViewDelegate {
         self.companiesLabel.font = UIFont(name: Constants.appFont.bold.rawValue, size: Constants.fontSize.small.rawValue)
         self.companiesLabel.textAlignment = .right
     
-        self.addSubview(self.pageDescLabel)
+        self.scrollView.addSubview(self.pageDescLabel)
         self.pageDescLabel.translatesAutoresizingMaskIntoConstraints = false
         self.pageDescLabel.leftAnchor.constraint(equalTo: self.centerXAnchor, constant: -30).isActive = true
         self.pageDescLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -10).isActive = true
@@ -91,15 +103,6 @@ class OwnView: UIView, ChartViewDelegate {
         self.activityIndicator.heightAnchor.constraint(equalToConstant: 80).isActive = true
         self.activityIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         self.activityIndicator.widthAnchor.constraint(equalToConstant: 80).isActive = true
-    }
-    
-    func pageLayoutWithData() {
-        self.addSubview(self.barChartView)
-        self.barChartView.translatesAutoresizingMaskIntoConstraints = false
-        self.barChartView.topAnchor.constraint(equalTo: self.pageDescLabel.bottomAnchor, constant: 24).isActive = true
-        self.barChartView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0).isActive = true
-        self.barChartView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
-        self.barChartView.heightAnchor.constraint(equalToConstant: self.chartHeight).isActive = true
     }
     
     func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
@@ -148,14 +151,27 @@ class OwnView: UIView, ChartViewDelegate {
         self.companiesNames.reverse()
         self.companiesTickers.reverse()
         
-        self.chartHeight = CGFloat(self.companiesNames.count * self.barHeight)
-        let maxChartHeight: CGFloat = UIScreen.main.bounds.height - 260 // subtract for heading and tabs at bottom
+        // set the chart height
+        let chartHeight = CGFloat(companies.count * 70)
+        self.addChartView(chartHeight: chartHeight)
         
-        if self.chartHeight > maxChartHeight {
-            self.chartHeight = maxChartHeight
-        }
-        
+        // rest the scrollview height
+        let scrollViewHeight = CGFloat(chartHeight + 130)
+        self.scrollView.contentSize = CGSize(width: self.bounds.width, height: scrollViewHeight)
+          
         self.updateChartWithData()
+    }
+    
+    func addChartView(chartHeight: CGFloat) {
+        // need to to remove and add the chart view to reset the height for the number of bars
+        self.barChartView.removeFromSuperview()
+        // barChartView
+        self.scrollView.addSubview(self.barChartView)
+        self.barChartView.translatesAutoresizingMaskIntoConstraints = false
+        self.barChartView.topAnchor.constraint(equalTo: self.scrollView.topAnchor, constant: 130).isActive = true
+        self.barChartView.leftAnchor.constraint(equalTo: self.scrollView.leftAnchor, constant: 5).isActive = true
+        self.barChartView.widthAnchor.constraint(equalTo: self.scrollView.widthAnchor, constant: -30).isActive = true
+        self.barChartView.heightAnchor.constraint(equalToConstant: chartHeight).isActive = true
     }
     
     // create array for view, same function in own and buy views
@@ -215,8 +231,8 @@ class OwnView: UIView, ChartViewDelegate {
         let chartData = BarChartData(dataSets: dataSets)
            
         let groupCount = self.companiesExpectedROI.count
-        let paddingBottom = 0.5
-        barChartView.xAxis.axisMinimum = Double(paddingBottom)
+        let barGroupLabelPaddingTop = 0.45
+        barChartView.xAxis.axisMinimum = Double(barGroupLabelPaddingTop)
        
         let groupSpace = 0.14
         let barSpace = 0.05
@@ -226,9 +242,9 @@ class OwnView: UIView, ChartViewDelegate {
         chartData.barWidth = barWidth;
         let groupWidth = chartData.groupWidth(groupSpace: groupSpace, barSpace: barSpace)
         //print("groupWidth: \(groupWidth)") // must equal 0.9
-        barChartView.xAxis.axisMaximum = Double(paddingBottom) + groupWidth * Double(groupCount)
+        barChartView.xAxis.axisMaximum = Double(barGroupLabelPaddingTop) + groupWidth * Double(groupCount)
 
-        chartData.groupBars(fromX: Double(paddingBottom), groupSpace: groupSpace, barSpace: barSpace)
+        chartData.groupBars(fromX: Double(barGroupLabelPaddingTop), groupSpace: groupSpace, barSpace: barSpace)
         barChartView.notifyDataSetChanged()
 
         if(stringFormatter.nameValues.count > 0){
