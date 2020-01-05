@@ -30,20 +30,14 @@ class OwnView: UIView, ChartViewDelegate {
     var companiesNames = [String]()
     
     let activityIndicator = UIView()
-    //var chartHeight: CGFloat = 250
-    //let barHeight:Int = 20
     
     override init(frame:CGRect){
         super.init(frame: frame)
         self.accessibilityLabel = "buyView"
         // if data is available, update the display
         
-        //if self.store.companies.count > 0 {
-            self.setHeadingLabels()
-        //}
-        
-        //UIScreen.main.bounds.width == 320 ? (self.heightOfScrolledContent = 1040) : (self.heightOfScrolledContent = 1000)
-        
+        self.setHeadingLabels()
+                
         self.barChartView.delegate = self
         self.barChartView.accessibilityLabel = "barChartView"
         
