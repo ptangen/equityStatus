@@ -34,7 +34,6 @@ class OwnView: UIView, ChartViewDelegate {
     override init(frame:CGRect){
         super.init(frame: frame)
         self.accessibilityLabel = "buyView"
-        // if data is available, update the display
         
         self.setHeadingLabels()
                 
@@ -46,7 +45,7 @@ class OwnView: UIView, ChartViewDelegate {
     }
     
     func setHeadingLabels() {
-        self.companiesExpectedROI.count > 0 ? (self.pageDescLabel.text = "These are the companies with stock we have purchased.") : (self.pageDescLabel.text = "Mark the companies with stock that has been pu")
+        self.companiesExpectedROI.count > 0 ? (self.pageDescLabel.text = "These are the companies with stock we have purchased.\r\rThe previous and expected returns are displayed.") : (self.pageDescLabel.text = "Mark the companies with stock that has been pu")
         self.countLabel.text = "\(self.companiesExpectedROI.count)"
         self.companiesExpectedROI.count == 1 ? (self.companiesLabel.text = "company") : (self.companiesLabel.text = "companies")
     }
@@ -114,9 +113,6 @@ class OwnView: UIView, ChartViewDelegate {
         
         let companies = self.store.companies.filter({$0.tab == selectedTab})
         
-        // there is a bug in the chart engine where if there is only one company
-        // the chart breaks, so if there is one company add it to the array twice
-        
         for company in companies {
             if let expected_roi = company.expected_roi, let previous_roi = company.previous_roi {
                 self.companiesExpectedROI.append(Double(expected_roi))
@@ -133,10 +129,22 @@ class OwnView: UIView, ChartViewDelegate {
                     self.companiesPreviousROI.append(0.0)
                 }
             }
-            self.companiesNames.append(String(company.name.prefix(18)))
+            
+            // truncate the name if needed, so it fits on the left side of the bar
+            var nameForChart: String = ""
+            let maxSize = 18
+            if(company.name.count <= maxSize) {
+                nameForChart = company.name
+            } else {
+                nameForChart = self.truncateName(fullName: company.name, maxSize: maxSize)
+            }
+            self.companiesNames.append(nameForChart)
             self.companiesTickers.append(company.ticker)
+            
+            // there is a bug in the chart engine where if there is only one company
+            // the chart breaks, so if there is one company add it to the array twice
             if companies.count == 1 {
-                self.companiesNames.append(String(company.name.prefix(18)))
+                self.companiesNames.append(nameForChart)
                 self.companiesTickers.append(company.ticker)
             }
         }
@@ -149,11 +157,30 @@ class OwnView: UIView, ChartViewDelegate {
         let chartHeight = CGFloat(companies.count * 70)
         self.addChartView(chartHeight: chartHeight)
         
-        // rest the scrollview height
+        // reset the scrollview height
         let scrollViewHeight = CGFloat(chartHeight + 130)
         self.scrollView.contentSize = CGSize(width: self.bounds.width, height: scrollViewHeight)
           
         self.updateChartWithData()
+    }
+    
+    func truncateName(fullName: String, maxSize: Int) -> String {
+        // reduce the company name to the maxSize or less, but truncate on a space in the name so it looks right
+        var currentSize: Int = 0
+        var truncatedName: String = ""
+        let subNameArr = fullName.components(separatedBy: " ")
+        
+        for subName in subNameArr {
+            if currentSize + subName.count <= maxSize {
+                currentSize = currentSize + subName.count
+                if truncatedName.count == 0 {
+                    truncatedName = subName
+                } else {
+                    truncatedName = truncatedName + " " + subName
+                }
+            }
+        }
+        return truncatedName
     }
     
     func addChartView(chartHeight: CGFloat) {
@@ -164,7 +191,7 @@ class OwnView: UIView, ChartViewDelegate {
         self.barChartView.translatesAutoresizingMaskIntoConstraints = false
         self.barChartView.topAnchor.constraint(equalTo: self.scrollView.topAnchor, constant: 130).isActive = true
         self.barChartView.leftAnchor.constraint(equalTo: self.scrollView.leftAnchor, constant: 5).isActive = true
-        self.barChartView.widthAnchor.constraint(equalTo: self.scrollView.widthAnchor, constant: -30).isActive = true
+        self.barChartView.widthAnchor.constraint(equalTo: self.scrollView.widthAnchor, constant: -40).isActive = true
         self.barChartView.heightAnchor.constraint(equalToConstant: chartHeight).isActive = true
     }
     
@@ -231,11 +258,11 @@ class OwnView: UIView, ChartViewDelegate {
         let groupSpace = 0.14
         let barSpace = 0.05
         let barWidth = 0.33
-        // (groupSpace + barSpace) * 2 + barWidth = 0.8 -> interval per "group"
+        // (groupSpace + barSpace) * 2 + barWidth = 0.71 -> interval per "bar group"
 
         chartData.barWidth = barWidth;
         let groupWidth = chartData.groupWidth(groupSpace: groupSpace, barSpace: barSpace)
-        //print("groupWidth: \(groupWidth)") // must equal 0.9
+        //print("groupWidth: \(groupWidth)") // must equal 0.71
         barChartView.xAxis.axisMaximum = Double(barGroupLabelPaddingTop) + groupWidth * Double(groupCount)
 
         chartData.groupBars(fromX: Double(barGroupLabelPaddingTop), groupSpace: groupSpace, barSpace: barSpace)
@@ -253,7 +280,7 @@ class OwnView: UIView, ChartViewDelegate {
         
         let actInd: UIActivityIndicatorView = UIActivityIndicatorView()
         actInd.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
-        actInd.style = UIActivityIndicatorView.Style.whiteLarge
+        actInd.style = UIActivityIndicatorView.Style.large
         actInd.center = CGPoint(x: 40, y: 40)
         
         self.activityIndicator.addSubview(actInd)

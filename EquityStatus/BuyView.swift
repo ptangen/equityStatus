@@ -115,9 +115,6 @@ class BuyView: UIView, ChartViewDelegate {
         
         let companies = self.store.companies.filter({$0.tab == selectedTab})
         
-        // there is a bug in the chart engine where if there is only one company
-        // the chart breaks, so if there is one company add it to the array twice
-        
         for company in companies {
             if let expected_roi = company.expected_roi, let previous_roi = company.previous_roi {
                 self.companiesExpectedROI.append(Double(expected_roi))
@@ -136,6 +133,9 @@ class BuyView: UIView, ChartViewDelegate {
             }
             self.companiesNames.append(String(company.name.prefix(18)))
             self.companiesTickers.append(company.ticker)
+            
+            // there is a bug in the chart engine where if there is only one company
+            // the chart breaks, so if there is one company add it to the array twice
             if companies.count == 1 {
                 self.companiesNames.append(String(company.name.prefix(18)))
                 self.companiesTickers.append(company.ticker)
