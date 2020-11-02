@@ -12,10 +12,6 @@ import Foundation
 class DataStore {
     static let sharedInstance = DataStore()
     fileprivate init() {}
-    //var equitiesMetadata:[EquityMetadata] = []
-    //var equities:[Equity] = []
-    //var equitiesForBuyNames = [String]()
-    //var equitiesForEvaluation = [Equity]()
     
     var companies:[Company] = []
     var companiesToEvaluate:[Company] = []

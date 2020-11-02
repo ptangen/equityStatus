@@ -16,14 +16,14 @@ class Utilities {
     class func getStatusIcon(status: Bool?, uiLabel: UILabel) {
         if let statusUnwrapped = status {
             if statusUnwrapped {
-                uiLabel.text = Constants.iconLibrary.faCheckCircle.rawValue // passed
+                uiLabel.text = "p" //Constants.iconLibrary.faCheckCircle.rawValue // passed
                 uiLabel.textColor = UIColor(named: .statusGreen)
             } else {
-                uiLabel.text = Constants.iconLibrary.faTimesCircle.rawValue // failed
+                uiLabel.text = "f" //Constants.iconLibrary.faTimesCircle.rawValue // failed
                 uiLabel.textColor = UIColor(named: .statusRed)
             }
         } else {
-            uiLabel.text = Constants.iconLibrary.faCircleO.rawValue // missing
+            uiLabel.text = "?" //Constants.iconLibrary.faCircleO.rawValue // missing
             uiLabel.textColor = UIColor(named: .disabledText)
         }
     }

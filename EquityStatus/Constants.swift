@@ -23,7 +23,7 @@ struct Constants{
     }
     
     enum iconLibrary: String {
-        case menu =             "\u{E5D2}"
+        //case menu =             "\u{E5D2}"
         case faCheckCircle =    "\u{f058}"
         case faTimesCircle =    "\u{f057}"
         case faCircleO =        "\u{f10c}"
@@ -39,7 +39,7 @@ struct Constants{
     
     enum thresholdValues: Double {
         case eps_i = 15
-        case eps_sd = 0.3
+        case eps_sd = 0.35
         case roe_avg = 12
         case bv_i = 5
         case so_reduced = 0

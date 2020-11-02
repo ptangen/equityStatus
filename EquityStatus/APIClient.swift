@@ -11,26 +11,17 @@ import UIKit
 
 class APIClient {
     
-    class func requestHistoricalData(ticker: String, measure: String, completion: @escaping ([String: Any]) -> Void) {
-        let apiTags:[String: String] = [
-            "eps_i": "basiceps",
-            "roe_avg": "roe",
-            "bv_i": "bookvaluepershare",
-            "dr_avg": "debttoequity",
-            "so_reduced": "weightedavebasicsharesos",
-            "pe_avg": "pricetoearnings"
-        ]
-        let urlString = "https://api-v2.intrinio.com/historical_data/\(ticker)/\(apiTags[measure]!)"
-        let url = URL(string: urlString)
+    class func requestHistoricalMeasures(tickers: String, completion: @escaping ([String: Any]) -> Void) {
+        let urlString = "https://www.quandl.com/api/v3/datatables/SHARADAR/SF1.json"
+        let urlWithParameters = "\(urlString)?dimension=MRY&qopts.columns=ticker,datekey,eps,sharesbas,de,pe1,roe,bvps&api_key=\(Secrets.quandlKey)&ticker=\(tickers)"
+        let url = URL(string: urlWithParameters)
         if let url = url {
+           
             var request = URLRequest(url: url)
             
-            request.httpMethod = "POST"
+            request.httpMethod = "GET"
             request.setValue("application/json", forHTTPHeaderField: "Accept")
             request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-            
-            let parameterString = "sort_order=desc&frequency=quarterly&api_key=\(Secrets.intrinioKey)"
-            request.httpBody = parameterString.data(using: .utf8)
 
             URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
                 if let data = data {
@@ -39,47 +30,157 @@ class APIClient {
                             let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
                             if let message = (json?["message"]) {
                                 completion(["error": message as! String])
-                            } else if let measureArr = json?["historical_data"] {
-                                var measureValues = [Double]()
-                                if let measureArrUnwrapped = measureArr as? [[String: Any?]] {
-                                    for eps in measureArrUnwrapped {
-                                        if let measureValue = (eps["value"]) {
-                                            if measureValues.count < 40 {
-                                                // collect values for the most recent 40 quarters
-                                                //print("\(ticker) , value to append: \(String(describing: measureValue))")
-                                                if let measureArrUnwrapped = measureValue as! Double? {
-                                                    measureValues.append(measureArrUnwrapped)
-                                                } else {
-                                                    break // a nil value was found in the dataset so exit ignoring the later values
+                            } else if let datatable = json?["datatable"] {
+                                //dump(datatable)
+                                if let datatableArr = datatable as? Dictionary<String, [AnyObject]>{
+                                    if let data = datatableArr["data"] {
+                                        //print(data)
+                                        let formatter = DateFormatter()
+                                        formatter.dateFormat = "yyyy-MM-dd"
+                                        var historicalMeasures = [HistoricalMeasure]()
+                                        
+                                        for tickersData in data {
+                                            let historicalMeasure = HistoricalMeasure(ticker: "inital value", date: Date())
+
+                                            // ticker
+                                            if let ticker = tickersData.allObjects?[0] as? String {
+                                                historicalMeasure.ticker = ticker
+                                            } else {
+                                                historicalMeasure.ticker = "unable to unwrap"
+                                            }
+                                            // date
+                                            if let dateString = tickersData.allObjects?[1] as? String {
+                                                if let date = formatter.date(from: dateString) {
+                                                    historicalMeasure.date = date
                                                 }
                                             }
-                                        } else {
-                                            completion(["error": "No values for \(ticker)." as String])
+                                            // eps
+                                            if let eps = tickersData.allObjects?[2] as? Double {
+                                                historicalMeasure.eps = eps
+                                            }
+                                            // so
+                                            if let so = tickersData.allObjects?[3] as? Int {
+                                                historicalMeasure.so = so
+                                            }
+                                            // dr
+                                            if let dr = tickersData.allObjects?[4] as? Double {
+                                                historicalMeasure.dr = dr
+                                            }
+                                            // pe
+                                            if let pe = tickersData.allObjects?[5] as? Double {
+                                                historicalMeasure.pe = pe
+                                            }
+                                            // roe
+                                            if let roe = tickersData.allObjects?[6] as? Double {
+                                                historicalMeasure.roe = roe
+                                            }
+                                            // bv
+                                            if let bv = tickersData.allObjects?[7] as? Double {
+                                                historicalMeasure.bv = bv
+                                            }
+//                                            print("ticker: \(historicalMeasure.ticker)")
+//                                            print("date: \(historicalMeasure.date)")
+//                                            print("eps: \(historicalMeasure.eps)")
+//                                            print("so: \(historicalMeasure.so)")
+//                                            print("dr: \(historicalMeasure.dr)")
+//                                            print("pe: \(historicalMeasure.pe)")
+//                                            print("roe: \(historicalMeasure.roe)")
+//                                            print("bv: \(historicalMeasure.bv)")
+                                            
+                                            historicalMeasures.append(historicalMeasure)
                                         }
+                                        completion(["results": historicalMeasures])
                                     }
                                 } else {
-                                    completion(["error": "No values for \(ticker)." as String])
-                                }
-                                if measureValues.count > 20 {
-                                    completion(["results": measureValues])
-                                } else {
-                                    completion(["error": "\(ticker): > 5 yrs of data. Discarded." as String])
+                                    completion(["error": "No values found for tickers. 6" as String])
                                 }
                             } else {
-                                completion(["error": "No values for \(ticker)." as String])
+                                completion(["error": "No values found for tickers. 3" as String])
                             }
                         } catch {
-                            completion(["error": "The request for \(ticker) failed. Try again."])
+                            completion(["error": "The request for measures failed. 4"])
                         }
                     }
                 }
                 if let error = error {
-                    completion(["error": error])
+                    dump(error)
+                    completion(["error": "error"])
                 }
             }).resume()
         } else {
             print("error: unable to unwrap url")
         }
+    }
+    
+  class func requestHistoricalData(ticker: String, measure: String, completion: @escaping ([String: Any]) -> Void) {
+//        let apiTags:[String: String] = [
+//            "eps_i": "basiceps",
+//            "roe_avg": "roe",
+//            "bv_i": "bookvaluepershare",
+//            "dr_avg": "debttoequity",
+//            "so_reduced": "weightedavebasicsharesos",
+//            "pe_avg": "pricetoearnings"
+//        ]
+//        let urlString = "https://api-v2.intrinio.com/historical_data/\(ticker)/\(apiTags[measure]!)"
+//        let url = URL(string: urlString)
+//        if let url = url {
+//            var request = URLRequest(url: url)
+//
+//            request.httpMethod = "POST"
+//            request.setValue("application/json", forHTTPHeaderField: "Accept")
+//            request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+//
+//            let parameterString = "sort_order=desc&frequency=quarterly&api_key=\(Secrets.intrinioKey)"
+//            request.httpBody = parameterString.data(using: .utf8)
+//
+//            URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
+//                if let data = data {
+//                    DispatchQueue.main.async {
+//                        do {
+//                            let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+//                            if let message = (json?["message"]) {
+//                                completion(["error": message as! String])
+//                            } else if let measureArr = json?["historical_data"] {
+//                                var measureValues = [Double]()
+//                                if let measureArrUnwrapped = measureArr as? [[String: Any?]] {
+//                                    for eps in measureArrUnwrapped {
+//                                        if let measureValue = (eps["value"]) {
+//                                            if measureValues.count < 40 {
+//                                                // collect values for the most recent 40 quarters
+//                                                //print("\(ticker) , value to append: \(String(describing: measureValue))")
+//                                                if let measureArrUnwrapped = measureValue as! Double? {
+//                                                    measureValues.append(measureArrUnwrapped)
+//                                                } else {
+//                                                    break // a nil value was found in the dataset so exit ignoring the later values
+//                                                }
+//                                            }
+//                                        } else {
+//                                            completion(["error": "No values for \(ticker)." as String])
+//                                        }
+//                                    }
+//                                } else {
+//                                    completion(["error": "No values for \(ticker)." as String])
+//                                }
+//                                if measureValues.count > 20 {
+//                                    completion(["results": measureValues])
+//                                } else {
+//                                    completion(["error": "\(ticker): > 5 yrs of data. Discarded." as String])
+//                                }
+//                            } else {
+//                                completion(["error": "No values for \(ticker)." as String])
+//                            }
+//                        } catch {
+//                            completion(["error": "The request for \(ticker) failed. Try again."])
+//                        }
+//                    }
+//                }
+//                if let error = error {
+//                    completion(["error": error])
+//                }
+//            }).resume()
+//        } else {
+//            print("error: unable to unwrap url")
+//        }
     }
     
     class func getStockPrices(tickers: [String], tenYrsAgo: Bool, completion: @escaping ([String: Any]) -> Void) {
@@ -138,9 +239,10 @@ class APIClient {
                                     for ticker in tickers {
                                         if let tickerDict = resultsDict[ticker] {
                                             let tickerDictArr = tickerDict as! [Any]
-                                            let priceDict = tickerDictArr.last as! [String: Any]
-                                            if let adj_close = priceDict["adj_close"] as! Double? {
-                                                tickersPricesDict[ticker] = adj_close
+                                            if let priceDict = tickerDictArr.last as? [String: Any]{
+                                                if let adj_close = priceDict["adj_close"] as! Double? {
+                                                    tickersPricesDict[ticker] = adj_close
+                                                }
                                             }
                                         }
                                     }

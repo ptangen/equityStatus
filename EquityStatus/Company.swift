@@ -112,7 +112,15 @@ class Company {
     var pe_change_passed: Bool? {
         get {
             if let pe_changeUnwrapped = pe_change {
-                return Double(pe_changeUnwrapped) <= Constants.thresholdValues.pe_change.rawValue
+                //var result: Bool = false
+                if pe_changeUnwrapped > 0 {
+                    print("positive value: \(pe_changeUnwrapped)")
+                    //return true
+                    return Double(pe_changeUnwrapped) >= Constants.thresholdValues.pe_change.rawValue
+                } else {
+                    return false
+                }
+                //return Double(pe_changeUnwrapped) <= Constants.thresholdValues.pe_change.rawValue
             }
             return nil
         }

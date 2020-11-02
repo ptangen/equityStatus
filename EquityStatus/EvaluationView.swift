@@ -148,7 +148,7 @@ class EvaluationView: UIView, UITableViewDataSource, UITableViewDelegate {
         
         let actInd: UIActivityIndicatorView = UIActivityIndicatorView()
         actInd.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
-        actInd.style = UIActivityIndicatorView.Style.whiteLarge
+        actInd.style = UIActivityIndicatorView.Style.large
         actInd.center = CGPoint(x: 40, y: 40)
         
         self.activityIndicator.addSubview(actInd)

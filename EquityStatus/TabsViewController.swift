@@ -142,95 +142,52 @@ class TabsViewController: UITabBarController, UITabBarControllerDelegate {
                }
            })
            
-           let updateMeasureEPSi = UIAlertAction(title: "Update EPS (1)", style: .default, handler: { (alert: UIAlertAction!) -> Void in
-               let measure = "eps_i"
-               self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = false
-               self.dataCollectionViewControllerInst.dataCollectionViewInst.updateMeasures(measure: measure) {isSuccessful in
-                   if isSuccessful {
-                       self.dataCollectionViewControllerInst.dataCollectionViewInst.selectRows() {isSuccessful in
-                           if isSuccessful {
-                               self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = true
-                               self.dataCollectionViewControllerInst.dataCollectionViewInst.companiesTableViewInst.reloadData()
-                           }
-                       }
-                   }
-               }
-           })
-           
-           let updateMeasureROEAvg = UIAlertAction(title: "Update ROE Avg (2)", style: .default, handler: { (alert: UIAlertAction!) -> Void in
-               let measure = "roe_avg"
-               self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = false
-               self.dataCollectionViewControllerInst.dataCollectionViewInst.updateMeasures(measure: measure) {isSuccessful in
-                   if isSuccessful {
-                       self.dataCollectionViewControllerInst.dataCollectionViewInst.selectRows() {isSuccessful in
-                           if isSuccessful {
-                               self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = true
-                               self.dataCollectionViewControllerInst.dataCollectionViewInst.companiesTableViewInst.reloadData()
-                           }
-                       }
-                   }
-               }
-           })
-           
-           let updateMeasureBVi = UIAlertAction(title: "Update BV i (2)", style: .default, handler: { (alert: UIAlertAction!) -> Void in
-               let measure = "bv_i"
-               self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = false
-               self.dataCollectionViewControllerInst.dataCollectionViewInst.updateMeasures(measure: measure) {isSuccessful in
-                   if isSuccessful {
-                       self.dataCollectionViewControllerInst.dataCollectionViewInst.selectRows() {isSuccessful in
-                           if isSuccessful {
-                               self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = true
-                               self.dataCollectionViewControllerInst.dataCollectionViewInst.companiesTableViewInst.reloadData()
-                           }
-                       }
-                   }
-               }
-           })
-           
-           let updateMeasureSOreduced = UIAlertAction(title: "Update SO Reduced (2)", style: .default, handler: { (alert: UIAlertAction!) -> Void in
-               let measure = "so_reduced"
-               self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = false
-               self.dataCollectionViewControllerInst.dataCollectionViewInst.updateMeasures(measure: measure) {isSuccessful in
-                   if isSuccessful {
-                       self.dataCollectionViewControllerInst.dataCollectionViewInst.selectRows() {isSuccessful in
-                           if isSuccessful {
-                               self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = true
-                               self.dataCollectionViewControllerInst.dataCollectionViewInst.companiesTableViewInst.reloadData()
-                           }
-                       }
-                   }
-               }
-           })
-           
-           let updateMeasureDRAvg = UIAlertAction(title: "Update DR Avg (2)", style: .default, handler: { (alert: UIAlertAction!) -> Void in
-               let measure = "dr_avg"
+
+        
+            let updateMeasuresAE = UIAlertAction(title: "Update Historical Data A-E", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+                let setOfTickers = "A-E" // F-N, O-Z
                 self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = false
-               self.dataCollectionViewControllerInst.dataCollectionViewInst.updateMeasures(measure: measure) {isSuccessful in
-                   if isSuccessful {
-                       self.dataCollectionViewControllerInst.dataCollectionViewInst.selectRows() {isSuccessful in
-                           if isSuccessful {
-                               self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = true
-                               self.dataCollectionViewControllerInst.dataCollectionViewInst.companiesTableViewInst.reloadData()
-                           }
-                       }
-                   }
-               }
-           })
-           
-           let updateMeasurePEAvg = UIAlertAction(title: "Update PE Avg / PE Change (2)", style: .default, handler: { (alert: UIAlertAction!) -> Void in
-               let measure = "pe_avg"
-               self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = false
-               self.dataCollectionViewControllerInst.dataCollectionViewInst.updateMeasures(measure: measure) {isSuccessful in
-                   if isSuccessful {
-                       self.dataCollectionViewControllerInst.dataCollectionViewInst.selectRows() {isSuccessful in
-                           if isSuccessful {
-                               self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = true
-                               self.dataCollectionViewControllerInst.dataCollectionViewInst.companiesTableViewInst.reloadData()
-                           }
-                       }
-                   }
-               }
-           })
+                self.dataCollectionViewControllerInst.dataCollectionViewInst.updateHistoricalMeasures(setOfTickers: setOfTickers) {isSuccessful in
+                    if isSuccessful {
+                        self.dataCollectionViewControllerInst.dataCollectionViewInst.selectRows() {isSuccessful in
+                            if isSuccessful {
+                                self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = true
+                                self.dataCollectionViewControllerInst.dataCollectionViewInst.companiesTableViewInst.reloadData()
+                            }
+                        }
+                    }
+                }
+            })
+        
+            let updateMeasuresFN = UIAlertAction(title: "Update Historical Data F-N", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+                let setOfTickers = "F-N"
+                self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = false
+                self.dataCollectionViewControllerInst.dataCollectionViewInst.updateHistoricalMeasures(setOfTickers: setOfTickers) {isSuccessful in
+                    if isSuccessful {
+                        self.dataCollectionViewControllerInst.dataCollectionViewInst.selectRows() {isSuccessful in
+                            if isSuccessful {
+                                self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = true
+                                self.dataCollectionViewControllerInst.dataCollectionViewInst.companiesTableViewInst.reloadData()
+                            }
+                        }
+                    }
+                }
+            })
+        
+            let updateMeasuresOZ = UIAlertAction(title: "Update Historical Data O-Z", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+                let setOfTickers = "O-Z"
+                self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = false
+                self.dataCollectionViewControllerInst.dataCollectionViewInst.updateHistoricalMeasures(setOfTickers: setOfTickers) {isSuccessful in
+                    if isSuccessful {
+                        self.dataCollectionViewControllerInst.dataCollectionViewInst.selectRows() {isSuccessful in
+                            if isSuccessful {
+                                self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = true
+                                self.dataCollectionViewControllerInst.dataCollectionViewInst.companiesTableViewInst.reloadData()
+                            }
+                        }
+                    }
+                }
+            })
            
            let updateExpectedROI = UIAlertAction(title: "Update Expected ROI (3)", style: .default, handler: { (alert: UIAlertAction!) -> Void in
                self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = false
@@ -260,23 +217,20 @@ class TabsViewController: UITabBarController, UITabBarControllerDelegate {
                }
            })
            
-           let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: { (alert: UIAlertAction!) -> Void in })
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: { (alert: UIAlertAction!) -> Void in })
            
-           // Add actions to menu and display
-           optionMenu.addAction(updateMeasureEPSi)
-           optionMenu.addAction(updateMeasureROEAvg)
-           optionMenu.addAction(updateMeasureBVi)
-           optionMenu.addAction(updateMeasureSOreduced)
-           optionMenu.addAction(updateMeasureDRAvg)
-           optionMenu.addAction(updateMeasurePEAvg)
-           optionMenu.addAction(updateExpectedROI)
-           optionMenu.addAction(updatePreviousROI)
+            // Add actions to menu and display
+            optionMenu.addAction(updateMeasuresAE)
+            optionMenu.addAction(updateMeasuresFN)
+            optionMenu.addAction(updateMeasuresOZ)
+            optionMenu.addAction(updateExpectedROI)
+            optionMenu.addAction(updatePreviousROI)
            
-           optionMenu.addAction(addCompanyTable)
-           optionMenu.addAction(reloadCompaniesTable)
-           optionMenu.addAction(dropCompanyTable)
+            optionMenu.addAction(addCompanyTable)
+            optionMenu.addAction(reloadCompaniesTable)
+            optionMenu.addAction(dropCompanyTable)
 
-           optionMenu.addAction(cancelAction)
-           self.present(optionMenu, animated: true, completion: nil)
+            optionMenu.addAction(cancelAction)
+            self.present(optionMenu, animated: true, completion: nil)
        }
 }

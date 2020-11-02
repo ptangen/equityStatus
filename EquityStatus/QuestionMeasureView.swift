@@ -48,10 +48,10 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
         self.pageLayout()
         
         // configure segmented control to pick status for the measure
-        self.qStatusPicker.insertSegment(withTitle: Constants.iconLibrary.faCircleO.rawValue, at: 0, animated: true)
-        self.qStatusPicker.insertSegment(withTitle: Constants.iconLibrary.faCheckCircle.rawValue, at: 1, animated: true)
-        self.qStatusPicker.insertSegment(withTitle: Constants.iconLibrary.faTimesCircle.rawValue, at: 2, animated: true)
-        self.qStatusPicker.setTitleTextAttributes([ NSAttributedString.Key.font: UIFont(name: Constants.iconFont.fontAwesome.rawValue, size: Constants.iconSize.small.rawValue)! ], for: .normal)
+        self.qStatusPicker.insertSegment(withTitle: "?", at: 0, animated: true)
+        self.qStatusPicker.insertSegment(withTitle: "p", at: 1, animated: true)
+        self.qStatusPicker.insertSegment(withTitle: "f", at: 2, animated: true)
+        //self.qStatusPicker.setTitleTextAttributes([ NSAttributedString.Key.font: UIFont(name: Constants.iconFont.fontAwesome.rawValue, size: Constants.iconSize.small.rawValue) ], for: .normal)
         
         let segmentButtonWidth = UIScreen.main.bounds.width / 4
         self.qStatusPicker.setWidth(segmentButtonWidth, forSegmentAt: 0)
@@ -59,14 +59,15 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
         self.qStatusPicker.setWidth(segmentButtonWidth, forSegmentAt: 2)
         self.qStatusPicker.tintColor = UIColor(named: .blue)
         
-        self.qStatusPicker.addTarget(self, action: #selector(self.statusValueChanged(_:)), for: .valueChanged)
+        self.qStatusPicker.addTarget(self, action: #selector(self.statusValueChanged), for: .valueChanged)
         self.qAnswerView.delegate = self
     }
     
+    
     @objc func statusValueChanged(_ sender:UISegmentedControl!) {
-        
+
         self.qAnswerView.resignFirstResponder()
-        
+
         switch sender.selectedSegmentIndex {
         case 1:
             self.updateQStatus(passedOptional: true)

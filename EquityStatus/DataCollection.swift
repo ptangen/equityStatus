@@ -168,100 +168,164 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
         return cell
     }
     
-    func updateMeasures(measure: String, completion: @escaping (Bool) -> Void){
+    func updateHistoricalMeasures(setOfTickers: String, completion: @escaping (Bool) -> Void){
         let database = DBUtilities.getDBConnection()
-        let myGroup = DispatchGroup() // used to determine for loop is complete
-        var ownedCompany: Bool = false
-        var tickersToGetMeasureValue = [String]()
-        var tickersToRemoveMeasureValue = [String]()
+        var tickersToGetMeasures = [String]()
+        // let tickersAtoE = str < "F"  // A - E
+        // let tickersFtoN = "EZZZZ" < str && str < "O"  // F - N
+        // let tickersOtoZ = str >= "O"  // O - Z
+        
         for company in self.store.companies {
-            if let own_passed_unwrapped = company.own_passed { ownedCompany = own_passed_unwrapped }
-            if measure == "eps_i" || ownedCompany {
-                tickersToGetMeasureValue.append(company.ticker) // get eps for calculation of eps_i and eps_sd from all tickers
-            } else {
-                // if measure == roe_avg, bv_i, so_reduced, dr_avg, pe_avg then collect values when eps_i and eps_ds pass threshhold
-                // if these eps_i or eps_sd do nnot meet the thresholds, then clear the value in the DB for the selected measure
-                if let eps_i_passed_unwrapped = company.eps_i_passed, let eps_sd_passed_unwrapped = company.eps_sd_passed  {
-                    if eps_i_passed_unwrapped && eps_sd_passed_unwrapped {
-                        tickersToGetMeasureValue.append(company.ticker) // all measure values met threshold
-                    } else {
-                        tickersToRemoveMeasureValue.append(company.ticker) // measure value did not met threshold
+            if setOfTickers == "A-E" {
+                if company.ticker < "F" { // F
+                    tickersToGetMeasures.append(company.ticker)
+                }
+            } else if setOfTickers == "F-N" {
+                if "EZZZZ" < company.ticker && company.ticker < "O" {
+                    tickersToGetMeasures.append(company.ticker)
+                }
+            } else { // O-Z
+                if company.ticker >= "O" {
+                    tickersToGetMeasures.append(company.ticker)
+                }
+            }
+        }
+        let tickersString = tickersToGetMeasures.joined(separator: ",") // convert array to string for API request
+        
+        APIClient.requestHistoricalMeasures(tickers: tickersString, completion: { response in
+            //print("response:  \(response)")
+            if let errorMessage = response["error"] as! String? {
+                if errorMessage != "An error occured. Please contact success@intrinio.com with the details."{ // this occurs when ticker not found, happens often with sandbox key
+                    self.errorMessage += "\(errorMessage)\r\n" // show after collecting data
+                }
+            } else if let historicalMeasures = response["results"] as! [HistoricalMeasure]? {
+                
+                for ticker in tickersToGetMeasures {
+                    var measureSets = historicalMeasures.filter { $0.ticker == ticker }
+                    measureSets.sort(by: {$0.date > $1.date})
+                    
+                    print(ticker)
+                    //dump(measureSets)
+                    
+                    var eps_iValues = [Double]()
+                    var eps_sdValues = [Double]()
+                    var roeValues = [Double]()
+                    var bvValues = [Double]()
+                    var soValues = [Int]()
+                    var drValues = [Double]()
+                    var peValues = [Double]()
+                    
+                    for measureSet in measureSets {
+                        
+                        // place the values over time into arrays for calculation
+                        
+                        // if we find a null value, do not include any of the remaining values when calculating interest rate
+                        var includeRemainingEPSValues = true
+                        var includeRemainingBVValues = true
+                        
+                        // eps
+                        if let eps = measureSet.eps {
+                            if includeRemainingEPSValues { eps_iValues.append(eps) }
+                            eps_sdValues.append(eps)
+                        } else {
+                            includeRemainingEPSValues = false
+                        }
+                        
+                        // roe
+                        if let roe = measureSet.roe { roeValues.append(roe) }
+                        
+                        // bv
+                        if let bv = measureSet.bv {
+                            if includeRemainingBVValues { bvValues.append(bv) }
+                        } else {
+                            includeRemainingBVValues = false
+                        }
+                        
+                        // so
+                        if let so = measureSet.so { soValues.append(so) }
+                        
+                        // dr
+                        if let dr = measureSet.dr { drValues.append(dr) }
+                        
+                        // pe
+                        if let pe = measureSet.pe { peValues.append(pe) }
+                    }
+//                    print("eps_iValues: \(eps_iValues)")
+//                    print("eps_sdValues: \(eps_sdValues)")
+//                    print("roeValues: \(roeValues)")
+//                    print("bvValues: \(bvValues)")
+//                    print("soValues: \(soValues)")
+//                    print("drValues: \(drValues)")
+//                    print("peValues: \(peValues)")
+                    
+                    // get the calculated values
+                    
+                    let selectedTicker = self.companiesTable.filter(self.tickerCol == ticker)
+                    do {
+                        // eps
+                        if (eps_iValues.count > 4) {
+                            let eps_i = self.getInterestRate(valuesArr: eps_iValues)
+                            let eps_sd = self.getSD(valuesArr: eps_sdValues)
+                            //print("ticker: \(ticker), measureValuei: \(measure), measureValuei: \(measureValuei), measureValueSD: \(measureValueSD), eps_lastCol: \(measureValueArr.first)")
+                            try database.run(selectedTicker.update(self.eps_iCol <- eps_i))
+                            try database.run(selectedTicker.update(self.eps_sdCol <- eps_sd))
+                            try database.run(selectedTicker.update(self.eps_lastCol <- eps_iValues.first))
+                        } else {
+                            self.removeValuesForMeasure(tickersToRemoveMeasureValue: [ticker], measure: "eps_i")
+                        }
+                        
+                        // roe_avg
+                        if (roeValues.count > 4) {
+                            let roe_avg = self.getAverage(valuesArr: roeValues, multiplier: 100)
+                            try database.run(selectedTicker.update(self.roe_avgCol <- Int(roe_avg)))
+                        } else {
+                            self.removeValuesForMeasure(tickersToRemoveMeasureValue: [ticker], measure: "roe_avg")
+                        }
+                        
+                        // bv_i
+                        if (bvValues.count > 4) {
+                            let bv_i = self.getInterestRate(valuesArr: bvValues)
+                            try database.run(selectedTicker.update(self.bv_iCol <- bv_i))
+                        } else {
+                            self.removeValuesForMeasure(tickersToRemoveMeasureValue: [ticker], measure: "bv_i")
+                        }
+                        
+                        // so_reduced
+                        if (soValues.count > 4) {
+                            let so_reduced = self.getAmountReduced(valuesArr: soValues)
+                            try database.run(selectedTicker.update(self.so_reducedCol <- so_reduced))
+                        } else {
+                            self.removeValuesForMeasure(tickersToRemoveMeasureValue: [ticker], measure: "so_reduced")
+                        }
+                        
+                        // dr_avg
+                        if (drValues.count > 4) {
+                            let dr_avg = self.getAverage(valuesArr: drValues, multiplier: 1)
+                            try database.run(selectedTicker.update(self.dr_avgCol <- Int(dr_avg)))
+                        } else {
+                            self.removeValuesForMeasure(tickersToRemoveMeasureValue: [ticker], measure: "dr_avg")
+                        }
+                    
+                        // pe_avg
+                        if (peValues.count > 4) {
+                            let pe_avg = self.getAverage(valuesArr: peValues, multiplier: 1)
+                            // determine the change of the most recent p/e compared to the pe_avg
+                            if let mostRecentPE = peValues.first {
+                                let pe_change = ((mostRecentPE/pe_avg) - 1) * 100
+                                try database.run(selectedTicker.update(self.pe_changeCol <- pe_change))
+                            }
+                            try database.run(selectedTicker.update(self.pe_avgCol <- pe_avg))
+                        } else {
+                            self.removeValuesForMeasure(tickersToRemoveMeasureValue: [ticker], measure: "pe_change")
+                            self.removeValuesForMeasure(tickersToRemoveMeasureValue: [ticker], measure: "pe_avg")
+                        }
+                    } catch {
+                        print(error)
                     }
                 }
             }
-            ownedCompany = false
-        }
-        //print("tickersToGetMeasureValue: \(tickersToGetMeasureValue)")
-        //print("tickersToRemoveMeasureValue: \(tickersToRemoveMeasureValue)")
-        
-        let timeToDelayForAPI: Double = 0.02
-        var currentDelayForAPI: Double = 0
-        
-        //tickersToGetMeasureValue = ["AAPL"]
-
-        for ticker in tickersToGetMeasureValue {
-            myGroup.enter()
-            currentDelayForAPI += timeToDelayForAPI
-            queueRequestWithDelay(seconds: currentDelayForAPI) {
-                APIClient.requestHistoricalData(ticker: ticker, measure: measure, completion: { response in
-                    //print("response:  \(response)")
-                    if let errorMessage = response["error"] as! String? {
-                        if errorMessage != "An error occured. Please contact success@intrinio.com with the details."{ // this occurs when ticker not found, happens often with sandbox key
-                            self.errorMessage += "\(errorMessage)\r\n" // show after collecting data
-                        }
-                    } else if let measureValueArr = response["results"] as! [Double]? {
-                        // where clause
-                        let selectedTicker = self.companiesTable.filter(self.tickerCol == ticker)
-                        do {
-                            switch measure {
-                                case "eps_i":
-                                    let measureValuei = self.getInterestRate(valuesArr: measureValueArr)
-                                    let measureValueSD = self.getSD(valuesArr: measureValueArr)
-                                    //print("ticker: \(ticker), measureValuei: \(measure), measureValuei: \(measureValuei), measureValueSD: \(measureValueSD), eps_lastCol: \(measureValueArr.first)")
-                                    try database.run(selectedTicker.update(self.eps_iCol <- measureValuei))
-                                    try database.run(selectedTicker.update(self.eps_sdCol <- measureValueSD))
-                                    try database.run(selectedTicker.update(self.eps_lastCol <- measureValueArr.first))
-                                case "roe_avg":
-                                    let measureValue = self.getAverage(valuesArr: measureValueArr, multiplier: 100)
-                                    try database.run(selectedTicker.update(self.roe_avgCol <- Int(measureValue)))
-                                case "bv_i":
-                                    let measureValuei = self.getInterestRate(valuesArr: measureValueArr)
-                                    try database.run(selectedTicker.update(self.bv_iCol <- measureValuei))
-                                case "so_reduced":
-                                    let measureValue = self.getAmountReduced(valuesArr: measureValueArr)
-                                    try database.run(selectedTicker.update(self.so_reducedCol <- measureValue))
-                                case "dr_avg":
-                                    let measureValue = self.getAverage(valuesArr: measureValueArr, multiplier: 1)
-                                    try database.run(selectedTicker.update(self.dr_avgCol <- Int(measureValue)))
-                                case "pe_avg":
-                                    let pe_avg = self.getAverage(valuesArr: measureValueArr, multiplier: 1)
-                                    // determine the change of the most recent p/e compared to the pe_avg
-                                    if let mostRecentPE = measureValueArr.first {
-                                        let pe_changed = ((mostRecentPE/pe_avg) - 1) * 100
-                                        try database.run(selectedTicker.update(self.pe_changeCol <- pe_changed))
-                                    }
-                                    try database.run(selectedTicker.update(self.pe_avgCol <- pe_avg))
-                                default :
-                                  print("measure invalid")
-                            }
-                        } catch {
-                            print(error)
-                        }
-                    }
-                })
-                myGroup.leave()
-            }
-        }
-        
-        _ = self.removeValuesForMeasure(tickersToRemoveMeasureValue: tickersToRemoveMeasureValue, measure: measure)
-
-        myGroup.notify(queue: DispatchQueue.main, execute: {
-            if(self.errorMessage.count > 0){
-                self.delegate?.showAlertMessage(self.errorMessage)
-                self.errorMessage = ""
-            }
-            completion(true) // do select and update tableview
         })
+        completion(true)
     }
     
     func updateROI(measure: String, completion: @escaping (Bool) -> Void){
@@ -324,17 +388,19 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
                                     var measureValue: Int
                                     if let price_last = company.price_last {
                                         // interest rate function expects 10 yrs of values by quarter so create an array that looks like that
-                                        var valuesArr = [Double](repeating: 0, count: 40)
-                                        //print("ticker: \(ticker), price_last: \(price_last)")
-                                        valuesArr[0] = price_last
-                                        valuesArr[39] = pricesDict[ticker]!
-                                        measureValue = self.getInterestRate(valuesArr: valuesArr)
+                                        if let priceDictForTicker = pricesDict[ticker] {
+                                            var valuesArr = [Double](repeating: 0, count: 10)
+                                            //print("ticker: \(ticker), price_last: \(price_last)")
+                                            valuesArr[0] = price_last
+                                            valuesArr[9] = priceDictForTicker
+                                            measureValue = self.getInterestRate(valuesArr: valuesArr)
+                                            try database.run(selectedTicker.update(self.previous_roiCol <- Int(measureValue)))
+                                        }
                                         
                                     } else {
                                         measureValue = 1 // should be 0  // we dont have current stock price so set measureValue to 0
                                     }
-                                    try database.run(selectedTicker.update(self.previous_roiCol <- Int(measureValue)))
-                                }
+                                                                    }
                             } else { // calc expected roi
                                 // 1. put p/e avg in companiesArr - separate command
                                 // 2. calc eps_in10yrs = eps_last * eps_i from value in companiesArr
@@ -364,15 +430,17 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
                                     //print("ticker: \(ticker), price_in10yrs: \(price_in10yrs)")
                                     
                                     // calc expected_roi
-                                    var valuesArr = [Double](repeating: 0, count: 40)
-                                    valuesArr[0] = price_in10yrs
-                                    valuesArr[39] = pricesDict[ticker]!
-                                    measureValue = self.getInterestRate(valuesArr: valuesArr)
-                                    //print("ticker: \(ticker), expected_roi: \(measureValue)")
-                                    
-                                    // update DB
-                                    try database.run(selectedTicker.update(self.expected_roiCol <- measureValue)) //  // int rate is positive
-                                    try database.run(selectedTicker.update(self.price_lastCol <- pricesDict[ticker]))
+                                    if let pricesDictForTicker = pricesDict[ticker] {
+                                        var valuesArr = [Double](repeating: 0, count: 10)
+                                        valuesArr[0] = price_in10yrs
+                                        valuesArr[9] = pricesDictForTicker
+                                        measureValue = self.getInterestRate(valuesArr: valuesArr)
+                                        //print("ticker: \(ticker), expected_roi: \(measureValue)")
+                                        
+                                        // update DB
+                                        try database.run(selectedTicker.update(self.expected_roiCol <- measureValue)) //  // int rate is positive
+                                        try database.run(selectedTicker.update(self.price_lastCol <- pricesDict[ticker]))
+                                    }
                                 } else {
                                     // company not found, update DB
                                     try database.run(selectedTicker.update(self.expected_roiCol <- nil))
@@ -462,7 +530,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
         return 0
     }
     
-    func getAmountReduced(valuesArr: [Double]) -> Int {
+    func getAmountReduced(valuesArr: [Int]) -> Int {
         return Int(valuesArr.last! - valuesArr.first!)
     }
     
@@ -494,11 +562,11 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
             } else {
                 firstValueAdjusted = firstValue
             }
-            // print("firstValueAdjusted: \(firstValueAdjusted), lastValueAdjusted: \(lastValueAdjusted)")
+             //print("firstValueAdjusted: \(firstValueAdjusted), lastValueAdjusted: \(lastValueAdjusted)")
             
             let interestRateInner = firstValueAdjusted/lastValueAdjusted
             //print("interestRateInner: \(interestRateInner)")
-            let interestRateExponent = 1 / Double(valuesArr.count/4) // data comes by quarter so divide by for to get annual rate
+            let interestRateExponent = 1 / Double(valuesArr.count)
             //print("interestRateExponent: \(interestRateExponent)")
             var interestRate = (pow(interestRateInner, interestRateExponent)) - 1
             if(interestRate.isInfinite || interestRate.isNaN){
