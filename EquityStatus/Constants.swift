@@ -38,14 +38,14 @@ struct Constants{
     }
     
     enum thresholdValues: Double {
-        case eps_i = 15
+        case eps_i = 12
         case eps_sd = 0.35
-        case roe_avg = 12
         case bv_i = 5
         case so_reduced = 0
-        case pe_change = 50
+        case pe_change = 30
         
         // items with duplicate values
+        static let roe_avg = eps_i.rawValue
         static let dr_avg = bv_i.rawValue
         static let previous_roi = eps_i.rawValue
         static let expected_roi = eps_i.rawValue

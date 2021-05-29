@@ -204,7 +204,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
                     var measureSets = historicalMeasures.filter { $0.ticker == ticker }
                     measureSets.sort(by: {$0.date > $1.date})
                     
-                    print(ticker)
+                    //print(ticker)
                     //dump(measureSets)
                     
                     var eps_iValues = [Double]()
@@ -324,8 +324,8 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
                     }
                 }
             }
+            completion(true)
         })
-        completion(true)
     }
     
     func updateROI(measure: String, completion: @escaping (Bool) -> Void){

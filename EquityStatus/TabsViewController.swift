@@ -16,10 +16,27 @@ class TabsViewController: UITabBarController, UITabBarControllerDelegate {
     var sellViewControllerInst = SellViewController()
     var dataCollectionViewControllerInst = DataCollectionViewController()
     let store = DataStore.sharedInstance
+    let confirmDropTableAlert = UIAlertController(title: "Confirm Request", message: "Are you sure you want to drop the database?", preferredStyle: .alert)
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.delegate = self
+        
+        self.confirmDropTableAlert.addAction(UIAlertAction(title: "Drop DB", style: .default, handler: { action in  self.dataCollectionViewControllerInst.dataCollectionViewInst.dropCompanyTable(){isSuccessful in
+                if isSuccessful {
+                    // select the rows and update the table
+                    self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = false
+                    self.dataCollectionViewControllerInst.dataCollectionViewInst.selectRows() {isSuccessful in
+                        if isSuccessful {
+                            self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = true
+                            self.dataCollectionViewControllerInst.dataCollectionViewInst.companiesTableViewInst.reloadData()
+                        }
+                    }
+                }
+            }
+        }))
+        self.confirmDropTableAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
         //Utilities.populateMeasureInfo()
     }
 
@@ -98,19 +115,7 @@ class TabsViewController: UITabBarController, UITabBarControllerDelegate {
            let optionMenu = UIAlertController(title: nil, message: "Menu", preferredStyle: .actionSheet)
            self.dataCollectionViewControllerInst.dataCollectionViewInst.showActivityIndicator(uiView: self.dataCollectionViewControllerInst.dataCollectionViewInst)
            
-           let dropCompanyTable = UIAlertAction(title: "Drop Database", style: .default, handler: { (alert: UIAlertAction!) -> Void in
-               self.dataCollectionViewControllerInst.dataCollectionViewInst.dropCompanyTable(){isSuccessful in
-                   if isSuccessful {
-                       // select the rows and update the table
-                       self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = false
-                       self.dataCollectionViewControllerInst.dataCollectionViewInst.selectRows() {isSuccessful in
-                           if isSuccessful {
-                               self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = true
-                               self.dataCollectionViewControllerInst.dataCollectionViewInst.companiesTableViewInst.reloadData()
-                           }
-                       }
-                   }
-               }
+           let dropCompanyTable = UIAlertAction(title: "Drop Database", style: .default, handler: { (alert: UIAlertAction!) -> Void in self.present(self.confirmDropTableAlert, animated: true)
            })
            
            let addCompanyTable = UIAlertAction(title: "Add Database", style: .default, handler: { (alert: UIAlertAction!) -> Void in
@@ -142,8 +147,6 @@ class TabsViewController: UITabBarController, UITabBarControllerDelegate {
                }
            })
            
-
-        
             let updateMeasuresAE = UIAlertAction(title: "Update Historical Data A-E", style: .default, handler: { (alert: UIAlertAction!) -> Void in
                 let setOfTickers = "A-E" // F-N, O-Z
                 self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = false
@@ -179,6 +182,7 @@ class TabsViewController: UITabBarController, UITabBarControllerDelegate {
                 self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = false
                 self.dataCollectionViewControllerInst.dataCollectionViewInst.updateHistoricalMeasures(setOfTickers: setOfTickers) {isSuccessful in
                     if isSuccessful {
+                        print("isSuccessful 2")
                         self.dataCollectionViewControllerInst.dataCollectionViewInst.selectRows() {isSuccessful in
                             if isSuccessful {
                                 self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = true

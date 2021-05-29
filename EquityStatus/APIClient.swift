@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 class APIClient {
-    
+    // Use the "Core US Fundamentals Data" at quandl. $50/mo
     class func requestHistoricalMeasures(tickers: String, completion: @escaping ([String: Any]) -> Void) {
         let urlString = "https://www.quandl.com/api/v3/datatables/SHARADAR/SF1.json"
         let urlWithParameters = "\(urlString)?dimension=MRY&qopts.columns=ticker,datekey,eps,sharesbas,de,pe1,roe,bvps&api_key=\(Secrets.quandlKey)&ticker=\(tickers)"
@@ -110,77 +110,6 @@ class APIClient {
         } else {
             print("error: unable to unwrap url")
         }
-    }
-    
-  class func requestHistoricalData(ticker: String, measure: String, completion: @escaping ([String: Any]) -> Void) {
-//        let apiTags:[String: String] = [
-//            "eps_i": "basiceps",
-//            "roe_avg": "roe",
-//            "bv_i": "bookvaluepershare",
-//            "dr_avg": "debttoequity",
-//            "so_reduced": "weightedavebasicsharesos",
-//            "pe_avg": "pricetoearnings"
-//        ]
-//        let urlString = "https://api-v2.intrinio.com/historical_data/\(ticker)/\(apiTags[measure]!)"
-//        let url = URL(string: urlString)
-//        if let url = url {
-//            var request = URLRequest(url: url)
-//
-//            request.httpMethod = "POST"
-//            request.setValue("application/json", forHTTPHeaderField: "Accept")
-//            request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
-//
-//            let parameterString = "sort_order=desc&frequency=quarterly&api_key=\(Secrets.intrinioKey)"
-//            request.httpBody = parameterString.data(using: .utf8)
-//
-//            URLSession.shared.dataTask(with: request, completionHandler: { data, response, error in
-//                if let data = data {
-//                    DispatchQueue.main.async {
-//                        do {
-//                            let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-//                            if let message = (json?["message"]) {
-//                                completion(["error": message as! String])
-//                            } else if let measureArr = json?["historical_data"] {
-//                                var measureValues = [Double]()
-//                                if let measureArrUnwrapped = measureArr as? [[String: Any?]] {
-//                                    for eps in measureArrUnwrapped {
-//                                        if let measureValue = (eps["value"]) {
-//                                            if measureValues.count < 40 {
-//                                                // collect values for the most recent 40 quarters
-//                                                //print("\(ticker) , value to append: \(String(describing: measureValue))")
-//                                                if let measureArrUnwrapped = measureValue as! Double? {
-//                                                    measureValues.append(measureArrUnwrapped)
-//                                                } else {
-//                                                    break // a nil value was found in the dataset so exit ignoring the later values
-//                                                }
-//                                            }
-//                                        } else {
-//                                            completion(["error": "No values for \(ticker)." as String])
-//                                        }
-//                                    }
-//                                } else {
-//                                    completion(["error": "No values for \(ticker)." as String])
-//                                }
-//                                if measureValues.count > 20 {
-//                                    completion(["results": measureValues])
-//                                } else {
-//                                    completion(["error": "\(ticker): > 5 yrs of data. Discarded." as String])
-//                                }
-//                            } else {
-//                                completion(["error": "No values for \(ticker)." as String])
-//                            }
-//                        } catch {
-//                            completion(["error": "The request for \(ticker) failed. Try again."])
-//                        }
-//                    }
-//                }
-//                if let error = error {
-//                    completion(["error": error])
-//                }
-//            }).resume()
-//        } else {
-//            print("error: unable to unwrap url")
-//        }
     }
     
     class func getStockPrices(tickers: [String], tenYrsAgo: Bool, completion: @escaping ([String: Any]) -> Void) {
