@@ -33,7 +33,7 @@ class MeasurePageViewController: UIPageViewController, UIPageViewControllerDataS
         q4_ViewControllerInst = QuestionMeasureViewController(),
         q5_ViewControllerInst = QuestionMeasureViewController(),
         q6_ViewControllerInst = QuestionMeasureViewController(),
-        own_ViewControllerInst = QuestionMeasureViewController()
+        watch_ViewControllerInst = QuestionMeasureViewController()
     
     var calcMeasureVCInstances: [(instance: CalcMeasureViewController, measure: String)] = []
     var subjectiveMeasureVCInstances: [(instance: QuestionMeasureViewController, measure: String)] = []
@@ -74,7 +74,7 @@ class MeasurePageViewController: UIPageViewController, UIPageViewControllerDataS
         subjectiveMeasureVCInstances.append((self.q4_ViewControllerInst, "q4"))
         subjectiveMeasureVCInstances.append((self.q5_ViewControllerInst, "q5"))
         subjectiveMeasureVCInstances.append((self.q6_ViewControllerInst, "q6"))
-        subjectiveMeasureVCInstances.append((self.own_ViewControllerInst, "own"))
+        subjectiveMeasureVCInstances.append((self.watch_ViewControllerInst, "watch"))
         
         for subjectiveMeasureVCInstance in subjectiveMeasureVCInstances {
             subjectiveMeasureVCInstance.instance.company = company

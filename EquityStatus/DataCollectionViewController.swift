@@ -23,7 +23,6 @@ class DataCollectionViewController: UIViewController, DataCollectionViewDelegate
     
     override func loadView(){
         self.dataCollectionViewInst.frame = CGRect(x: 0, y: 0, width: 200, height: 400) //CGRect.zero
-        self.dataCollectionViewInst.backgroundColor = UIColor( red: CGFloat(92/255.0), green: CGFloat(203/255.0), blue: CGFloat(207/255.0), alpha: CGFloat(1.0) )
         self.view = self.dataCollectionViewInst
     }
     

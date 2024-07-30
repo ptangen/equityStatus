@@ -10,8 +10,7 @@ import UIKit
 
 class TabsViewController: UITabBarController, UITabBarControllerDelegate {
     
-    var ownViewControllerInst = OwnViewController()
-    var buyViewControllerInst = BuyViewController()
+    var watchViewControllerInst = WatchViewController()
     var evaluationViewControllerInst = EvaluationViewController()
     var sellViewControllerInst = SellViewController()
     var dataCollectionViewControllerInst = DataCollectionViewController()
@@ -36,8 +35,6 @@ class TabsViewController: UITabBarController, UITabBarControllerDelegate {
             }
         }))
         self.confirmDropTableAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        
-        //Utilities.populateMeasureInfo()
     }
 
     override func didReceiveMemoryWarning() {
@@ -51,19 +48,12 @@ class TabsViewController: UITabBarController, UITabBarControllerDelegate {
         self.navigationItem.hidesBackButton = true
         UITabBar.appearance().tintColor = UIColor(named: .statusBarBlue)
         
-        // Create Tab Buy
-        self.ownViewControllerInst = OwnViewController()
-        let tabOwnBarItem = UITabBarItem(title: "Own", image: UIImage(named: "seedling"), selectedImage: UIImage(named: "seedling"))
-        self.ownViewControllerInst.tabBarItem = tabOwnBarItem
-        self.ownViewControllerInst.ownViewInst.setHeadingLabels()
-        self.ownViewControllerInst.tabBarItem.accessibilityLabel = "ownTab"
-        
-        // Create Tab Buy
-        self.buyViewControllerInst = BuyViewController()
-        let tabBuyBarItem = UITabBarItem(title: "Buy", image: UIImage(named: "shopping-cart"), selectedImage: UIImage(named: "shopping-cart"))
-        self.buyViewControllerInst.tabBarItem = tabBuyBarItem
-        self.buyViewControllerInst.buyViewInst.setHeadingLabels()
-        self.buyViewControllerInst.tabBarItem.accessibilityLabel = "buyTab"
+        // Create Tab Watch
+        self.watchViewControllerInst = WatchViewController()
+        let tabWatchBarItem = UITabBarItem(title: "Watch", image: UIImage(named: "seedling"), selectedImage: UIImage(named: "seedling"))
+        self.watchViewControllerInst.tabBarItem = tabWatchBarItem
+        self.watchViewControllerInst.watchViewInst.setHeadingLabels()
+        self.watchViewControllerInst.tabBarItem.accessibilityLabel = "watchTab"
         
         // Create Tab Analysis
         self.evaluationViewControllerInst = EvaluationViewController()
@@ -81,8 +71,7 @@ class TabsViewController: UITabBarController, UITabBarControllerDelegate {
         let dataCollectionTabBarItem = UITabBarItem(title: "Data Collection", image: UIImage(named: "cloud_download"), selectedImage: UIImage(named: "cloud_download"))
         self.dataCollectionViewControllerInst.tabBarItem = dataCollectionTabBarItem
         
-        
-        self.viewControllers = [ownViewControllerInst, buyViewControllerInst, evaluationViewControllerInst, sellViewControllerInst, dataCollectionViewControllerInst]
+        self.viewControllers = [watchViewControllerInst, evaluationViewControllerInst, sellViewControllerInst, dataCollectionViewControllerInst]
         
         // add the menu button to the nav bar
         let menuButton = UIBarButtonItem(image: #imageLiteral(resourceName: "menu"), style: .plain, target: self, action: #selector(menuButtonClicked))
@@ -96,10 +85,8 @@ class TabsViewController: UITabBarController, UITabBarControllerDelegate {
         let selectedTabVC = viewController
         if let selectedTab = selectedTabVC.tabBarItem.accessibilityLabel {
             switch selectedTab {
-                case "ownTab":
-                    self.ownViewControllerInst.ownViewInst.updateCompanyData(selectedTab: .own)
-                case "buyTab":
-                    self.buyViewControllerInst.buyViewInst.updateCompanyData(selectedTab: .buy)
+                case "watchTab":
+                self.watchViewControllerInst.watchViewInst.updateCompanyData(selectedTab: .watch)
                 case "evalTab":
                     self.evaluationViewControllerInst.evaluationViewInst.updateCompaniesToEvaluate()
                 case "sellTab":
@@ -147,8 +134,8 @@ class TabsViewController: UITabBarController, UITabBarControllerDelegate {
                }
            })
            
-            let updateMeasuresAE = UIAlertAction(title: "Update Historical Data A-E", style: .default, handler: { (alert: UIAlertAction!) -> Void in
-                let setOfTickers = "A-E" // F-N, O-Z
+            let updateMeasuresAB = UIAlertAction(title: "Update Historical Data A-B", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+                let setOfTickers = "A-B" // C-E, F-N, O-S, T-Z
                 self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = false
                 self.dataCollectionViewControllerInst.dataCollectionViewInst.updateHistoricalMeasures(setOfTickers: setOfTickers) {isSuccessful in
                     if isSuccessful {
@@ -162,8 +149,8 @@ class TabsViewController: UITabBarController, UITabBarControllerDelegate {
                 }
             })
         
-            let updateMeasuresFN = UIAlertAction(title: "Update Historical Data F-N", style: .default, handler: { (alert: UIAlertAction!) -> Void in
-                let setOfTickers = "F-N"
+            let updateMeasuresCE = UIAlertAction(title: "Update Historical Data C-E", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+                let setOfTickers = "C-E"
                 self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = false
                 self.dataCollectionViewControllerInst.dataCollectionViewInst.updateHistoricalMeasures(setOfTickers: setOfTickers) {isSuccessful in
                     if isSuccessful {
@@ -177,12 +164,71 @@ class TabsViewController: UITabBarController, UITabBarControllerDelegate {
                 }
             })
         
-            let updateMeasuresOZ = UIAlertAction(title: "Update Historical Data O-Z", style: .default, handler: { (alert: UIAlertAction!) -> Void in
-                let setOfTickers = "O-Z"
+            let updateMeasuresFJ = UIAlertAction(title: "Update Historical Data F-J", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+                let setOfTickers = "F-J"
                 self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = false
                 self.dataCollectionViewControllerInst.dataCollectionViewInst.updateHistoricalMeasures(setOfTickers: setOfTickers) {isSuccessful in
                     if isSuccessful {
-                        print("isSuccessful 2")
+                        self.dataCollectionViewControllerInst.dataCollectionViewInst.selectRows() {isSuccessful in
+                            if isSuccessful {
+                                self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = true
+                                self.dataCollectionViewControllerInst.dataCollectionViewInst.companiesTableViewInst.reloadData()
+                            }
+                        }
+                    }
+                }
+            })
+        
+            let updateMeasuresKN = UIAlertAction(title: "Update Historical Data K-N", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+                let setOfTickers = "K-N"
+                self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = false
+                self.dataCollectionViewControllerInst.dataCollectionViewInst.updateHistoricalMeasures(setOfTickers: setOfTickers) {isSuccessful in
+                    if isSuccessful {
+                        self.dataCollectionViewControllerInst.dataCollectionViewInst.selectRows() {isSuccessful in
+                            if isSuccessful {
+                                self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = true
+                                self.dataCollectionViewControllerInst.dataCollectionViewInst.companiesTableViewInst.reloadData()
+                            }
+                        }
+                    }
+                }
+            })
+        
+            let updateMeasuresOR = UIAlertAction(title: "Update Historical Data O-R", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+                let setOfTickers = "O-R"
+                self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = false
+                self.dataCollectionViewControllerInst.dataCollectionViewInst.updateHistoricalMeasures(setOfTickers: setOfTickers) {isSuccessful in
+                    if isSuccessful {
+                        self.dataCollectionViewControllerInst.dataCollectionViewInst.selectRows() {isSuccessful in
+                            if isSuccessful {
+                                self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = true
+                                self.dataCollectionViewControllerInst.dataCollectionViewInst.companiesTableViewInst.reloadData()
+                            }
+                        }
+                    }
+                }
+            })
+        
+            let updateMeasuresST = UIAlertAction(title: "Update Historical Data S-T", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+                let setOfTickers = "S-T"
+                self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = false
+                self.dataCollectionViewControllerInst.dataCollectionViewInst.updateHistoricalMeasures(setOfTickers: setOfTickers) {isSuccessful in
+                    if isSuccessful {
+                        self.dataCollectionViewControllerInst.dataCollectionViewInst.selectRows() {isSuccessful in
+                            if isSuccessful {
+                                self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = true
+                                self.dataCollectionViewControllerInst.dataCollectionViewInst.companiesTableViewInst.reloadData()
+                            }
+                        }
+                    }
+                }
+            })
+        
+            let updateMeasuresUZ = UIAlertAction(title: "Update Historical Data U-Z", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+                let setOfTickers = "U-Z"
+                self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = false
+                self.dataCollectionViewControllerInst.dataCollectionViewInst.updateHistoricalMeasures(setOfTickers: setOfTickers) {isSuccessful in
+                    if isSuccessful {
                         self.dataCollectionViewControllerInst.dataCollectionViewInst.selectRows() {isSuccessful in
                             if isSuccessful {
                                 self.dataCollectionViewControllerInst.dataCollectionViewInst.activityIndicator.isHidden = true
@@ -224,9 +270,13 @@ class TabsViewController: UITabBarController, UITabBarControllerDelegate {
             let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: { (alert: UIAlertAction!) -> Void in })
            
             // Add actions to menu and display
-            optionMenu.addAction(updateMeasuresAE)
-            optionMenu.addAction(updateMeasuresFN)
-            optionMenu.addAction(updateMeasuresOZ)
+            optionMenu.addAction(updateMeasuresAB)
+            optionMenu.addAction(updateMeasuresCE)
+            optionMenu.addAction(updateMeasuresFJ)
+            optionMenu.addAction(updateMeasuresKN)
+            optionMenu.addAction(updateMeasuresOR)
+            optionMenu.addAction(updateMeasuresST)
+            optionMenu.addAction(updateMeasuresUZ)
             optionMenu.addAction(updateExpectedROI)
             optionMenu.addAction(updatePreviousROI)
            

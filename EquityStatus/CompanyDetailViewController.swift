@@ -205,12 +205,12 @@ class CompanyDetailViewController: UIViewController, CompanyDetailViewDelegate {
             )
             
             setLabelsInRow(
-                measureName:    "own",
+                measureName:    "watch",
                 measureValue:   nil,
-                measurePassed:  self.company.own_passed,
-                measureLabel:   self.companyDetailViewInst.own_Desc,
-                measureTap:     self.companyDetailViewInst.own_DescTap,
-                statusLabel:    self.companyDetailViewInst.own_StatusDesc
+                measurePassed:  self.company.watch_passed,
+                measureLabel:   self.companyDetailViewInst.watch_Desc,
+                measureTap:     self.companyDetailViewInst.watch_DescTap,
+                statusLabel:    self.companyDetailViewInst.watch_StatusDesc
             )
         }
     }

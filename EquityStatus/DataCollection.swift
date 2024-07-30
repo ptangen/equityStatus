@@ -47,7 +47,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
     let q4_answerCol =   Expression<String?>("q4_answerCol")
     let q5_answerCol =   Expression<String?>("q5_answerCol")
     let q6_answerCol =   Expression<String?>("q6_answerCol")
-    let own_answerCol =  Expression<String?>("own_answerCol")
+    let watch_answerCol =  Expression<String?>("watch_answerCol")
     
     let q1_passedCol =   Expression<Bool?>("q1_passedCol")
     let q2_passedCol =   Expression<Bool?>("q2_passedCol")
@@ -55,7 +55,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
     let q4_passedCol =   Expression<Bool?>("q4_passedCol")
     let q5_passedCol =   Expression<Bool?>("q5_passedCol")
     let q6_passedCol =   Expression<Bool?>("q6_passedCol")
-    let own_passedCol =  Expression<Bool?>("own_passedCol")
+    let watch_passedCol =  Expression<Bool?>("watch_passedCol")
     
     override init(frame:CGRect){
         super.init(frame: frame)
@@ -81,8 +81,8 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
         // evaluationTableViewInst
         self.addSubview(self.companiesTableViewInst)
         self.companiesTableViewInst.translatesAutoresizingMaskIntoConstraints = false
-        self.companiesTableViewInst.topAnchor.constraint(equalTo: self.topAnchor, constant: 0).isActive = true
-        self.companiesTableViewInst.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0).isActive = true
+        self.companiesTableViewInst.topAnchor.constraint(equalTo: self.topAnchor, constant: 66).isActive = true
+        self.companiesTableViewInst.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -90).isActive = true
         self.companiesTableViewInst.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0).isActive = true
         self.companiesTableViewInst.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0).isActive = true
         
@@ -101,6 +101,14 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
         return 76
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        if let indexPaths = companiesTableViewInst.indexPathsForVisibleRows {
+            for indexPath in indexPaths {
+                self.companiesTableViewInst.reloadRows(at: [indexPath], with: .automatic)
+            }
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -145,9 +153,9 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
             cell.bv_iLabel.text = "bv_i: \(bv_i.description)"
         }
         
-        // ownLabel
-        if let own_passed = self.store.companies[indexPath.row].own_passed {
-            cell.own_passedLabel.text = "own: \(own_passed)"
+        // watchLabel
+        if let watch_passed = self.store.companies[indexPath.row].watch_passed {
+            cell.watch_passedLabel.text = "watch: \(watch_passed)"
         }
         
         // price_LastLabel
@@ -171,26 +179,43 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
     func updateHistoricalMeasures(setOfTickers: String, completion: @escaping (Bool) -> Void){
         let database = DBUtilities.getDBConnection()
         var tickersToGetMeasures = [String]()
-        // let tickersAtoE = str < "F"  // A - E
-        // let tickersFtoN = "EZZZZ" < str && str < "O"  // F - N
-        // let tickersOtoZ = str >= "O"  // O - Z
+        
+        // nasdaq is not letting us get so many companies in one request. Need to reduce size of request to something less
         
         for company in self.store.companies {
-            if setOfTickers == "A-E" {
-                if company.ticker < "F" { // F
+            if setOfTickers == "A-B" {
+                if company.ticker < "C" {
                     tickersToGetMeasures.append(company.ticker)
                 }
-            } else if setOfTickers == "F-N" {
-                if "EZZZZ" < company.ticker && company.ticker < "O" {
+            } else if setOfTickers == "C-E" {
+                if "BZZZZ" < company.ticker && company.ticker < "F" {
                     tickersToGetMeasures.append(company.ticker)
                 }
-            } else { // O-Z
-                if company.ticker >= "O" {
+            } else if setOfTickers == "F-J" {
+                if "EZZZZ" < company.ticker && company.ticker < "K" {
+                    tickersToGetMeasures.append(company.ticker)
+                }
+            } else if setOfTickers == "K-N" {
+                if "JZZZZ" < company.ticker && company.ticker < "O" {
+                    tickersToGetMeasures.append(company.ticker)
+                }
+            } else if setOfTickers == "O-R" {
+                if "NZZZZ" < company.ticker && company.ticker < "S" {
+                //if "NZZZZ" < company.ticker && company.ticker < "P" {
+                    tickersToGetMeasures.append(company.ticker)
+                }
+            } else if setOfTickers == "S-T" {
+                if "RZZZZ" < company.ticker && company.ticker < "U" {
+                    tickersToGetMeasures.append(company.ticker)
+                }
+            } else { // U-Z
+                if company.ticker >= "U" {
                     tickersToGetMeasures.append(company.ticker)
                 }
             }
         }
         let tickersString = tickersToGetMeasures.joined(separator: ",") // convert array to string for API request
+        //print("tickersString: \(tickersString)")
         
         APIClient.requestHistoricalMeasures(tickers: tickersString, completion: { response in
             //print("response:  \(response)")
@@ -198,22 +223,23 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
                 if errorMessage != "An error occured. Please contact success@intrinio.com with the details."{ // this occurs when ticker not found, happens often with sandbox key
                     self.errorMessage += "\(errorMessage)\r\n" // show after collecting data
                 }
+                self.delegate?.showAlertMessage(self.errorMessage)
             } else if let historicalMeasures = response["results"] as! [HistoricalMeasure]? {
                 
                 for ticker in tickersToGetMeasures {
                     var measureSets = historicalMeasures.filter { $0.ticker == ticker }
                     measureSets.sort(by: {$0.date > $1.date})
                     
-                    //print(ticker)
-                    //dump(measureSets)
+//                    print(ticker)
+//                    dump(measureSets)
                     
-                    var eps_iValues = [Double]()
-                    var eps_sdValues = [Double]()
-                    var roeValues = [Double]()
-                    var bvValues = [Double]()
-                    var soValues = [Int]()
-                    var drValues = [Double]()
-                    var peValues = [Double]()
+                    var eps_iValuesAll = [Double]()
+                    var eps_sdValuesAll = [Double]()
+                    var roeValuesAll = [Double]()
+                    var bvValuesAll = [Double]()
+                    var soValuesAll = [Double]()
+                    var drValuesAll = [Double]()
+                    var peValuesAll = [Double]()
                     
                     for measureSet in measureSets {
                         
@@ -225,31 +251,49 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
                         
                         // eps
                         if let eps = measureSet.eps {
-                            if includeRemainingEPSValues { eps_iValues.append(eps) }
-                            eps_sdValues.append(eps)
+                            if includeRemainingEPSValues { eps_iValuesAll.append(eps) }
+                            eps_sdValuesAll.append(eps)
                         } else {
                             includeRemainingEPSValues = false
                         }
                         
                         // roe
-                        if let roe = measureSet.roe { roeValues.append(roe) }
+                        if let roe = measureSet.roe { roeValuesAll.append(roe) }
                         
                         // bv
                         if let bv = measureSet.bv {
-                            if includeRemainingBVValues { bvValues.append(bv) }
+                            if includeRemainingBVValues { bvValuesAll.append(bv) }
                         } else {
                             includeRemainingBVValues = false
                         }
                         
                         // so
-                        if let so = measureSet.so { soValues.append(so) }
+                        if let so = measureSet.so { soValuesAll.append(Double(so)) }
                         
                         // dr
-                        if let dr = measureSet.dr { drValues.append(dr) }
+                        if let dr = measureSet.dr { drValuesAll.append(dr) }
                         
                         // pe
-                        if let pe = measureSet.pe { peValues.append(pe) }
+                        if let pe = measureSet.pe { peValuesAll.append(pe) }
                     }
+//                    print("eps_iValuesAll: \(eps_iValuesAll)")
+//                    print("eps_sdValuesAll: \(eps_sdValuesAll)")
+//                    print("roeValuesAll: \(roeValuesAll)")
+//                    print("bvValuesAll: \(bvValuesAll)")
+//                    print("soValuesAll: \(soValuesAll)")
+//                    print("drValuesAll: \(drValuesAll)")
+//                    print("peValuesAll: \(peValuesAll)")
+                    
+                    // get 10 most recent values for each measure - remove extras
+                    
+                    let eps_iValues = self.getTenMostRecentValues(valuesArr: eps_iValuesAll)
+                    let eps_sdValues = self.getTenMostRecentValues(valuesArr: eps_sdValuesAll)
+                    let roeValues = self.getTenMostRecentValues(valuesArr: roeValuesAll)
+                    let bvValues = self.getTenMostRecentValues(valuesArr: bvValuesAll)
+                    let soValues = self.getTenMostRecentValues(valuesArr: soValuesAll) //[Int]()
+                    let drValues = self.getTenMostRecentValues(valuesArr: drValuesAll)
+                    let peValues = self.getTenMostRecentValues(valuesArr: peValuesAll)
+                    
 //                    print("eps_iValues: \(eps_iValues)")
 //                    print("eps_sdValues: \(eps_sdValues)")
 //                    print("roeValues: \(roeValues)")
@@ -266,7 +310,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
                         if (eps_iValues.count > 4) {
                             let eps_i = self.getInterestRate(valuesArr: eps_iValues)
                             let eps_sd = self.getSD(valuesArr: eps_sdValues)
-                            //print("ticker: \(ticker), measureValuei: \(measure), measureValuei: \(measureValuei), measureValueSD: \(measureValueSD), eps_lastCol: \(measureValueArr.first)")
+                            //print("ticker: \(ticker), eps_iValues: \(eps_iValues), eps_sd: \(eps_sd)")
                             try database.run(selectedTicker.update(self.eps_iCol <- eps_i))
                             try database.run(selectedTicker.update(self.eps_sdCol <- eps_sd))
                             try database.run(selectedTicker.update(self.eps_lastCol <- eps_iValues.first))
@@ -277,6 +321,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
                         // roe_avg
                         if (roeValues.count > 4) {
                             let roe_avg = self.getAverage(valuesArr: roeValues, multiplier: 100)
+                            //print("ticker: \(ticker), roe_avg: \(roe_avg)")
                             try database.run(selectedTicker.update(self.roe_avgCol <- Int(roe_avg)))
                         } else {
                             self.removeValuesForMeasure(tickersToRemoveMeasureValue: [ticker], measure: "roe_avg")
@@ -285,6 +330,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
                         // bv_i
                         if (bvValues.count > 4) {
                             let bv_i = self.getInterestRate(valuesArr: bvValues)
+                            //print("ticker: \(ticker), bv_i: \(bv_i)")
                             try database.run(selectedTicker.update(self.bv_iCol <- bv_i))
                         } else {
                             self.removeValuesForMeasure(tickersToRemoveMeasureValue: [ticker], measure: "bv_i")
@@ -293,6 +339,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
                         // so_reduced
                         if (soValues.count > 4) {
                             let so_reduced = self.getAmountReduced(valuesArr: soValues)
+                            //print("ticker: \(ticker), so_reduced: \(so_reduced)")
                             try database.run(selectedTicker.update(self.so_reducedCol <- so_reduced))
                         } else {
                             self.removeValuesForMeasure(tickersToRemoveMeasureValue: [ticker], measure: "so_reduced")
@@ -301,6 +348,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
                         // dr_avg
                         if (drValues.count > 4) {
                             let dr_avg = self.getAverage(valuesArr: drValues, multiplier: 1)
+                            //print("ticker: \(ticker), dr_avg: \(dr_avg)")
                             try database.run(selectedTicker.update(self.dr_avgCol <- Int(dr_avg)))
                         } else {
                             self.removeValuesForMeasure(tickersToRemoveMeasureValue: [ticker], measure: "dr_avg")
@@ -314,6 +362,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
                                 let pe_change = ((mostRecentPE/pe_avg) - 1) * 100
                                 try database.run(selectedTicker.update(self.pe_changeCol <- pe_change))
                             }
+                            //print("ticker: \(ticker), pe_avg: \(pe_avg)")
                             try database.run(selectedTicker.update(self.pe_avgCol <- pe_avg))
                         } else {
                             self.removeValuesForMeasure(tickersToRemoveMeasureValue: [ticker], measure: "pe_change")
@@ -336,10 +385,10 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
         // create arrays of tickers, one array to collect data for and one array where thresholds are not met and remove data for the measure
         var tickersToGetMeasureValue = [String]()
         var tickersToRemoveMeasureValue = [String]()
-        var ownedCompany: Bool = false
+        var watchCompany: Bool = false
         
         for company in self.store.companies {
-            if let own_passed_unwrapped = company.own_passed { ownedCompany = own_passed_unwrapped }
+            if let watch_passed_unwrapped = company.watch_passed { watchCompany = watch_passed_unwrapped }
             // filter out tickers with measures that did not pass
             if let eps_i_passed_unwrapped = company.eps_i_passed,
                 let eps_sd_passed_unwrapped = company.eps_sd_passed,
@@ -347,7 +396,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
                 let bv_i_passed_unwrapped = company.bv_i_passed,
                 let dr_avg_passed_unwrapped = company.dr_avg_passed,
                 let so_reduced_passed_unwrapped = company.so_reduced_passed {
-                if (eps_i_passed_unwrapped && eps_sd_passed_unwrapped && roe_avg_passed_unwrapped && bv_i_passed_unwrapped && dr_avg_passed_unwrapped && so_reduced_passed_unwrapped && company.tenYrsOld) || ownedCompany {
+                if (eps_i_passed_unwrapped && eps_sd_passed_unwrapped && roe_avg_passed_unwrapped && bv_i_passed_unwrapped && dr_avg_passed_unwrapped && so_reduced_passed_unwrapped && company.tenYrsOld) || watchCompany {
                     tickersToGetMeasureValue.append(company.ticker) // all measure values met threshold
                 } else {
                     tickersToRemoveMeasureValue.append(company.ticker) // measure value did not met threshold
@@ -355,10 +404,10 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
             } else {
                 tickersToRemoveMeasureValue.append(company.ticker) // one measure value was missing
             }
-            ownedCompany = false
+            watchCompany = false
         }
-        //print("tickersToGetMeasureValue: \(tickersToGetMeasureValue)")
-        //print("tickersToRemoveMeasureValue: \(tickersToRemoveMeasureValue)")
+        print("tickersToGetMeasureValue: \(tickersToGetMeasureValue)")
+        print("tickersToRemoveMeasureValue: \(tickersToRemoveMeasureValue)")
         var tenYrsAgo = Bool()
         if measure == "expected_roi" {
             tenYrsAgo = false
@@ -471,6 +520,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
             // where clause
             let selectedTicker = self.companiesTable.filter(self.tickerCol == ticker)
             do {
+                //print("measureXX: \(measure)")
                 switch measure {
                     
                     case "roe_avg":
@@ -530,8 +580,19 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
         return 0
     }
     
-    func getAmountReduced(valuesArr: [Int]) -> Int {
+    func getAmountReduced(valuesArr: [Double]) -> Int {
         return Int(valuesArr.last! - valuesArr.first!)
+    }
+    
+    func getTenMostRecentValues(valuesArr: [Double]) -> [Double] {
+        // get first 10 values, if array is smaller, return original array
+        var valuesArr10: [Double]
+        if valuesArr.count > 10 {
+            valuesArr10 = Array(valuesArr[0 ..< 10])
+        } else {
+            valuesArr10 = valuesArr
+        }
+        return valuesArr10
     }
     
     func getInterestRate(valuesArr: [Double]) -> Int {
@@ -616,7 +677,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
                 if let q4_answer = companyRow[q4_answerCol]   { company.q4_answer = q4_answer }
                 if let q5_answer = companyRow[q5_answerCol]   { company.q5_answer = q5_answer }
                 if let q6_answer = companyRow[q6_answerCol]   { company.q6_answer = q6_answer }
-                if let own_answer = companyRow[own_answerCol] { company.own_answer = own_answer }
+                if let watch_answer = companyRow[watch_answerCol] { company.watch_answer = watch_answer }
                 
                 if let q1_passed = companyRow[q1_passedCol]   { company.q1_passed = q1_passed }
                 if let q2_passed = companyRow[q2_passedCol]   { company.q2_passed = q2_passed }
@@ -624,7 +685,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
                 if let q4_passed = companyRow[q4_passedCol]   { company.q4_passed = q4_passed }
                 if let q5_passed = companyRow[q5_passedCol]   { company.q5_passed = q5_passed }
                 if let q6_passed = companyRow[q6_passedCol]   { company.q6_passed = q6_passed }
-                if let own_passed = companyRow[own_passedCol] { company.own_passed = own_passed }
+                if let watch_passed = companyRow[watch_passedCol] { company.watch_passed = watch_passed }
                 
                 self.store.companies.append(company)
             }
@@ -695,7 +756,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
             table.column(q4_answerCol)
             table.column(q5_answerCol)
             table.column(q6_answerCol)
-            table.column(own_answerCol)
+            table.column(watch_answerCol)
         
             table.column(q1_passedCol)
             table.column(q2_passedCol)
@@ -703,7 +764,7 @@ class DataCollectionView: UIView, UITableViewDataSource, UITableViewDelegate {
             table.column(q4_passedCol)
             table.column(q5_passedCol)
             table.column(q6_passedCol)
-            table.column(own_passedCol)
+            table.column(watch_passedCol)
        }
         
         let tenYrsOldFalse = ["AMCX", "ATKR","APTV","FBHS","HGV","KNSL","NLOK","PYPL","SYF"] // these companies do not have stock prices from 10 yrs ago, an error occurs when requesting stock prices for these companies in Dec 2019

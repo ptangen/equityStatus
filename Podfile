@@ -6,7 +6,7 @@ target 'EquityStatus' do
   use_frameworks!
 
   # Pods for EquityStatus
-	pod 'Charts', '~> 3.0.1'
+	pod 'Charts', '~> 3.5'
 	pod 'SQLite.swift', '~> 0.11.6'
 
 

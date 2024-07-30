@@ -38,7 +38,7 @@ struct Constants{
     }
     
     enum thresholdValues: Double {
-        case eps_i = 12
+        case eps_i = 15 // 12
         case eps_sd = 0.35
         case bv_i = 5
         case so_reduced = 0
@@ -62,8 +62,7 @@ struct Constants{
     }
     
     enum EquityTabValue {
-        case own
-        case buy
+        case watch
         case evaluate
         case sell
         case notSet

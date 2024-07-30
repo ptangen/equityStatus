@@ -54,7 +54,7 @@ class EvaluationView: UIView, UITableViewDataSource, UITableViewDelegate {
     
     func setHeadingLabels() {
         // set the labels in the heading
-        self.companiesToEvaluate.count == 1 ? (self.pageDescLabel.text = "This company has passed several assessments and failed none. Tap to evaluate the remaining measures and determine if the company's stock is a buy or sell.") : (self.pageDescLabel.text = "These companies have passed several assessments and failed none. Tap to evaluate the remaining measures and determine if the companies' stock is a buy or a sell.")
+        self.companiesToEvaluate.count == 1 ? (self.pageDescLabel.text = "This company has passed several assessments and failed none. Tap to evaluate the remaining measures and determine if the company's stock is a buy or sell.") : (self.pageDescLabel.text = "These companies have passed several assessments and failed none. Evaluate the remaining subjective measures.")
         self.countLabel.text = "\(self.companiesToEvaluate.count)"
     }
     
@@ -91,7 +91,7 @@ class EvaluationView: UIView, UITableViewDataSource, UITableViewDelegate {
         self.addSubview(self.evaluationTableViewInst)
         self.evaluationTableViewInst.translatesAutoresizingMaskIntoConstraints = false
         self.evaluationTableViewInst.topAnchor.constraint(equalTo: self.pageDescLabel.bottomAnchor, constant: 10).isActive = true
-        self.evaluationTableViewInst.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -50).isActive = true
+        self.evaluationTableViewInst.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -90).isActive = true
         self.evaluationTableViewInst.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0).isActive = true
         self.evaluationTableViewInst.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -10).isActive = true
         

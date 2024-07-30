@@ -20,7 +20,7 @@ class DataStore {
     var measureInfo:[String: [String: String]] = [
         "eps_i": [
             "name": "eps_i",
-            "longName": "Earnings Per Share Growth Rate",
+            "longName": "EPS Growth Rate",
             "thresholdDesc":"Threshold: Greater than or equal to 15%",
             "calcDesc": "Calculation: The annual earnings per share (EPS) is collected and then the future value formula is applied to determine the growth rate of the EPS.",
             "pageIndex": "0",
@@ -28,8 +28,8 @@ class DataStore {
         ],
         "eps_sd": [
             "name": "eps_sd",
-            "longName": "Earnings Per Share Standard Deviation",
-            "thresholdDesc":"Threshold: Less than or equal to 2.0",
+            "longName": "EPS Standard Deviation",
+            "thresholdDesc":"Threshold: Less than or equal to 0.35",
             "calcDesc": "Calculation: The standard deviation of the EPS values from the last ten years is calculated. The lower the STD, the less volatile the the EPS.",
             "pageIndex": "1",
             "units": ""
@@ -120,9 +120,9 @@ class DataStore {
             "longName": "Is the company free to adjust prices with inflation?",
             "pageIndex": "14",
         ],
-        "own": [
-            "name": "own",
-            "longName": "Do we own stock in this company?",
+        "watch": [
+            "name": "watch",
+            "longName": "Do we watch stock in this company?",
             "pageIndex": "15",
         ]
         

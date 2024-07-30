@@ -163,7 +163,7 @@ class SellView: UIView, UITableViewDataSource, UITableViewDelegate {
         self.sellTableViewInstYConstraintWithHeading.isActive = true
         self.sellTableViewInstYConstraintWithoutHeading = self.sellTableViewInst.topAnchor.constraint(equalTo: self.topAnchor, constant: 64)
         self.sellTableViewInstYConstraintWithoutHeading.isActive = false
-        self.sellTableViewInst.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -50).isActive = true
+        self.sellTableViewInst.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -90).isActive = true
         self.sellTableViewInst.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 0).isActive = true
         self.sellTableViewInst.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 0).isActive = true
         

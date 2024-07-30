@@ -10,11 +10,14 @@ import Foundation
 import UIKit
 
 class APIClient {
-    // Use the "Core US Fundamentals Data" at quandl. $50/mo
+    // Use the "Core US Fundamentals Data" at data.nasdaq.com
     class func requestHistoricalMeasures(tickers: String, completion: @escaping ([String: Any]) -> Void) {
-        let urlString = "https://www.quandl.com/api/v3/datatables/SHARADAR/SF1.json"
-        let urlWithParameters = "\(urlString)?dimension=MRY&qopts.columns=ticker,datekey,eps,sharesbas,de,pe1,roe,bvps&api_key=\(Secrets.quandlKey)&ticker=\(tickers)"
+        let urlString = "https://data.nasdaq.com/api/v3/datatables/SHARADAR/SF1.json"
+        let urlWithParameters = "\(urlString)?dimension=MRY&qopts.columns=ticker,datekey,eps,sharesbas,de,pe1,roe,bvps&api_key=\(Secrets.nasdaqKey)&ticker=\(tickers)"
+        //print(urlWithParameters)
+        //https://data.nasdaq.com/api/v3/datatables/SHARADAR/SF1.json?dimension=MRY&qopts.columns=ticker,datekey,eps,sharesbas,de,pe1,roe,bvps&api_key=1zyrcm4YtrhgbHy8VfQc&ticker=FAST
         let url = URL(string: urlWithParameters)
+        
         if let url = url {
            
             var request = URLRequest(url: url)
@@ -28,8 +31,10 @@ class APIClient {
                     DispatchQueue.main.async {
                         do {
                             let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-                            if let message = (json?["message"]) {
-                                completion(["error": message as! String])
+                            //dump(json)
+                            if let quandl_errorArr = (json?["quandl_error"] as? [String: Any]) {
+                                print(quandl_errorArr["message"] as! String)
+                                completion(["error": quandl_errorArr["message"] as! String])
                             } else if let datatable = json?["datatable"] {
                                 //dump(datatable)
                                 if let datatableArr = datatable as? Dictionary<String, [AnyObject]>{
@@ -80,24 +85,27 @@ class APIClient {
                                             }
 //                                            print("ticker: \(historicalMeasure.ticker)")
 //                                            print("date: \(historicalMeasure.date)")
-//                                            print("eps: \(historicalMeasure.eps)")
-//                                            print("so: \(historicalMeasure.so)")
-//                                            print("dr: \(historicalMeasure.dr)")
-//                                            print("pe: \(historicalMeasure.pe)")
-//                                            print("roe: \(historicalMeasure.roe)")
-//                                            print("bv: \(historicalMeasure.bv)")
+//                                            print("eps: \(String(describing: historicalMeasure.eps))")
+//                                            print("so: \(String(describing: historicalMeasure.so))")
+//                                            print("dr: \(String(describing: historicalMeasure.dr))")
+//                                            print("pe: \(String(describing: historicalMeasure.pe))")
+//                                            print("roe: \(String(describing: historicalMeasure.roe))")
+//                                            print("bv: \(String(describing: historicalMeasure.bv))")
                                             
                                             historicalMeasures.append(historicalMeasure)
                                         }
                                         completion(["results": historicalMeasures])
                                     }
                                 } else {
+                                    print("No values found for tickers. 6")
                                     completion(["error": "No values found for tickers. 6" as String])
                                 }
                             } else {
+                                print("No values found for tickers. 3")
                                 completion(["error": "No values found for tickers. 3" as String])
                             }
                         } catch {
+                            print("The request for measures failed. 4")
                             completion(["error": "The request for measures failed. 4"])
                         }
                     }

@@ -20,10 +20,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // set nav bar colors
         let navigationBarAppearance = UINavigationBar.appearance()
         navigationBarAppearance.tintColor = UIColor(named: .blue)
-        navigationBarAppearance.barTintColor = UIColor(named: .blue)
+        navigationBarAppearance.backgroundColor = UIColor(named: .blue)
         navigationBarAppearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
-        statusBarBackground.backgroundColor = UIColor(named: .statusBarBlue)
-        //deprecated in 4.2: UIApplication.shared.statusBarStyle = .lightContent // sets status bar text color white
         
         let tabViewControllerInst = TabsViewController()
         

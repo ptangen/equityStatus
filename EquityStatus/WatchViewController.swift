@@ -1,21 +1,20 @@
 //
-//  BuyViewController.swift
+//  WatchViewController.swift
 //  EquityStatus
 //
-//  Created by Paul Tangen on 12/19/16.
-//  Copyright © 2016 Paul Tangen. All rights reserved.
+//  Created by Paul Tangen on 12/28/19.
+//  Copyright © 2019 Paul Tangen. All rights reserved.
 //
 
 import UIKit
 
-
-class BuyViewController: UIViewController, BuyViewDelegate  {
+class WatchViewController: UIViewController, WatchViewDelegate  {
     
-    var buyViewInst = BuyView()
+    var watchViewInst = WatchView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.buyViewInst.delegate = self
+        self.watchViewInst.delegate = self
     }
 
     override func didReceiveMemoryWarning() {
@@ -23,8 +22,8 @@ class BuyViewController: UIViewController, BuyViewDelegate  {
     }
     
     override func loadView(){
-        self.buyViewInst.frame = CGRect.zero
-        self.view = self.buyViewInst
+        self.watchViewInst.frame = CGRect.zero
+        self.view = self.watchViewInst
     }
     
     func openCompanyDetail(company: Company) {
@@ -39,3 +38,4 @@ class BuyViewController: UIViewController, BuyViewDelegate  {
         Utilities.showAlertMessage(message, viewControllerInst: self)
     }
 }
+

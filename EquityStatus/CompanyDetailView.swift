@@ -84,9 +84,9 @@ class CompanyDetailView: UIView {
     let q6_DescTap = UITapGestureRecognizer()
     let q6_StatusDesc = UILabel()
     
-    let own_Desc = UILabel()
-    let own_DescTap = UITapGestureRecognizer()
-    let own_StatusDesc = UILabel()
+    let watch_Desc = UILabel()
+    let watch_DescTap = UITapGestureRecognizer()
+    let watch_StatusDesc = UILabel()
     
     override init(frame:CGRect){
         super.init(frame: frame)
@@ -256,12 +256,12 @@ class CompanyDetailView: UIView {
             statusDesc:         self.q6_StatusDesc
         )
         
-        // own
+        // watch
         self.addRowForMeasure(
-            resultDesc:         self.own_Desc,
+            resultDesc:         self.watch_Desc,
             previousResultDesc: self.q6_Desc,
-            resultDescTap:      self.own_DescTap,
-            statusDesc:         self.own_StatusDesc
+            resultDescTap:      self.watch_DescTap,
+            statusDesc:         self.watch_StatusDesc
         )
     }
     

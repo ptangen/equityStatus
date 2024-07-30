@@ -32,7 +32,7 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
     let q4_answerCol =   Expression<String?>("q4_answerCol")
     let q5_answerCol =   Expression<String?>("q5_answerCol")
     let q6_answerCol =   Expression<String?>("q6_answerCol")
-    let own_answerCol =   Expression<String?>("own_answerCol")
+    let watch_answerCol =   Expression<String?>("watch_answerCol")
     
     let q1_passedCol =   Expression<Bool?>("q1_passedCol")
     let q2_passedCol =   Expression<Bool?>("q2_passedCol")
@@ -40,7 +40,7 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
     let q4_passedCol =   Expression<Bool?>("q4_passedCol")
     let q5_passedCol =   Expression<Bool?>("q5_passedCol")
     let q6_passedCol =   Expression<Bool?>("q6_passedCol")
-    let own_passedCol =   Expression<Bool?>("own_passedCol")
+    let watch_passedCol =   Expression<Bool?>("watch_passedCol")
     
     override init(frame:CGRect){
         
@@ -232,7 +232,7 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
             "q4" : self.company.q4_passed,
             "q5" : self.company.q5_passed,
             "q6" : self.company.q6_passed,
-            "own" : self.company.own_passed
+            "watch" : self.company.watch_passed
         ]
         
         let questions_answer:[String: String?] = [
@@ -242,7 +242,7 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
             "q4" : self.company.q4_answer,
             "q5" : self.company.q5_answer,
             "q6" : self.company.q6_answer,
-            "own" : self.company.own_answer
+            "watch" : self.company.watch_answer
         ]
         
         self.getMeasureResultsAndSetLabelText(
@@ -265,8 +265,8 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
             return self.q5_passedCol
         case "q6":
             return self.q6_passedCol
-        case "own":
-            return self.own_passedCol
+        case "watch":
+            return self.watch_passedCol
         default:
             return Expression<Bool?>("")
         }
@@ -287,8 +287,8 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
             return self.q5_answerCol
         case "q6":
             return self.q6_answerCol
-        case "own":
-            return self.own_answerCol
+        case "watch":
+            return self.watch_answerCol
         default:
             return Expression<String?>("")
         }
@@ -309,8 +309,8 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
             self.company.q5_passed = passed
         case "q6":
             self.company.q6_passed = passed
-        case "own":
-            self.company.own_passed = passed
+        case "watch":
+            self.company.watch_passed = passed
         default:
             break
         }
@@ -331,8 +331,8 @@ class QuestionMeasureView: UIView, UITextViewDelegate {
             self.company.q5_answer = answer
         case "q6":
             self.company.q6_answer = answer
-        case "own":
-            self.company.own_answer = answer
+        case "watch":
+            self.company.watch_answer = answer
         default:
             break
         }

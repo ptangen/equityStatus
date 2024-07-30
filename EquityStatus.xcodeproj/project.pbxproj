@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -12,6 +12,7 @@
 		C0083D2A23DE8E1D00989BB9 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0083D2923DE8E1D00989BB9 /* Launch Screen.storyboard */; };
 		C012D0E91E0DD77700AA8C4C /* MaterialIcons-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = C012D0E81E0DD77700AA8C4C /* MaterialIcons-Regular.otf */; };
 		C012D0EF1E0DED5300AA8C4C /* copperBearBull.jpg in Resources */ = {isa = PBXBuildFile; fileRef = C012D0EE1E0DED5300AA8C4C /* copperBearBull.jpg */; };
+		C017A5522AFF42E40070C4CF /* WatchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C017A5512AFF42E40070C4CF /* WatchTableViewCell.swift */; };
 		C01F581124A21F30002F30A8 /* Charts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0979C4C1E6073110023B5C4 /* Charts.framework */; };
 		C02B60F72545AF2100DF9CFF /* HistoricalMeasure.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02B60F62545AF2100DF9CFF /* HistoricalMeasure.swift */; };
 		C02B61162545E42200DF9CFF /* FontAwesome.otf in Resources */ = {isa = PBXBuildFile; fileRef = C02B61152545E42200DF9CFF /* FontAwesome.otf */; };
@@ -38,11 +39,9 @@
 		C08EC7661E3BD92F005A5A5E /* QuestionMeasureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08EC7651E3BD92F005A5A5E /* QuestionMeasureView.swift */; };
 		C08EC7681E3BDAEA005A5A5E /* QuestionMeasureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08EC7671E3BDAEA005A5A5E /* QuestionMeasureViewController.swift */; };
 		C0A0D4631E6061500076C84F /* UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A0D4621E6061500076C84F /* UITests.swift */; };
-		C0B9946023B832E600E9A68F /* OwnViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B9945F23B832E600E9A68F /* OwnViewController.swift */; };
-		C0B9946223B8337B00E9A68F /* OwnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B9946123B8337B00E9A68F /* OwnView.swift */; };
+		C0B9946023B832E600E9A68F /* WatchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B9945F23B832E600E9A68F /* WatchViewController.swift */; };
+		C0B9946223B8337B00E9A68F /* WatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B9946123B8337B00E9A68F /* WatchView.swift */; };
 		C0BF22261E085351005B7E55 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF22251E085351005B7E55 /* Utilities.swift */; };
-		C0BF22281E086191005B7E55 /* BuyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF22271E086191005B7E55 /* BuyViewController.swift */; };
-		C0BF222A1E0861B6005B7E55 /* BuyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF22291E0861B6005B7E55 /* BuyView.swift */; };
 		C0BF222C1E08686A005B7E55 /* EvaluationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF222B1E08686A005B7E55 /* EvaluationViewController.swift */; };
 		C0BF222E1E086885005B7E55 /* EvaluationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF222D1E086885005B7E55 /* EvaluationView.swift */; };
 		C0BF22301E0869B8005B7E55 /* SellViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BF222F1E0869B8005B7E55 /* SellViewController.swift */; };
@@ -72,6 +71,7 @@
 		C0083D2923DE8E1D00989BB9 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		C012D0E81E0DD77700AA8C4C /* MaterialIcons-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MaterialIcons-Regular.otf"; sourceTree = "<group>"; };
 		C012D0EE1E0DED5300AA8C4C /* copperBearBull.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = copperBearBull.jpg; sourceTree = "<group>"; };
+		C017A5512AFF42E40070C4CF /* WatchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchTableViewCell.swift; sourceTree = "<group>"; };
 		C02B60F62545AF2100DF9CFF /* HistoricalMeasure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoricalMeasure.swift; sourceTree = "<group>"; };
 		C02B61152545E42200DF9CFF /* FontAwesome.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = FontAwesome.otf; sourceTree = "<group>"; };
 		C02D509C1E12AB8D0000330F /* EquityStatus.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = EquityStatus.xcdatamodel; sourceTree = "<group>"; };
@@ -103,11 +103,9 @@
 		C08EC7671E3BDAEA005A5A5E /* QuestionMeasureViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionMeasureViewController.swift; sourceTree = "<group>"; };
 		C0979C4C1E6073110023B5C4 /* Charts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Charts.framework; path = "../../Library/Developer/Xcode/DerivedData/EquityStatus-gqdhunwwfjscevammixdczwbqums/Build/Products/Debug-iphonesimulator/Charts/Charts.framework"; sourceTree = "<group>"; };
 		C0A0D4621E6061500076C84F /* UITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITests.swift; sourceTree = "<group>"; };
-		C0B9945F23B832E600E9A68F /* OwnViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OwnViewController.swift; sourceTree = "<group>"; };
-		C0B9946123B8337B00E9A68F /* OwnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OwnView.swift; sourceTree = "<group>"; };
+		C0B9945F23B832E600E9A68F /* WatchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchViewController.swift; sourceTree = "<group>"; };
+		C0B9946123B8337B00E9A68F /* WatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchView.swift; sourceTree = "<group>"; };
 		C0BF22251E085351005B7E55 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
-		C0BF22271E086191005B7E55 /* BuyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuyViewController.swift; sourceTree = "<group>"; };
-		C0BF22291E0861B6005B7E55 /* BuyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuyView.swift; sourceTree = "<group>"; };
 		C0BF222B1E08686A005B7E55 /* EvaluationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EvaluationViewController.swift; sourceTree = "<group>"; };
 		C0BF222D1E086885005B7E55 /* EvaluationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EvaluationView.swift; sourceTree = "<group>"; };
 		C0BF222F1E0869B8005B7E55 /* SellViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SellViewController.swift; sourceTree = "<group>"; };
@@ -226,8 +224,7 @@
 			isa = PBXGroup;
 			children = (
 				C0BF22331E086AA1005B7E55 /* TabsViewController.swift */,
-				C0B9945F23B832E600E9A68F /* OwnViewController.swift */,
-				C0BF22271E086191005B7E55 /* BuyViewController.swift */,
+				C0B9945F23B832E600E9A68F /* WatchViewController.swift */,
 				C0BF222B1E08686A005B7E55 /* EvaluationViewController.swift */,
 				C0BF222F1E0869B8005B7E55 /* SellViewController.swift */,
 				C08C417823804D6D002F0543 /* DataCollectionViewController.swift */,
@@ -242,8 +239,8 @@
 		C0409FA81E0745DE00BEC5DD /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				C0B9946123B8337B00E9A68F /* OwnView.swift */,
-				C0BF22291E0861B6005B7E55 /* BuyView.swift */,
+				C0B9946123B8337B00E9A68F /* WatchView.swift */,
+				C017A5512AFF42E40070C4CF /* WatchTableViewCell.swift */,
 				C0BF222D1E086885005B7E55 /* EvaluationView.swift */,
 				C085E32A1E119E04008A7315 /* EvaluationTableViewCell.swift */,
 				C0BF22311E086A03005B7E55 /* SellView.swift */,
@@ -337,8 +334,9 @@
 		C0409F7A1E0743CD00BEC5DD /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 0820;
-				LastUpgradeCheck = 1210;
+				LastUpgradeCheck = 1540;
 				ORGANIZATIONNAME = "Paul Tangen";
 				TargetAttributes = {
 					C0409F811E0743CD00BEC5DD = {
@@ -495,7 +493,6 @@
 				C0BF222C1E08686A005B7E55 /* EvaluationViewController.swift in Sources */,
 				C02D509D1E12AB8D0000330F /* EquityStatus.xcdatamodeld in Sources */,
 				C0BF222E1E086885005B7E55 /* EvaluationView.swift in Sources */,
-				C0BF222A1E0861B6005B7E55 /* BuyView.swift in Sources */,
 				C08EC7531E3B9369005A5A5E /* CalcMeasureViewController.swift in Sources */,
 				C08C417E2380513D002F0543 /* DataCollectionTableViewCell.swift in Sources */,
 				D71CC08223943F7B0090FEBF /* Secrets.swift in Sources */,
@@ -504,8 +501,7 @@
 				C0C87C4B1E11838000759947 /* PercentValueFormatter.swift in Sources */,
 				C0C06526237C2E7E007799B9 /* DBUtilitites.swift in Sources */,
 				C0409F861E0743CD00BEC5DD /* AppDelegate.swift in Sources */,
-				C0BF22281E086191005B7E55 /* BuyViewController.swift in Sources */,
-				C0B9946223B8337B00E9A68F /* OwnView.swift in Sources */,
+				C0B9946223B8337B00E9A68F /* WatchView.swift in Sources */,
 				C0BF22321E086A03005B7E55 /* SellView.swift in Sources */,
 				C08C418123807519002F0543 /* Company.swift in Sources */,
 				C08C417923804D6D002F0543 /* DataCollectionViewController.swift in Sources */,
@@ -514,7 +510,8 @@
 				C02D509F1E12F2BE0000330F /* SellTableViewCell.swift in Sources */,
 				C0BF22261E085351005B7E55 /* Utilities.swift in Sources */,
 				C05FC1161E09B5FE008EA907 /* ChartStringFormatter.swift in Sources */,
-				C0B9946023B832E600E9A68F /* OwnViewController.swift in Sources */,
+				C0B9946023B832E600E9A68F /* WatchViewController.swift in Sources */,
+				C017A5522AFF42E40070C4CF /* WatchTableViewCell.swift in Sources */,
 				C085E32B1E119E04008A7315 /* EvaluationTableViewCell.swift in Sources */,
 				C061ED0C1E0784B000081030 /* Constants.swift in Sources */,
 				C08EC7551E3B9536005A5A5E /* CalcMeasureView.swift in Sources */,
@@ -578,6 +575,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -594,7 +592,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -640,6 +638,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -649,10 +648,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 4.2;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -664,16 +664,19 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = YHJTX4HXRQ;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/build/Debug-iphoneos/KIF",
 				);
 				INFOPLIST_FILE = EquityStatus/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 0.7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.7.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ptangen.equityStatus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "EquityStatus/EquityStatus-Bridging-Header.h";
@@ -690,16 +693,19 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = YHJTX4HXRQ;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/build/Debug-iphoneos/KIF",
 				);
 				INFOPLIST_FILE = EquityStatus/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 0.7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.7.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ptangen.equityStatus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "EquityStatus/EquityStatus-Bridging-Header.h";
@@ -718,7 +724,11 @@
 				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = EquityStatusTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.ptangen.EquityStatusTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "EquityStatusTests/EquityStatusTests-Bridging-Header.h";
@@ -737,7 +747,11 @@
 				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = EquityStatusTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.ptangen.EquityStatusTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "EquityStatusTests/EquityStatusTests-Bridging-Header.h";

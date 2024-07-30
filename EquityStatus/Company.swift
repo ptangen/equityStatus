@@ -31,7 +31,7 @@ class Company {
     var q4_answer: String?
     var q5_answer: String?
     var q6_answer: String?
-    var own_answer: String?
+    var watch_answer: String?
     
     var q1_passed: Bool?
     var q2_passed: Bool?
@@ -39,7 +39,7 @@ class Company {
     var q4_passed: Bool?
     var q5_passed: Bool?
     var q6_passed: Bool?
-    var own_passed: Bool?
+    var watch_passed: Bool?
     
     init(ticker: String, name:String, tenYrsOld:Bool) {
         self.ticker = ticker
@@ -57,6 +57,7 @@ class Company {
         
     var eps_i_passed: Bool? {
         get {
+            
             if let eps_iUnwrapped = eps_i {
                 return Double(eps_iUnwrapped) >= Constants.thresholdValues.eps_i.rawValue
             }
@@ -138,11 +139,10 @@ class Company {
     
     var tab: Constants.EquityTabValue {
         get {
-            var might_be_buy: Bool = false
             
-            if let own_passedUnwrapped = own_passed {
-                if own_passedUnwrapped {
-                    return .own
+            if let watch_passedUnwrapped = watch_passed {
+                if watch_passedUnwrapped {
+                    return .watch
                 }
             }
             
@@ -155,13 +155,12 @@ class Company {
                 // the remaining companies are can be:
                 // .sell if any of the subjective measures failed
                 // .evaluate if any of the objective measures are nill
-                // .buy if all the objective measures are true
                 
                 let questionProperties = [q1_passed, q2_passed, q3_passed, q4_passed, q5_passed, q6_passed]
                 for questionProperty in questionProperties {
                     if let questionProperty_unwrapped = questionProperty {
                        if questionProperty_unwrapped {
-                           might_be_buy = true
+                          // might_be_buy = true
                        } else {
                            return .sell // property is false
                        }
@@ -169,18 +168,10 @@ class Company {
                         return .evaluate // one of the subjective measures is nil
                     }
                 }
-                
-                // now we can assign buy or evaluate
-                if might_be_buy {
-                    return .buy
-                }
             } else {
                 return .sell // one of the financial measures was nil
             }
             return .sell
         }
     }
-    
-
 }
-

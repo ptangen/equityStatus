@@ -19,7 +19,7 @@ class DataCollectionTableViewCell: UITableViewCell {
     let so_reducedLabel = UILabel()
     var pe_avgLabel = UILabel()
     var price_LastLabel = UILabel()
-    var own_passedLabel = UILabel()
+    var watch_passedLabel = UILabel()
     
     var previous_roiLabel = UILabel()
     var expected_roiLabel = UILabel()
@@ -120,13 +120,13 @@ class DataCollectionTableViewCell: UITableViewCell {
         pe_avgLabel.leftAnchor.constraint(equalTo: self.eps_sdLabel.leftAnchor, constant: 0).isActive = true
         pe_avgLabel.topAnchor.constraint(equalTo: self.eps_sdLabel.bottomAnchor, constant: 2).isActive = true
         
-        // ownLabel
-        contentView.addSubview(own_passedLabel)
-        own_passedLabel.translatesAutoresizingMaskIntoConstraints = false
-        own_passedLabel.font = UIFont(name: Constants.appFont.regular.rawValue, size: CGFloat(Constants.fontSize.xxsmall.rawValue))
-        own_passedLabel.textColor = UIColor.gray
-        own_passedLabel.leftAnchor.constraint(equalTo: self.dr_avgLabel.leftAnchor, constant: 0).isActive = true
-        own_passedLabel.topAnchor.constraint(equalTo: self.dr_avgLabel.bottomAnchor, constant: 2).isActive = true
+        // watch Label
+        contentView.addSubview(watch_passedLabel)
+        watch_passedLabel.translatesAutoresizingMaskIntoConstraints = false
+        watch_passedLabel.font = UIFont(name: Constants.appFont.regular.rawValue, size: CGFloat(Constants.fontSize.xxsmall.rawValue))
+        watch_passedLabel.textColor = UIColor.gray
+        watch_passedLabel.leftAnchor.constraint(equalTo: self.dr_avgLabel.leftAnchor, constant: 0).isActive = true
+        watch_passedLabel.topAnchor.constraint(equalTo: self.dr_avgLabel.bottomAnchor, constant: 2).isActive = true
         
         // price_LastLabel
         contentView.addSubview(price_LastLabel)
