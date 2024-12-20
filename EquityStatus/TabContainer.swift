@@ -12,9 +12,24 @@ struct TabContainer: View {
         TabView {
             TabWatch()
                 .tabItem {
-                    Label("Watch", systemImage: "list.dash")
+                    Label("Watch", systemImage: "magnifyingglass")
                 }
-
+            
+            TabEvaluate()
+                .tabItem {
+                    Label("Evaluate", systemImage: "chart.line.uptrend.xyaxis")
+                }
+            
+            TabSell()
+                .tabItem {
+                    Label("Sell", systemImage: "xmark.circle")
+                }
+            
+            TabDataCollection()
+                .tabItem {
+                    Label("Data Collection", systemImage: "icloud.and.arrow.down")
+                }
+            
         }
     }
 }
